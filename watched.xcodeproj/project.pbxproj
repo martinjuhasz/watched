@@ -1,0 +1,352 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		7A584CF8154877A600A548EE /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A584CF7154877A600A548EE /* UIKit.framework */; };
+		7A584CFA154877A600A548EE /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A584CF9154877A600A548EE /* Foundation.framework */; };
+		7A584CFC154877A600A548EE /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A584CFB154877A600A548EE /* CoreGraphics.framework */; };
+		7A584D02154877A600A548EE /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 7A584D00154877A600A548EE /* InfoPlist.strings */; };
+		7A584D04154877A600A548EE /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A584D03154877A600A548EE /* main.m */; };
+		7A584D08154877A600A548EE /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A584D07154877A600A548EE /* AppDelegate.m */; };
+		7A584D0B154877A700A548EE /* MainStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7A584D09154877A700A548EE /* MainStoryboard.storyboard */; };
+		7A584D1A154879DD00A548EE /* SearchMovieViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A584D19154879DD00A548EE /* SearchMovieViewController.m */; };
+		7A6478BC1549963F00C95237 /* SearchResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A6478BA1549963F00C95237 /* SearchResult.m */; };
+		7AB5F855155087CC00D767E7 /* OnlineMovieDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AB5F854155087CC00D767E7 /* OnlineMovieDatabase.m */; };
+		7AEE00F31552F953005EF8CD /* SearchMoviePopupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AEE00F21552F953005EF8CD /* SearchMoviePopupViewController.m */; };
+		7AEE00FA155304CC005EF8CD /* MoviePopoverSegue.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AEE00F9155304CC005EF8CD /* MoviePopoverSegue.m */; };
+		AFB44DD682834673B44EF4EE /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 61811A39E2A3494C9E929164 /* libPods.a */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		0D20B1110904458DA8D842E8 /* Pods.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = SOURCE_ROOT; };
+		61811A39E2A3494C9E929164 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		7A584CF3154877A600A548EE /* watched.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = watched.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		7A584CF7154877A600A548EE /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		7A584CF9154877A600A548EE /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		7A584CFB154877A600A548EE /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		7A584CFF154877A600A548EE /* watched-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "watched-Info.plist"; sourceTree = "<group>"; };
+		7A584D01154877A600A548EE /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		7A584D03154877A600A548EE /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		7A584D05154877A600A548EE /* watched-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "watched-Prefix.pch"; sourceTree = "<group>"; };
+		7A584D06154877A600A548EE /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		7A584D07154877A600A548EE /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		7A584D0A154877A700A548EE /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/MainStoryboard.storyboard; sourceTree = "<group>"; };
+		7A584D18154879DD00A548EE /* SearchMovieViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchMovieViewController.h; sourceTree = "<group>"; };
+		7A584D19154879DD00A548EE /* SearchMovieViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchMovieViewController.m; sourceTree = "<group>"; };
+		7A6478BA1549963F00C95237 /* SearchResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchResult.m; sourceTree = "<group>"; };
+		7A6478BB1549963F00C95237 /* SearchResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchResult.h; sourceTree = "<group>"; };
+		7AB5F853155087CC00D767E7 /* OnlineMovieDatabase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OnlineMovieDatabase.h; sourceTree = "<group>"; };
+		7AB5F854155087CC00D767E7 /* OnlineMovieDatabase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OnlineMovieDatabase.m; sourceTree = "<group>"; };
+		7AEE00F11552F953005EF8CD /* SearchMoviePopupViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchMoviePopupViewController.h; sourceTree = "<group>"; };
+		7AEE00F21552F953005EF8CD /* SearchMoviePopupViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchMoviePopupViewController.m; sourceTree = "<group>"; };
+		7AEE00F8155304CC005EF8CD /* MoviePopoverSegue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MoviePopoverSegue.h; sourceTree = "<group>"; };
+		7AEE00F9155304CC005EF8CD /* MoviePopoverSegue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MoviePopoverSegue.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		7A584CF0154877A600A548EE /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7A584CF8154877A600A548EE /* UIKit.framework in Frameworks */,
+				7A584CFA154877A600A548EE /* Foundation.framework in Frameworks */,
+				7A584CFC154877A600A548EE /* CoreGraphics.framework in Frameworks */,
+				AFB44DD682834673B44EF4EE /* libPods.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		7A584CE8154877A600A548EE = {
+			isa = PBXGroup;
+			children = (
+				7A584CFD154877A600A548EE /* watched */,
+				7A584CF6154877A600A548EE /* Frameworks */,
+				7A584CF4154877A600A548EE /* Products */,
+				0D20B1110904458DA8D842E8 /* Pods.xcconfig */,
+			);
+			sourceTree = "<group>";
+		};
+		7A584CF4154877A600A548EE /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				7A584CF3154877A600A548EE /* watched.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		7A584CF6154877A600A548EE /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				7A584CF7154877A600A548EE /* UIKit.framework */,
+				7A584CF9154877A600A548EE /* Foundation.framework */,
+				7A584CFB154877A600A548EE /* CoreGraphics.framework */,
+				61811A39E2A3494C9E929164 /* libPods.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		7A584CFD154877A600A548EE /* watched */ = {
+			isa = PBXGroup;
+			children = (
+				7AEE00EC1552D4B0005EF8CD /* TMDB API */,
+				7A6478BB1549963F00C95237 /* SearchResult.h */,
+				7A6478BA1549963F00C95237 /* SearchResult.m */,
+				7A584D06154877A600A548EE /* AppDelegate.h */,
+				7A584D07154877A600A548EE /* AppDelegate.m */,
+				7A584D09154877A700A548EE /* MainStoryboard.storyboard */,
+				7A584CFE154877A600A548EE /* Supporting Files */,
+				7A584D18154879DD00A548EE /* SearchMovieViewController.h */,
+				7A584D19154879DD00A548EE /* SearchMovieViewController.m */,
+				7AEE00F11552F953005EF8CD /* SearchMoviePopupViewController.h */,
+				7AEE00F21552F953005EF8CD /* SearchMoviePopupViewController.m */,
+				7AEE00F8155304CC005EF8CD /* MoviePopoverSegue.h */,
+				7AEE00F9155304CC005EF8CD /* MoviePopoverSegue.m */,
+			);
+			path = watched;
+			sourceTree = "<group>";
+		};
+		7A584CFE154877A600A548EE /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				7A584CFF154877A600A548EE /* watched-Info.plist */,
+				7A584D00154877A600A548EE /* InfoPlist.strings */,
+				7A584D03154877A600A548EE /* main.m */,
+				7A584D05154877A600A548EE /* watched-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		7AEE00EC1552D4B0005EF8CD /* TMDB API */ = {
+			isa = PBXGroup;
+			children = (
+				7AB5F853155087CC00D767E7 /* OnlineMovieDatabase.h */,
+				7AB5F854155087CC00D767E7 /* OnlineMovieDatabase.m */,
+			);
+			name = "TMDB API";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		7A584CF2154877A600A548EE /* watched */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 7A584D11154877A700A548EE /* Build configuration list for PBXNativeTarget "watched" */;
+			buildPhases = (
+				7A584CEF154877A600A548EE /* Sources */,
+				7A584CF0154877A600A548EE /* Frameworks */,
+				7A584CF1154877A600A548EE /* Resources */,
+				DD328CA9800A4564A5A90DCB /* Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = watched;
+			productName = watched;
+			productReference = 7A584CF3154877A600A548EE /* watched.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		7A584CEA154877A600A548EE /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0420;
+			};
+			buildConfigurationList = 7A584CED154877A600A548EE /* Build configuration list for PBXProject "watched" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 7A584CE8154877A600A548EE;
+			productRefGroup = 7A584CF4154877A600A548EE /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				7A584CF2154877A600A548EE /* watched */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		7A584CF1154877A600A548EE /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7A584D02154877A600A548EE /* InfoPlist.strings in Resources */,
+				7A584D0B154877A700A548EE /* MainStoryboard.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		DD328CA9800A4564A5A90DCB /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Pods-resources.sh\"\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		7A584CEF154877A600A548EE /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7A584D04154877A600A548EE /* main.m in Sources */,
+				7A584D08154877A600A548EE /* AppDelegate.m in Sources */,
+				7A584D1A154879DD00A548EE /* SearchMovieViewController.m in Sources */,
+				7A6478BC1549963F00C95237 /* SearchResult.m in Sources */,
+				7AB5F855155087CC00D767E7 /* OnlineMovieDatabase.m in Sources */,
+				7AEE00F31552F953005EF8CD /* SearchMoviePopupViewController.m in Sources */,
+				7AEE00FA155304CC005EF8CD /* MoviePopoverSegue.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		7A584D00154877A600A548EE /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				7A584D01154877A600A548EE /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		7A584D09154877A700A548EE /* MainStoryboard.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				7A584D0A154877A700A548EE /* en */,
+			);
+			name = MainStoryboard.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		7A584D0F154877A700A548EE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		7A584D10154877A700A548EE /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		7A584D12154877A700A548EE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0D20B1110904458DA8D842E8 /* Pods.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Martin Juhasz";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Martin Juhasz";
+				DSTROOT = /tmp/xcodeproj.dst;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "watched/watched-Prefix.pch";
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				INFOPLIST_FILE = "watched/watched-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "D52DCFAA-A9FA-48F9-96CA-6866343E456B";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "D52DCFAA-A9FA-48F9-96CA-6866343E456B";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		7A584D13154877A700A548EE /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0D20B1110904458DA8D842E8 /* Pods.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				DSTROOT = /tmp/xcodeproj.dst;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "watched/watched-Prefix.pch";
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				INFOPLIST_FILE = "watched/watched-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+				SKIP_INSTALL = NO;
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		7A584CED154877A600A548EE /* Build configuration list for PBXProject "watched" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				7A584D0F154877A700A548EE /* Debug */,
+				7A584D10154877A700A548EE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		7A584D11154877A700A548EE /* Build configuration list for PBXNativeTarget "watched" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				7A584D12154877A700A548EE /* Debug */,
+				7A584D13154877A700A548EE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 7A584CEA154877A600A548EE /* Project object */;
+}
