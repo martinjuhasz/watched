@@ -8,8 +8,11 @@
 
 #import <Foundation/Foundation.h>
 
+@class Movie;
+
 typedef void (^MovieSearchCompletionBlock)(NSDictionary *);
 typedef void (^MovieImageComppletionBlock)(UIImage *);
+typedef void (^MovieDetailCompletionBlock)(NSDictionary *);
 
 typedef enum {
     imageTypePoster,
@@ -27,5 +30,6 @@ typedef enum {
 - (void)getMoviesWithSearchString:(NSString*)value atPage:(NSInteger)page completion:(MovieSearchCompletionBlock)callback;
 - (NSURL *)getImageURLForImagePath:(NSString *)imagePath imageType:(ImageType)type nearWidth:(CGFloat)width;
 - (void)getImageForImagePath:(NSString *)imagePath imageType:(ImageType)type withWidth:(CGFloat)width completion:(MovieImageComppletionBlock)callback;
+- (void)getMovieDetailsForMovieID:(NSNumber *)movieID completion:(MovieDetailCompletionBlock)callback;
 
 @end

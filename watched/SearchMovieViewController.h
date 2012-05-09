@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+@class SearchResult;
+
 @interface SearchMovieViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate> {
     NSString *searchQuery;
     NSInteger currentPage;
@@ -20,5 +22,6 @@
 - (UITableViewCell *)resultCellAtIndexPath:(NSIndexPath *)indexPath;
 - (UITableViewCell *)loadingCell;
 - (void)startSearchWithQuery:(NSString*)query;
+- (void)saveMovieToDatabase:(SearchResult*)result;
 
 @end
