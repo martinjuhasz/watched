@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7A0F430A155D595D00487FCB /* UISearchBar+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A0F4309155D595D00487FCB /* UISearchBar+Additions.m */; };
+		7A2B9A6A155B090200442D54 /* MoviesTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A2B9A69155B090200442D54 /* MoviesTableViewController.m */; };
 		7A2CBBA01559A0CB009ADFFB /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A2CBB9F1559A0CB009ADFFB /* CoreData.framework */; };
 		7A2CBBA51559A0ED009ADFFB /* Movies.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 7A2CBBA31559A0ED009ADFFB /* Movies.xcdatamodeld */; };
 		7A2CBBAA1559B4A0009ADFFB /* _Movie.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A2CBBA71559B4A0009ADFFB /* _Movie.m */; };
@@ -22,6 +24,7 @@
 		7A6478BC1549963F00C95237 /* SearchResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A6478BA1549963F00C95237 /* SearchResult.m */; };
 		7A8AA0B41559CF24003A5446 /* NSDictionary+ObjectForKeyOrNil.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A8AA0B31559CF24003A5446 /* NSDictionary+ObjectForKeyOrNil.m */; };
 		7AB5F855155087CC00D767E7 /* OnlineMovieDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AB5F854155087CC00D767E7 /* OnlineMovieDatabase.m */; };
+		7AEEA3411573F697003F06E1 /* MovieDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AEEA3401573F697003F06E1 /* MovieDetailViewController.m */; };
 		7AF3AE161559C113001B36E1 /* MoviesDataModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AF3AE151559C113001B36E1 /* MoviesDataModel.m */; };
 		AFB44DD682834673B44EF4EE /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 61811A39E2A3494C9E929164 /* libPods.a */; };
 /* End PBXBuildFile section */
@@ -29,6 +32,10 @@
 /* Begin PBXFileReference section */
 		0D20B1110904458DA8D842E8 /* Pods.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = SOURCE_ROOT; };
 		61811A39E2A3494C9E929164 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		7A0F4308155D595D00487FCB /* UISearchBar+Additions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UISearchBar+Additions.h"; sourceTree = "<group>"; };
+		7A0F4309155D595D00487FCB /* UISearchBar+Additions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UISearchBar+Additions.m"; sourceTree = "<group>"; };
+		7A2B9A68155B090200442D54 /* MoviesTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MoviesTableViewController.h; sourceTree = "<group>"; };
+		7A2B9A69155B090200442D54 /* MoviesTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MoviesTableViewController.m; sourceTree = "<group>"; };
 		7A2CBB9F1559A0CB009ADFFB /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		7A2CBBA41559A0ED009ADFFB /* Movies.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Movies.xcdatamodel; sourceTree = "<group>"; };
 		7A2CBBA61559B4A0009ADFFB /* _Movie.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _Movie.h; sourceTree = "<group>"; };
@@ -54,6 +61,8 @@
 		7A8AA0B31559CF24003A5446 /* NSDictionary+ObjectForKeyOrNil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+ObjectForKeyOrNil.m"; sourceTree = "<group>"; };
 		7AB5F853155087CC00D767E7 /* OnlineMovieDatabase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OnlineMovieDatabase.h; sourceTree = "<group>"; };
 		7AB5F854155087CC00D767E7 /* OnlineMovieDatabase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OnlineMovieDatabase.m; sourceTree = "<group>"; };
+		7AEEA33F1573F697003F06E1 /* MovieDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MovieDetailViewController.h; sourceTree = "<group>"; };
+		7AEEA3401573F697003F06E1 /* MovieDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MovieDetailViewController.m; sourceTree = "<group>"; };
 		7AF3AE141559C113001B36E1 /* MoviesDataModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MoviesDataModel.h; sourceTree = "<group>"; };
 		7AF3AE151559C113001B36E1 /* MoviesDataModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MoviesDataModel.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -107,8 +116,19 @@
 			children = (
 				7A8AA0B21559CF24003A5446 /* NSDictionary+ObjectForKeyOrNil.h */,
 				7A8AA0B31559CF24003A5446 /* NSDictionary+ObjectForKeyOrNil.m */,
+				7A0F4308155D595D00487FCB /* UISearchBar+Additions.h */,
+				7A0F4309155D595D00487FCB /* UISearchBar+Additions.m */,
 			);
 			name = Categories;
+			sourceTree = "<group>";
+		};
+		7A2B9A67155B07CF00442D54 /* MoviesTableView */ = {
+			isa = PBXGroup;
+			children = (
+				7A2B9A68155B090200442D54 /* MoviesTableViewController.h */,
+				7A2B9A69155B090200442D54 /* MoviesTableViewController.m */,
+			);
+			name = MoviesTableView;
 			sourceTree = "<group>";
 		};
 		7A2CBBA21559A0D6009ADFFB /* CoreData */ = {
@@ -158,6 +178,8 @@
 				7A2CBBA21559A0D6009ADFFB /* CoreData */,
 				7AEE00EC1552D4B0005EF8CD /* TMDB API */,
 				7A2B9A65155B06D700442D54 /* Search */,
+				7A2B9A67155B07CF00442D54 /* MoviesTableView */,
+				7AEEA33D1573F675003F06E1 /* MovieDetailView */,
 				7A584D06154877A600A548EE /* AppDelegate.h */,
 				7A584D07154877A600A548EE /* AppDelegate.m */,
 				7A584CFE154877A600A548EE /* Supporting Files */,
@@ -187,6 +209,15 @@
 				7AB5F854155087CC00D767E7 /* OnlineMovieDatabase.m */,
 			);
 			name = "TMDB API";
+			sourceTree = "<group>";
+		};
+		7AEEA33D1573F675003F06E1 /* MovieDetailView */ = {
+			isa = PBXGroup;
+			children = (
+				7AEEA33F1573F697003F06E1 /* MovieDetailViewController.h */,
+				7AEEA3401573F697003F06E1 /* MovieDetailViewController.m */,
+			);
+			name = MovieDetailView;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -294,6 +325,9 @@
 				7A2CBBAB1559B4A0009ADFFB /* Movie.m in Sources */,
 				7AF3AE161559C113001B36E1 /* MoviesDataModel.m in Sources */,
 				7A8AA0B41559CF24003A5446 /* NSDictionary+ObjectForKeyOrNil.m in Sources */,
+				7A2B9A6A155B090200442D54 /* MoviesTableViewController.m in Sources */,
+				7A0F430A155D595D00487FCB /* UISearchBar+Additions.m in Sources */,
+				7AEEA3411573F697003F06E1 /* MovieDetailViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

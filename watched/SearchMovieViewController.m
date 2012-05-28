@@ -13,18 +13,20 @@
 #import "MBProgressHUD.h"
 #import "Movie.h"
 #import "MoviesDataModel.h"
+#import "UISearchBar+Additions.h"
 #import <CoreData/CoreData.h>
-
+#import "AFHTTPRequestOperation.h"
 
 @implementation SearchMovieViewController
 
 @synthesize tableView;
+@synthesize searchBar;
 @synthesize searchResults;
 
-const int kLoadingCellTag = 2000;
-const int kMovieCellTitleLabel = 100;
-const int kMovieCellYearLabel = 101;
-const int kMovieCellImageView = 200;
+const int kMovieSearchLoadingCellTag = 2000;
+const int kMovieSearchCellTitleLabel = 100;
+const int kMovieSearchCellYearLabel = 101;
+const int kMovieSearchCellImageView = 200;
 
 
 ////////////////////////////////////////////////////////////////////////////
@@ -41,6 +43,8 @@ const int kMovieCellImageView = 200;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    [self.searchBar setCancelButtonActive];
+    [self.searchBar becomeFirstResponder];
     
     currentPage = 1;
     self.searchResults = [NSMutableArray array];
@@ -49,6 +53,7 @@ const int kMovieCellImageView = 200;
 - (void)viewDidUnload
 {
     [self setTableView:nil];
+    [self setSearchBar:nil];
     [super viewDidUnload];
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
@@ -91,7 +96,7 @@ const int kMovieCellImageView = 200;
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (cell.tag == kLoadingCellTag) {
+    if (cell.tag == kMovieSearchLoadingCellTag) {
         currentPage++;
         [self startSearchWithQuery:searchQuery];
     }
@@ -124,9 +129,9 @@ const int kMovieCellImageView = 200;
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     }
     
-    UILabel *titleLabel = (UILabel *)[cell viewWithTag:kMovieCellTitleLabel];
-    UILabel *yearLabel = (UILabel *)[cell viewWithTag:kMovieCellYearLabel];
-    UIImageView *coverImageView = (UIImageView *)[cell viewWithTag:kMovieCellImageView];
+    UILabel *titleLabel = (UILabel *)[cell viewWithTag:kMovieSearchCellTitleLabel];
+    UILabel *yearLabel = (UILabel *)[cell viewWithTag:kMovieSearchCellYearLabel];
+    UIImageView *coverImageView = (UIImageView *)[cell viewWithTag:kMovieSearchCellImageView];
     
     SearchResult *currentMovie = [self.searchResults objectAtIndex:indexPath.row];
     
@@ -146,7 +151,7 @@ const int kMovieCellImageView = 200;
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     }
-    cell.tag = kLoadingCellTag;
+    cell.tag = kMovieSearchLoadingCellTag;
     return cell;
 }
 
@@ -154,7 +159,7 @@ const int kMovieCellImageView = 200;
 
 ////////////////////////////////////////////////////////////////////////////
 #pragma mark -
-#pragma mark UISearchBarDelegate
+#pragma mark UISearchBar + Cancel
 
 - (void)searchBarSearchButtonClicked:(UISearchBar *)aSearchBar
 {
@@ -176,8 +181,9 @@ const int kMovieCellImageView = 200;
 {
 }
 
-- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
+- (IBAction)cancelButtonClicked:(id)sender
 {
+    [self dismissModalViewControllerAnimated:YES];
 }
 
 
@@ -226,15 +232,61 @@ const int kMovieCellImageView = 200;
             
             if(movie == nil) {
                 
+                // dispatch it
+                dispatch_group_t group = dispatch_group_create();
+                
+                // Movie
                 movie = [Movie insertInManagedObjectContext:context];
                 [movie updateAttributes:movieDict];
+                
+                // Backdrop
+                NSString *backdropString = [movieDict objectForKey:@"backdrop_path"];
+                NSURL *backdropURL = [[OnlineMovieDatabase sharedMovieDatabase] getImageURLForImagePath:backdropString imageType:imageTypeBackdrop nearWidth:800.0f];
+                if(backdropURL) {
+                    dispatch_group_enter(group);
+                    NSURLRequest *backdropRequest = [NSURLRequest requestWithURL:backdropURL];
+                    AFHTTPRequestOperation *backdropOperation = [[AFHTTPRequestOperation alloc] initWithRequest:backdropRequest];
+                    [backdropOperation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+                        if([responseObject isKindOfClass:[NSData class]]) {
+                            movie.backdrop = [UIImage imageWithData:responseObject];
+                            dispatch_group_leave(group);
+                        }
+                    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                        NSLog(@"%@", [error localizedDescription]);
+                        dispatch_group_leave(group);
+                    }];
+                    [backdropOperation start];
+                }
+                
+                
+                // Poster
+                NSString *posterString = [movieDict objectForKey:@"poster_path"];
+                NSURL *posterURL = [[OnlineMovieDatabase sharedMovieDatabase] getImageURLForImagePath:posterString imageType:imageTypeBackdrop nearWidth:400.0f];
+                if(posterURL) {
+                    dispatch_group_enter(group);
+                    NSURLRequest *posterRequest = [NSURLRequest requestWithURL:posterURL];
+                    AFHTTPRequestOperation *posterOperation = [[AFHTTPRequestOperation alloc] initWithRequest:posterRequest];
+                    [posterOperation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+                        movie.poster = [UIImage imageWithData:responseObject];
+                        dispatch_group_leave(group);
+                    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                        NSLog(@"%@", [error localizedDescription]);
+                        dispatch_group_leave(group);
+                    }];
+                    [posterOperation start];
+                }
+                
+                
+                dispatch_group_wait(group, DISPATCH_TIME_FOREVER);
+                dispatch_release(group);
+
                 [context save:nil];
                 
                 dispatch_async(dispatch_get_main_queue(), ^{
                     hud.mode = MBProgressHUDModeText;
                     hud.labelText = @"Movie added";
                     hud.removeFromSuperViewOnHide = YES;
-                    [hud hide:YES afterDelay:2];
+                    [hud hide:YES afterDelay:2.0f];
                 });
                 
             } else {
@@ -242,45 +294,9 @@ const int kMovieCellImageView = 200;
                     hud.mode = MBProgressHUDModeText;
                     hud.labelText = @"Movie already added";
                     hud.removeFromSuperViewOnHide = YES;
-                    [hud hide:YES afterDelay:2];
+                    [hud hide:YES afterDelay:2.0f];
                 });
             }
-            
-            
-            
-            /*
-            NSManagedObjectContext *context = [[NSManagedObjectContext alloc] init];
-            [context setPersistentStoreCoordinator:[[BeersDataModel sharedDataModel] persistentStoreCoordinator]];
-            
-            for (NSDictionary *dictionary in breweries) {
-                NSInteger serverId = [[dictionary objectForKey:@"id"] intValue];
-                Brewery *brewery = [Brewery breweryWithServerId:serverId usingManagedObjectContext:context];
-                if (brewery == nil) {
-                    brewery = [Brewery insertInManagedObjectContext:context];
-                }
-                
-                [brewery updateAttributes:dictionary];
-                
-                currentRecord++;
-                
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    float percent = ((float)currentRecord)/totalRecords;
-                    [_hud setProgress:percent];
-                });
-            }
-            
-            NSError *error = nil;
-            if ([context save:&error]) {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    [_hud setLabelText:@"Done!"];
-                    [_hud hide:YES afterDelay:2.0];
-                });
-            } else {
-                NSLog(@"ERROR: %@ %@", [error localizedDescription], [error userInfo]);
-                exit(1);
-            }
-        */
-            
             
         });
     }];

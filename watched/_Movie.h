@@ -15,6 +15,7 @@ extern const struct MovieAttributes {
 	__unsafe_unretained NSString *overview;
 	__unsafe_unretained NSString *popularity;
 	__unsafe_unretained NSString *posterPath;
+	__unsafe_unretained NSString *rating;
 	__unsafe_unretained NSString *releaseDate;
 	__unsafe_unretained NSString *revenue;
 	__unsafe_unretained NSString *runtime;
@@ -27,6 +28,7 @@ extern const struct MovieRelationships {
 
 extern const struct MovieFetchedProperties {
 } MovieFetchedProperties;
+
 
 
 
@@ -149,6 +151,18 @@ extern const struct MovieFetchedProperties {
 
 
 //- (BOOL)validatePosterPath:(id*)value_ error:(NSError**)error_;
+
+
+
+
+@property (nonatomic, strong) NSNumber* rating;
+
+
+@property int16_t ratingValue;
+- (int16_t)ratingValue;
+- (void)setRatingValue:(int16_t)value_;
+
+//- (BOOL)validateRating:(id*)value_ error:(NSError**)error_;
 
 
 
@@ -280,6 +294,15 @@ extern const struct MovieFetchedProperties {
 
 - (NSString*)primitivePosterPath;
 - (void)setPrimitivePosterPath:(NSString*)value;
+
+
+
+
+- (NSNumber*)primitiveRating;
+- (void)setPrimitiveRating:(NSNumber*)value;
+
+- (int16_t)primitiveRatingValue;
+- (void)setPrimitiveRatingValue:(int16_t)value_;
 
 
 

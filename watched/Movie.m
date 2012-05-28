@@ -1,7 +1,16 @@
 #import "Movie.h"
 #import "NSDictionary+ObjectForKeyOrNil.h"
 
+
+@interface Movie()
+- (NSString*)pathForSavedImage:(UIImage*)aImage inDirectory:(NSString*)aDir;
+@end
+
+
 @implementation Movie
+
+@synthesize backdrop;
+@synthesize poster;
 
 + (Movie *)movieWithServerId:(NSInteger)serverId usingManagedObjectContext:(NSManagedObjectContext *)moc {
     NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:[Movie entityName]];
@@ -24,7 +33,6 @@
 
 - (void)updateAttributes:(NSDictionary *)attributes {
     self.adult = [attributes objectForKeyOrNil:@"adult"];
-    self.backdropPath = [attributes objectForKeyOrNil:@"backdrop_path"];
 	self.budget = [attributes objectForKeyOrNil:@"budget"];
 	self.homepage = [attributes objectForKeyOrNil:@"homepage"];
 	self.imdbID = [attributes objectForKeyOrNil:@"imdb_id"];
@@ -32,8 +40,6 @@
 	self.originalTitle = [attributes objectForKeyOrNil:@"original_title"];
 	self.overview = [attributes objectForKeyOrNil:@"overview"];
 	self.popularity = [NSNumber numberWithInt:[[attributes objectForKeyOrNil:@"popularity"] intValue]];
-	self.posterPath = [attributes objectForKeyOrNil:@"poster_path"];
-	//self.releaseDate = [attributes objectForKeyOrNil:@"adult"];
 	self.revenue = [NSNumber numberWithFloat:[[attributes objectForKeyOrNil:@"revenue"] floatValue]];
 	self.runtime = [NSNumber numberWithFloat:[[attributes objectForKeyOrNil:@"runtime"] floatValue]];
 	self.tagline = [attributes objectForKeyOrNil:@"tagline"];
@@ -46,7 +52,86 @@
         self.releaseDate = [dateFormatter dateFromString:[attributes objectForKey:@"release_date"]];
     }
     
+    //self.posterPath = [attributes objectForKeyOrNil:@"poster_path"];
+    //self.backdropPath = [attributes objectForKeyOrNil:@"backdrop_path"];
+	//self.releaseDate = [attributes objectForKeyOrNil:@"adult"];
+    
 }
 
+-(UIImage*)poster
+{
+    [self willAccessValueForKey:@"poster"];
+
+    NSString *documentsDirectory = nil;
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    documentsDirectory = [paths objectAtIndex:0];
+    NSString *pathString = [documentsDirectory stringByAppendingPathComponent:self.posterPath];
+    
+    UIImage *returnImage = [UIImage imageWithData:[NSData dataWithContentsOfFile:pathString]];
+    
+    [self didAccessValueForKey:@"poster"];
+    return returnImage;
+}
+
+-(UIImage*)backdrop
+{
+    [self willAccessValueForKey:@"backdrop"];
+    
+    NSString *documentsDirectory = nil;
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    documentsDirectory = [paths objectAtIndex:0];
+    NSString *pathString = [documentsDirectory stringByAppendingPathComponent:self.backdropPath];
+    
+    UIImage *returnImage = [UIImage imageWithData:[NSData dataWithContentsOfFile:pathString]];
+    
+    [self didAccessValueForKey:@"backdrop"];
+    return returnImage;
+}
+
+
+- (void)setPoster:(UIImage *)aPoster
+{
+    [self willChangeValueForKey:@"poster"];
+    
+    NSString *aPosterPath = [self pathForSavedImage:aPoster inDirectory:@"posters"];
+    self.posterPath = aPosterPath;
+    
+    [self didChangeValueForKey:@"poster"];
+}
+
+- (void)setBackdrop:(UIImage *)aBackdrop
+{
+    [self willChangeValueForKey:@"backdrop"];
+    
+    NSString *aBackdropPath = [self pathForSavedImage:aBackdrop inDirectory:@"backdrops"];
+    self.backdropPath = aBackdropPath;
+    
+    [self didChangeValueForKey:@"backdrop"];
+}
+
+- (NSString*)pathForSavedImage:(UIImage*)aImage inDirectory:(NSString*)aDir
+{
+    CFUUIDRef uuid = CFUUIDCreate(NULL);
+    CFStringRef uuidString = CFUUIDCreateString(NULL, uuid);
+    CFRelease(uuid);
+    NSString *uniqueString = [NSString stringWithFormat:@"%@",(__bridge NSString *)uuidString];
+    CFRelease(uuidString);
+    
+    NSString *documentsDirectory = nil;
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    documentsDirectory = [paths objectAtIndex:0];
+    NSString *aDirPath = [documentsDirectory stringByAppendingPathComponent:aDir];
+    NSString *aImagePath = [NSString stringWithFormat:@"%@/%@.jpg",aDir, uniqueString];
+    NSString *pathString = [NSString stringWithFormat:@"%@/%@.jpg",aDirPath, uniqueString];
+    
+    // check if dir exists, else create
+    if(![[NSFileManager defaultManager] fileExistsAtPath:aDirPath isDirectory:nil]) {
+        [[NSFileManager defaultManager] createDirectoryAtPath:aDirPath withIntermediateDirectories:YES attributes:nil error:nil];
+    }
+    
+    NSData *imageData = UIImageJPEGRepresentation(aImage, 90);
+    [imageData writeToFile:pathString atomically:YES];
+    return aImagePath;
+}
 
 @end

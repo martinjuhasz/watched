@@ -1,7 +1,9 @@
 PODS:
   - AFNetworking (1.0RC1)
+  - DLStarRating (1.0)
   - MBProgressHUD (0.5)
 
 DEPENDENCIES:
   - AFNetworking
+  - DLStarRating (from `DLStarRating.podspec')
   - MBProgressHUD

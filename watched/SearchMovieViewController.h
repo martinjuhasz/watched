@@ -17,11 +17,13 @@
 }
 
 @property (strong, nonatomic) IBOutlet UITableView *tableView;
+@property (strong, nonatomic) IBOutlet UISearchBar *searchBar;
 @property (strong, nonatomic) NSMutableArray *searchResults;
 
 - (UITableViewCell *)resultCellAtIndexPath:(NSIndexPath *)indexPath;
 - (UITableViewCell *)loadingCell;
 - (void)startSearchWithQuery:(NSString*)query;
 - (void)saveMovieToDatabase:(SearchResult*)result;
+- (IBAction)cancelButtonClicked:(id)sender;
 
 @end

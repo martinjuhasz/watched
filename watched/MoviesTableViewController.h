@@ -1,0 +1,16 @@
+//
+//  MoviesTableViewController.h
+//  watched
+//
+//  Created by Martin Juhasz on 09.05.12.
+//  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
+//
+
+#import <UIKit/UIKit.h>
+#import <CoreData/CoreData.h>
+
+@interface MoviesTableViewController : UIViewController<UITableViewDataSource, UITableViewDelegate>
+
+@property (strong, nonatomic) IBOutlet UITableView *tableView;
+
+@end

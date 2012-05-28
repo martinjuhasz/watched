@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model name="" userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="1171" systemVersion="11D50" minimumToolsVersion="Xcode 4.1" macOSVersion="Automatic" iOSVersion="Automatic">
+<model name="" userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="1171" systemVersion="11E53" minimumToolsVersion="Xcode 4.1" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="Movie" representedClassName="Movie" syncable="YES">
         <attribute name="adult" optional="YES" attributeType="Boolean" defaultValueString="YES" syncable="YES"/>
         <attribute name="backdropPath" optional="YES" attributeType="String" syncable="YES"/>
@@ -11,6 +11,7 @@
         <attribute name="overview" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="popularity" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="posterPath" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="rating" attributeType="Integer 16" minValueString="0" maxValueString="5" defaultValueString="0" syncable="YES"/>
         <attribute name="releaseDate" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="revenue" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
         <attribute name="runtime" optional="YES" attributeType="Float" defaultValueString="0" syncable="YES"/>
@@ -18,6 +19,6 @@
         <attribute name="title" attributeType="String" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Movie" positionX="160" positionY="192" width="128" height="270"/>
+        <element name="Movie" positionX="160" positionY="165" width="128" height="285"/>
     </elements>
 </model>

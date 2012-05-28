@@ -14,6 +14,7 @@ const struct MovieAttributes MovieAttributes = {
 	.overview = @"overview",
 	.popularity = @"popularity",
 	.posterPath = @"posterPath",
+	.rating = @"rating",
 	.releaseDate = @"releaseDate",
 	.revenue = @"revenue",
 	.runtime = @"runtime",
@@ -67,6 +68,10 @@ const struct MovieFetchedProperties MovieFetchedProperties = {
 	}
 	if ([key isEqualToString:@"popularityValue"]) {
 		NSSet *affectingKey = [NSSet setWithObject:@"popularity"];
+		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
+	}
+	if ([key isEqualToString:@"ratingValue"]) {
+		NSSet *affectingKey = [NSSet setWithObject:@"rating"];
 		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
 	}
 	if ([key isEqualToString:@"revenueValue"]) {
@@ -225,6 +230,32 @@ const struct MovieFetchedProperties MovieFetchedProperties = {
 
 @dynamic posterPath;
 
+
+
+
+
+
+@dynamic rating;
+
+
+
+- (int16_t)ratingValue {
+	NSNumber *result = [self rating];
+	return [result shortValue];
+}
+
+- (void)setRatingValue:(int16_t)value_ {
+	[self setRating:[NSNumber numberWithShort:value_]];
+}
+
+- (int16_t)primitiveRatingValue {
+	NSNumber *result = [self primitiveRating];
+	return [result shortValue];
+}
+
+- (void)setPrimitiveRatingValue:(int16_t)value_ {
+	[self setPrimitiveRating:[NSNumber numberWithShort:value_]];
+}
 
 
 
