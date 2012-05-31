@@ -13,6 +13,8 @@
 typedef void (^MovieSearchCompletionBlock)(NSDictionary *);
 typedef void (^MovieImageComppletionBlock)(UIImage *);
 typedef void (^MovieDetailCompletionBlock)(NSDictionary *);
+typedef void (^MovieCastsCompletionBlock)(NSDictionary *);
+typedef void (^MovieTrailersCompletionBlock)(NSDictionary *);
 
 typedef enum {
     imageTypePoster,
@@ -31,5 +33,7 @@ typedef enum {
 - (NSURL *)getImageURLForImagePath:(NSString *)imagePath imageType:(ImageType)type nearWidth:(CGFloat)width;
 - (void)getImageForImagePath:(NSString *)imagePath imageType:(ImageType)type withWidth:(CGFloat)width completion:(MovieImageComppletionBlock)callback;
 - (void)getMovieDetailsForMovieID:(NSNumber *)movieID completion:(MovieDetailCompletionBlock)callback;
+- (void)getMovieCastsForMovieID:(NSNumber *)movieID completion:(MovieCastsCompletionBlock)callback;
+- (void)getMovieTrailersForMovieID:(NSNumber *)movieID completion:(MovieTrailersCompletionBlock)callback;
 
 @end

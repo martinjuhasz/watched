@@ -12,3 +12,37 @@
     #import <UIKit/UIKit.h>
     #import <Foundation/Foundation.h>
 #endif
+
+
+
+/* ======================================================================================== */
+/* ======================================================================================== */
+
+
+#define RGBColor(r,g,b) [UIColor colorWithRed:r/255.0 green:g/255.0 blue:b/255.0 alpha:1.0]
+#define HEXColor(rgbValue) [UIColor colorWithRed:((float)((rgbValue & 0xFF0000) >> 16))/255.0 green:((float)((rgbValue & 0xFF00) >> 8))/255.0 blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
+
+/* ======================================================================================== */
+/* ======================================================================================== */
+
+
+#define DEBUG 1
+//#define RELEASE 1
+
+#ifdef DEBUG
+
+// Debug definitions
+#define DEBUG_MODE
+#define XLog(fmt, ...) NSLog(@"%s " fmt, __PRETTY_FUNCTION__, ##__VA_ARGS__)
+
+#else
+
+#ifndef RELEASE
+#error DEBUG or RELEASE need to be #defined
+#endif
+
+// Release definitions
+#define RELEASE_MODEmart
+#define XLog(...)
+
+#endif

@@ -12,10 +12,14 @@
 #import "UIImageView+AFNetworking.h"
 #import "MBProgressHUD.h"
 #import "Movie.h"
+#import "Cast.h"
+#import "Crew.h"
+#import "Trailer.h"
 #import "MoviesDataModel.h"
 #import "UISearchBar+Additions.h"
 #import <CoreData/CoreData.h>
 #import "AFHTTPRequestOperation.h"
+#import "NSDictionary+ObjectForKeyOrNil.h"
 
 @implementation SearchMovieViewController
 
@@ -277,6 +281,81 @@ const int kMovieSearchCellImageView = 200;
                 }
                 
                 
+                // Casts
+                dispatch_group_enter(group);
+                [[OnlineMovieDatabase sharedMovieDatabase] getMovieCastsForMovieID:[NSNumber numberWithInt:serverId] completion:^(NSDictionary *returnArray) {
+                    
+                    NSArray *casts = [returnArray objectForKeyOrNil:@"cast"];
+                    NSArray *crew = [returnArray objectForKeyOrNil:@"crew"];
+                    NSMutableSet *castsSet = [NSMutableSet set];
+                    NSMutableSet *crewSet = [NSMutableSet set];
+                    
+                    for (NSDictionary *castDict in casts) {
+                        Cast *newCast = [Cast insertInManagedObjectContext:context];
+                        newCast.character = [castDict objectForKeyOrNil:@"character"];
+                        newCast.castID = [NSNumber numberWithInt:[[castDict objectForKeyOrNil:@"id"] intValue]];
+                        newCast.name = [castDict objectForKeyOrNil:@"name"];
+                        newCast.order = [NSNumber numberWithInt:[[castDict objectForKeyOrNil:@"order"] intValue]];
+                        newCast.profilePath = [castDict objectForKeyOrNil:@"profile_path"];
+                        [castsSet addObject:newCast];
+                    }
+                    
+                    for (NSDictionary *crewDict in crew) {
+                        Crew *newCrew = [Crew insertInManagedObjectContext:context];
+                        newCrew.crewID = [NSNumber numberWithInt:[[crewDict objectForKeyOrNil:@"id"] intValue]];
+                        newCrew.name = [crewDict objectForKeyOrNil:@"name"];
+                        newCrew.department = [crewDict objectForKeyOrNil:@"department"];
+                        newCrew.job = [crewDict objectForKeyOrNil:@"job"];
+                        newCrew.profilePath = [crewDict objectForKeyOrNil:@"profile_path"];
+                        [crewSet addObject:newCrew];
+                    }
+                    
+                    movie.casts = castsSet;
+                    movie.crews = crewSet;
+                    dispatch_group_leave(group);
+                }];
+                
+                // Trailers
+                dispatch_group_enter(group);
+                [[OnlineMovieDatabase sharedMovieDatabase] getMovieTrailersForMovieID:[NSNumber numberWithInt:serverId] completion:^(NSDictionary *returnArray) {
+                    
+                    NSArray *quicktime = [returnArray objectForKeyOrNil:@"quicktime"];
+                    NSArray *youtube = [returnArray objectForKeyOrNil:@"youtube"];
+                    NSMutableSet *trailerSet = [NSMutableSet set];
+                    
+                    for (NSDictionary *qtTrailer in quicktime) {
+                        Trailer *newTrailer = [Trailer insertInManagedObjectContext:context];
+                        newTrailer.name = [qtTrailer objectForKeyOrNil:@"name"];
+                        newTrailer.source = @"quicktime";
+                        NSString *storedSize = nil;
+                        for (NSDictionary *newTrailerSource in [qtTrailer objectForKeyOrNil:@"sources"]) {
+                            
+                            if(!storedSize || ([storedSize isEqualToString:@"480p"] && [[newTrailerSource objectForKeyOrNil:@"size"] isEqualToString:@"720p"])) {
+                                newTrailer.url = [newTrailerSource objectForKeyOrNil:@"source"];
+                                newTrailer.quality = [newTrailerSource objectForKeyOrNil:@"size"];
+                            } else {
+                                break;
+                            }
+                            storedSize = [newTrailerSource objectForKeyOrNil:@"size"];
+                        }
+                        [trailerSet addObject:newTrailer];
+                    }
+                    
+                    for (NSDictionary *ytTrailer in youtube) {
+                        Trailer *newTrailer = [Trailer insertInManagedObjectContext:context];
+                        newTrailer.name = [ytTrailer objectForKeyOrNil:@"name"];
+                        newTrailer.source = @"youtube";
+                        newTrailer.quality = [ytTrailer objectForKeyOrNil:@"size"];
+                        newTrailer.url = [ytTrailer objectForKeyOrNil:@"source"];
+                        [trailerSet addObject:newTrailer];
+                    }
+                    
+                    movie.trailers = trailerSet;
+                    dispatch_group_leave(group);
+                }];
+                
+                
+                
                 dispatch_group_wait(group, DISPATCH_TIME_FOREVER);
                 dispatch_release(group);
 
@@ -286,7 +365,7 @@ const int kMovieSearchCellImageView = 200;
                     hud.mode = MBProgressHUDModeText;
                     hud.labelText = @"Movie added";
                     hud.removeFromSuperViewOnHide = YES;
-                    [hud hide:YES afterDelay:2.0f];
+                    [hud hide:YES afterDelay:1.0f];
                 });
                 
             } else {
@@ -294,7 +373,7 @@ const int kMovieSearchCellImageView = 200;
                     hud.mode = MBProgressHUDModeText;
                     hud.labelText = @"Movie already added";
                     hud.removeFromSuperViewOnHide = YES;
-                    [hud hide:YES afterDelay:2.0f];
+                    [hud hide:YES afterDelay:1.0f];
                 });
             }
             

@@ -23,6 +23,9 @@ const struct MovieAttributes MovieAttributes = {
 };
 
 const struct MovieRelationships MovieRelationships = {
+	.casts = @"casts",
+	.crews = @"crews",
+	.trailers = @"trailers",
 };
 
 const struct MovieFetchedProperties MovieFetchedProperties = {
@@ -333,6 +336,45 @@ const struct MovieFetchedProperties MovieFetchedProperties = {
 
 
 
+
+@dynamic casts;
+
+	
+- (NSMutableSet*)castsSet {
+	[self willAccessValueForKey:@"casts"];
+  
+	NSMutableSet *result = (NSMutableSet*)[self mutableSetValueForKey:@"casts"];
+  
+	[self didAccessValueForKey:@"casts"];
+	return result;
+}
+	
+
+@dynamic crews;
+
+	
+- (NSMutableSet*)crewsSet {
+	[self willAccessValueForKey:@"crews"];
+  
+	NSMutableSet *result = (NSMutableSet*)[self mutableSetValueForKey:@"crews"];
+  
+	[self didAccessValueForKey:@"crews"];
+	return result;
+}
+	
+
+@dynamic trailers;
+
+	
+- (NSMutableSet*)trailersSet {
+	[self willAccessValueForKey:@"trailers"];
+  
+	NSMutableSet *result = (NSMutableSet*)[self mutableSetValueForKey:@"trailers"];
+  
+	[self didAccessValueForKey:@"trailers"];
+	return result;
+}
+	
 
 
 

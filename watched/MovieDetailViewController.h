@@ -10,19 +10,11 @@
 #import "DLStarRatingControl.h"
 
 @class Movie;
+@class MovieDetailView;
 
 @interface MovieDetailViewController : UIViewController<DLStarRatingDelegate>
 
 @property (nonatomic, strong) Movie *movie;
-
-@property (strong, nonatomic) IBOutlet UIScrollView *mainScrollView;
-@property (strong, nonatomic) IBOutlet UIImageView *backdropImageView;
-@property (strong, nonatomic) IBOutlet UIImageView *posterImageView;
-@property (strong, nonatomic) IBOutlet UILabel *titleLabel;
-@property (strong, nonatomic) IBOutlet UILabel *releaseDateLabel;
-@property (strong, nonatomic) IBOutlet UILabel *runtimeLabel;
-@property (strong, nonatomic) IBOutlet UILabel *imdbRatingLabel;
-@property (strong, nonatomic) IBOutlet UILabel *overviewLabel;
-@property (strong, nonatomic) IBOutlet DLStarRatingControl *ratingView;
+@property (nonatomic, strong) MovieDetailView *detailView;
 
 @end

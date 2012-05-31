@@ -130,7 +130,7 @@ static NSString *databaseURL = @"http://api.themoviedb.org/3";
 {
     value = [value stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/search/movie?api_key=%@&query=%@&page=%d",databaseURL, apiKey, value, page]];
-    NSLog(@"Searching at URL: %@", url);
+    XLog(@"Searching at URL: %@", url);
     NSURLRequest *request = [NSURLRequest requestWithURL:url];
     
     AFJSONRequestOperation *operation;
@@ -193,7 +193,7 @@ static NSString *databaseURL = @"http://api.themoviedb.org/3";
 - (void)getMovieDetailsForMovieID:(NSNumber *)movieID completion:(MovieDetailCompletionBlock)callback
 {
     NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/movie/%d?api_key=%@",databaseURL, [movieID intValue], apiKey]];
-    NSLog(@"Getting Movie Details at URL: %@", url);
+    XLog("Getting Movie Details at URL: %@", url);
     NSURLRequest *request = [NSURLRequest requestWithURL:url];
     
     AFJSONRequestOperation *operation;
@@ -202,6 +202,36 @@ static NSString *databaseURL = @"http://api.themoviedb.org/3";
     } failure:nil];
     
     [operation start];
+}
+
+- (void)getMovieCastsForMovieID:(NSNumber *)movieID completion:(MovieCastsCompletionBlock)callback
+{
+    // http://api.themoviedb.org/3/movie/11/casts
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/movie/%d/casts?api_key=%@",databaseURL, [movieID intValue], apiKey]];
+    XLog("Getting Movie Casts at URL: %@", url);
+    NSURLRequest *request = [NSURLRequest requestWithURL:url];
+    
+    AFJSONRequestOperation *operation;
+    operation = [AFJSONRequestOperation JSONRequestOperationWithRequest:request success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
+        callback(JSON);
+    } failure:nil];
+    
+    [operation start];    
+}
+
+- (void)getMovieTrailersForMovieID:(NSNumber *)movieID completion:(MovieTrailersCompletionBlock)callback
+{
+    // http://api.themoviedb.org/3/movie/11/casts
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/movie/%d/trailers?api_key=%@",databaseURL, [movieID intValue], apiKey]];
+    XLog(@"Getting Movie Trailers at URL: %@", url);
+    NSURLRequest *request = [NSURLRequest requestWithURL:url];
+    
+    AFJSONRequestOperation *operation;
+    operation = [AFJSONRequestOperation JSONRequestOperationWithRequest:request success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
+        callback(JSON);
+    } failure:nil];
+    
+    [operation start];    
 }
 
 @end

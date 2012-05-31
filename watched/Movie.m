@@ -1,4 +1,5 @@
 #import "Movie.h"
+#import "Trailer.h"
 #import "NSDictionary+ObjectForKeyOrNil.h"
 
 
@@ -11,6 +12,7 @@
 
 @synthesize backdrop;
 @synthesize poster;
+@synthesize releaseDateFormatted;
 
 + (Movie *)movieWithServerId:(NSInteger)serverId usingManagedObjectContext:(NSManagedObjectContext *)moc {
     NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:[Movie entityName]];
@@ -132,6 +134,31 @@
     NSData *imageData = UIImageJPEGRepresentation(aImage, 90);
     [imageData writeToFile:pathString atomically:YES];
     return aImagePath;
+}
+
+-(NSString*)releaseDateFormatted
+{
+    [NSDateFormatter setDefaultFormatterBehavior:NSDateFormatterBehavior10_4];
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
+    [dateFormatter setTimeStyle:NSDateFormatterNoStyle];
+    NSString *releaseDateString = [dateFormatter stringFromDate:self.releaseDate];
+    return releaseDateString;
+}
+
+- (Trailer*)bestTrailer
+{
+    // try to get a quicktime one
+    NSPredicate *qtPredicate = [NSPredicate predicateWithFormat:@"source == %@", @"quicktime"];
+    NSArray *quicktimeTrailers = [[self.trailers allObjects] filteredArrayUsingPredicate:qtPredicate];
+    if(quicktimeTrailers.count > 0) {
+        return [quicktimeTrailers objectAtIndex:0];
+    }
+    
+    // sort HD before SD
+    NSSortDescriptor *ytSortDestcriptor = [NSSortDescriptor sortDescriptorWithKey:@"quality" ascending:YES];
+    NSArray *youtubeTrailers = [[self.trailers allObjects] sortedArrayUsingDescriptors:[NSArray arrayWithObject:ytSortDestcriptor]];
+    return [youtubeTrailers objectAtIndex:0];
 }
 
 @end

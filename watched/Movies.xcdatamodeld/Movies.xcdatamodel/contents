@@ -1,12 +1,28 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model name="" userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="1171" systemVersion="11E53" minimumToolsVersion="Xcode 4.1" macOSVersion="Automatic" iOSVersion="Automatic">
+    <entity name="Cast" representedClassName="Cast" syncable="YES">
+        <attribute name="castID" attributeType="Integer 32" syncable="YES"/>
+        <attribute name="character" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="order" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="profilePath" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="movie" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Movie" inverseName="casts" inverseEntity="Movie" syncable="YES"/>
+    </entity>
+    <entity name="Crew" representedClassName="Crew" syncable="YES">
+        <attribute name="crewID" attributeType="Integer 32" syncable="YES"/>
+        <attribute name="department" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="job" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="profilePath" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="movie" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Movie" inverseName="crews" inverseEntity="Movie" syncable="YES"/>
+    </entity>
     <entity name="Movie" representedClassName="Movie" syncable="YES">
         <attribute name="adult" optional="YES" attributeType="Boolean" defaultValueString="YES" syncable="YES"/>
         <attribute name="backdropPath" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="budget" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
         <attribute name="homepage" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="imdbID" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="movieID" attributeType="Integer 32" defaultValueString="0" indexed="YES" syncable="YES"/>
+        <attribute name="movieID" attributeType="Integer 32" indexed="YES" syncable="YES"/>
         <attribute name="originalTitle" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="overview" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="popularity" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
@@ -17,8 +33,21 @@
         <attribute name="runtime" optional="YES" attributeType="Float" defaultValueString="0" syncable="YES"/>
         <attribute name="tagline" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="title" attributeType="String" syncable="YES"/>
+        <relationship name="casts" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Cast" inverseName="movie" inverseEntity="Cast" syncable="YES"/>
+        <relationship name="crews" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Crew" inverseName="movie" inverseEntity="Crew" syncable="YES"/>
+        <relationship name="trailers" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Trailer" inverseName="movie" inverseEntity="Trailer" syncable="YES"/>
+    </entity>
+    <entity name="Trailer" representedClassName="Trailer" syncable="YES">
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="quality" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="source" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="url" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="movie" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Movie" inverseName="trailers" inverseEntity="Movie" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Movie" positionX="160" positionY="165" width="128" height="285"/>
+        <element name="Cast" positionX="403" positionY="225" width="128" height="135"/>
+        <element name="Crew" positionX="403" positionY="369" width="128" height="135"/>
+        <element name="Movie" positionX="187" positionY="225" width="128" height="330"/>
+        <element name="Trailer" positionX="7" positionY="414" width="128" height="120"/>
     </elements>
 </model>

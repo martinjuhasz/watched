@@ -107,76 +107,9 @@
                     <view key="view" contentMode="scaleToFill" id="mGF-xa-Kk3">
                         <rect key="frame" x="0.0" y="64" width="320" height="416"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <subviews>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="TMf-nA-weg">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="416"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                <subviews>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" id="fMz-qb-PJL">
-                                        <rect key="frame" x="0.0" y="0.0" width="320" height="140"/>
-                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                    </imageView>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" id="HEF-hJ-3RS">
-                                        <rect key="frame" x="25" y="101" width="100" height="140"/>
-                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                    </imageView>
-                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Title" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" minimumFontSize="10" id="zSn-Db-F8j">
-                                        <rect key="frame" x="139" y="148" width="161" height="75"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="release Date" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" id="6oG-GJ-ruJ">
-                                        <rect key="frame" x="25" y="323" width="97" height="21"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="runtime" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" id="XCs-Ad-3ka">
-                                        <rect key="frame" x="182" y="323" width="97" height="21"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="imdb rating" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" id="ZeJ-MT-Uhj">
-                                        <rect key="frame" x="182" y="345" width="97" height="21"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Content" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="10" id="jL5-Hb-zCH">
-                                        <rect key="frame" x="25" y="368" width="275" height="56"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <view contentMode="scaleToFill" id="1Bb-bc-KFs" customClass="DLStarRatingControl">
-                                        <rect key="frame" x="20" y="249" width="280" height="66"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                                    </view>
-                                </subviews>
-                            </scrollView>
-                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <navigationItem key="navigationItem" title="Detail" id="OVQ-Xf-fIl"/>
-                    <connections>
-                        <outlet property="backdropImageView" destination="fMz-qb-PJL" id="LWa-gt-dNL"/>
-                        <outlet property="imdbRatingLabel" destination="ZeJ-MT-Uhj" id="F1T-K1-lUk"/>
-                        <outlet property="mainScrollView" destination="TMf-nA-weg" id="3Qc-RR-p6n"/>
-                        <outlet property="overviewLabel" destination="jL5-Hb-zCH" id="qf0-XU-JhG"/>
-                        <outlet property="posterImageView" destination="HEF-hJ-3RS" id="4zx-10-P9Q"/>
-                        <outlet property="ratingView" destination="1Bb-bc-KFs" id="boy-KH-euY"/>
-                        <outlet property="releaseDateLabel" destination="6oG-GJ-ruJ" id="jBU-8e-xH6"/>
-                        <outlet property="runtimeLabel" destination="XCs-Ad-3ka" id="63q-J7-dFG"/>
-                        <outlet property="titleLabel" destination="zSn-Db-F8j" id="77c-kz-NBf"/>
-                    </connections>
                 </viewController>
             </objects>
             <point key="canvasLocation" x="203" y="-597"/>
@@ -283,25 +216,8 @@
         </scene>
     </scenes>
     <classes>
-        <class className="DLStarRatingControl" superclassName="UIControl">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/DLStarRatingControl.h"/>
-            <relationships>
-                <relationship kind="outlet" name="delegate"/>
-            </relationships>
-        </class>
         <class className="MovieDetailViewController" superclassName="UIViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/MovieDetailViewController.h"/>
-            <relationships>
-                <relationship kind="outlet" name="backdropImageView" candidateClass="UIImageView"/>
-                <relationship kind="outlet" name="imdbRatingLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="mainScrollView" candidateClass="UIScrollView"/>
-                <relationship kind="outlet" name="overviewLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="posterImageView" candidateClass="UIImageView"/>
-                <relationship kind="outlet" name="ratingView" candidateClass="DLStarRatingControl"/>
-                <relationship kind="outlet" name="releaseDateLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="runtimeLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="titleLabel" candidateClass="UILabel"/>
-            </relationships>
         </class>
         <class className="MoviesTableViewController" superclassName="UIViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/MoviesTableViewController.h"/>
