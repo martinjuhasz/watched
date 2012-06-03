@@ -17,6 +17,7 @@
 @synthesize backdropImageView;
 @synthesize posterImageView;
 @synthesize titleLabel;
+@synthesize watchedSwitch;
 @synthesize releaseDateLabel;
 @synthesize runtimeLabel;
 @synthesize actor1ImageView;
@@ -27,7 +28,9 @@
 @synthesize actor3Label;
 @synthesize overviewLabel;
 @synthesize ratingView;
+@synthesize noteButton;
 @synthesize trailerButton;
+@synthesize castsButton;
 @synthesize websiteButton;
 
 
@@ -61,15 +64,21 @@
 #pragma mark -
 #pragma mark Content Management
 
+// TODO: only layout needed
 - (void)layoutSubviews
 {
     [super layoutSubviews];
-    
+
     self.backdropImageView.frame = CGRectMake(0.0f, 0.0f, 320.0f, 115.0f);
     self.posterImageView.frame = CGRectMake(9.0f, 93.0f, 89.0f, 126.0f);
     
     self.titleLabel.frame = CGRectMake(110.0f, 125.0f, 206.0f, 46.0f);
     [self.titleLabel sizeToFitWithMaximumNumberOfLines:3];
+    
+    CGRect switchFrame = CGRectZero;
+    switchFrame.origin.x = 110.0f;
+    switchFrame.origin.y = 190.0f;
+    self.watchedSwitch.frame = switchFrame;
     
     self.ratingView.frame = CGRectMake(0.0f, 233.0f, 320.0f, 56.0f);
     
@@ -86,8 +95,10 @@
     self.overviewLabel.frame = CGRectMake(13.0f, 505.0f, 294.0f, 0.0f);
     [self.overviewLabel sizeToFit];
     
-    self.trailerButton.frame = CGRectMake(13.0f, self.overviewLabel.bottom + 30.0f, 294.0f, 25.0f);
-    self.websiteButton.frame = CGRectMake(13.0f, self.trailerButton.bottom + 15.0f, 294.0f, 25.0f);
+    self.noteButton.frame = CGRectMake(13.0f, self.overviewLabel.bottom + 30.0f, 294.0f, 25.0f);
+    self.trailerButton.frame = CGRectMake(13.0f, self.noteButton.bottom + 30.0f, 294.0f, 25.0f);
+    self.castsButton.frame = CGRectMake(13.0f, self.trailerButton.bottom + 15.0f, 294.0f, 25.0f);
+    self.websiteButton.frame = CGRectMake(13.0f, self.castsButton.bottom + 15.0f, 294.0f, 25.0f);
     
     [self.mainScrollView setContentSize:CGSizeMake(320.0f, self.websiteButton.bottom + 20.0f)];
 }
@@ -117,6 +128,9 @@
 //    self.titleLabel.shadowColor = HEXColor(0xFFFFFF);
 //    self.titleLabel.shadowOffset = CGSizeMake(0.0f, 1.0f);
     [self.mainScrollView addSubview:self.titleLabel];
+    
+    self.watchedSwitch = [[UISwitch alloc] init];
+    [self.mainScrollView addSubview:self.watchedSwitch];
     
     self.ratingView =[[DLStarRatingControl alloc] initWithFrame:CGRectZero andStars:5 isFractional:NO]; 
     [self.mainScrollView addSubview:self.ratingView];
@@ -191,12 +205,26 @@
     self.overviewLabel.textColor = HEXColor(0xFFFFFF);
     [self.mainScrollView addSubview:self.overviewLabel];
     
+    self.noteButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    self.noteButton.titleLabel.font = [UIFont boldSystemFontOfSize:16.0f];
+    self.noteButton.titleLabel.adjustsFontSizeToFitWidth = NO;
+    self.noteButton.titleColor = HEXColor(0xABADAF);
+    [self.noteButton setTitle:@"Add Note"];
+    [self.mainScrollView addSubview:self.noteButton];
+    
     self.trailerButton = [UIButton buttonWithType:UIButtonTypeCustom];
     self.trailerButton.titleLabel.font = [UIFont boldSystemFontOfSize:16.0f];
     self.trailerButton.titleLabel.adjustsFontSizeToFitWidth = NO;
     self.trailerButton.titleColor = HEXColor(0xABADAF);
     [self.trailerButton setTitle:@"Watch Trailer"];
     [self.mainScrollView addSubview:self.trailerButton];
+    
+    self.castsButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    self.castsButton.titleLabel.font = [UIFont boldSystemFontOfSize:16.0f];
+    self.castsButton.titleLabel.adjustsFontSizeToFitWidth = NO;
+    self.castsButton.titleColor = HEXColor(0xABADAF);
+    [self.castsButton setTitle:@"Show Cast"];
+    [self.mainScrollView addSubview:self.castsButton];
     
     self.websiteButton = [UIButton buttonWithType:UIButtonTypeCustom];
     self.websiteButton.titleLabel.font = [UIFont boldSystemFontOfSize:16.0f];

@@ -17,10 +17,10 @@ typedef void (^MovieCastsCompletionBlock)(NSDictionary *);
 typedef void (^MovieTrailersCompletionBlock)(NSDictionary *);
 
 typedef enum {
-    imageTypePoster,
-    imageTypeBackdrop,
-    imageTypeProfile,
-    imageTypeLogo
+    ImageTypePoster,
+    ImageTypeBackdrop,
+    ImageTypeProfile,
+    ImageTypeLogo
 } ImageType;
 
 @interface OnlineMovieDatabase : NSObject

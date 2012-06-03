@@ -6,20 +6,24 @@
 const struct MovieAttributes MovieAttributes = {
 	.adult = @"adult",
 	.backdropPath = @"backdropPath",
+	.backdropURL = @"backdropURL",
 	.budget = @"budget",
 	.homepage = @"homepage",
 	.imdbID = @"imdbID",
 	.movieID = @"movieID",
+	.note = @"note",
 	.originalTitle = @"originalTitle",
 	.overview = @"overview",
 	.popularity = @"popularity",
 	.posterPath = @"posterPath",
+	.posterURL = @"posterURL",
 	.rating = @"rating",
 	.releaseDate = @"releaseDate",
 	.revenue = @"revenue",
 	.runtime = @"runtime",
 	.tagline = @"tagline",
 	.title = @"title",
+	.watchedOn = @"watchedOn",
 };
 
 const struct MovieRelationships MovieRelationships = {
@@ -125,6 +129,13 @@ const struct MovieFetchedProperties MovieFetchedProperties = {
 
 
 
+@dynamic backdropURL;
+
+
+
+
+
+
 @dynamic budget;
 
 
@@ -191,6 +202,13 @@ const struct MovieFetchedProperties MovieFetchedProperties = {
 
 
 
+@dynamic note;
+
+
+
+
+
+
 @dynamic originalTitle;
 
 
@@ -232,6 +250,13 @@ const struct MovieFetchedProperties MovieFetchedProperties = {
 
 
 @dynamic posterPath;
+
+
+
+
+
+
+@dynamic posterURL;
 
 
 
@@ -331,6 +356,13 @@ const struct MovieFetchedProperties MovieFetchedProperties = {
 
 
 @dynamic title;
+
+
+
+
+
+
+@dynamic watchedOn;
 
 
 

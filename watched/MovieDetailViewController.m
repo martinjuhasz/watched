@@ -17,6 +17,9 @@
 #import "UIImageView+AFNetworking.h"
 #import "OnlineMovieDatabase.h"
 #import <MediaPlayer/MediaPlayer.h>
+#import "MovieCastsTableViewController.h"
+#import "MovieNoteViewController.h"
+#import <Twitter/Twitter.h>
 
 @interface MovieDetailViewController ()
 
@@ -54,9 +57,12 @@
     
     // set contents and enable buttone
     [self setContent];
-    [self.detailView.websiteButton addTarget:self action:@selector(websiteButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+    
+    [self.detailView.noteButton addTarget:self action:@selector(noteButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
     [self.detailView.trailerButton addTarget:self action:@selector(trailerButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
-
+    [self.detailView.websiteButton addTarget:self action:@selector(websiteButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+    [self.detailView.castsButton addTarget:self action:@selector(castsButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+    [self.detailView.watchedSwitch addTarget:self action:@selector(watchedSwitchClicked:) forControlEvents:UIControlEventValueChanged];
 }
 
 - (void)viewDidUnload
@@ -92,25 +98,45 @@
     NSArray *sortedCast = [[self.movie.casts allObjects] sortedArrayUsingDescriptors:[NSArray arrayWithObject:actorSort]];
     if(sortedCast.count >= 1) {
         Cast *cast1 = (Cast*)[sortedCast objectAtIndex:0];
-        NSURL *cast1Url = [[OnlineMovieDatabase sharedMovieDatabase] getImageURLForImagePath:cast1.profilePath imageType:imageTypeProfile nearWidth:400.0f];
+        NSURL *cast1Url = [[OnlineMovieDatabase sharedMovieDatabase] getImageURLForImagePath:cast1.profilePath imageType:ImageTypeProfile nearWidth:400.0f];
         self.detailView.actor1Label.text = cast1.name;
         [self.detailView.actor1ImageView setImageWithURL:cast1Url];
     }
     if(sortedCast.count >= 2) {
         Cast *cast2 = (Cast*)[sortedCast objectAtIndex:1];
-        NSURL *cast2Url = [[OnlineMovieDatabase sharedMovieDatabase] getImageURLForImagePath:cast2.profilePath imageType:imageTypeProfile nearWidth:400.0f];
+        NSURL *cast2Url = [[OnlineMovieDatabase sharedMovieDatabase] getImageURLForImagePath:cast2.profilePath imageType:ImageTypeProfile nearWidth:400.0f];
         self.detailView.actor2Label.text = cast2.name;
         [self.detailView.actor2ImageView setImageWithURL:cast2Url];
     }
     if(sortedCast.count >= 3) {
         Cast *cast3 = (Cast*)[sortedCast objectAtIndex:2];
-        NSURL *cast3Url = [[OnlineMovieDatabase sharedMovieDatabase] getImageURLForImagePath:cast3.profilePath imageType:imageTypeProfile nearWidth:400.0f];
+        NSURL *cast3Url = [[OnlineMovieDatabase sharedMovieDatabase] getImageURLForImagePath:cast3.profilePath imageType:ImageTypeProfile nearWidth:400.0f];
         self.detailView.actor3Label.text = cast3.name;
         [self.detailView.actor3ImageView setImageWithURL:cast3Url];
     }
     
+    if(self.movie.watchedOn) self.detailView.watchedSwitch.on = YES;
     
     
+    
+}
+
+
+
+////////////////////////////////////////////////////////////////////////////
+#pragma mark -
+#pragma mark Segue Parameters
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    if([segue.identifier isEqualToString:@"MovieCastSegue"]) {
+        MovieCastsTableViewController *detailViewController = (MovieCastsTableViewController*)segue.destinationViewController;
+        detailViewController.movie = self.movie;
+    }
+    if([segue.identifier isEqualToString:@"MovieNoteSegue"]) {
+        MovieNoteViewController *detailViewController = (MovieNoteViewController*)segue.destinationViewController;
+        detailViewController.movie = self.movie;
+    }
 }
 
 
@@ -135,25 +161,154 @@
     });
 }
 
-- (void)websiteButtonClicked:(id)sender
+- (IBAction)trailerButtonClicked:(id)sender
+{
+    if(!self.movie.bestTrailer) return;
+    NSURL *videoURL = nil;
+    if([self.movie.bestTrailer.source isEqualToString:@"quicktime"]) {
+        videoURL = [NSURL URLWithString:self.movie.bestTrailer.url];
+        MPMoviePlayerViewController *moviePlayer = [[MPMoviePlayerViewController alloc] initWithContentURL:videoURL];
+        [self.navigationController presentMoviePlayerViewControllerAnimated:moviePlayer];
+    } else {
+        videoURL = [NSURL URLWithString:[NSString stringWithFormat:@"http://www.youtube.com/watch?v=%@",self.movie.bestTrailer.url]];
+        [[UIApplication sharedApplication] openURL:videoURL];
+    }
+}
+
+- (IBAction)castsButtonClicked:(id)sender
+{
+    [self performSegueWithIdentifier:@"MovieCastSegue" sender:self];
+}
+
+- (IBAction)websiteButtonClicked:(id)sender
 {
     if(self.movie.homepage) {
         [[UIApplication sharedApplication] openURL:[NSURL URLWithString:self.movie.homepage]];
     }
 }
 
-- (void)trailerButtonClicked:(id)sender
+- (IBAction)noteButtonClicked:(id)sender
 {
-    if(!self.movie.bestTrailer) return;
-    if([self.movie.bestTrailer.source isEqualToString:@"quicktime"]) {
-        NSURL *quicktimeUrl = [NSURL URLWithString:self.movie.bestTrailer.url];
-        MPMoviePlayerViewController *moviePlayer = [[MPMoviePlayerViewController alloc] initWithContentURL:quicktimeUrl];
-        [self.navigationController presentMoviePlayerViewControllerAnimated:moviePlayer];
-    } else {
-        NSURL *youtubeUrl = [NSURL URLWithString:[NSString stringWithFormat:@"http://www.youtube.com/watch?v=%@", self.movie.bestTrailer.url]];
-        [[UIApplication sharedApplication] openURL:youtubeUrl];
+    [self performSegueWithIdentifier:@"MovieNoteSegue" sender:self];
+}
+- (IBAction)watchedSwitchClicked:(id)sender {
+    NSDate *watchedDate = nil;
+    if(self.detailView.watchedSwitch.on) {
+        watchedDate = [NSDate date];
+    }
+    
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+        
+        NSManagedObjectContext *context = [[MoviesDataModel sharedDataModel] mainContext];
+        
+        self.movie.watchedOn = watchedDate;
+        NSError *error;
+        [context save:&error];
+        if(error) {
+            XLog("%@", [error localizedDescription]);
+        }
+        
+    }); 
+}
+
+- (IBAction)shareButtonClicked:(id)sender
+{
+    UIActionSheet *shareActionSheet = [[UIActionSheet alloc] init];
+    shareActionSheet.delegate = self;
+    shareActionSheet.title = NSLocalizedString(@"SHARE_BUTTON_TITLE",nil);
+    
+    // E-Mail
+    if([MFMailComposeViewController canSendMail])
+        [shareActionSheet addButtonWithTitle:NSLocalizedString(@"SHARE_BUTTON_EMAIL",nil)];
+    
+    // Twitter
+    if([TWTweetComposeViewController canSendTweet]) {
+        [shareActionSheet addButtonWithTitle:NSLocalizedString(@"SHARE_BUTTON_TWITTER",nil)];
+    }
+
+    // Cancel Button
+    [shareActionSheet addButtonWithTitle:NSLocalizedString(@"SHARE_BUTTON_CANCEL",nil)];
+    [shareActionSheet setCancelButtonIndex:[shareActionSheet numberOfButtons]-1];
+    
+    [shareActionSheet showInView:[UIApplication sharedApplication].keyWindow];
+}
+
+
+
+////////////////////////////////////////////////////////////////////////////
+#pragma mark -
+#pragma mark UIActionSheetDelegate
+
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    NSString *title = [actionSheet buttonTitleAtIndex:buttonIndex];
+    
+    if([title isEqualToString:NSLocalizedString(@"SHARE_BUTTON_TWITTER",nil)]) {
+        [self shareWithTwitter];
+    } else if([title isEqualToString:NSLocalizedString(@"SHARE_BUTTON_EMAIL",nil)]) {
+        [self shareWithEmail];
     }
 }
+
+
+
+////////////////////////////////////////////////////////////////////////////
+#pragma mark -
+#pragma mark Sharing
+
+- (void)shareWithTwitter
+{
+    if(![TWTweetComposeViewController canSendTweet]) return;
+    
+    NSString *text = [NSString stringWithFormat:@"I watched \"%@\" and rated it with %d of 5 Stars", self.movie.title, [self.movie.rating intValue]];
+    
+    TWTweetComposeViewController *twitter = [[TWTweetComposeViewController alloc] init];
+    [twitter addImage:self.movie.poster];
+    [twitter setInitialText:text];
+    // TODO: Add Real URL
+    //[twitter addURL:[NSURL URLWithString:@"http://martinjuhasz.de"]];
+    
+    [self presentModalViewController:twitter animated:YES];
+}
+
+- (void)shareWithEmail
+{
+    // check if can send mail
+    if(![MFMailComposeViewController canSendMail]) return;
+    
+    // Get HTML String
+    NSString *sharebymailPath = [[NSBundle mainBundle] pathForResource:@"sharebymail" ofType:@"html"];
+    NSString *sharebymailString = [NSString stringWithContentsOfFile:sharebymailPath encoding:NSUTF8StringEncoding error:nil];
+    NSString *imageURL = [[[OnlineMovieDatabase sharedMovieDatabase] getImageURLForImagePath:self.movie.posterURL imageType:ImageTypeBackdrop nearWidth:260.0f] absoluteString];
+ 
+    sharebymailString = [sharebymailString stringByReplacingOccurrencesOfString:@"###IMAGE_URL###" withString:imageURL];
+    sharebymailString = [sharebymailString stringByReplacingOccurrencesOfString:@"###MOVIE_TITLE###" withString:self.movie.title];
+    sharebymailString = [sharebymailString stringByReplacingOccurrencesOfString:@"###MOVIE_DESCRIPTION###" withString:self.movie.overview];
+    sharebymailString = [sharebymailString stringByReplacingOccurrencesOfString:@"###MOVIE_RATING###" withString:[NSString stringWithFormat:@"%d",[self.movie.rating intValue]]];
+    
+    // Generate Mail Composer and View it
+    MFMailComposeViewController *mailViewController = [[MFMailComposeViewController alloc] init];
+    mailViewController.mailComposeDelegate = self;
+    [mailViewController setSubject:self.movie.title];
+    [mailViewController setMessageBody:sharebymailString isHTML:YES];
+    
+    [self presentModalViewController:mailViewController animated:YES];
+}
+
+
+
+////////////////////////////////////////////////////////////////////////////
+#pragma mark -
+#pragma mark MFMailComposeViewControllerDelegate
+
+- (void)mailComposeController:(MFMailComposeViewController*)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError*)error
+{
+    [self dismissModalViewControllerAnimated:YES];
+}
+
+
+
+
 
 
 @end

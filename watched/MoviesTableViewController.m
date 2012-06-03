@@ -10,6 +10,7 @@
 #import "Movie.h"
 #import "MoviesDataModel.h"
 #import "MovieDetailViewController.h"
+#import "UIImageView+AFNetworking.h"
 
 
 const int kMovieDisplayCellTitleLabel = 100;
@@ -19,7 +20,7 @@ const int kMovieDisplayCellImageView = 200;
 
 @interface MoviesTableViewController ()
 @property(nonatomic, strong) NSFetchedResultsController *fetchedResultsController;
-- (void)loadMovies;
+- (void)loadMoviesWithSortType:(MovieSortType)sortType;
 @end
 
 
@@ -29,6 +30,7 @@ const int kMovieDisplayCellImageView = 200;
 
 @synthesize tableView;
 @synthesize fetchedResultsController;
+@synthesize currentSortType;
 
 
 ////////////////////////////////////////////////////////////////////////////
@@ -47,7 +49,8 @@ const int kMovieDisplayCellImageView = 200;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [self loadMovies];
+    
+    [self loadMoviesWithSortType:MovieSortTypeAll];
     
     [[NSNotificationCenter defaultCenter] addObserver:self 
                                              selector:@selector(contextDidSave:) 
@@ -108,7 +111,30 @@ const int kMovieDisplayCellImageView = 200;
     Movie *movie = [fetchedResultsController objectAtIndexPath:indexPath];
     titleLabel.text = movie.title;
     yearLabel.text = [movie.releaseDate description];
-    coverImageView.image = movie.poster;
+    coverImageView.image = movie.posterThumbnail;
+    
+    //coverImageView.image = [UIima];
+    
+    // Retrieve the image from the database on a background queue
+//    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0);
+//    dispatch_async(queue, ^{
+//        UIImage *image = movie.poster;
+//        XLog("%@", NSStringFromCGSize(image.size));
+//        // use an index path to get at the cell we want to use because
+//        // the original may be reused by the OS.
+//        UITableViewCell *theCell = [tableView cellForRowAtIndexPath:indexPath];
+//        
+//        // check to see if the cell is visible
+//        if ([[self.tableView visibleCells] containsObject:theCell]){
+//            // put the image into the cell's imageView on the main queue
+//            dispatch_async(dispatch_get_main_queue(), ^{
+//                UIImageView *newCoverImageView = (UIImageView *)[theCell viewWithTag:kMovieDisplayCellImageView];
+//                newCoverImageView.image = image;
+//                [theCell setNeedsLayout];
+//            });
+//        }
+//    });
+    
     
     return cell;
 }
@@ -151,16 +177,52 @@ const int kMovieDisplayCellImageView = 200;
 #pragma mark -
 #pragma mark CoreData Handling
 
-- (void)loadMovies
+- (void)loadMoviesWithSortType:(MovieSortType)sortType
 {
+    self.currentSortType = sortType;
+
     NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:[Movie entityName]];
     [fetchRequest setPropertiesToFetch:[NSArray arrayWithObjects:@"title", nil]];
     [fetchRequest setFetchBatchSize:40];
     NSSortDescriptor *sortByName = [NSSortDescriptor sortDescriptorWithKey:@"title" ascending:YES];
     [fetchRequest setSortDescriptors:[NSArray arrayWithObject:sortByName]];
     
-    fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest managedObjectContext:[[MoviesDataModel sharedDataModel] mainContext] sectionNameKeyPath:nil cacheName:nil];
+    // Filter by SortType
+    NSPredicate *sortPredicate = nil;
+    if(sortType == MovieSortTypeUnwatched) {
+        sortPredicate = [NSPredicate predicateWithFormat:@"watchedOn == nil"];
+    } else if(sortType == MovieSortTypeUnrated) {
+        sortPredicate = [NSPredicate predicateWithFormat:@"rating == 0"];
+    }
+    if(sortPredicate) {
+        [fetchRequest setPredicate:sortPredicate];
+    }
+    
+    // Sorting
+    NSSortDescriptor *movieSortDescriptor = nil;
+    if(sortType == MovieSortTypeAll) {
+        movieSortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"rating" ascending:NO];
+    } else {
+        movieSortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"title" ascending:YES];
+    }
+    [fetchRequest setSortDescriptors:[NSArray arrayWithObject:movieSortDescriptor]];
+    
+    fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest 
+                                                                   managedObjectContext:[[MoviesDataModel sharedDataModel] mainContext] 
+                                                                     sectionNameKeyPath:nil 
+                                                                              cacheName:nil];
+    
+    NSDictionary *entityProperties = [[NSEntityDescription entityForName:@"Movie" inManagedObjectContext:[[MoviesDataModel sharedDataModel] mainContext]] propertiesByName];
+    [fetchRequest setPropertiesToFetch:[NSArray arrayWithObjects:
+                                        [entityProperties objectForKey:@"title"],
+                                        [entityProperties objectForKey:@"rating"],
+                                        [entityProperties objectForKey:@"watchedOn"],
+                                        [entityProperties objectForKey:@"posterPath"],
+                                        [entityProperties objectForKey:@"releaseDate"],
+                                        nil]];
+    
     [fetchedResultsController performFetch:nil];
+    [self.tableView reloadData];
 }
 
 - (void)contextDidSave:(NSNotification *)notification
@@ -169,11 +231,36 @@ const int kMovieDisplayCellImageView = 200;
         NSManagedObjectContext *mainContext = [[MoviesDataModel sharedDataModel] mainContext];
         [mainContext mergeChangesFromContextDidSaveNotification:notification];
         
-        [self loadMovies];
+        [self loadMoviesWithSortType:self.currentSortType];
         [self.tableView reloadData];
     });
 }
 
+
+
+////////////////////////////////////////////////////////////////////////////
+#pragma mark -
+#pragma mark Button Actions
+
+- (IBAction)sortButtonAllClicked:(id)sender
+{
+    [self loadMoviesWithSortType:MovieSortTypeAll];
+}
+
+- (IBAction)sortButtonUnwatchedClicked:(id)sender
+{
+    [self loadMoviesWithSortType:MovieSortTypeUnwatched];
+}
+
+- (IBAction)sortButtonUnratedClicked:(id)sender
+{
+    [self loadMoviesWithSortType:MovieSortTypeUnrated];
+}
+
+- (IBAction)settingsButtonClicked:(id)sender
+{
+    XLog("");
+}
 
 
 

@@ -4,7 +4,7 @@
 
 
 @interface Movie()
-- (NSString*)pathForSavedImage:(UIImage*)aImage inDirectory:(NSString*)aDir;
+
 @end
 
 
@@ -13,6 +13,12 @@
 @synthesize backdrop;
 @synthesize poster;
 @synthesize releaseDateFormatted;
+
+
+
+////////////////////////////////////////////////////////////////////////////
+#pragma mark -
+#pragma mark General
 
 + (Movie *)movieWithServerId:(NSInteger)serverId usingManagedObjectContext:(NSManagedObjectContext *)moc {
     NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:[Movie entityName]];
@@ -32,6 +38,12 @@
     
     return [results objectAtIndex:0];
 }
+
+
+
+////////////////////////////////////////////////////////////////////////////
+#pragma mark -
+#pragma mark automated Filling
 
 - (void)updateAttributes:(NSDictionary *)attributes {
     self.adult = [attributes objectForKeyOrNil:@"adult"];
@@ -60,18 +72,31 @@
     
 }
 
+
+
+////////////////////////////////////////////////////////////////////////////
+#pragma mark -
+#pragma mark Images
+
 -(UIImage*)poster
 {
     [self willAccessValueForKey:@"poster"];
 
-    NSString *documentsDirectory = nil;
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    documentsDirectory = [paths objectAtIndex:0];
-    NSString *pathString = [documentsDirectory stringByAppendingPathComponent:self.posterPath];
-    
+    NSString *pathString = [self pathForImage:self.posterPath inDirectory:@"posters"];
     UIImage *returnImage = [UIImage imageWithData:[NSData dataWithContentsOfFile:pathString]];
     
     [self didAccessValueForKey:@"poster"];
+    return returnImage;
+}
+
+-(UIImage*)posterThumbnail
+{
+    [self willAccessValueForKey:@"posterThumbnail"];
+    
+    NSString *pathString = [self pathForImage:self.posterPath inDirectory:@"thumbnailPosters"];
+    UIImage *returnImage = [UIImage imageWithData:[NSData dataWithContentsOfFile:pathString]];
+    
+    [self didAccessValueForKey:@"posterThumbnail"];
     return returnImage;
 }
 
@@ -79,11 +104,7 @@
 {
     [self willAccessValueForKey:@"backdrop"];
     
-    NSString *documentsDirectory = nil;
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    documentsDirectory = [paths objectAtIndex:0];
-    NSString *pathString = [documentsDirectory stringByAppendingPathComponent:self.backdropPath];
-    
+    NSString *pathString = [self pathForImage:self.backdropPath inDirectory:@"backdrops"];
     UIImage *returnImage = [UIImage imageWithData:[NSData dataWithContentsOfFile:pathString]];
     
     [self didAccessValueForKey:@"backdrop"];
@@ -95,46 +116,83 @@
 {
     [self willChangeValueForKey:@"poster"];
     
-    NSString *aPosterPath = [self pathForSavedImage:aPoster inDirectory:@"posters"];
-    self.posterPath = aPosterPath;
-    
+    if(self.posterPath) {
+        [self saveImage:aPoster inDirectory:@"posters" withName:self.posterPath];
+    } else {
+        NSString *aPosterPath = [self saveImage:aPoster inDirectory:@"posters" withName:nil];
+        self.posterPath = aPosterPath;
+    }
+
     [self didChangeValueForKey:@"poster"];
+}
+
+- (void)setPosterThumbnail:(UIImage *)posterThumbnail
+{
+    [self willChangeValueForKey:@"posterThumbnail"];
+    
+    if(self.posterPath) {
+        [self saveImage:posterThumbnail inDirectory:@"thumbnailPosters" withName:self.posterPath];
+    } else {
+        NSString *aPosterPath = [self saveImage:posterThumbnail inDirectory:@"thumbnailPosters" withName:nil];
+        self.posterPath = aPosterPath;
+    }
+    
+    [self didChangeValueForKey:@"posterThumbnail"];
 }
 
 - (void)setBackdrop:(UIImage *)aBackdrop
 {
     [self willChangeValueForKey:@"backdrop"];
     
-    NSString *aBackdropPath = [self pathForSavedImage:aBackdrop inDirectory:@"backdrops"];
+    NSString *aBackdropPath = [self saveImage:aBackdrop inDirectory:@"backdrops" withName:nil];
     self.backdropPath = aBackdropPath;
     
     [self didChangeValueForKey:@"backdrop"];
 }
 
-- (NSString*)pathForSavedImage:(UIImage*)aImage inDirectory:(NSString*)aDir
+- (NSString*)saveImage:(UIImage*)aImage inDirectory:(NSString*)aDir withName:(NSString*)aName
 {
-    CFUUIDRef uuid = CFUUIDCreate(NULL);
-    CFStringRef uuidString = CFUUIDCreateString(NULL, uuid);
-    CFRelease(uuid);
-    NSString *uniqueString = [NSString stringWithFormat:@"%@",(__bridge NSString *)uuidString];
-    CFRelease(uuidString);
+    // Create unique String
+    if(!aName) {
+        CFUUIDRef uuid = CFUUIDCreate(NULL);
+        CFStringRef uuidString = CFUUIDCreateString(NULL, uuid);
+        CFRelease(uuid);
+        aName = [NSString stringWithFormat:@"%@.jpg",(__bridge NSString *)uuidString];
+        CFRelease(uuidString);
+    }
     
+    // Add extention and get full path
+    NSString *pathString = [self pathForImage:aName inDirectory:aDir];
+    
+    // Save Image
+    NSData *imageData = UIImageJPEGRepresentation(aImage, 90);
+    [imageData writeToFile:pathString atomically:YES];
+    return aName;
+}
+
+- (NSString*)pathForImage:(NSString*)aImage inDirectory:(NSString*)aDir
+{
+    // Get documents Dir
     NSString *documentsDirectory = nil;
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     documentsDirectory = [paths objectAtIndex:0];
+
     NSString *aDirPath = [documentsDirectory stringByAppendingPathComponent:aDir];
-    NSString *aImagePath = [NSString stringWithFormat:@"%@/%@.jpg",aDir, uniqueString];
-    NSString *pathString = [NSString stringWithFormat:@"%@/%@.jpg",aDirPath, uniqueString];
+    NSString *pathString = [NSString stringWithFormat:@"%@/%@",aDirPath, aImage];
     
     // check if dir exists, else create
     if(![[NSFileManager defaultManager] fileExistsAtPath:aDirPath isDirectory:nil]) {
         [[NSFileManager defaultManager] createDirectoryAtPath:aDirPath withIntermediateDirectories:YES attributes:nil error:nil];
     }
     
-    NSData *imageData = UIImageJPEGRepresentation(aImage, 90);
-    [imageData writeToFile:pathString atomically:YES];
-    return aImagePath;
+    return pathString;
 }
+
+
+
+////////////////////////////////////////////////////////////////////////////
+#pragma mark -
+#pragma mark Ghost Attributes
 
 -(NSString*)releaseDateFormatted
 {
@@ -158,7 +216,24 @@
     // sort HD before SD
     NSSortDescriptor *ytSortDestcriptor = [NSSortDescriptor sortDescriptorWithKey:@"quality" ascending:YES];
     NSArray *youtubeTrailers = [[self.trailers allObjects] sortedArrayUsingDescriptors:[NSArray arrayWithObject:ytSortDestcriptor]];
-    return [youtubeTrailers objectAtIndex:0];
+    if(youtubeTrailers.count > 0) {
+        return [youtubeTrailers objectAtIndex:0];
+    }
+    return nil;
+}
+
+- (NSArray*)sortedCasts
+{
+    NSSortDescriptor *sortCastDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"order" ascending:YES];
+    NSArray *sortedCastsArray = [[self.casts allObjects] sortedArrayUsingDescriptors:[NSArray arrayWithObject:sortCastDescriptor]];
+    return sortedCastsArray;
+}
+
+- (NSArray*)sortedCrews
+{
+    NSSortDescriptor *sortCrewDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES];
+    NSArray *sortedCrewArray = [[self.crews allObjects] sortedArrayUsingDescriptors:[NSArray arrayWithObject:sortCrewDescriptor]];
+    return sortedCrewArray;
 }
 
 @end

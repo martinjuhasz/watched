@@ -9,8 +9,15 @@
 #import <UIKit/UIKit.h>
 #import <CoreData/CoreData.h>
 
+typedef enum {
+    MovieSortTypeAll = 1,
+    MovieSortTypeUnwatched,
+    MovieSortTypeUnrated
+} MovieSortType;
+
 @interface MoviesTableViewController : UIViewController<UITableViewDataSource, UITableViewDelegate>
 
 @property (strong, nonatomic) IBOutlet UITableView *tableView;
+@property (assign, nonatomic) MovieSortType currentSortType;
 
 @end

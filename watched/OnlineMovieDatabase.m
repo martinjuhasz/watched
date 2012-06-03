@@ -94,13 +94,13 @@ static NSString *databaseURL = @"http://api.themoviedb.org/3";
     CGFloat nearestSize = 0;
     
     // select the wanted array of image sizes based on imageType
-    if(aImageType == imageTypeBackdrop) {
+    if(aImageType == ImageTypeBackdrop) {
         widths = [[self.configuration objectForKey:@"images"] objectForKey:@"backdrop_sizes"];
-    } else if(aImageType == imageTypeLogo) {
+    } else if(aImageType == ImageTypeLogo) {
         widths = [[self.configuration objectForKey:@"images"] objectForKey:@"logo_sizes"];
-    } else if(aImageType == imageTypePoster) {
+    } else if(aImageType == ImageTypePoster) {
         widths = [[self.configuration objectForKey:@"images"] objectForKey:@"poster_sizes"];
-    } else if(aImageType == imageTypeProfile) {
+    } else if(aImageType == ImageTypeProfile) {
         widths = [[self.configuration objectForKey:@"images"] objectForKey:@"profile_sizes"];
     }
     

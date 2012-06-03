@@ -142,7 +142,7 @@ const int kMovieSearchCellImageView = 200;
     titleLabel.text = currentMovie.title;
     yearLabel.text = currentMovie.releaseYear;
     coverImageView.image = nil;
-    NSURL *imageURL = [[OnlineMovieDatabase sharedMovieDatabase] getImageURLForImagePath:currentMovie.posterPath imageType:imageTypePoster nearWidth:70.0f*2];
+    NSURL *imageURL = [[OnlineMovieDatabase sharedMovieDatabase] getImageURLForImagePath:currentMovie.posterPath imageType:ImageTypePoster nearWidth:70.0f*2];
     [coverImageView setImageWithURL:imageURL];
 
     return cell;
@@ -245,7 +245,7 @@ const int kMovieSearchCellImageView = 200;
                 
                 // Backdrop
                 NSString *backdropString = [movieDict objectForKey:@"backdrop_path"];
-                NSURL *backdropURL = [[OnlineMovieDatabase sharedMovieDatabase] getImageURLForImagePath:backdropString imageType:imageTypeBackdrop nearWidth:800.0f];
+                NSURL *backdropURL = [[OnlineMovieDatabase sharedMovieDatabase] getImageURLForImagePath:backdropString imageType:ImageTypeBackdrop nearWidth:800.0f];
                 if(backdropURL) {
                     dispatch_group_enter(group);
                     NSURLRequest *backdropRequest = [NSURLRequest requestWithURL:backdropURL];
@@ -253,6 +253,7 @@ const int kMovieSearchCellImageView = 200;
                     [backdropOperation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
                         if([responseObject isKindOfClass:[NSData class]]) {
                             movie.backdrop = [UIImage imageWithData:responseObject];
+                            movie.backdropURL = backdropString;
                             dispatch_group_leave(group);
                         }
                     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
@@ -265,14 +266,47 @@ const int kMovieSearchCellImageView = 200;
                 
                 // Poster
                 NSString *posterString = [movieDict objectForKey:@"poster_path"];
-                NSURL *posterURL = [[OnlineMovieDatabase sharedMovieDatabase] getImageURLForImagePath:posterString imageType:imageTypeBackdrop nearWidth:400.0f];
+//                if(posterString) {
+//                    dispatch_group_enter(group);
+//                    [[OnlineMovieDatabase sharedMovieDatabase] getImageForImagePath:posterString imageType:ImageTypePoster withWidth:260.0f completion:^(UIImage *aImage) {
+//                        movie.poster = aImage;
+//                        dispatch_group_leave(group);
+//                    }];
+//                }
+                NSURL *posterURL = [[OnlineMovieDatabase sharedMovieDatabase] getImageURLForImagePath:posterString imageType:ImageTypeBackdrop nearWidth:260.0f];
                 if(posterURL) {
                     dispatch_group_enter(group);
                     NSURLRequest *posterRequest = [NSURLRequest requestWithURL:posterURL];
                     AFHTTPRequestOperation *posterOperation = [[AFHTTPRequestOperation alloc] initWithRequest:posterRequest];
                     [posterOperation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
-                        movie.poster = [UIImage imageWithData:responseObject];
+                        
+                        CGFloat posterWitdh = 260.0f;
+                        CGFloat thumbnailPosterWith = 122.0f;
+                        UIImage *image = [UIImage imageWithData:responseObject];
+                        
+                        // Image
+                        UIImage *poster = nil;
+                        CGSize newPosterSize = CGSizeMake(posterWitdh, (posterWitdh / image.size.width) * image.size.height);
+                        UIGraphicsBeginImageContext(newPosterSize);
+                        [image drawInRect:CGRectMake(0, 0, newPosterSize.width, newPosterSize.height)];
+                        poster = UIGraphicsGetImageFromCurrentImageContext();
+                        UIGraphicsEndImageContext();
+                        
+                        // Thumb Image
+                        UIImage *thumbPoster = nil;
+                        CGSize newThumbnailPosterSize = CGSizeMake(thumbnailPosterWith, (thumbnailPosterWith / image.size.width) * image.size.height);
+                        UIGraphicsBeginImageContext(newThumbnailPosterSize);
+                        [image drawInRect:CGRectMake(0, 0, newThumbnailPosterSize.width, newThumbnailPosterSize.height)];
+                        thumbPoster = UIGraphicsGetImageFromCurrentImageContext();
+                        UIGraphicsEndImageContext();
+                        
+                        movie.poster = poster;
+                        movie.posterURL = posterString;
+                        movie.posterThumbnail = thumbPoster;
+                        
                         dispatch_group_leave(group);
+                        
+                        
                     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
                         NSLog(@"%@", [error localizedDescription]);
                         dispatch_group_leave(group);
