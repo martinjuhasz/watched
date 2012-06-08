@@ -108,11 +108,12 @@ const int kMovieDisplayCellImageView = 200;
     UILabel *yearLabel = (UILabel *)[cell viewWithTag:kMovieDisplayCellYearLabel];
     UIImageView *coverImageView = (UIImageView *)[cell viewWithTag:kMovieDisplayCellImageView];
     
+    
     Movie *movie = [fetchedResultsController objectAtIndexPath:indexPath];
+    
     titleLabel.text = movie.title;
     yearLabel.text = [movie.releaseDate description];
     coverImageView.image = movie.posterThumbnail;
-    
     //coverImageView.image = [UIima];
     
     // Retrieve the image from the database on a background queue
@@ -147,15 +148,33 @@ const int kMovieDisplayCellImageView = 200;
 #pragma mark -
 #pragma mark UITableViewDelegate
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-
-}
+//- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+//{
+//
+//}
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     return 82.0f;
 }
+
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+    if (editingStyle == UITableViewCellEditingStyleDelete) {
+        // Delete the row from the data source
+		Movie *aMovie = nil;
+        NSManagedObjectContext *mainContext = [[MoviesDataModel sharedDataModel] mainContext];
+		aMovie = [self.fetchedResultsController objectAtIndexPath:indexPath];
+        NSError *error;
+        
+		[mainContext deleteObject:aMovie];
+		[mainContext save:&error];
+        if(error) {
+            XLog("%@", [error localizedDescription]);
+        }
+    }
+}
+
 
 
 
@@ -242,24 +261,18 @@ const int kMovieDisplayCellImageView = 200;
 #pragma mark -
 #pragma mark Button Actions
 
-- (IBAction)sortButtonAllClicked:(id)sender
+- (IBAction)filterControlDidChangeValue:(id)sender
 {
-    [self loadMoviesWithSortType:MovieSortTypeAll];
-}
-
-- (IBAction)sortButtonUnwatchedClicked:(id)sender
-{
-    [self loadMoviesWithSortType:MovieSortTypeUnwatched];
-}
-
-- (IBAction)sortButtonUnratedClicked:(id)sender
-{
-    [self loadMoviesWithSortType:MovieSortTypeUnrated];
-}
-
-- (IBAction)settingsButtonClicked:(id)sender
-{
-    XLog("");
+    NSInteger selectedIndex = [(UISegmentedControl *)sender selectedSegmentIndex] + 1;
+    
+    if(selectedIndex ==MovieSortTypeAll) {
+        [self loadMoviesWithSortType:MovieSortTypeAll];
+    } else if (selectedIndex == MovieSortTypeUnrated) {
+        [self loadMoviesWithSortType:MovieSortTypeUnrated];
+    } else {
+        [self loadMoviesWithSortType:MovieSortTypeUnwatched];
+    }
+    
 }
 
 

@@ -1,0 +1,53 @@
+
+/*================================================
+ GENERAL
+ ================================================*/
+
+"de"                            = "German";
+"en"                            = "English";
+"NAVIGATION_BACK"               = "back";
+
+
+/*================================================
+ DETAIL VIEW
+ ================================================*/
+
+"TITLE_WATCHEDON"               = "Watched on:";
+"BUTTON_SHOW_CAST"              = "Show Cast";
+"BUTTON_SHOW_POSTERS"           = "show Posters";
+"BUTTON_VISIT_HOMEPAGE"         = "visit Homepage";
+"BUTTON_WATCH_TRAILER"          = "watch Trailer";
+"BUTTON_SHARE"                  = "share Movie";
+"DATEPICKER_CLEAR"              = "clear";
+"RELEASE_SLUG"                  = "released on";
+"DETAIL_DESCRIPTION_TITLE"      = "Overview";
+
+"SHARE_BUTTON_TITLE"            = "Share by";
+"SHARE_BUTTON_EMAIL"            = "E-Mail";
+"SHARE_BUTTON_TWITTER"          = "Twitter";
+"SHARE_BUTTON_FACEBOOK"         = "Facebook";
+"SHARE_BUTTON_CANCEL"           = "Cancel";
+"SHARE_TWITTER_TEXT"            = "I watched \"%@\" and rated it with %i of 5 Stars";
+
+
+/*================================================
+ SETTINGS
+ ================================================*/
+
+"TITLE_SETTINGS"                = "Settings";
+"SETTINGS_VERSION"              = "Version";
+"SETTINGS_MOVIECOUNT"           = "Movies";
+"SETTINGS_AVERAGERATING"        = "Average Rating";
+"SETTINGS_LANGUAGE"             = "Movie Language";
+"SETTINGS_RESET"                = "remove Movies and Rating";
+"SETTINGS_POP_RESET_TITLE"      = "Beware";
+"SETTINGS_POP_RESET_CONTENT"    = "Are you sure you want to delete all movies and ratings?";
+"SETTINGS_POP_RESET_CANCEL"     = "cancel";
+"SETTINGS_POP_RESET_OK"         = "delete";
+"SETTINGS_ABOUT"                = "About Us";
+"SETTINGS_CONTACT"              = "Contact Us";
+"SETTINGS_HEADER_STATISTICS"    = "Statistics";
+"SETTINGS_HEADER_SETTINGS"      = "Settings";
+"SETTINGS_HEADER_CONTACT"       = "CAPS";
+"SETTINGS_HEADER_BETA"          = "Beta";
+

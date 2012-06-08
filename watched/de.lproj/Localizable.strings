@@ -1,0 +1,56 @@
+
+/*================================================
+ GENERAL
+ ================================================*/
+
+"de"                            = "Deutsch";
+"en"                            = "Englisch";
+"NAVIGATION_BACK"               = "zurück";
+
+
+/*================================================
+ DETAIL VIEW
+ ================================================*/
+
+"TITLE_WATCHEDON"               = "Gesehen am:";
+"BUTTON_SHOW_CAST"              = "Mitwirkende anzeigen";
+"BUTTON_SHOW_POSTERS"           = "Poster anzeigen";
+"BUTTON_VISIT_HOMEPAGE"         = "Webseite besuchen";
+"BUTTON_WATCH_TRAILER"          = "Trailer ansehen";
+"BUTTON_SHARE"                  = "teile den Film";
+"DATEPICKER_CLEAR"              = "löschen";
+"RELEASE_SLUG"                  = "veröffentlicht:";
+"DETAIL_DESCRIPTION_TITLE"      = "Zusammenfassung";
+
+"SHARE_BUTTON_TITLE"            = "Teilen mit";
+"SHARE_BUTTON_EMAIL"            = "E-Mail";
+"SHARE_BUTTON_TWITTER"          = "Twitter";
+"SHARE_BUTTON_FACEBOOK"         = "Facebook";
+"SHARE_BUTTON_CANCEL"           = "Abbrechen";
+"SHARE_TWITTER_TEXT"            = "Ich habe \"%@\" gesehen und mit %i of 5 Sternen bewertet";
+
+
+/*================================================
+ SETTINGS
+ ================================================*/
+
+"TITLE_SETTINGS"                = "Einstellungen";
+"SETTINGS_VERSION"              = "Version";
+"SETTINGS_MOVIECOUNT"           = "Filme";
+"SETTINGS_AVERAGERATING"        = "Durchschnittliche Bewertung";
+"SETTINGS_LANGUAGE"             = "Filmsprache";
+"SETTINGS_RESET"                = "Filme und Bewertungen löschen";
+"SETTINGS_POP_RESET_TITLE"      = "Achtung";
+"SETTINGS_POP_RESET_CONTENT"    = "Sind sie sicher, dass sie alle Filme und Bewertungen löschen möchten?";
+"SETTINGS_POP_RESET_CANCEL"     = "abbrechen";
+"SETTINGS_POP_RESET_OK"         = "löschen";
+"SETTINGS_ABOUT"                = "Über uns";
+"SETTINGS_CONTACT"              = "Kontaktiere uns";
+"SETTINGS_HEADER_STATISTICS"    = "Statistiken";
+"SETTINGS_HEADER_SETTINGS"      = "Einstellungen";
+"SETTINGS_HEADER_CONTACT"       = "CAPS";
+"SETTINGS_HEADER_BETA"          = "Beta";
+
+
+
+

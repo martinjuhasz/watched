@@ -92,61 +92,22 @@
                     </view>
                     <navigationItem key="navigationItem" id="LFE-3Y-IEn">
                         <nil key="title"/>
-                        <view key="titleView" contentMode="scaleToFill" id="FEn-f9-f3B">
-                            <rect key="frame" x="40" y="6" width="224" height="33"/>
+                        <segmentedControl key="titleView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="bar" selectedSegmentIndex="0" id="p6I-ry-VOo">
+                            <rect key="frame" x="5" y="7" width="266" height="30"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <subviews>
-                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="sVT-Ta-0A1">
-                                    <rect key="frame" x="3" y="-1" width="72" height="35"/>
-                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                    <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                                    <state key="normal" title="all">
-                                        <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
-                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                    </state>
-                                    <state key="highlighted">
-                                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                    </state>
-                                    <connections>
-                                        <action selector="sortButtonAllClicked:" destination="jkq-Yu-AXG" eventType="touchUpInside" id="jFG-hJ-pPh"/>
-                                    </connections>
-                                </button>
-                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="SW3-RO-6Av">
-                                    <rect key="frame" x="76" y="-1" width="72" height="35"/>
-                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                    <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                                    <state key="normal" title="unw">
-                                        <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
-                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                    </state>
-                                    <state key="highlighted">
-                                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                    </state>
-                                    <connections>
-                                        <action selector="sortButtonUnwatchedClicked:" destination="jkq-Yu-AXG" eventType="touchUpInside" id="ueX-Hy-lS9"/>
-                                    </connections>
-                                </button>
-                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="yBy-v4-yHd">
-                                    <rect key="frame" x="151" y="-1" width="72" height="35"/>
-                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                    <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                                    <state key="normal" title="unr">
-                                        <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
-                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                    </state>
-                                    <state key="highlighted">
-                                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                    </state>
-                                    <connections>
-                                        <action selector="sortButtonUnratedClicked:" destination="jkq-Yu-AXG" eventType="touchUpInside" id="8Tb-GI-Z2F"/>
-                                    </connections>
-                                </button>
-                            </subviews>
-                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                        </view>
-                        <barButtonItem key="rightBarButtonItem" systemItem="action" id="nSG-I1-Sf7">
+                            <segments>
+                                <segment title="All Movies"/>
+                                <segment title="Unwatched"/>
+                                <segment title="Unrated"/>
+                            </segments>
+                            <connections>
+                                <action selector="filterControlDidChangeValue:" destination="jkq-Yu-AXG" eventType="valueChanged" id="iPL-4i-fta"/>
+                            </connections>
+                        </segmentedControl>
+                        <barButtonItem key="rightBarButtonItem" image="mv_icon_settings.png" id="nSG-I1-Sf7">
                             <connections>
                                 <action selector="settingsButtonClicked:" destination="jkq-Yu-AXG" id="DSt-SC-sud"/>
+                                <segue destination="L4d-38-F84" kind="modal" id="Z8I-3s-3QV"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -156,6 +117,69 @@
                 </viewController>
             </objects>
             <point key="canvasLocation" x="-497" y="-898"/>
+        </scene>
+        <!--Settings Table View Controller - Settings-->
+        <scene sceneID="fTc-Fz-Tim">
+            <objects>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="I5x-3V-QW8" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <tableViewController id="vIw-Rh-SoE" customClass="SettingsTableViewController" sceneMemberID="viewController">
+                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="singleLineEtched" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="u12-lN-6Ii">
+                        <rect key="frame" x="0.0" y="64" width="320" height="416"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                        <prototypes>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="SettingsTableViewCell" textLabel="O22-Rt-tvV" detailTextLabel="hf0-Jo-5LM" style="IBUITableViewCellStyleValue1" id="1Qn-s8-cGm">
+                                <rect key="frame" x="0.0" y="46" width="320" height="46"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                                    <rect key="frame" x="10" y="1" width="300" height="43"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="O22-Rt-tvV">
+                                            <rect key="frame" x="10" y="11" width="35" height="21"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
+                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <color key="highlightedColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                        </label>
+                                        <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="hf0-Jo-5LM">
+                                            <rect key="frame" x="246" y="11" width="44" height="21"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <color key="textColor" red="0.2196078431372549" green="0.32941176470588235" blue="0.52941176470588236" alpha="1" colorSpace="calibratedRGB"/>
+                                            <color key="highlightedColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                        </label>
+                                    </subviews>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                </view>
+                            </tableViewCell>
+                        </prototypes>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="Settings" id="GDB-pq-Sy1">
+                        <barButtonItem key="rightBarButtonItem" systemItem="done" id="u53-ux-GX9">
+                            <connections>
+                                <action selector="doneButtonClicked:" destination="vIw-Rh-SoE" id="jLl-rT-nku"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                </tableViewController>
+            </objects>
+            <point key="canvasLocation" x="-371" y="-215"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="noy-Pf-7vV">
+            <objects>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="f6p-tG-6bh" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <navigationController definesPresentationContext="YES" id="L4d-38-F84" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="SXd-d2-Ih8">
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="vIw-Rh-SoE" kind="relationship" relationship="rootViewController" id="PHF-Jk-stN"/>
+                    </connections>
+                </navigationController>
+            </objects>
+            <point key="canvasLocation" x="-825" y="-215"/>
         </scene>
         <!--Movie Detail View Controller - Detail-->
         <scene sceneID="GKR-54-3xz">
@@ -168,7 +192,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <navigationItem key="navigationItem" title="Detail" id="OVQ-Xf-fIl">
-                        <barButtonItem key="rightBarButtonItem" systemItem="action" id="66s-MO-SL9">
+                        <barButtonItem key="rightBarButtonItem" title="Back" id="66s-MO-SL9">
                             <connections>
                                 <action selector="shareButtonClicked:" destination="hEG-vR-tpH" id="PIv-HK-DhV"/>
                             </connections>
@@ -177,10 +201,26 @@
                     <connections>
                         <segue destination="aIh-ZM-gS8" kind="push" identifier="MovieCastSegue" id="uyO-M3-raF"/>
                         <segue destination="pqS-3R-9IU" kind="push" identifier="MovieNoteSegue" id="aGY-CZ-TGK"/>
+                        <segue destination="hjq-mA-Ll1" kind="push" identifier="ThumbnailPickerSegue" id="g3C-LE-fgC"/>
                     </connections>
                 </viewController>
             </objects>
             <point key="canvasLocation" x="203" y="-597"/>
+        </scene>
+        <!--Thumbnail Picker View Controller-->
+        <scene sceneID="jIy-dg-Psc">
+            <objects>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="CEc-G4-2aT" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <viewController id="hjq-mA-Ll1" customClass="ThumbnailPickerViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="SOu-ra-wqb">
+                        <rect key="frame" x="0.0" y="64" width="320" height="416"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="nNn-a9-U2c"/>
+                </viewController>
+            </objects>
+            <point key="canvasLocation" x="652" y="-1609"/>
         </scene>
         <!--Movie Note View Controller-->
         <scene sceneID="lV6-ZY-g83">
@@ -207,7 +247,7 @@
                     </connections>
                 </viewController>
             </objects>
-            <point key="canvasLocation" x="832" y="-1056"/>
+            <point key="canvasLocation" x="952" y="-988"/>
         </scene>
         <!--Movie Casts Table View Controller-->
         <scene sceneID="HEZ-VA-Khj">
@@ -257,7 +297,7 @@
                     <navigationItem key="navigationItem" id="BDJ-7D-eZr"/>
                 </tableViewController>
             </objects>
-            <point key="canvasLocation" x="969" y="-298"/>
+            <point key="canvasLocation" x="813" y="-215"/>
         </scene>
         <!--Search Movie View Controller-->
         <scene sceneID="Pda-5p-Gwf">
@@ -360,6 +400,9 @@
             <point key="canvasLocation" x="86" y="-1534"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="mv_icon_settings.png" width="16" height="17"/>
+    </resources>
     <classes>
         <class className="MovieCastsTableViewController" superclassName="UITableViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/MovieCastsTableViewController.h"/>
@@ -386,6 +429,15 @@
                 <relationship kind="outlet" name="searchBar" candidateClass="UISearchBar"/>
                 <relationship kind="outlet" name="tableView" candidateClass="UITableView"/>
             </relationships>
+        </class>
+        <class className="SettingsTableViewController" superclassName="UITableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/SettingsTableViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="doneButtonClicked:"/>
+            </relationships>
+        </class>
+        <class className="ThumbnailPickerViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/ThumbnailPickerViewController.h"/>
         </class>
     </classes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">

@@ -15,10 +15,58 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    [self setStyles];
+    
     // Override point for customization after application launch.
+    [TestFlight takeOff:@"bd44b4d15d82ebee20573cbad8c85c83_MzE1MTMyMDExLTExLTA1IDEzOjA0OjU2LjU3ODE3Mg"];
+    
     [[OnlineMovieDatabase sharedMovieDatabase] setApiKey:@"d518563ee67cb6d475d2440d3e663e93"];
     
+    
+    
     return YES;
+}
+
+- (void)setStyles
+{
+    // UINavigationBar
+    UIImage *navigationBarBgImage = [[UIImage imageNamed:@"g_bg_navbar.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
+    [[UINavigationBar appearance] setBackgroundImage:navigationBarBgImage forBarMetrics:UIBarMetricsDefault];
+    [[UINavigationBar appearance] setTitleTextAttributes:
+     [NSDictionary dictionaryWithObjectsAndKeys:
+      HEXColor(0x636875), 
+      UITextAttributeTextColor, 
+      [UIColor colorWithRed:255.0f green:255.0f blue:255.0f alpha:0.33f], 
+      UITextAttributeTextShadowColor, 
+      [NSValue valueWithUIOffset:UIOffsetMake(0, 1)], 
+      UITextAttributeTextShadowOffset, 
+      [UIFont fontWithName:@"HelveticaNeue-Bold" size:18.0f], 
+      UITextAttributeFont, 
+      nil]];
+    
+    // UIToolbar
+    [[UIToolbar appearance] setBackgroundImage:navigationBarBgImage forToolbarPosition:UIToolbarPositionAny barMetrics:UIBarMetricsDefault];
+    
+    // UIBarButtonItem
+    UIImage *barButtonBgInage = [[UIImage imageNamed:@"g_barbutton.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(15, 4, 15, 4)];
+    [[UIBarButtonItem appearance] setBackgroundImage:barButtonBgInage forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
+    [[UIBarButtonItem appearance] setTitleTextAttributes:
+     [NSDictionary dictionaryWithObjectsAndKeys:
+      HEXColor(0xFFFFFF), 
+      UITextAttributeTextColor, 
+      [UIColor colorWithRed:0.0f green:0.0f blue:0.0f alpha:0.40f], 
+      UITextAttributeTextShadowColor, 
+      [NSValue valueWithUIOffset:UIOffsetMake(0, 1)], 
+      UITextAttributeTextShadowOffset, 
+      [UIFont fontWithName:@"HelveticaNeue-Bold" size:12.0f], 
+      UITextAttributeFont, 
+      nil] forState:UIControlStateNormal];
+    
+    // UISearchBar
+    [[UISearchBar appearance] setBackgroundImage:navigationBarBgImage];
+    
+    // UISegmentedControl
+    //[[UISegmentedControl appearance] setBackgroundImage:navigationBarBgImage forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
 }
 							
 - (void)applicationWillResignActive:(UIApplication *)application

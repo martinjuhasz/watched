@@ -20,6 +20,7 @@
 #import "MovieCastsTableViewController.h"
 #import "MovieNoteViewController.h"
 #import <Twitter/Twitter.h>
+#import "ThumbnailPickerViewController.h"
 
 @interface MovieDetailViewController ()
 
@@ -58,11 +59,14 @@
     // set contents and enable buttone
     [self setContent];
     
+    [self.detailView.backdropButton addTarget:self action:@selector(posterButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+    [self.detailView.posterButton addTarget:self action:@selector(posterButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+    [self.detailView.watchedSwitch addTarget:self action:@selector(watchedSwitchClicked:) forControlEvents:UIControlEventValueChanged];
     [self.detailView.noteButton addTarget:self action:@selector(noteButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
     [self.detailView.trailerButton addTarget:self action:@selector(trailerButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
     [self.detailView.websiteButton addTarget:self action:@selector(websiteButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
     [self.detailView.castsButton addTarget:self action:@selector(castsButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
-    [self.detailView.watchedSwitch addTarget:self action:@selector(watchedSwitchClicked:) forControlEvents:UIControlEventValueChanged];
+    [self.detailView.deleteButton addTarget:self action:@selector(deleteButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
 }
 
 - (void)viewDidUnload
@@ -137,6 +141,17 @@
         MovieNoteViewController *detailViewController = (MovieNoteViewController*)segue.destinationViewController;
         detailViewController.movie = self.movie;
     }
+    if([segue.identifier isEqualToString:@"ThumbnailPickerSegue"]) {
+        NSDictionary *returnDict = (NSDictionary*)sender;
+        NSArray *urlDict = [returnDict objectForKey:@"urls"];
+        ImageType selectedImageType = [[returnDict objectForKey:@"imageType"] intValue];
+        
+        if(urlDict.count > 0) {
+            ThumbnailPickerViewController *detailViewController = (ThumbnailPickerViewController*)segue.destinationViewController;
+            detailViewController.imageURLs = urlDict;
+            detailViewController.imageType = selectedImageType;
+        }
+    }
 }
 
 
@@ -144,6 +159,17 @@
 ////////////////////////////////////////////////////////////////////////////
 #pragma mark -
 #pragma mark Button Actions
+
+- (IBAction)posterButtonClicked:(id)sender
+{
+    [[OnlineMovieDatabase sharedMovieDatabase] getImagesForMovie:self.movie.movieID completion:^(NSDictionary *imageDict) {
+        if((UIButton*)sender == self.detailView.posterButton) {
+            [self loadPickerForImageType:ImageTypePoster withResultDict:imageDict];
+        } else {
+            [self loadPickerForImageType:ImageTypeBackdrop withResultDict:imageDict];
+        }
+    }];
+}
 
 - (void)newRating:(DLStarRatingControl *)control :(float)newRating
 {
@@ -233,6 +259,26 @@
     [shareActionSheet showInView:[UIApplication sharedApplication].keyWindow];
 }
 
+- (IBAction)deleteButtonClicked:(id)sender
+{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+        
+        // Setup Core Data with extra Context for Background Process
+        NSManagedObjectContext *context = [[NSManagedObjectContext alloc] init];
+        [context setPersistentStoreCoordinator:[[MoviesDataModel sharedDataModel] persistentStoreCoordinator]];
+        
+        NSError *error;
+
+        [context deleteObject:[context objectWithID:movie.objectID]];
+        [context save:&error];
+        if(error) {
+            XLog("%@", [error localizedDescription]);
+        }
+        
+    });
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
 
 
 ////////////////////////////////////////////////////////////////////////////
@@ -304,6 +350,32 @@
 - (void)mailComposeController:(MFMailComposeViewController*)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError*)error
 {
     [self dismissModalViewControllerAnimated:YES];
+}
+
+
+
+////////////////////////////////////////////////////////////////////////////
+#pragma mark -
+#pragma mark Selecting Poster and Backdrop
+
+- (void)loadPickerForImageType:(ImageType)aImageType withResultDict:(NSDictionary*)resultDict
+{
+    NSString *typeString = (aImageType == ImageTypePoster) ? @"posters" : @"backdrops";
+    float imageWitdh = (aImageType == ImageTypePoster) ? 178.0f : 600.0f;
+    NSMutableArray *imageURLs = [NSMutableArray array];
+    
+    for (NSDictionary *aImageDict in [resultDict objectForKey:typeString]) {
+        NSURL *aUrl = [[OnlineMovieDatabase sharedMovieDatabase] getImageURLForImagePath:[aImageDict objectForKey:@"file_path"] 
+                                                                               imageType:aImageType 
+                                                                               nearWidth:imageWitdh];
+        NSDictionary *aDict = [NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:[aImageDict objectForKey:@"file_path"],aUrl, nil] 
+                                                          forKeys:[NSArray arrayWithObjects:@"path",@"url", nil]];
+        [imageURLs addObject:aDict];
+    }
+    
+    NSDictionary *returnDict = [NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:[NSNumber numberWithInt:aImageType], imageURLs, nil]  forKeys:[NSArray arrayWithObjects:@"imageType", @"urls", nil]];
+    
+    [self performSegueWithIdentifier:@"ThumbnailPickerSegue" sender:returnDict];
 }
 
 

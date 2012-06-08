@@ -9,11 +9,14 @@
 #import <UIKit/UIKit.h>
 #import "DLStarRatingControl.h"
 
-@interface MovieDetailView : UIView
+@interface MovieDetailView : UIView<UIScrollViewDelegate>
 
 @property (strong, nonatomic) UIScrollView *mainScrollView;
 @property (strong, nonatomic) UIImageView *backdropImageView;
+@property (strong, nonatomic) UIImageView *backdropBottomShadow;
 @property (strong, nonatomic) UIImageView *posterImageView;
+@property (strong, nonatomic) UIButton *backdropButton;
+@property (strong, nonatomic) UIButton *posterButton;
 @property (strong, nonatomic) UILabel *titleLabel;
 @property (strong, nonatomic) UISwitch *watchedSwitch;
 @property (strong, nonatomic) UILabel *releaseDateLabel;
@@ -30,5 +33,6 @@
 @property (strong, nonatomic) UIButton *trailerButton;
 @property (strong, nonatomic) UIButton *castsButton;
 @property (strong, nonatomic) UIButton *websiteButton;
+@property (strong, nonatomic) UIButton *deleteButton;
 
 @end

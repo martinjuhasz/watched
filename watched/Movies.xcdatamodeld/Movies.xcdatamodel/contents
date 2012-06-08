@@ -37,9 +37,9 @@
         <attribute name="tagline" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="title" attributeType="String" syncable="YES"/>
         <attribute name="watchedOn" optional="YES" attributeType="Date" syncable="YES"/>
-        <relationship name="casts" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Cast" inverseName="movie" inverseEntity="Cast" syncable="YES"/>
-        <relationship name="crews" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Crew" inverseName="movie" inverseEntity="Crew" syncable="YES"/>
-        <relationship name="trailers" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Trailer" inverseName="movie" inverseEntity="Trailer" syncable="YES"/>
+        <relationship name="casts" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Cast" inverseName="movie" inverseEntity="Cast" syncable="YES"/>
+        <relationship name="crews" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Crew" inverseName="movie" inverseEntity="Crew" syncable="YES"/>
+        <relationship name="trailers" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Trailer" inverseName="movie" inverseEntity="Trailer" syncable="YES"/>
     </entity>
     <entity name="Trailer" representedClassName="Trailer" syncable="YES">
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>

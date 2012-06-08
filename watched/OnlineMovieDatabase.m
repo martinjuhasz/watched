@@ -184,6 +184,19 @@ static NSString *databaseURL = @"http://api.themoviedb.org/3";
     });
 }
 
+- (void)getImagesForMovie:(NSNumber *)movieID completion:(MovieImagesCompletionBlock)callback
+{
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/movie/%d/images?api_key=%@",databaseURL, [movieID intValue], apiKey]];
+    XLog("Getting Movie Images at URL: %@", url);
+    NSURLRequest *request = [NSURLRequest requestWithURL:url];
+    
+    AFJSONRequestOperation *operation;
+    operation = [AFJSONRequestOperation JSONRequestOperationWithRequest:request success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
+        callback(JSON);
+    } failure:nil];
+    
+    [operation start];
+}
 
 
 ////////////////////////////////////////////////////////////////////////////

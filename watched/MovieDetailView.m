@@ -15,7 +15,10 @@
 
 @synthesize mainScrollView;
 @synthesize backdropImageView;
+@synthesize backdropBottomShadow;
 @synthesize posterImageView;
+@synthesize backdropButton;
+@synthesize posterButton;
 @synthesize titleLabel;
 @synthesize watchedSwitch;
 @synthesize releaseDateLabel;
@@ -32,8 +35,10 @@
 @synthesize trailerButton;
 @synthesize castsButton;
 @synthesize websiteButton;
+@synthesize deleteButton;
 
-
+#define kMBackdropHeight 115.0f
+#define kMBackdropScrollStop 50.0f
 
 ////////////////////////////////////////////////////////////////////////////
 #pragma mark -
@@ -69,8 +74,11 @@
 {
     [super layoutSubviews];
 
-    self.backdropImageView.frame = CGRectMake(0.0f, 0.0f, 320.0f, 115.0f);
+    self.backdropImageView.frame = CGRectMake(0.0f, 0.0f, 320.0f, kMBackdropHeight);
+    self.backdropBottomShadow.frame = CGRectMake(0.0f, 0.0f, 320.0f, kMBackdropHeight);
     self.posterImageView.frame = CGRectMake(9.0f, 93.0f, 89.0f, 126.0f);
+    self.backdropButton.frame = CGRectMake(0.0f, 0.0f, 320.0f, kMBackdropHeight);
+    self.posterButton.frame = CGRectMake(9.0f, 93.0f, 89.0f, 126.0f);
     
     self.titleLabel.frame = CGRectMake(110.0f, 125.0f, 206.0f, 46.0f);
     [self.titleLabel sizeToFitWithMaximumNumberOfLines:3];
@@ -99,8 +107,9 @@
     self.trailerButton.frame = CGRectMake(13.0f, self.noteButton.bottom + 30.0f, 294.0f, 25.0f);
     self.castsButton.frame = CGRectMake(13.0f, self.trailerButton.bottom + 15.0f, 294.0f, 25.0f);
     self.websiteButton.frame = CGRectMake(13.0f, self.castsButton.bottom + 15.0f, 294.0f, 25.0f);
+    self.deleteButton.frame = CGRectMake(13.0f, self.websiteButton.bottom + 30.0f, 294.0f, 25.0f);
     
-    [self.mainScrollView setContentSize:CGSizeMake(320.0f, self.websiteButton.bottom + 20.0f)];
+    [self.mainScrollView setContentSize:CGSizeMake(320.0f, self.deleteButton.bottom + 20.0f)];
 }
 
 - (void)setupContent
@@ -108,6 +117,7 @@
     self.backgroundColor = HEXColor(0x2f2f2f);
     
     self.mainScrollView = [[UIScrollView alloc] initWithFrame:self.frame];
+    self.mainScrollView.delegate = self;
     [self addSubview:self.mainScrollView];
     
     self.backdropImageView = [[UIImageView alloc] init];
@@ -115,11 +125,22 @@
     self.backdropImageView.clipsToBounds = YES;
     [self.mainScrollView addSubview:self.backdropImageView];
     
+    self.backdropBottomShadow = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"dv_mask.png"]];
+    self.backdropBottomShadow.contentMode = UIViewContentModeTop;
+    self.backdropBottomShadow.clipsToBounds = YES;
+    [self.mainScrollView addSubview:self.backdropBottomShadow];
+    
     self.posterImageView = [[UIImageView alloc] init];
     self.posterImageView.contentMode = UIViewContentModeScaleAspectFill;
     self.posterImageView.clipsToBounds = YES;
     [self.mainScrollView addSubview:self.posterImageView];
     
+    self.backdropButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [self.mainScrollView addSubview:self.backdropButton];
+    
+    self.posterButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [self.mainScrollView addSubview:self.posterButton];
+
     self.titleLabel = [[UILabel alloc] init];
     [self setDefaultStylesForLabels:self.titleLabel];
     self.titleLabel.font = [UIFont boldSystemFontOfSize:18.0f];
@@ -233,6 +254,13 @@
     [self.websiteButton setTitle:@"Visit Official Website"];
     [self.mainScrollView addSubview:self.websiteButton];
     
+    self.deleteButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    self.deleteButton.titleLabel.font = [UIFont boldSystemFontOfSize:16.0f];
+    self.deleteButton.titleLabel.adjustsFontSizeToFitWidth = NO;
+    self.deleteButton.titleColor = HEXColor(0xABADAF);
+    [self.deleteButton setTitle:@"Delete Movie"];
+    [self.mainScrollView addSubview:self.deleteButton];
+    
 }
 
 - (void)setDefaultStylesForLabels:(UILabel*)label
@@ -241,6 +269,33 @@
     label.backgroundColor = [UIColor clearColor];
     label.numberOfLines = 0;
     label.lineBreakMode = UILineBreakModeWordWrap;
+}
+
+- (void)scrollViewDidScroll:(UIScrollView *)aScrollView
+{
+    CGFloat scrollViewOffset = aScrollView.contentOffset.y;
+
+    if(scrollViewOffset < 0.0f) {
+        
+        // minx max
+        CGFloat minVal = MIN(scrollViewOffset,-kMBackdropScrollStop);
+        CGFloat maxVal = MAX(scrollViewOffset,-kMBackdropScrollStop);
+        
+        // Backdrop
+        CGRect imageViewRect = self.backdropImageView.frame;
+        imageViewRect.origin.y = scrollViewOffset;
+        imageViewRect.size.height = kMBackdropHeight - maxVal;
+        
+        // Shadow
+        CGRect shadowRect = self.backdropBottomShadow.frame;
+        shadowRect.size.height = kMBackdropHeight - (minVal + kMBackdropScrollStop);
+        shadowRect.origin.y = minVal + kMBackdropScrollStop;
+        
+        // set em
+        self.backdropBottomShadow.frame = shadowRect;
+        self.backdropImageView.frame = imageViewRect;
+        self.backdropButton.frame = imageViewRect;
+    }
 }
 
 @end

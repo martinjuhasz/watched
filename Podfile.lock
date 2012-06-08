@@ -1,9 +1,13 @@
 PODS:
   - AFNetworking (1.0RC1)
   - DLStarRating (1.0)
+  - GMGridView (1.1.1)
   - MBProgressHUD (0.5)
+  - TestFlightSDK (1.0)
 
 DEPENDENCIES:
   - AFNetworking
   - DLStarRating (from `DLStarRating.podspec')
+  - GMGridView
   - MBProgressHUD
+  - TestFlightSDK
