@@ -51,6 +51,7 @@
 		7ACFACA8157C157F0089EB8C /* sharebymail.html in Resources */ = {isa = PBXBuildFile; fileRef = 7ACFACA7157C157F0089EB8C /* sharebymail.html */; };
 		7AE95C3015776803007A13F0 /* _Trailer.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AE95C2D15776803007A13F0 /* _Trailer.m */; };
 		7AE95C3115776803007A13F0 /* Trailer.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AE95C2F15776803007A13F0 /* Trailer.m */; };
+		7AED8E731582800F009F0416 /* OnlineDatabaseBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AED8E721582800F009F0416 /* OnlineDatabaseBridge.m */; };
 		7AEEA3411573F697003F06E1 /* MovieDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AEEA3401573F697003F06E1 /* MovieDetailViewController.m */; };
 		7AF3AE161559C113001B36E1 /* MoviesDataModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AF3AE151559C113001B36E1 /* MoviesDataModel.m */; };
 		7AF540F01577781F0018530A /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7AF540EF1577781F0018530A /* MediaPlayer.framework */; };
@@ -131,6 +132,8 @@
 		7AE95C2D15776803007A13F0 /* _Trailer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _Trailer.m; sourceTree = "<group>"; };
 		7AE95C2E15776803007A13F0 /* Trailer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Trailer.h; sourceTree = "<group>"; };
 		7AE95C2F15776803007A13F0 /* Trailer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Trailer.m; sourceTree = "<group>"; };
+		7AED8E711582800F009F0416 /* OnlineDatabaseBridge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OnlineDatabaseBridge.h; sourceTree = "<group>"; };
+		7AED8E721582800F009F0416 /* OnlineDatabaseBridge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OnlineDatabaseBridge.m; sourceTree = "<group>"; };
 		7AEEA33F1573F697003F06E1 /* MovieDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MovieDetailViewController.h; sourceTree = "<group>"; };
 		7AEEA3401573F697003F06E1 /* MovieDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MovieDetailViewController.m; sourceTree = "<group>"; };
 		7AF3AE141559C113001B36E1 /* MoviesDataModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MoviesDataModel.h; sourceTree = "<group>"; };
@@ -206,6 +209,8 @@
 			children = (
 				7A584D18154879DD00A548EE /* SearchMovieViewController.h */,
 				7A584D19154879DD00A548EE /* SearchMovieViewController.m */,
+				7AED8E711582800F009F0416 /* OnlineDatabaseBridge.h */,
+				7AED8E721582800F009F0416 /* OnlineDatabaseBridge.m */,
 			);
 			name = Search;
 			sourceTree = "<group>";
@@ -549,6 +554,7 @@
 				7A353256157953DB008F4F58 /* MovieNoteViewController.m in Sources */,
 				7A8DC678157CFDDD00F6EACA /* SettingsTableViewController.m in Sources */,
 				7A7EEF85157D56F300EAEE01 /* ThumbnailPickerViewController.m in Sources */,
+				7AED8E731582800F009F0416 /* OnlineDatabaseBridge.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

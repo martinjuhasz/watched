@@ -11,15 +11,9 @@
 #import "SearchResult.h"
 #import "UIImageView+AFNetworking.h"
 #import "MBProgressHUD.h"
-#import "Movie.h"
-#import "Cast.h"
-#import "Crew.h"
-#import "Trailer.h"
-#import "MoviesDataModel.h"
 #import "UISearchBar+Additions.h"
-#import <CoreData/CoreData.h>
-#import "AFHTTPRequestOperation.h"
-#import "NSDictionary+ObjectForKeyOrNil.h"
+#import "OnlineDatabaseBridge.h"
+#import "Movie.h"
 
 @implementation SearchMovieViewController
 
@@ -208,6 +202,13 @@ const int kMovieSearchCellImageView = 200;
             [self.searchResults addObject:aResult];
         }
         [self.tableView reloadData];
+    } failure:^(NSError *error) {
+        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+        hud.dimBackground = YES;
+        hud.mode = MBProgressHUDModeText;
+        hud.labelText = [error localizedDescription];
+        hud.removeFromSuperViewOnHide = YES;
+        [hud hide:YES afterDelay:1.0f];
     }];
 }
 
@@ -222,200 +223,44 @@ const int kMovieSearchCellImageView = 200;
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     hud.dimBackground = YES;
     
-    [[OnlineMovieDatabase sharedMovieDatabase] getMovieDetailsForMovieID:result.searchResultId completion:^(NSDictionary *movieDict) {
+    OnlineDatabaseBridge *bridge = [[OnlineDatabaseBridge alloc] init];
+    
+    bridge.completionBlock = ^(Movie *aMovie) {
+        [self sendHUDCompletionMessage:@"Movie added" hud:hud];
+    };
+    
+    bridge.failureBlock = ^(NSError *error) {
+        NSString *errorMessage = @"Unknown Error. Please contact us if this problem exists.";
         
-        
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
-            
-            // Setup Core Data with extra Context for Background Process
-            NSManagedObjectContext *context = [[NSManagedObjectContext alloc] init];
-            [context setPersistentStoreCoordinator:[[MoviesDataModel sharedDataModel] persistentStoreCoordinator]];
-            
-            NSInteger serverId = [[movieDict objectForKey:@"id"] intValue];
-            Movie *movie = [Movie movieWithServerId:serverId usingManagedObjectContext:context];
-            
-            if(movie == nil) {
-                
-                // dispatch it
-                dispatch_group_t group = dispatch_group_create();
-                
-                // Movie
-                movie = [Movie insertInManagedObjectContext:context];
-                [movie updateAttributes:movieDict];
-                
-                // Backdrop
-                NSString *backdropString = [movieDict objectForKey:@"backdrop_path"];
-                NSURL *backdropURL = [[OnlineMovieDatabase sharedMovieDatabase] getImageURLForImagePath:backdropString imageType:ImageTypeBackdrop nearWidth:800.0f];
-                if(backdropURL) {
-                    dispatch_group_enter(group);
-                    NSURLRequest *backdropRequest = [NSURLRequest requestWithURL:backdropURL];
-                    AFHTTPRequestOperation *backdropOperation = [[AFHTTPRequestOperation alloc] initWithRequest:backdropRequest];
-                    [backdropOperation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
-                        if([responseObject isKindOfClass:[NSData class]]) {
-                            movie.backdrop = [UIImage imageWithData:responseObject];
-                            movie.backdropURL = backdropString;
-                            dispatch_group_leave(group);
-                        }
-                    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                        NSLog(@"%@", [error localizedDescription]);
-                        dispatch_group_leave(group);
-                    }];
-                    [backdropOperation start];
-                }
-                
-                
-                // Poster
-                NSString *posterString = [movieDict objectForKey:@"poster_path"];
-//                if(posterString) {
-//                    dispatch_group_enter(group);
-//                    [[OnlineMovieDatabase sharedMovieDatabase] getImageForImagePath:posterString imageType:ImageTypePoster withWidth:260.0f completion:^(UIImage *aImage) {
-//                        movie.poster = aImage;
-//                        dispatch_group_leave(group);
-//                    }];
-//                }
-                NSURL *posterURL = [[OnlineMovieDatabase sharedMovieDatabase] getImageURLForImagePath:posterString imageType:ImageTypeBackdrop nearWidth:260.0f];
-                if(posterURL) {
-                    dispatch_group_enter(group);
-                    NSURLRequest *posterRequest = [NSURLRequest requestWithURL:posterURL];
-                    AFHTTPRequestOperation *posterOperation = [[AFHTTPRequestOperation alloc] initWithRequest:posterRequest];
-                    [posterOperation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
-                        
-                        CGFloat posterWitdh = 260.0f;
-                        CGFloat thumbnailPosterWith = 122.0f;
-                        UIImage *image = [UIImage imageWithData:responseObject];
-                        
-                        // Image
-                        UIImage *poster = nil;
-                        CGSize newPosterSize = CGSizeMake(posterWitdh, (posterWitdh / image.size.width) * image.size.height);
-                        UIGraphicsBeginImageContext(newPosterSize);
-                        [image drawInRect:CGRectMake(0, 0, newPosterSize.width, newPosterSize.height)];
-                        poster = UIGraphicsGetImageFromCurrentImageContext();
-                        UIGraphicsEndImageContext();
-                        
-                        // Thumb Image
-                        UIImage *thumbPoster = nil;
-                        CGSize newThumbnailPosterSize = CGSizeMake(thumbnailPosterWith, (thumbnailPosterWith / image.size.width) * image.size.height);
-                        UIGraphicsBeginImageContext(newThumbnailPosterSize);
-                        [image drawInRect:CGRectMake(0, 0, newThumbnailPosterSize.width, newThumbnailPosterSize.height)];
-                        thumbPoster = UIGraphicsGetImageFromCurrentImageContext();
-                        UIGraphicsEndImageContext();
-                        
-                        movie.poster = poster;
-                        movie.posterURL = posterString;
-                        movie.posterThumbnail = thumbPoster;
-                        
-                        dispatch_group_leave(group);
-                        
-                        
-                    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                        NSLog(@"%@", [error localizedDescription]);
-                        dispatch_group_leave(group);
-                    }];
-                    [posterOperation start];
-                }
-                
-                
-                // Casts
-                dispatch_group_enter(group);
-                [[OnlineMovieDatabase sharedMovieDatabase] getMovieCastsForMovieID:[NSNumber numberWithInt:serverId] completion:^(NSDictionary *returnArray) {
-                    
-                    NSArray *casts = [returnArray objectForKeyOrNil:@"cast"];
-                    NSArray *crew = [returnArray objectForKeyOrNil:@"crew"];
-                    NSMutableSet *castsSet = [NSMutableSet set];
-                    NSMutableSet *crewSet = [NSMutableSet set];
-                    
-                    for (NSDictionary *castDict in casts) {
-                        Cast *newCast = [Cast insertInManagedObjectContext:context];
-                        newCast.character = [castDict objectForKeyOrNil:@"character"];
-                        newCast.castID = [NSNumber numberWithInt:[[castDict objectForKeyOrNil:@"id"] intValue]];
-                        newCast.name = [castDict objectForKeyOrNil:@"name"];
-                        newCast.order = [NSNumber numberWithInt:[[castDict objectForKeyOrNil:@"order"] intValue]];
-                        newCast.profilePath = [castDict objectForKeyOrNil:@"profile_path"];
-                        [castsSet addObject:newCast];
-                    }
-                    
-                    for (NSDictionary *crewDict in crew) {
-                        Crew *newCrew = [Crew insertInManagedObjectContext:context];
-                        newCrew.crewID = [NSNumber numberWithInt:[[crewDict objectForKeyOrNil:@"id"] intValue]];
-                        newCrew.name = [crewDict objectForKeyOrNil:@"name"];
-                        newCrew.department = [crewDict objectForKeyOrNil:@"department"];
-                        newCrew.job = [crewDict objectForKeyOrNil:@"job"];
-                        newCrew.profilePath = [crewDict objectForKeyOrNil:@"profile_path"];
-                        [crewSet addObject:newCrew];
-                    }
-                    
-                    movie.casts = castsSet;
-                    movie.crews = crewSet;
-                    dispatch_group_leave(group);
-                }];
-                
-                // Trailers
-                dispatch_group_enter(group);
-                [[OnlineMovieDatabase sharedMovieDatabase] getMovieTrailersForMovieID:[NSNumber numberWithInt:serverId] completion:^(NSDictionary *returnArray) {
-                    
-                    NSArray *quicktime = [returnArray objectForKeyOrNil:@"quicktime"];
-                    NSArray *youtube = [returnArray objectForKeyOrNil:@"youtube"];
-                    NSMutableSet *trailerSet = [NSMutableSet set];
-                    
-                    for (NSDictionary *qtTrailer in quicktime) {
-                        Trailer *newTrailer = [Trailer insertInManagedObjectContext:context];
-                        newTrailer.name = [qtTrailer objectForKeyOrNil:@"name"];
-                        newTrailer.source = @"quicktime";
-                        NSString *storedSize = nil;
-                        for (NSDictionary *newTrailerSource in [qtTrailer objectForKeyOrNil:@"sources"]) {
-                            
-                            if(!storedSize || ([storedSize isEqualToString:@"480p"] && [[newTrailerSource objectForKeyOrNil:@"size"] isEqualToString:@"720p"])) {
-                                newTrailer.url = [newTrailerSource objectForKeyOrNil:@"source"];
-                                newTrailer.quality = [newTrailerSource objectForKeyOrNil:@"size"];
-                            } else {
-                                break;
-                            }
-                            storedSize = [newTrailerSource objectForKeyOrNil:@"size"];
-                        }
-                        [trailerSet addObject:newTrailer];
-                    }
-                    
-                    for (NSDictionary *ytTrailer in youtube) {
-                        Trailer *newTrailer = [Trailer insertInManagedObjectContext:context];
-                        newTrailer.name = [ytTrailer objectForKeyOrNil:@"name"];
-                        newTrailer.source = @"youtube";
-                        newTrailer.quality = [ytTrailer objectForKeyOrNil:@"size"];
-                        newTrailer.url = [ytTrailer objectForKeyOrNil:@"source"];
-                        [trailerSet addObject:newTrailer];
-                    }
-                    
-                    movie.trailers = trailerSet;
-                    dispatch_group_leave(group);
-                }];
-                
-                
-                
-                dispatch_group_wait(group, DISPATCH_TIME_FOREVER);
-                dispatch_release(group);
-
-                [context save:nil];
-                
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    hud.mode = MBProgressHUDModeText;
-                    hud.labelText = @"Movie added";
-                    hud.removeFromSuperViewOnHide = YES;
-                    [hud hide:YES afterDelay:1.0f];
-                });
-                
-            } else {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    hud.mode = MBProgressHUDModeText;
-                    hud.labelText = @"Movie already added";
-                    hud.removeFromSuperViewOnHide = YES;
-                    [hud hide:YES afterDelay:1.0f];
-                });
-            }
-            
-        });
-    }];
+        if([error.domain isEqualToString:kBridgeErrorDomain]) {
+            errorMessage = [self getErrorMessageForBridgeError:error.code];
+        } else if([error.domain isEqualToString:AFNetworkingErrorDomain]) {
+            errorMessage = @"Online Database not responding, please try again";
+        }
+        [self sendHUDCompletionMessage:errorMessage hud:hud];
+    };
+    [bridge saveSearchResultAsMovie:result];
         
 }
 
+- (void)sendHUDCompletionMessage:(NSString*)message hud:(MBProgressHUD*)aHud
+{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        aHud.mode = MBProgressHUDModeText;
+        aHud.labelText = message;
+        aHud.removeFromSuperViewOnHide = YES;
+        [aHud hide:YES afterDelay:1.0f];
+    });
+}
+
+- (NSString*)getErrorMessageForBridgeError:(BridgeError)aErrorCode
+{
+    NSString *errorMessage = @"";
+    if(aErrorCode == BridgeErrorMovieExists) {
+        errorMessage = @"Movie already added";
+    }
+    return errorMessage;
+}
 
 
 @end

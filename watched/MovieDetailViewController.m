@@ -22,7 +22,9 @@
 #import <Twitter/Twitter.h>
 #import "ThumbnailPickerViewController.h"
 
-@interface MovieDetailViewController ()
+@interface MovieDetailViewController () {
+    BOOL isLoadingImages;
+}
 
 @end
 
@@ -55,6 +57,7 @@
     self.detailView = [[MovieDetailView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, 416.0f)];
     [self.view addSubview:self.detailView];
     self.detailView.ratingView.delegate = self;
+    isLoadingImages = NO;
     
     // set contents and enable buttone
     [self setContent];
@@ -162,12 +165,24 @@
 
 - (IBAction)posterButtonClicked:(id)sender
 {
+    if(isLoadingImages) return;
+    isLoadingImages = YES;
+    
+    ImageType selectedType = ((UIButton*)sender == self.detailView.posterButton) ? ImageTypePoster : ImageTypeBackdrop;
+    [self.detailView toggleLoadingViewForPosterType:selectedType];
+    
     [[OnlineMovieDatabase sharedMovieDatabase] getImagesForMovie:self.movie.movieID completion:^(NSDictionary *imageDict) {
-        if((UIButton*)sender == self.detailView.posterButton) {
+        isLoadingImages = NO;
+        [self.detailView toggleLoadingViewForPosterType:selectedType];
+        if(selectedType == ImageTypePoster) {
             [self loadPickerForImageType:ImageTypePoster withResultDict:imageDict];
         } else {
             [self loadPickerForImageType:ImageTypeBackdrop withResultDict:imageDict];
         }
+    } failure:^(NSError *error) {
+        isLoadingImages = NO;
+        [self.detailView toggleLoadingViewForPosterType:selectedType];
+        XLog("%@", [error localizedDescription]);
     }];
 }
 
@@ -191,6 +206,7 @@
 {
     if(!self.movie.bestTrailer) return;
     NSURL *videoURL = nil;
+    
     if([self.movie.bestTrailer.source isEqualToString:@"quicktime"]) {
         videoURL = [NSURL URLWithString:self.movie.bestTrailer.url];
         MPMoviePlayerViewController *moviePlayer = [[MPMoviePlayerViewController alloc] initWithContentURL:videoURL];
@@ -217,6 +233,7 @@
 {
     [self performSegueWithIdentifier:@"MovieNoteSegue" sender:self];
 }
+
 - (IBAction)watchedSwitchClicked:(id)sender {
     NSDate *watchedDate = nil;
     if(self.detailView.watchedSwitch.on) {

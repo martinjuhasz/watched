@@ -14,6 +14,7 @@
 @implementation MovieDetailView
 
 @synthesize mainScrollView;
+@synthesize imageLoadingView;
 @synthesize backdropImageView;
 @synthesize backdropBottomShadow;
 @synthesize posterImageView;
@@ -141,13 +142,21 @@
     self.posterButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [self.mainScrollView addSubview:self.posterButton];
 
+    self.imageLoadingView = [[UIView alloc] initWithFrame:CGRectZero];
+    self.imageLoadingView.backgroundColor = [UIColor blackColor];
+    self.imageLoadingView.alpha = 0.0f;
+    self.imageLoadingView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    UIActivityIndicatorView *activityIndicator = [[UIActivityIndicatorView alloc] initWithFrame:CGRectZero];
+    activityIndicator.center = self.imageLoadingView.center;
+    activityIndicator.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
+    [activityIndicator startAnimating];
+    [self.imageLoadingView addSubview:activityIndicator];
+    
     self.titleLabel = [[UILabel alloc] init];
     [self setDefaultStylesForLabels:self.titleLabel];
     self.titleLabel.font = [UIFont boldSystemFontOfSize:18.0f];
     self.titleLabel.adjustsFontSizeToFitWidth = NO;
     self.titleLabel.textColor = HEXColor(0xFFFFFF);
-//    self.titleLabel.shadowColor = HEXColor(0xFFFFFF);
-//    self.titleLabel.shadowOffset = CGSizeMake(0.0f, 1.0f);
     [self.mainScrollView addSubview:self.titleLabel];
     
     self.watchedSwitch = [[UISwitch alloc] init];
@@ -291,10 +300,34 @@
         shadowRect.size.height = kMBackdropHeight - (minVal + kMBackdropScrollStop);
         shadowRect.origin.y = minVal + kMBackdropScrollStop;
         
+        // Loading Button
+        if(self.imageLoadingView.frame.size.width == imageViewRect.size.width && self.imageLoadingView.alpha > 0.0f) {
+            self.imageLoadingView.frame = imageViewRect;
+        }
+        
         // set em
         self.backdropBottomShadow.frame = shadowRect;
         self.backdropImageView.frame = imageViewRect;
         self.backdropButton.frame = imageViewRect;
+    }
+}
+
+- (void)toggleLoadingViewForPosterType:(ImageType)aImageType
+{
+    UIImageView *targetView = (aImageType == ImageTypeBackdrop) ? self.backdropImageView : self.posterImageView;
+    self.imageLoadingView.frame = targetView.frame;
+
+    if(self.imageLoadingView.alpha <= 0.0f) {
+        [self.mainScrollView insertSubview:self.imageLoadingView aboveSubview:targetView];
+        [UIView animateWithDuration:(0.2) animations:^{
+            self.imageLoadingView.alpha = 0.5f;
+        }];
+    } else {
+        [UIView animateWithDuration:(0.2) animations:^{
+            self.imageLoadingView.alpha = 0.0f;
+        } completion:^(BOOL finished) {
+            [self.imageLoadingView removeFromSuperview];
+        }];
     }
 }
 

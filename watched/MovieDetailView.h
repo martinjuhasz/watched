@@ -8,10 +8,12 @@
 
 #import <UIKit/UIKit.h>
 #import "DLStarRatingControl.h"
+#import "OnlineMovieDatabase.h"
 
 @interface MovieDetailView : UIView<UIScrollViewDelegate>
 
 @property (strong, nonatomic) UIScrollView *mainScrollView;
+@property (strong, nonatomic) UIView *imageLoadingView;
 @property (strong, nonatomic) UIImageView *backdropImageView;
 @property (strong, nonatomic) UIImageView *backdropBottomShadow;
 @property (strong, nonatomic) UIImageView *posterImageView;
@@ -34,5 +36,7 @@
 @property (strong, nonatomic) UIButton *castsButton;
 @property (strong, nonatomic) UIButton *websiteButton;
 @property (strong, nonatomic) UIButton *deleteButton;
+
+- (void)toggleLoadingViewForPosterType:(ImageType)aImageType;
 
 @end
