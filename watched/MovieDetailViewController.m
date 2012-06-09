@@ -21,8 +21,12 @@
 #import "MovieNoteViewController.h"
 #import <Twitter/Twitter.h>
 #import "ThumbnailPickerViewController.h"
+#import "OnlineDatabaseBridge.h"
+#import <QuartzCore/QuartzCore.h>
 
-@interface MovieDetailViewController () {
+#define kImageFadeDelay 0.0f
+
+@interface MovieDetailViewController ()<ThumbnailPickerDelegate> {
     BOOL isLoadingImages;
 }
 
@@ -151,6 +155,7 @@
         
         if(urlDict.count > 0) {
             ThumbnailPickerViewController *detailViewController = (ThumbnailPickerViewController*)segue.destinationViewController;
+            detailViewController.delegate = self;
             detailViewController.imageURLs = urlDict;
             detailViewController.imageType = selectedImageType;
         }
@@ -265,9 +270,7 @@
         [shareActionSheet addButtonWithTitle:NSLocalizedString(@"SHARE_BUTTON_EMAIL",nil)];
     
     // Twitter
-    if([TWTweetComposeViewController canSendTweet]) {
-        [shareActionSheet addButtonWithTitle:NSLocalizedString(@"SHARE_BUTTON_TWITTER",nil)];
-    }
+    [shareActionSheet addButtonWithTitle:NSLocalizedString(@"SHARE_BUTTON_TWITTER",nil)];
 
     // Cancel Button
     [shareActionSheet addButtonWithTitle:NSLocalizedString(@"SHARE_BUTTON_CANCEL",nil)];
@@ -321,7 +324,6 @@
 
 - (void)shareWithTwitter
 {
-    if(![TWTweetComposeViewController canSendTweet]) return;
     
     NSString *text = [NSString stringWithFormat:@"I watched \"%@\" and rated it with %d of 5 Stars", self.movie.title, [self.movie.rating intValue]];
     
@@ -392,11 +394,86 @@
     
     NSDictionary *returnDict = [NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:[NSNumber numberWithInt:aImageType], imageURLs, nil]  forKeys:[NSArray arrayWithObjects:@"imageType", @"urls", nil]];
     
-    [self performSegueWithIdentifier:@"ThumbnailPickerSegue" sender:returnDict];
+    if([[returnDict objectForKey:@"urls"] count] > 1) {
+        [self performSegueWithIdentifier:@"ThumbnailPickerSegue" sender:returnDict];
+    } else {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"PICKER_POP_NOPOSTER_TITLE", nil)
+                                                        message:NSLocalizedString(@"PICKER_POP_NOPOSTER_CONTENT", nil)
+                                                       delegate:nil 
+                                              cancelButtonTitle:NSLocalizedString(@"PICKER_POP_NOPOSTER_OK", nil)
+                                              otherButtonTitles:nil];
+        [alert show];
+    }
+    
 }
 
 
 
+////////////////////////////////////////////////////////////////////////////
+#pragma mark -
+#pragma mark Selecting Poster and Backdrop
+
+- (void) thumbnailPicker:(ThumbnailPickerViewController*)aPicker didSelectImage:(NSString*)aImage forImageType:(ImageType)aImageType
+{
+    [self.navigationController popViewControllerAnimated:YES];
+    
+    OnlineDatabaseBridge *bridge = [[OnlineDatabaseBridge alloc] init];
+    
+    // Backdrop
+    if(aImageType == ImageTypeBackdrop) {
+        [bridge setBackdropWithImagePath:aImage toMovie:self.movie success:^{
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, kImageFadeDelay * NSEC_PER_SEC), dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+                
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    UIImage *oldImage = self.detailView.backdropImageView.image;
+                    UIImage *newImage = self.movie.backdrop;
+                    CABasicAnimation *crossFade = [CABasicAnimation animationWithKeyPath:@"contents"];
+                    crossFade.duration = 2.0;
+                    crossFade.fromValue = (id)[oldImage CGImage];
+                    crossFade.toValue = (id)[newImage CGImage];
+                    [self.detailView.backdropImageView.layer addAnimation:crossFade forKey:@"animateContents"];
+                    self.detailView.backdropImageView.image = self.movie.backdrop;
+                });
+                
+                NSManagedObjectContext *context = [[MoviesDataModel sharedDataModel] mainContext];
+                NSError *error;
+                [context save:&error];
+                if(error) {
+                    XLog("%@", [error localizedDescription]);
+                }
+            });
+        } failure:^(NSError *error) {
+            XLog("%@", [error localizedDescription]);
+        }];
+    
+    // Poster
+    } else {
+        [bridge setPosterWithImagePath:aImage toMovie:self.movie success:^{
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, kImageFadeDelay * NSEC_PER_SEC), dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+                
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    UIImage *oldImage = self.detailView.posterImageView.image;
+                    UIImage *newImage = self.movie.poster;
+                    CABasicAnimation *crossFade = [CABasicAnimation animationWithKeyPath:@"contents"];
+                    crossFade.duration = 2.0;
+                    crossFade.fromValue = (id)[oldImage CGImage];
+                    crossFade.toValue = (id)[newImage CGImage];
+                    [self.detailView.posterImageView.layer addAnimation:crossFade forKey:@"animateContents"];
+                    self.detailView.posterImageView.image = newImage;
+                });
+                
+                NSManagedObjectContext *context = [[MoviesDataModel sharedDataModel] mainContext];
+                NSError *error;
+                [context save:&error];
+                if(error) {
+                    XLog("%@", [error localizedDescription]);
+                }
+            });
+        } failure:^(NSError *error) {
+            XLog("%@", [error localizedDescription]);
+        }];
+    }
+}
 
 
 

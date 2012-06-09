@@ -31,6 +31,8 @@ const int kMovieDisplayCellImageView = 200;
 @synthesize tableView;
 @synthesize fetchedResultsController;
 @synthesize currentSortType;
+@synthesize addButton;
+@synthesize addButtonBackgroundView;
 
 
 ////////////////////////////////////////////////////////////////////////////
@@ -50,12 +52,23 @@ const int kMovieDisplayCellImageView = 200;
 {
     [super viewDidLoad];
     
+    // Add Button
+    UIImage *addButtonBgImage = [[UIImage imageNamed:@"mv_addbutton.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(26, 8, 26, 8)];
+    [self.addButton setBackgroundImage:addButtonBgImage forState:UIControlStateNormal];
+    [self.addButton setTitleColor:HEXColor(0xFFFFFF) forState:UIControlStateNormal];
+    [self.addButton setTitleShadowColor:[UIColor colorWithRed:255.0f green:255.0f blue:255.0f alpha:0.33f] forState:UIControlStateNormal];
+    [[self.addButton titleLabel] setShadowOffset:CGSizeMake(0.0f, 1.0f)];
+    self.addButtonBackgroundView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"mv_bg_add.png"]];
+    
+    
     [self loadMoviesWithSortType:MovieSortTypeAll];
     
     [[NSNotificationCenter defaultCenter] addObserver:self 
                                              selector:@selector(contextDidSave:) 
                                                  name:NSManagedObjectContextDidSaveNotification 
                                                object:nil];
+    
+    
 }
 
 - (void)viewDidUnload
@@ -63,6 +76,8 @@ const int kMovieDisplayCellImageView = 200;
     [self setTableView:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:NSManagedObjectContextDidSaveNotification object:nil];
     
+    [self setAddButton:nil];
+    [self setAddButtonBackgroundView:nil];
     [super viewDidUnload];
     // Release any retained subviews of the main view.
 }

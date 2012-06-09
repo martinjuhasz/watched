@@ -29,6 +29,9 @@
 "SHARE_BUTTON_CANCEL"           = "Cancel";
 "SHARE_TWITTER_TEXT"            = "I watched \"%@\" and rated it with %i of 5 Stars";
 
+"PICKER_POP_NOPOSTER_TITLE"     = "Sorry";
+"PICKER_POP_NOPOSTER_CONTENT"   = "There are no more Images available.";
+"PICKER_POP_NOPOSTER_OK"        = "Ok";
 
 /*================================================
  SETTINGS

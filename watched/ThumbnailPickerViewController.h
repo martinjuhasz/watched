@@ -10,10 +10,18 @@
 #import "GMGridView.h"
 #import "OnlineMovieDatabase.h"
 
+@protocol ThumbnailPickerDelegate;
+
 @interface ThumbnailPickerViewController : UIViewController<GMGridViewDataSource, GMGridViewActionDelegate>
 
 @property (strong, nonatomic) GMGridView *gridView;
 @property (strong, nonatomic) NSArray *imageURLs;
 @property (assign, nonatomic) ImageType imageType;
+@property (assign, nonatomic) id <ThumbnailPickerDelegate>delegate;
 
+@end
+
+@protocol ThumbnailPickerDelegate<NSObject>
+@optional
+- (void) thumbnailPicker:(ThumbnailPickerViewController*)aPicker didSelectImage:(NSString*)aImage forImageType:(ImageType)aImageType;
 @end

@@ -225,21 +225,35 @@ const int kMovieSearchCellImageView = 200;
     
     OnlineDatabaseBridge *bridge = [[OnlineDatabaseBridge alloc] init];
     
-    bridge.completionBlock = ^(Movie *aMovie) {
-        [self sendHUDCompletionMessage:@"Movie added" hud:hud];
-    };
+//    bridge.completionBlock = ^(Movie *aMovie) {
+//        [self sendHUDCompletionMessage:@"Movie added" hud:hud];
+//    };
+//    
+//    bridge.failureBlock = ^(NSError *error) {
+//        NSString *errorMessage = @"Unknown Error. Please contact us if this problem exists.";
+//        
+//        if([error.domain isEqualToString:kBridgeErrorDomain]) {
+//            errorMessage = [self getErrorMessageForBridgeError:error.code];
+//        } else if([error.domain isEqualToString:AFNetworkingErrorDomain]) {
+//            errorMessage = @"Online Database not responding, please try again";
+//        }
+//        [self sendHUDCompletionMessage:errorMessage hud:hud];
+//    };
     
-    bridge.failureBlock = ^(NSError *error) {
-        NSString *errorMessage = @"Unknown Error. Please contact us if this problem exists.";
+    [bridge saveSearchResultAsMovie:result completion:^(Movie *aMovie) {
         
+        [self sendHUDCompletionMessage:@"Movie added" hud:hud];
+    
+    } failure:^(NSError *error) {
+        
+        NSString *errorMessage = @"Unknown Error. Please contact us if this problem exists.";
         if([error.domain isEqualToString:kBridgeErrorDomain]) {
             errorMessage = [self getErrorMessageForBridgeError:error.code];
         } else if([error.domain isEqualToString:AFNetworkingErrorDomain]) {
             errorMessage = @"Online Database not responding, please try again";
         }
         [self sendHUDCompletionMessage:errorMessage hud:hud];
-    };
-    [bridge saveSearchResultAsMovie:result];
+    }];
         
 }
 

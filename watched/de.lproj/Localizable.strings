@@ -29,6 +29,9 @@
 "SHARE_BUTTON_CANCEL"           = "Abbrechen";
 "SHARE_TWITTER_TEXT"            = "Ich habe \"%@\" gesehen und mit %i of 5 Sternen bewertet";
 
+"PICKER_POP_NOPOSTER_TITLE"     = "Entschuldigung";
+"PICKER_POP_NOPOSTER_CONTENT"   = "Leider gibt es keine weiteren Bilder mehr.";
+"PICKER_POP_NOPOSTER_OK"        = "Ok";
 
 /*================================================
  SETTINGS

@@ -17,15 +17,16 @@ typedef void (^OnlineBridgeFailureBlock)(NSError *);
 // Error Handling
 #define kBridgeErrorDomain @"de.martinjuhasz.bridgeerror"
 typedef enum {
-    BridgeErrorMovieExists
+    BridgeErrorMovieExists,
+    BridgeErrorNoBackdropImageFoundForURL,
+    BridgeErrorNoPosterImageFoundForURL
 } BridgeError;
 
 
 @interface OnlineDatabaseBridge : NSObject
 
-@property (strong, nonatomic) OnlineBridgeCompletionBlock completionBlock;
-@property (strong, nonatomic) OnlineBridgeFailureBlock failureBlock;
-
-- (void)saveSearchResultAsMovie:(SearchResult*)result;
+- (void)saveSearchResultAsMovie:(SearchResult*)result completion:(OnlineBridgeCompletionBlock)aCompletionBlock failure:(OnlineBridgeFailureBlock)aFailureBlock;
+- (void)setBackdropWithImagePath:(NSString*)imagePath toMovie:(Movie*)aMovie success:(void (^)(void))successBlock failure:(OnlineBridgeFailureBlock)failureBlock;
+- (void)setPosterWithImagePath:(NSString*)imagePath toMovie:(Movie*)aMovie success:(void (^)(void))successBlock failure:(OnlineBridgeFailureBlock)aFailureBlock;
 
 @end

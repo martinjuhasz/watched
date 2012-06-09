@@ -18,6 +18,7 @@
 @synthesize gridView;
 @synthesize imageURLs;
 @synthesize imageType;
+@synthesize delegate;
 
 
 ////////////////////////////////////////////////////////////////////////////
@@ -118,7 +119,11 @@
 
 - (void)GMGridView:(GMGridView *)gridView didTapOnItemAtIndex:(NSInteger)position
 {
-    NSLog(@"Did tap at index %d", position);
+    NSString *imagePath = [[self.imageURLs objectAtIndex:position] objectForKey:@"path"];
+    if(!imagePath) return;
+    if (self.delegate && [self.delegate respondsToSelector:@selector(thumbnailPicker:didSelectImage:forImageType:)]) {
+        [self.delegate thumbnailPicker:self didSelectImage:imagePath forImageType:self.imageType];
+    }
 }
 
 @end

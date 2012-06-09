@@ -29,12 +29,15 @@
 
 - (void)setStyles
 {
+    
     // UINavigationBar
     UIImage *navigationBarBgImage = [[UIImage imageNamed:@"g_bg_navbar.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
+    UIImage *navigationBarBackBgImage = [[UIImage imageNamed:@"g_backbutton.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 13, 0, 4)];
     [[UINavigationBar appearance] setBackgroundImage:navigationBarBgImage forBarMetrics:UIBarMetricsDefault];
+    [[UIBarButtonItem appearance] setBackButtonBackgroundImage:navigationBarBackBgImage forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
     [[UINavigationBar appearance] setTitleTextAttributes:
      [NSDictionary dictionaryWithObjectsAndKeys:
-      HEXColor(0x636875), 
+      HEXColor(0x4C4F59), 
       UITextAttributeTextColor, 
       [UIColor colorWithRed:255.0f green:255.0f blue:255.0f alpha:0.33f], 
       UITextAttributeTextShadowColor, 
@@ -52,9 +55,9 @@
     [[UIBarButtonItem appearance] setBackgroundImage:barButtonBgInage forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
     [[UIBarButtonItem appearance] setTitleTextAttributes:
      [NSDictionary dictionaryWithObjectsAndKeys:
-      HEXColor(0xFFFFFF), 
+      HEXColor(0x4C4F59), 
       UITextAttributeTextColor, 
-      [UIColor colorWithRed:0.0f green:0.0f blue:0.0f alpha:0.40f], 
+      [UIColor colorWithRed:255.0f green:255.0f blue:255.0f alpha:0.33f], 
       UITextAttributeTextShadowColor, 
       [NSValue valueWithUIOffset:UIOffsetMake(0, 1)], 
       UITextAttributeTextShadowOffset, 

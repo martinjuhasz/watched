@@ -38,7 +38,7 @@
 @synthesize websiteButton;
 @synthesize deleteButton;
 
-#define kMBackdropHeight 115.0f
+#define kMBackdropHeight 160.0f
 #define kMBackdropScrollStop 50.0f
 
 ////////////////////////////////////////////////////////////////////////////
@@ -75,33 +75,34 @@
 {
     [super layoutSubviews];
 
-    self.backdropImageView.frame = CGRectMake(0.0f, 0.0f, 320.0f, kMBackdropHeight);
+    self.backdropImageView.frame = CGRectMake(-30.0f, 0.0f, 380.0f, kMBackdropHeight);
     self.backdropBottomShadow.frame = CGRectMake(0.0f, 0.0f, 320.0f, kMBackdropHeight);
     self.posterImageView.frame = CGRectMake(9.0f, 93.0f, 89.0f, 126.0f);
     self.backdropButton.frame = CGRectMake(0.0f, 0.0f, 320.0f, kMBackdropHeight);
     self.posterButton.frame = CGRectMake(9.0f, 93.0f, 89.0f, 126.0f);
     
-    self.titleLabel.frame = CGRectMake(110.0f, 125.0f, 206.0f, 46.0f);
+    self.titleLabel.frame = CGRectMake(110.0f, 170.0f, 206.0f, 46.0f);
     [self.titleLabel sizeToFitWithMaximumNumberOfLines:3];
     
     CGRect switchFrame = CGRectZero;
     switchFrame.origin.x = 110.0f;
-    switchFrame.origin.y = 190.0f;
+    switchFrame.origin.y = 235.0f;
     self.watchedSwitch.frame = switchFrame;
     
-    self.ratingView.frame = CGRectMake(0.0f, 233.0f, 320.0f, 56.0f);
+    self.ratingView.frame = CGRectMake(0.0f, 278.0f, 320.0f, 56.0f);
     
-    self.releaseDateLabel.frame = CGRectMake(13.0f, 340.0f, 145.0f, 25.0f);
-    self.runtimeLabel.frame = CGRectMake(162.0f, 340.0f, 145.0f, 25.0f);
+    self.releaseDateLabel.frame = CGRectMake(13.0f, 385.0f, 145.0f, 25.0f);
+    self.runtimeLabel.frame = CGRectMake(162.0f, 385.0f, 145.0f, 25.0f);
     
-    self.actor1ImageView.frame = CGRectMake(16.0f, 400.0f, 83.0f, 48.0f);
-    self.actor2ImageView.frame = CGRectMake(118.0f, 400.0f, 83.0f, 48.0f);
-    self.actor3ImageView.frame = CGRectMake(220.0f, 400.0f, 83.0f, 48.0f);
-    self.actor1Label.frame = CGRectMake(16.0f, 445.0f, 83.0f, 25.0f);
-    self.actor2Label.frame = CGRectMake(118.0f, 445.0f, 83.0f, 25.0f);
-    self.actor3Label.frame = CGRectMake(220.0f, 445.0f, 83.0f, 25.0f);
+    // until here
+    self.actor1ImageView.frame = CGRectMake(16.0f, 445.0f, 83.0f, 48.0f);
+    self.actor2ImageView.frame = CGRectMake(118.0f, 445.0f, 83.0f, 48.0f);
+    self.actor3ImageView.frame = CGRectMake(220.0f, 445.0f, 83.0f, 48.0f);
+    self.actor1Label.frame = CGRectMake(16.0f, 490, 83.0f, 25.0f);
+    self.actor2Label.frame = CGRectMake(118.0f, 490, 83.0f, 25.0f);
+    self.actor3Label.frame = CGRectMake(220.0f, 490, 83.0f, 25.0f);
     
-    self.overviewLabel.frame = CGRectMake(13.0f, 505.0f, 294.0f, 0.0f);
+    self.overviewLabel.frame = CGRectMake(13.0f, 550.0f, 294.0f, 0.0f);
     [self.overviewLabel sizeToFit];
     
     self.noteButton.frame = CGRectMake(13.0f, self.overviewLabel.bottom + 30.0f, 294.0f, 25.0f);
@@ -221,7 +222,7 @@
     [self.mainScrollView addSubview:self.actor3Label];
     
     
-    UILabel *overviewTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(13.0f, 485.0f, 300.0f, 15.0f)];
+    UILabel *overviewTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(13.0f, 530.0f, 300.0f, 15.0f)];
     overviewTitleLabel.text = @"Overview";
     [self setDefaultStylesForLabels:overviewTitleLabel];
     overviewTitleLabel.adjustsFontSizeToFitWidth = NO;
@@ -294,7 +295,7 @@
         CGRect imageViewRect = self.backdropImageView.frame;
         imageViewRect.origin.y = scrollViewOffset;
         imageViewRect.size.height = kMBackdropHeight - maxVal;
-        
+
         // Shadow
         CGRect shadowRect = self.backdropBottomShadow.frame;
         shadowRect.size.height = kMBackdropHeight - (minVal + kMBackdropScrollStop);

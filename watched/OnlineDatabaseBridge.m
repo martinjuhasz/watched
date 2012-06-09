@@ -24,10 +24,7 @@
 
 @implementation OnlineDatabaseBridge
 
-@synthesize completionBlock;
-@synthesize failureBlock;
-
-- (void)saveSearchResultAsMovie:(SearchResult*)result
+- (void)saveSearchResultAsMovie:(SearchResult*)result completion:(OnlineBridgeCompletionBlock)aCompletionBlock failure:(OnlineBridgeFailureBlock)aFailureBlock
 {
     [[OnlineMovieDatabase sharedMovieDatabase] getMovieDetailsForMovieID:result.searchResultId completion:^(NSDictionary *movieDict) {
         
@@ -53,67 +50,85 @@
                 
                 // Backdrop
                 NSString *backdropString = [movieDict objectForKey:@"backdrop_path"];
-                NSURL *backdropURL = [[OnlineMovieDatabase sharedMovieDatabase] getImageURLForImagePath:backdropString imageType:ImageTypeBackdrop nearWidth:800.0f];
-                if(backdropURL) {
-                    dispatch_group_enter(group);
-                    NSURLRequest *backdropRequest = [NSURLRequest requestWithURL:backdropURL];
-                    AFHTTPRequestOperation *backdropOperation = [[AFHTTPRequestOperation alloc] initWithRequest:backdropRequest];
-                    [backdropOperation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
-                        if([responseObject isKindOfClass:[NSData class]]) {
-                            movie.backdrop = [UIImage imageWithData:responseObject];
-                            movie.backdropURL = backdropString;
-                            dispatch_group_leave(group);
-                        }
-                    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                        runtimeError = error;
-                        dispatch_group_leave(group);
-                    }];
-                    [backdropOperation start];
-                }
-                
+                dispatch_group_enter(group);
+                [self setBackdropWithImagePath:backdropString toMovie:movie success:^{
+                    dispatch_group_leave(group);
+                } failure:^(NSError *aError) {
+                    dispatch_group_leave(group);
+                }];
                 
                 // Poster
                 NSString *posterString = [movieDict objectForKey:@"poster_path"];
-                NSURL *posterURL = [[OnlineMovieDatabase sharedMovieDatabase] getImageURLForImagePath:posterString imageType:ImageTypeBackdrop nearWidth:260.0f];
-                if(posterURL) {
-                    dispatch_group_enter(group);
-                    NSURLRequest *posterRequest = [NSURLRequest requestWithURL:posterURL];
-                    AFHTTPRequestOperation *posterOperation = [[AFHTTPRequestOperation alloc] initWithRequest:posterRequest];
-                    [posterOperation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
-                        
-                        CGFloat posterWitdh = 260.0f;
-                        CGFloat thumbnailPosterWith = 122.0f;
-                        UIImage *image = [UIImage imageWithData:responseObject];
-                        
-                        // Image
-                        UIImage *poster = nil;
-                        CGSize newPosterSize = CGSizeMake(posterWitdh, (posterWitdh / image.size.width) * image.size.height);
-                        UIGraphicsBeginImageContext(newPosterSize);
-                        [image drawInRect:CGRectMake(0, 0, newPosterSize.width, newPosterSize.height)];
-                        poster = UIGraphicsGetImageFromCurrentImageContext();
-                        UIGraphicsEndImageContext();
-                        
-                        // Thumb Image
-                        UIImage *thumbPoster = nil;
-                        CGSize newThumbnailPosterSize = CGSizeMake(thumbnailPosterWith, (thumbnailPosterWith / image.size.width) * image.size.height);
-                        UIGraphicsBeginImageContext(newThumbnailPosterSize);
-                        [image drawInRect:CGRectMake(0, 0, newThumbnailPosterSize.width, newThumbnailPosterSize.height)];
-                        thumbPoster = UIGraphicsGetImageFromCurrentImageContext();
-                        UIGraphicsEndImageContext();
-                        
-                        movie.poster = poster;
-                        movie.posterURL = posterString;
-                        movie.posterThumbnail = thumbPoster;
-                        
-                        dispatch_group_leave(group);
-                        
-                        
-                    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                        runtimeError = error;
-                        dispatch_group_leave(group);
-                    }];
-                    [posterOperation start];
-                }
+                dispatch_group_enter(group);
+                [self setPosterWithImagePath:posterString toMovie:movie success:^{
+                    dispatch_group_leave(group);
+                } failure:^(NSError *aError) {
+                    dispatch_group_leave(group);
+                }];
+                
+//                // Backdrop
+//                NSString *backdropString = [movieDict objectForKey:@"backdrop_path"];
+//                NSURL *backdropURL = [[OnlineMovieDatabase sharedMovieDatabase] getImageURLForImagePath:backdropString imageType:ImageTypeBackdrop nearWidth:800.0f];
+//                if(backdropURL) {
+//                    dispatch_group_enter(group);
+//                    NSURLRequest *backdropRequest = [NSURLRequest requestWithURL:backdropURL];
+//                    AFHTTPRequestOperation *backdropOperation = [[AFHTTPRequestOperation alloc] initWithRequest:backdropRequest];
+//                    [backdropOperation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+//                        if([responseObject isKindOfClass:[NSData class]]) {
+//                            movie.backdrop = [UIImage imageWithData:responseObject];
+//                            movie.backdropURL = backdropString;
+//                            dispatch_group_leave(group);
+//                        }
+//                    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+//                        runtimeError = error;
+//                        dispatch_group_leave(group);
+//                    }];
+//                    [backdropOperation start];
+//                }
+                
+                
+                // Poster
+//                NSString *posterString = [movieDict objectForKey:@"poster_path"];
+//                NSURL *posterURL = [[OnlineMovieDatabase sharedMovieDatabase] getImageURLForImagePath:posterString imageType:ImageTypePoster nearWidth:260.0f];
+//                if(posterURL) {
+//                    dispatch_group_enter(group);
+//                    NSURLRequest *posterRequest = [NSURLRequest requestWithURL:posterURL];
+//                    AFHTTPRequestOperation *posterOperation = [[AFHTTPRequestOperation alloc] initWithRequest:posterRequest];
+//                    [posterOperation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+//                        
+//                        CGFloat posterWitdh = 260.0f;
+//                        CGFloat thumbnailPosterWith = 122.0f;
+//                        UIImage *image = [UIImage imageWithData:responseObject];
+//                        
+//                        // Image
+//                        UIImage *poster = nil;
+//                        CGSize newPosterSize = CGSizeMake(posterWitdh, (posterWitdh / image.size.width) * image.size.height);
+//                        UIGraphicsBeginImageContext(newPosterSize);
+//                        [image drawInRect:CGRectMake(0, 0, newPosterSize.width, newPosterSize.height)];
+//                        poster = UIGraphicsGetImageFromCurrentImageContext();
+//                        UIGraphicsEndImageContext();
+//                        
+//                        // Thumb Image
+//                        UIImage *thumbPoster = nil;
+//                        CGSize newThumbnailPosterSize = CGSizeMake(thumbnailPosterWith, (thumbnailPosterWith / image.size.width) * image.size.height);
+//                        UIGraphicsBeginImageContext(newThumbnailPosterSize);
+//                        [image drawInRect:CGRectMake(0, 0, newThumbnailPosterSize.width, newThumbnailPosterSize.height)];
+//                        thumbPoster = UIGraphicsGetImageFromCurrentImageContext();
+//                        UIGraphicsEndImageContext();
+//                        
+//                        movie.poster = poster;
+//                        movie.posterURL = posterString;
+//                        movie.posterThumbnail = thumbPoster;
+//                        
+//                        dispatch_group_leave(group);
+//                        
+//                        
+//                    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+//                        runtimeError = error;
+//                        dispatch_group_leave(group);
+//                    }];
+//                    [posterOperation start];
+//                }
                 
                 
                 // Casts
@@ -202,20 +217,98 @@
                 
                 if(!runtimeError) {
                     [context save:nil];
-                    completionBlock(movie);
+                    aCompletionBlock(movie);
                 } else {
-                    failureBlock(runtimeError);
+                    aFailureBlock(runtimeError);
                 }    
                 
             } else {
                 NSError *existsError = [[NSError alloc] initWithDomain:kBridgeErrorDomain code:BridgeErrorMovieExists userInfo:[NSDictionary dictionaryWithObjectsAndKeys:@"Movie with this ID already exists", NSLocalizedDescriptionKey, nil]];
-                failureBlock(existsError);
+                aFailureBlock(existsError);
             }
             
         });
     } failure:^(NSError *aError) {
-        failureBlock(aError);
+        aFailureBlock(aError);
     }];
 }
+
+- (void)setBackdropWithImagePath:(NSString*)imagePath toMovie:(Movie*)aMovie success:(void (^)(void))successBlock failure:(OnlineBridgeFailureBlock)aFailureBlock
+{
+    NSURL *backdropURL = [[OnlineMovieDatabase sharedMovieDatabase] getImageURLForImagePath:imagePath imageType:ImageTypeBackdrop nearWidth:800.0f];
+    if(!backdropURL) {
+        NSError *aFailureError = [[NSError alloc] initWithDomain:kBridgeErrorDomain code:BridgeErrorNoBackdropImageFoundForURL userInfo:[NSDictionary dictionaryWithObjectsAndKeys:@"No Backdrop image found for BackdropURL", NSLocalizedDescriptionKey, nil]];
+        aFailureBlock(aFailureError);
+        return;
+    }
+
+    NSURLRequest *backdropRequest = [NSURLRequest requestWithURL:backdropURL];
+    AFHTTPRequestOperation *backdropOperation = [[AFHTTPRequestOperation alloc] initWithRequest:backdropRequest];
+    [backdropOperation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+        if([responseObject isKindOfClass:[NSData class]]) {
+            aMovie.backdrop = [UIImage imageWithData:responseObject];
+            aMovie.backdropURL = imagePath;
+            successBlock();
+        } else {
+            NSError *aFailureError = [[NSError alloc] initWithDomain:kBridgeErrorDomain code:BridgeErrorNoBackdropImageFoundForURL userInfo:[NSDictionary dictionaryWithObjectsAndKeys:@"No Backdrop image found for BackdropURL", NSLocalizedDescriptionKey, nil]];
+            aFailureBlock(aFailureError);
+        }
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        aFailureBlock(error);
+    }];
+    [backdropOperation start];
+}
+
+- (void)setPosterWithImagePath:(NSString*)imagePath toMovie:(Movie*)aMovie success:(void (^)(void))successBlock failure:(OnlineBridgeFailureBlock)aFailureBlock
+{
+    NSURL *posterURL = [[OnlineMovieDatabase sharedMovieDatabase] getImageURLForImagePath:imagePath imageType:ImageTypePoster nearWidth:260.0f];
+    if(!posterURL) {
+        NSError *aFailureError = [[NSError alloc] initWithDomain:kBridgeErrorDomain code:BridgeErrorNoPosterImageFoundForURL userInfo:[NSDictionary dictionaryWithObjectsAndKeys:@"No Poster image found for PosterURL", NSLocalizedDescriptionKey, nil]];
+        aFailureBlock(aFailureError);
+        return;
+    }
+    
+    NSURLRequest *posterRequest = [NSURLRequest requestWithURL:posterURL];
+    AFHTTPRequestOperation *backdropOperation = [[AFHTTPRequestOperation alloc] initWithRequest:posterRequest];
+    [backdropOperation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+        if([responseObject isKindOfClass:[NSData class]]) {
+
+            
+            CGFloat posterWitdh = 260.0f;
+            CGFloat thumbnailPosterWith = 122.0f;
+            UIImage *image = [UIImage imageWithData:responseObject];
+            
+            // Image
+            UIImage *poster = nil;
+            CGSize newPosterSize = CGSizeMake(posterWitdh, (posterWitdh / image.size.width) * image.size.height);
+            UIGraphicsBeginImageContext(newPosterSize);
+            [image drawInRect:CGRectMake(0, 0, newPosterSize.width, newPosterSize.height)];
+            poster = UIGraphicsGetImageFromCurrentImageContext();
+            UIGraphicsEndImageContext();
+            
+            // Thumb Image
+            UIImage *thumbPoster = nil;
+            CGSize newThumbnailPosterSize = CGSizeMake(thumbnailPosterWith, (thumbnailPosterWith / image.size.width) * image.size.height);
+            UIGraphicsBeginImageContext(newThumbnailPosterSize);
+            [image drawInRect:CGRectMake(0, 0, newThumbnailPosterSize.width, newThumbnailPosterSize.height)];
+            thumbPoster = UIGraphicsGetImageFromCurrentImageContext();
+            UIGraphicsEndImageContext();
+            
+            aMovie.poster = poster;
+            aMovie.posterURL = imagePath;
+            aMovie.posterThumbnail = thumbPoster;
+            
+            successBlock();
+
+        } else {
+            NSError *aFailureError = [[NSError alloc] initWithDomain:kBridgeErrorDomain code:BridgeErrorNoBackdropImageFoundForURL userInfo:[NSDictionary dictionaryWithObjectsAndKeys:@"No Poster image found for PosterURL", NSLocalizedDescriptionKey, nil]];
+            aFailureBlock(aFailureError);
+        }
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        aFailureBlock(error);
+    }];
+    [backdropOperation start];
+}
+
 
 @end
