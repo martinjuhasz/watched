@@ -100,7 +100,7 @@
     self.detailView.backdropImageView.image = self.movie.backdrop;
     self.detailView.posterImageView.image = self.movie.poster;
     self.detailView.releaseDateLabel.text = self.movie.releaseDateFormatted;
-    self.detailView.runtimeLabel.text = [self.movie.runtime stringValue];
+    self.detailView.runtimeLabel.text = self.movie.runtimeFormatted;
     self.detailView.overviewLabel.text = self.movie.overview;
     self.detailView.ratingView.rating = [self.movie.rating floatValue];
     
@@ -325,7 +325,7 @@
 - (void)shareWithTwitter
 {
     
-    NSString *text = [NSString stringWithFormat:@"I watched \"%@\" and rated it with %d of 5 Stars", self.movie.title, [self.movie.rating intValue]];
+    NSString *text = [NSString stringWithFormat:NSLocalizedString(@"SHARE_TWITTER_TEXT", nil), self.movie.title, [self.movie.rating intValue]];
     
     TWTweetComposeViewController *twitter = [[TWTweetComposeViewController alloc] init];
     [twitter addImage:self.movie.poster];

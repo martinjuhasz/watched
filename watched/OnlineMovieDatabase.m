@@ -27,7 +27,7 @@ static NSString *databaseURL = @"http://api.themoviedb.org/3";
 
 @synthesize apiKey;
 @synthesize configuration;
-
+@synthesize preferredLanguage;
 
 
 ////////////////////////////////////////////////////////////////////////////
@@ -59,6 +59,14 @@ static NSString *databaseURL = @"http://api.themoviedb.org/3";
 {
     apiKey = aApiKey;
     [self loadConfigurationWithFailure:nil];
+}
+
+- (NSString*)additionalURLParams
+{
+    NSString *params = [NSString stringWithFormat:@"api_key=%@",apiKey];
+    if(self.preferredLanguage)
+        params = [NSString stringWithFormat:@"%@&language=%@", params, self.preferredLanguage];
+    return params;
 }
 
 
@@ -131,7 +139,7 @@ static NSString *databaseURL = @"http://api.themoviedb.org/3";
 - (void)getMoviesWithSearchString:(NSString*)value atPage:(NSInteger)page completion:(MovieSearchCompletionBlock)callback failure:(OnlineMovieDatabaseErrorBlock)failure
 {
     value = [value stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/search/movie?api_key=%@&query=%@&page=%d",databaseURL, apiKey, value, page]];
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/search/movie?%@&query=%@&page=%d",databaseURL, [self additionalURLParams], value, page]];
     XLog(@"Searching at URL: %@", url);
     NSURLRequest *request = [NSURLRequest requestWithURL:url];
     
@@ -221,7 +229,7 @@ static NSString *databaseURL = @"http://api.themoviedb.org/3";
 
 - (void)getMovieDetailsForMovieID:(NSNumber *)movieID completion:(MovieDetailCompletionBlock)callback failure:(OnlineMovieDatabaseErrorBlock)failure
 {
-    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/movie/%d?api_key=%@",databaseURL, [movieID intValue], apiKey]];
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/movie/%d?%@",databaseURL, [movieID intValue], [self additionalURLParams]]];
     XLog("Getting Movie Details at URL: %@", url);
     NSURLRequest *request = [NSURLRequest requestWithURL:url];
     
@@ -255,13 +263,37 @@ static NSString *databaseURL = @"http://api.themoviedb.org/3";
 - (void)getMovieTrailersForMovieID:(NSNumber *)movieID completion:(MovieTrailersCompletionBlock)callback failure:(OnlineMovieDatabaseErrorBlock)failure
 {
     // http://api.themoviedb.org/3/movie/11/casts
-    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/movie/%d/trailers?api_key=%@",databaseURL, [movieID intValue], apiKey]];
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/movie/%d/trailers?%@",databaseURL, [movieID intValue], [self additionalURLParams]]];
     XLog(@"Getting Movie Trailers at URL: %@", url);
     NSURLRequest *request = [NSURLRequest requestWithURL:url];
     
     AFJSONRequestOperation *operation;
     operation = [AFJSONRequestOperation JSONRequestOperationWithRequest:request success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
-        callback(JSON);
+        if([JSON isKindOfClass:[NSDictionary class]]) {
+            NSDictionary *trailers = (NSDictionary*)JSON;
+            __block BOOL firstTry = YES;
+            // in case there dont exist trailers for a specific language, grab the english ones
+            if([[trailers objectForKey:@"quicktime"] count] == 0 && [[trailers objectForKey:@"youtube"] count] == 0 && ![self.preferredLanguage isEqualToString:@"en"] && firstTry) {
+                
+                // Second Try
+                firstTry = NO;
+                NSURL *secondUrl = [NSURL URLWithString:[NSString stringWithFormat:@"%@/movie/%d/trailers?api_key=%@",databaseURL, [movieID intValue], apiKey]];
+                XLog(@"Getting Movie Trailers at URL: %@", secondUrl);
+                NSURLRequest *secondRequest = [NSURLRequest requestWithURL:secondUrl];
+                AFJSONRequestOperation *secondOperation;
+                secondOperation = [AFJSONRequestOperation JSONRequestOperationWithRequest:secondRequest success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
+                    callback(JSON);
+                } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
+                    XLog("%@", [error localizedDescription]);
+                    failure(error);
+                }];
+                [secondOperation start];
+            } else {
+                callback(JSON);
+            }
+        } else {
+            callback(JSON);
+        }
     } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
         failure(error);
     }];

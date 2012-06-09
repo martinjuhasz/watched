@@ -9,17 +9,24 @@
 
 
 /*================================================
+ Table View
+ ================================================*/
+
+"BUTTON_ADDMOVIE_TITLE"         = "add Movie";
+"CONTROL_SORTMOVIES_TITLE_ALL"  = "All Movies";
+"CONTROL_SORTMOVIES_TITLE_UNWATCHED"  = "Unwatched";
+"CONTROL_SORTMOVIES_TITLE_UNRATED"    = "Unrated";
+
+/*================================================
  DETAIL VIEW
  ================================================*/
 
 "TITLE_WATCHEDON"               = "Watched on:";
 "BUTTON_SHOW_CAST"              = "Show Cast";
-"BUTTON_SHOW_POSTERS"           = "show Posters";
 "BUTTON_VISIT_HOMEPAGE"         = "visit Homepage";
 "BUTTON_WATCH_TRAILER"          = "watch Trailer";
-"BUTTON_SHARE"                  = "share Movie";
-"DATEPICKER_CLEAR"              = "clear";
-"RELEASE_SLUG"                  = "released on";
+"BUTTON_DELETE_MOVIE"           = "delete Movie";
+"BUTTON_ADD_NOTE"               = "Add Note";
 "DETAIL_DESCRIPTION_TITLE"      = "Overview";
 
 "SHARE_BUTTON_TITLE"            = "Share by";
@@ -32,6 +39,17 @@
 "PICKER_POP_NOPOSTER_TITLE"     = "Sorry";
 "PICKER_POP_NOPOSTER_CONTENT"   = "There are no more Images available.";
 "PICKER_POP_NOPOSTER_OK"        = "Ok";
+
+"HOURS_MIN"                     = "h";
+"MINUTES_MIN"                   = "min";
+
+/*================================================
+ CAST
+ ================================================*/
+
+"SECTION_HEADER_CAST"           = "Cast";
+"SECTION_HEADER_CREW"           = "Crew";
+"CAST_CHARACTER_PREFIX"         = "as %@";
 
 /*================================================
  SETTINGS
@@ -54,3 +72,8 @@
 "SETTINGS_HEADER_CONTACT"       = "CAPS";
 "SETTINGS_HEADER_BETA"          = "Beta";
 
+/*================================================
+ NOTES
+ ================================================*/
+
+"INITIAL_NOTE"                  = "Add your note here";

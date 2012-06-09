@@ -21,5 +21,6 @@ typedef enum {
 @property (assign, nonatomic) MovieSortType currentSortType;
 @property (strong, nonatomic) IBOutlet UIButton *addButton;
 @property (strong, nonatomic) IBOutlet UIView *addButtonBackgroundView;
+@property (strong, nonatomic) IBOutlet UISegmentedControl *sortControl;
 
 @end

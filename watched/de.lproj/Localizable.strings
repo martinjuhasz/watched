@@ -9,17 +9,24 @@
 
 
 /*================================================
+ Table View
+ ================================================*/
+
+"BUTTON_ADDMOVIE_TITLE"         = "Film hinzufügen";
+"CONTROL_SORTMOVIES_TITLE_ALL"  = "Alle Filme";
+"CONTROL_SORTMOVIES_TITLE_UNWATCHED"  = "Ungesehen";
+"CONTROL_SORTMOVIES_TITLE_UNRATED"    = "Unbewertet";
+
+/*================================================
  DETAIL VIEW
  ================================================*/
 
 "TITLE_WATCHEDON"               = "Gesehen am:";
 "BUTTON_SHOW_CAST"              = "Mitwirkende anzeigen";
-"BUTTON_SHOW_POSTERS"           = "Poster anzeigen";
 "BUTTON_VISIT_HOMEPAGE"         = "Webseite besuchen";
 "BUTTON_WATCH_TRAILER"          = "Trailer ansehen";
-"BUTTON_SHARE"                  = "teile den Film";
-"DATEPICKER_CLEAR"              = "löschen";
-"RELEASE_SLUG"                  = "veröffentlicht:";
+"BUTTON_DELETE_MOVIE"           = "Film löschen";
+"BUTTON_ADD_NOTE"               = "Notiz hinzufügen";
 "DETAIL_DESCRIPTION_TITLE"      = "Zusammenfassung";
 
 "SHARE_BUTTON_TITLE"            = "Teilen mit";
@@ -32,6 +39,17 @@
 "PICKER_POP_NOPOSTER_TITLE"     = "Entschuldigung";
 "PICKER_POP_NOPOSTER_CONTENT"   = "Leider gibt es keine weiteren Bilder mehr.";
 "PICKER_POP_NOPOSTER_OK"        = "Ok";
+
+"HOURS_MIN"                     = "h";
+"MINUTES_MIN"                   = "min";
+
+/*================================================
+ CAST
+ ================================================*/
+
+"SECTION_HEADER_CAST"           = "Besetzung";
+"SECTION_HEADER_CREW"           = "Crew";
+"CAST_CHARACTER_PREFIX"         = "als %@";
 
 /*================================================
  SETTINGS
@@ -54,6 +72,10 @@
 "SETTINGS_HEADER_CONTACT"       = "CAPS";
 "SETTINGS_HEADER_BETA"          = "Beta";
 
+/*================================================
+ NOTES
+ ================================================*/
 
+"INITIAL_NOTE"                  = "Hier eine Notiz hinterlassen";
 
 

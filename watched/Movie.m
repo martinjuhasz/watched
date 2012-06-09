@@ -13,6 +13,7 @@
 @synthesize backdrop;
 @synthesize poster;
 @synthesize releaseDateFormatted;
+@synthesize runtimeFormatted;
 
 
 
@@ -197,11 +198,25 @@
 -(NSString*)releaseDateFormatted
 {
     [NSDateFormatter setDefaultFormatterBehavior:NSDateFormatterBehavior10_4];
-    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
-    [dateFormatter setTimeStyle:NSDateFormatterNoStyle];
-    NSString *releaseDateString = [dateFormatter stringFromDate:self.releaseDate];
-    return releaseDateString;
+    NSString *releaseString = [NSDateFormatter localizedStringFromDate:self.releaseDate 
+                                                             dateStyle:NSDateFormatterMediumStyle 
+                                                             timeStyle:NSDateFormatterNoStyle];
+    return releaseString;
+}
+
+-(NSString*)runtimeFormatted
+{
+    int hours = (int)floorf([self.runtime floatValue] / 60.0f);
+    int minutes = [self.runtime intValue] % 60;
+    NSString *returnString = [NSString stringWithFormat:@"0%@",NSLocalizedString(@"MINUTES_MIN", nil)];
+    if(hours > 0 && minutes > 0) {
+        returnString = [NSString stringWithFormat:@"%d%@ %d%@",hours, NSLocalizedString(@"HOURS_MIN", nil), minutes, NSLocalizedString(@"MINUTES_MIN", nil)];
+    } else if(hours > 0 && minutes <= 0) {
+        returnString = [NSString stringWithFormat:@"%d%@",hours, NSLocalizedString(@"HOURS_MIN", nil)];
+    } else if (hours <= 0 && minutes > 0) {
+        returnString = [NSString stringWithFormat:@"%d%@",minutes, NSLocalizedString(@"MINUTES_MIN", nil)];
+    }
+    return returnString;
 }
 
 - (Trailer*)bestTrailer

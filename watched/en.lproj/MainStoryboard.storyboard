@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="1.1" toolsVersion="2182" systemVersion="11E53" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="xLq-tF-y1P">
     <dependencies>
-        <deployment defaultVersion="1296" identifier="iOS"/>
         <development defaultVersion="4200" identifier="xcode"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="1181"/>
     </dependencies>
@@ -122,6 +121,7 @@
                     <connections>
                         <outlet property="addButton" destination="LKR-Do-Mqt" id="IIC-0l-2WF"/>
                         <outlet property="addButtonBackgroundView" destination="uuS-7l-PMb" id="PKA-jk-771"/>
+                        <outlet property="sortControl" destination="p6I-ry-VOo" id="Bwd-FU-eVY"/>
                         <outlet property="tableView" destination="4ys-yN-434" id="43A-Pu-XUg"/>
                     </connections>
                 </viewController>
@@ -318,18 +318,6 @@
                         <rect key="frame" x="0.0" y="20" width="320" height="460"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <searchBar contentMode="redraw" id="Wag-Kj-taO">
-                                <rect key="frame" x="0.0" y="0.0" width="246" height="44"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
-                                <textInputTraits key="textInputTraits"/>
-                                <scopeButtonTitles>
-                                    <string>Title</string>
-                                    <string>Title</string>
-                                </scopeButtonTitles>
-                                <connections>
-                                    <outlet property="delegate" destination="XfI-Ie-lYa" id="Nh4-33-tIz"/>
-                                </connections>
-                            </searchBar>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="76" sectionHeaderHeight="22" sectionFooterHeight="22" id="xx4-B8-l30">
                                 <rect key="frame" x="0.0" y="44" width="320" height="416"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -386,10 +374,29 @@
                                 </connections>
                             </tableView>
                             <navigationBar contentMode="scaleToFill" id="Uca-eX-wQH">
-                                <rect key="frame" x="246" y="0.0" width="74" height="44"/>
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                 <items>
                                     <navigationItem id="BfG-fd-7lj">
+                                        <nil key="title"/>
+                                        <view key="titleView" contentMode="scaleToFill" id="Qyc-lT-A3m">
+                                            <rect key="frame" x="5" y="6" width="242" height="33"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <subviews>
+                                                <searchBar contentMode="redraw" text="" id="Wag-Kj-taO">
+                                                    <rect key="frame" x="0.0" y="-6" width="242" height="44"/>
+                                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                                    <textInputTraits key="textInputTraits"/>
+                                                    <scopeButtonTitles>
+                                                        <string>Title</string>
+                                                        <string>Title</string>
+                                                    </scopeButtonTitles>
+                                                    <connections>
+                                                        <outlet property="delegate" destination="XfI-Ie-lYa" id="Nh4-33-tIz"/>
+                                                    </connections>
+                                                </searchBar>
+                                            </subviews>
+                                        </view>
                                         <barButtonItem key="rightBarButtonItem" systemItem="cancel" id="AYX-Fb-I5F">
                                             <connections>
                                                 <action selector="cancelButtonClicked:" destination="XfI-Ie-lYa" id="fnn-ki-wsk"/>
@@ -431,6 +438,7 @@
             <relationships>
                 <relationship kind="outlet" name="addButton" candidateClass="UIButton"/>
                 <relationship kind="outlet" name="addButtonBackgroundView" candidateClass="UIView"/>
+                <relationship kind="outlet" name="sortControl" candidateClass="UISegmentedControl"/>
                 <relationship kind="outlet" name="tableView" candidateClass="UITableView"/>
             </relationships>
         </class>

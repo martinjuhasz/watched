@@ -103,9 +103,9 @@ const int kMovieCastCellProfileImageView = 200;
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
     if (section == 0) {
-        return @"Cast";
+        return NSLocalizedString(@"SECTION_HEADER_CAST", nil);
     }
-    return @"Crew";
+    return NSLocalizedString(@"SECTION_HEADER_CREW", nil);
 }
 
 - (UITableViewCell *)castCellAtIndexPath:(NSIndexPath *)indexPath
@@ -122,7 +122,7 @@ const int kMovieCastCellProfileImageView = 200;
     
     Cast *currentCast = [self.movie.sortedCasts objectAtIndex:indexPath.row];
     
-    characterLabel.text = [NSString stringWithFormat:@"as %@", currentCast.character];
+    characterLabel.text = [NSString stringWithFormat:NSLocalizedString(@"CAST_CHARACTER_PREFIX", nil), currentCast.character];
     nameLabel.text = currentCast.name;
     NSURL *imageURL = [[OnlineMovieDatabase sharedMovieDatabase] getImageURLForImagePath:currentCast.profilePath imageType:ImageTypeProfile nearWidth:200.0f];
     [profileImageView setImageWithURL:imageURL];

@@ -21,10 +21,18 @@
     [TestFlight takeOff:@"bd44b4d15d82ebee20573cbad8c85c83_MzE1MTMyMDExLTExLTA1IDEzOjA0OjU2LjU3ODE3Mg"];
     
     [[OnlineMovieDatabase sharedMovieDatabase] setApiKey:@"d518563ee67cb6d475d2440d3e663e93"];
-    
-    
+    [[OnlineMovieDatabase sharedMovieDatabase] setPreferredLanguage:[self appLanguage]];
     
     return YES;
+}
+
+- (NSString*)appLanguage
+{
+    NSString *userLanguage = [[NSLocale preferredLanguages] objectAtIndex:0];
+    if([userLanguage isEqualToString:@"de"])
+        return @"de";
+
+    return @"en";
 }
 
 - (void)setStyles

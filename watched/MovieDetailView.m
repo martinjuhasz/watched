@@ -223,7 +223,7 @@
     
     
     UILabel *overviewTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(13.0f, 530.0f, 300.0f, 15.0f)];
-    overviewTitleLabel.text = @"Overview";
+    overviewTitleLabel.text = NSLocalizedString(@"DETAIL_DESCRIPTION_TITLE", nil);
     [self setDefaultStylesForLabels:overviewTitleLabel];
     overviewTitleLabel.adjustsFontSizeToFitWidth = NO;
     overviewTitleLabel.textColor = HEXColor(0xFFFFFF);
@@ -240,35 +240,35 @@
     self.noteButton.titleLabel.font = [UIFont boldSystemFontOfSize:16.0f];
     self.noteButton.titleLabel.adjustsFontSizeToFitWidth = NO;
     self.noteButton.titleColor = HEXColor(0xABADAF);
-    [self.noteButton setTitle:@"Add Note"];
+    [self.noteButton setTitle:NSLocalizedString(@"BUTTON_ADD_NOTE", nil)];
     [self.mainScrollView addSubview:self.noteButton];
     
     self.trailerButton = [UIButton buttonWithType:UIButtonTypeCustom];
     self.trailerButton.titleLabel.font = [UIFont boldSystemFontOfSize:16.0f];
     self.trailerButton.titleLabel.adjustsFontSizeToFitWidth = NO;
     self.trailerButton.titleColor = HEXColor(0xABADAF);
-    [self.trailerButton setTitle:@"Watch Trailer"];
+    [self.trailerButton setTitle:NSLocalizedString(@"BUTTON_WATCH_TRAILER", nil)];
     [self.mainScrollView addSubview:self.trailerButton];
     
     self.castsButton = [UIButton buttonWithType:UIButtonTypeCustom];
     self.castsButton.titleLabel.font = [UIFont boldSystemFontOfSize:16.0f];
     self.castsButton.titleLabel.adjustsFontSizeToFitWidth = NO;
     self.castsButton.titleColor = HEXColor(0xABADAF);
-    [self.castsButton setTitle:@"Show Cast"];
+    [self.castsButton setTitle:NSLocalizedString(@"BUTTON_SHOW_CAST", nil)];
     [self.mainScrollView addSubview:self.castsButton];
     
     self.websiteButton = [UIButton buttonWithType:UIButtonTypeCustom];
     self.websiteButton.titleLabel.font = [UIFont boldSystemFontOfSize:16.0f];
     self.websiteButton.titleLabel.adjustsFontSizeToFitWidth = NO;
     self.websiteButton.titleColor = HEXColor(0xABADAF);
-    [self.websiteButton setTitle:@"Visit Official Website"];
+    [self.websiteButton setTitle:NSLocalizedString(@"BUTTON_VISIT_HOMEPAGE", nil)];
     [self.mainScrollView addSubview:self.websiteButton];
     
     self.deleteButton = [UIButton buttonWithType:UIButtonTypeCustom];
     self.deleteButton.titleLabel.font = [UIFont boldSystemFontOfSize:16.0f];
     self.deleteButton.titleLabel.adjustsFontSizeToFitWidth = NO;
     self.deleteButton.titleColor = HEXColor(0xABADAF);
-    [self.deleteButton setTitle:@"Delete Movie"];
+    [self.deleteButton setTitle:NSLocalizedString(@"BUTTON_DELETE_MOVIE", nil)];
     [self.mainScrollView addSubview:self.deleteButton];
     
 }

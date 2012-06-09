@@ -29,6 +29,7 @@ typedef enum {
 
 @property(nonatomic, strong) NSString *apiKey;
 @property(nonatomic, strong) NSDictionary *configuration;
+@property(nonatomic, strong) NSString *preferredLanguage;
 
 + (id)sharedMovieDatabase;
 - (void)getMoviesWithSearchString:(NSString*)value atPage:(NSInteger)page completion:(MovieSearchCompletionBlock)callback failure:(OnlineMovieDatabaseErrorBlock)failure;

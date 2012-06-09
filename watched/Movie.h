@@ -8,6 +8,7 @@
 @property (nonatomic, strong) UIImage *poster;
 @property (nonatomic, strong) UIImage *posterThumbnail;
 @property (readonly, nonatomic) NSString *releaseDateFormatted;
+@property (readonly, nonatomic) NSString *runtimeFormatted;
 @property (readonly, nonatomic) Trailer *bestTrailer;
 @property (readonly, nonatomic) NSArray *sortedCasts;
 @property (readonly, nonatomic) NSArray *sortedCrews;

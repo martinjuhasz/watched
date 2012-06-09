@@ -33,6 +33,7 @@ const int kMovieDisplayCellImageView = 200;
 @synthesize currentSortType;
 @synthesize addButton;
 @synthesize addButtonBackgroundView;
+@synthesize sortControl;
 
 
 ////////////////////////////////////////////////////////////////////////////
@@ -59,10 +60,15 @@ const int kMovieDisplayCellImageView = 200;
     [self.addButton setTitleShadowColor:[UIColor colorWithRed:255.0f green:255.0f blue:255.0f alpha:0.33f] forState:UIControlStateNormal];
     [[self.addButton titleLabel] setShadowOffset:CGSizeMake(0.0f, 1.0f)];
     self.addButtonBackgroundView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"mv_bg_add.png"]];
+    [self.addButton setTitle:NSLocalizedString(@"BUTTON_ADDMOVIE_TITLE", nil) forState:UIControlStateNormal];
     
+    // Segmented Control
+    [self.sortControl setTitle:NSLocalizedString(@"CONTROL_SORTMOVIES_TITLE_ALL", nil) forSegmentAtIndex:0];
+    [self.sortControl setTitle:NSLocalizedString(@"CONTROL_SORTMOVIES_TITLE_UNWATCHED", nil) forSegmentAtIndex:1];
+    [self.sortControl setTitle:NSLocalizedString(@"CONTROL_SORTMOVIES_TITLE_UNRATED", nil) forSegmentAtIndex:2];
     
+    // load Data
     [self loadMoviesWithSortType:MovieSortTypeAll];
-    
     [[NSNotificationCenter defaultCenter] addObserver:self 
                                              selector:@selector(contextDidSave:) 
                                                  name:NSManagedObjectContextDidSaveNotification 
@@ -78,6 +84,7 @@ const int kMovieDisplayCellImageView = 200;
     
     [self setAddButton:nil];
     [self setAddButtonBackgroundView:nil];
+    [self setSortControl:nil];
     [super viewDidUnload];
     // Release any retained subviews of the main view.
 }

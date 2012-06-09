@@ -32,6 +32,8 @@
     [super viewDidLoad];
     if(self.movie.note) {
         self.textView.text = self.movie.note;
+    } else {
+        self.textView.text = NSLocalizedString(@"INITIAL_NOTE", nil);
     }
     [self.textView becomeFirstResponder];
 	// Do any additional setup after loading the view.
@@ -58,8 +60,10 @@
 - (void)saveNote
 {
     NSString *newText = self.textView.text;
+    if([newText isEqualToString:NSLocalizedString(@"INITIAL_NOTE", nil)]) return;
+    
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
-        
+
         NSManagedObjectContext *context = [[MoviesDataModel sharedDataModel] mainContext];
         
         self.movie.note = newText;
