@@ -25,10 +25,13 @@
 @property (strong, nonatomic) UILabel *runtimeLabel;
 @property (strong, nonatomic) UIImageView *actor1ImageView;
 @property (strong, nonatomic) UILabel *actor1Label;
+@property (strong, nonatomic) UIButton *actor1Button;
 @property (strong, nonatomic) UIImageView *actor2ImageView;
 @property (strong, nonatomic) UILabel *actor2Label;
+@property (strong, nonatomic) UIButton *actor2Button;
 @property (strong, nonatomic) UIImageView *actor3ImageView;
 @property (strong, nonatomic) UILabel *actor3Label;
+@property (strong, nonatomic) UIButton *actor3Button;
 @property (strong, nonatomic) UILabel *overviewLabel;
 @property (strong, nonatomic) DLStarRatingControl *ratingView;
 @property (strong, nonatomic) UIButton *noteButton;

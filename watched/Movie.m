@@ -2,6 +2,9 @@
 #import "Trailer.h"
 #import "NSDictionary+ObjectForKeyOrNil.h"
 
+#define kBackdropFolder @"backdrops"
+#define kPosterFolder @"posters"
+#define kPosterThumbnailFolder @"thumbnailPosters"
 
 @interface Movie()
 
@@ -38,6 +41,28 @@
     }
     
     return [results objectAtIndex:0];
+}
+
+- (void)prepareForDeletion
+{
+    [super prepareForDeletion];
+    
+    NSFileManager *fileMgr = [NSFileManager defaultManager];
+    NSString *documentsDirectory = nil;
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    documentsDirectory = [paths objectAtIndex:0];
+    
+    NSString *backdropPath = [self pathForImage:self.backdropPath inDirectory:kBackdropFolder];
+    NSString *posterPath = [self pathForImage:self.posterPath inDirectory:kPosterFolder];
+    NSString *posterThumbnailPath = [self pathForImage:self.posterPath inDirectory:kPosterThumbnailFolder];
+    
+    NSError *error;
+    if (![fileMgr removeItemAtPath:backdropPath error:&error])
+        XLog("Unable to delete file: %@", [error localizedDescription]);
+    if (![fileMgr removeItemAtPath:posterPath error:&error])
+        XLog("Unable to delete file: %@", [error localizedDescription]);
+    if (![fileMgr removeItemAtPath:posterThumbnailPath error:&error])
+        XLog("Unable to delete file: %@", [error localizedDescription]);
 }
 
 
@@ -82,8 +107,8 @@
 -(UIImage*)poster
 {
     [self willAccessValueForKey:@"poster"];
-
-    NSString *pathString = [self pathForImage:self.posterPath inDirectory:@"posters"];
+    
+    NSString *pathString = [self pathForImage:self.posterPath inDirectory:kPosterFolder];
     UIImage *returnImage = [UIImage imageWithData:[NSData dataWithContentsOfFile:pathString]];
     
     [self didAccessValueForKey:@"poster"];
@@ -94,7 +119,7 @@
 {
     [self willAccessValueForKey:@"posterThumbnail"];
     
-    NSString *pathString = [self pathForImage:self.posterPath inDirectory:@"thumbnailPosters"];
+    NSString *pathString = [self pathForImage:self.posterPath inDirectory:kPosterThumbnailFolder];
     UIImage *returnImage = [UIImage imageWithData:[NSData dataWithContentsOfFile:pathString]];
     
     [self didAccessValueForKey:@"posterThumbnail"];
@@ -105,7 +130,7 @@
 {
     [self willAccessValueForKey:@"backdrop"];
     
-    NSString *pathString = [self pathForImage:self.backdropPath inDirectory:@"backdrops"];
+    NSString *pathString = [self pathForImage:self.backdropPath inDirectory:kBackdropFolder];
     UIImage *returnImage = [UIImage imageWithData:[NSData dataWithContentsOfFile:pathString]];
     
     [self didAccessValueForKey:@"backdrop"];
@@ -118,9 +143,9 @@
     [self willChangeValueForKey:@"poster"];
     
     if(self.posterPath) {
-        [self saveImage:aPoster inDirectory:@"posters" withName:self.posterPath];
+        [self saveImage:aPoster inDirectory:kPosterFolder withName:self.posterPath];
     } else {
-        NSString *aPosterPath = [self saveImage:aPoster inDirectory:@"posters" withName:nil];
+        NSString *aPosterPath = [self saveImage:aPoster inDirectory:kPosterFolder withName:nil];
         self.posterPath = aPosterPath;
     }
 
@@ -132,9 +157,9 @@
     [self willChangeValueForKey:@"posterThumbnail"];
     
     if(self.posterPath) {
-        [self saveImage:posterThumbnail inDirectory:@"thumbnailPosters" withName:self.posterPath];
+        [self saveImage:posterThumbnail inDirectory:kPosterThumbnailFolder withName:self.posterPath];
     } else {
-        NSString *aPosterPath = [self saveImage:posterThumbnail inDirectory:@"thumbnailPosters" withName:nil];
+        NSString *aPosterPath = [self saveImage:posterThumbnail inDirectory:kPosterThumbnailFolder withName:nil];
         self.posterPath = aPosterPath;
     }
     
@@ -145,8 +170,12 @@
 {
     [self willChangeValueForKey:@"backdrop"];
     
-    NSString *aBackdropPath = [self saveImage:aBackdrop inDirectory:@"backdrops" withName:nil];
-    self.backdropPath = aBackdropPath;
+    if(self.backdropPath) {
+        [self saveImage:aBackdrop inDirectory:kBackdropFolder withName:self.backdropPath];
+    } else {
+        NSString *aBackdropPath = [self saveImage:aBackdrop inDirectory:kBackdropFolder withName:nil];
+        self.backdropPath = aBackdropPath;
+    }
     
     [self didChangeValueForKey:@"backdrop"];
 }

@@ -23,6 +23,7 @@
 #import "ThumbnailPickerViewController.h"
 #import "OnlineDatabaseBridge.h"
 #import <QuartzCore/QuartzCore.h>
+#import "WatchedWebBrowser.h"
 
 #define kImageFadeDelay 0.0f
 
@@ -74,6 +75,9 @@
     [self.detailView.websiteButton addTarget:self action:@selector(websiteButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
     [self.detailView.castsButton addTarget:self action:@selector(castsButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
     [self.detailView.deleteButton addTarget:self action:@selector(deleteButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+    [self.detailView.actor1Button addTarget:self action:@selector(actorButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+    [self.detailView.actor2Button addTarget:self action:@selector(actorButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+    [self.detailView.actor3Button addTarget:self action:@selector(actorButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
 }
 
 - (void)viewDidUnload
@@ -160,6 +164,35 @@
             detailViewController.imageType = selectedImageType;
         }
     }
+    if([segue.identifier isEqualToString:@"DetailWebViewSegue"]) {
+        if(![sender isKindOfClass:[UIButton class]]) return;
+        UIButton *actionButton = (UIButton*)sender;
+        WatchedWebBrowser *detailViewController = (WatchedWebBrowser*)segue.destinationViewController;
+        
+        if(actionButton == self.detailView.websiteButton) {
+            detailViewController.url = [NSURL URLWithString:self.movie.homepage];
+        
+        } else if (actionButton == self.detailView.trailerButton) {
+            NSURL *videoURL = [NSURL URLWithString:[NSString stringWithFormat:@"http://m.youtube.com/watch?v=%@",self.movie.bestTrailer.url]];
+            detailViewController.url = videoURL;
+        
+        } else if (actionButton == self.detailView.actor1Button || actionButton == self.detailView.actor2Button || actionButton == self.detailView.actor3Button ) {
+            Cast *selectedCast = nil;
+            NSSortDescriptor *actorSort = [[NSSortDescriptor alloc] initWithKey:@"order" ascending:YES];
+            NSArray *sortedCast = [[self.movie.casts allObjects] sortedArrayUsingDescriptors:[NSArray arrayWithObject:actorSort]];
+            
+            if(actionButton == self.detailView.actor1Button) {
+                selectedCast = [sortedCast objectAtIndex:0];
+            } else if (actionButton == self.detailView.actor2Button) {
+                selectedCast = [sortedCast objectAtIndex:1];
+            } else  {
+                selectedCast = [sortedCast objectAtIndex:2];
+            }
+            NSString *encodedName = [selectedCast.name stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+            NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"http://m.imdb.com/find?q=%@", encodedName]];
+            detailViewController.url = url;
+        }
+    }
 }
 
 
@@ -217,8 +250,7 @@
         MPMoviePlayerViewController *moviePlayer = [[MPMoviePlayerViewController alloc] initWithContentURL:videoURL];
         [self.navigationController presentMoviePlayerViewControllerAnimated:moviePlayer];
     } else {
-        videoURL = [NSURL URLWithString:[NSString stringWithFormat:@"http://www.youtube.com/watch?v=%@",self.movie.bestTrailer.url]];
-        [[UIApplication sharedApplication] openURL:videoURL];
+        [self performSegueWithIdentifier:@"DetailWebViewSegue" sender:sender];
     }
 }
 
@@ -230,7 +262,7 @@
 - (IBAction)websiteButtonClicked:(id)sender
 {
     if(self.movie.homepage) {
-        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:self.movie.homepage]];
+        [self performSegueWithIdentifier:@"DetailWebViewSegue" sender:sender];
     }
 }
 
@@ -297,6 +329,11 @@
         
     });
     [self.navigationController popViewControllerAnimated:YES];
+}
+
+- (IBAction)actorButtonClicked:(id)sender
+{
+    [self performSegueWithIdentifier:@"DetailWebViewSegue" sender:sender];
 }
 
 

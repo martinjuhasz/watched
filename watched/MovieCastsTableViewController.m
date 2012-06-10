@@ -12,6 +12,7 @@
 #import "Movie.h"
 #import "Cast.h"
 #import "Crew.h"
+#import "WatchedWebBrowser.h"
 
 @interface MovieCastsTableViewController ()
 
@@ -150,6 +151,34 @@ const int kMovieCastCellProfileImageView = 200;
     [profileImageView setImageWithURL:imageURL];
     
     return cell;
+}
+
+
+////////////////////////////////////////////////////////////////////////////
+#pragma mark -
+#pragma mark Segue Parameters
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    if([segue.identifier isEqualToString:@"CastWebViewSegue"]) {
+        
+        NSIndexPath *selectedPath = [self.tableView indexPathForSelectedRow];
+        NSString *encodedName = @"";
+        
+        // get cast or crew
+        if(selectedPath.section == 0) {
+            Cast *currentCast = [self.movie.sortedCasts objectAtIndex:selectedPath.row];
+            encodedName = [currentCast.name stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+        } else {
+            Crew *currentCrew = [self.movie.sortedCrews objectAtIndex:selectedPath.row];
+            encodedName = [currentCrew.name stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+        }
+        
+        NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"http://m.imdb.com/find?q=%@", encodedName]];
+        WatchedWebBrowser *webBrowser = (WatchedWebBrowser*)segue.destinationViewController;
+        webBrowser.url = url;
+        
+    }
 }
 
 

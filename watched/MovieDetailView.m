@@ -26,10 +26,13 @@
 @synthesize runtimeLabel;
 @synthesize actor1ImageView;
 @synthesize actor1Label;
+@synthesize actor1Button;
 @synthesize actor2ImageView;
 @synthesize actor2Label;
+@synthesize actor2Button;
 @synthesize actor3ImageView;
 @synthesize actor3Label;
+@synthesize actor3Button;
 @synthesize overviewLabel;
 @synthesize ratingView;
 @synthesize noteButton;
@@ -51,6 +54,7 @@
     if (self) {
         // Initialization code
         [self setupContent];
+        [self firstLayout];
     }
     return self;
 }
@@ -71,10 +75,9 @@
 #pragma mark Content Management
 
 // TODO: only layout needed
-- (void)layoutSubviews
-{
-    [super layoutSubviews];
 
+- (void)firstLayout
+{
     self.backdropImageView.frame = CGRectMake(-30.0f, 0.0f, 380.0f, kMBackdropHeight);
     self.backdropBottomShadow.frame = CGRectMake(0.0f, 0.0f, 320.0f, kMBackdropHeight);
     self.posterImageView.frame = CGRectMake(9.0f, 93.0f, 89.0f, 126.0f);
@@ -101,6 +104,14 @@
     self.actor1Label.frame = CGRectMake(16.0f, 490, 83.0f, 25.0f);
     self.actor2Label.frame = CGRectMake(118.0f, 490, 83.0f, 25.0f);
     self.actor3Label.frame = CGRectMake(220.0f, 490, 83.0f, 25.0f);
+    self.actor1Button.frame = CGRectMake(16.0f, 445.0f, 83.0f, 70.0f);
+    self.actor2Button.frame = CGRectMake(118.0f, 445.0f, 83.0f, 70.0f);
+    self.actor3Button.frame = CGRectMake(220.0f, 445.0f, 83.0f, 70.0f);
+}
+
+- (void)layoutSubviews
+{
+    [super layoutSubviews];
     
     self.overviewLabel.frame = CGRectMake(13.0f, 550.0f, 294.0f, 0.0f);
     [self.overviewLabel sizeToFit];
@@ -197,6 +208,9 @@
     self.actor1Label.textColor = HEXColor(0xFFFFFF);
     [self.mainScrollView addSubview:self.actor1Label];
     
+    self.actor1Button = [UIButton buttonWithType:UIButtonTypeCustom];
+    [self.mainScrollView addSubview:self.actor1Button];
+    
     self.actor2ImageView = [[UIImageView alloc] init];
     self.actor2ImageView.contentMode = UIViewContentModeScaleAspectFill;
     self.actor2ImageView.clipsToBounds = YES;
@@ -209,6 +223,9 @@
     self.actor2Label.textColor = HEXColor(0xFFFFFF);
     [self.mainScrollView addSubview:self.actor2Label];
     
+    self.actor2Button = [UIButton buttonWithType:UIButtonTypeCustom];
+    [self.mainScrollView addSubview:self.actor2Button];
+    
     self.actor3ImageView = [[UIImageView alloc] init];
     self.actor3ImageView.contentMode = UIViewContentModeScaleAspectFill;
     self.actor3ImageView.clipsToBounds = YES;
@@ -220,6 +237,10 @@
     self.actor3Label.adjustsFontSizeToFitWidth = NO;
     self.actor3Label.textColor = HEXColor(0xFFFFFF);
     [self.mainScrollView addSubview:self.actor3Label];
+    
+    self.actor3Button = [UIButton buttonWithType:UIButtonTypeCustom];
+    [self.mainScrollView addSubview:self.actor3Button];
+    
     
     
     UILabel *overviewTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(13.0f, 530.0f, 300.0f, 15.0f)];

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="1.1" toolsVersion="2182" systemVersion="11E53" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="xLq-tF-y1P">
     <dependencies>
+        <deployment defaultVersion="1296" identifier="iOS"/>
         <development defaultVersion="4200" identifier="xcode"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="1181"/>
     </dependencies>
@@ -212,6 +213,7 @@
                         <segue destination="aIh-ZM-gS8" kind="push" identifier="MovieCastSegue" id="uyO-M3-raF"/>
                         <segue destination="pqS-3R-9IU" kind="push" identifier="MovieNoteSegue" id="aGY-CZ-TGK"/>
                         <segue destination="hjq-mA-Ll1" kind="push" identifier="ThumbnailPickerSegue" id="g3C-LE-fgC"/>
+                        <segue destination="YNR-hM-njU" kind="push" identifier="DetailWebViewSegue" id="dp1-K0-eya"/>
                     </connections>
                 </viewController>
             </objects>
@@ -269,11 +271,11 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="MovieCastsActorCell" rowHeight="80" id="Kjm-7u-67c">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="MovieCastsActorCell" rowHeight="80" id="Kjm-7u-67c">
                                 <rect key="frame" x="0.0" y="46" width="320" height="82"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                                    <rect key="frame" x="10" y="1" width="300" height="79"/>
+                                    <rect key="frame" x="10" y="1" width="280" height="79"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="101" contentMode="left" text="Martin Juhasz" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" id="wDx-qg-KRN">
@@ -297,6 +299,9 @@
                                     </subviews>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 </view>
+                                <connections>
+                                    <segue destination="YNR-hM-njU" kind="push" identifier="CastWebViewSegue" id="bJw-bH-CbL"/>
+                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>
@@ -308,6 +313,77 @@
                 </tableViewController>
             </objects>
             <point key="canvasLocation" x="813" y="-215"/>
+        </scene>
+        <!--Watched Web Browser-->
+        <scene sceneID="NK4-ze-XD3">
+            <objects>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Rkj-bw-cCg" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <viewController id="YNR-hM-njU" customClass="WatchedWebBrowser" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="3cj-CD-rnL">
+                        <rect key="frame" x="0.0" y="64" width="320" height="416"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="8hC-E3-LX2">
+                                <rect key="frame" x="0.0" y="372" width="320" height="44"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                                <items>
+                                    <barButtonItem title="back" style="plain" id="vMF-vO-47K">
+                                        <connections>
+                                            <action selector="backButtonClicked:" destination="YNR-hM-njU" id="NVN-3I-I4J"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem title="forw" style="plain" id="4oL-GD-wqg">
+                                        <connections>
+                                            <action selector="forwardButtonClicked:" destination="YNR-hM-njU" id="VXU-kg-XY1"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem width="18" style="plain" systemItem="fixedSpace" id="enL-Cl-A1x"/>
+                                    <barButtonItem title="re" style="plain" id="3Ng-uY-Al5">
+                                        <connections>
+                                            <action selector="reloadButtonClicked:" destination="YNR-hM-njU" id="9XG-Vj-tZQ"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem width="113" style="plain" systemItem="fixedSpace" id="Seh-85-TcH"/>
+                                    <barButtonItem style="plain" systemItem="action" id="dte-Y0-3ti">
+                                        <connections>
+                                            <action selector="actionButtonClicked:" destination="YNR-hM-njU" id="o4m-m6-S1j"/>
+                                        </connections>
+                                    </barButtonItem>
+                                </items>
+                            </toolbar>
+                            <webView contentMode="scaleToFill" id="MYs-bx-828">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="372"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                            </webView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="uSe-Fb-R0v">
+                        <barButtonItem key="rightBarButtonItem" style="plain" id="UwL-q6-h3B">
+                            <view key="customView" contentMode="scaleToFill" id="BDZ-xA-BoA">
+                                <rect key="frame" x="285" y="5" width="30" height="33"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <subviews>
+                                    <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" hidesWhenStopped="YES" style="white" id="VkH-J0-UNL">
+                                        <rect key="frame" x="5" y="6" width="20" height="20"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    </activityIndicatorView>
+                                </subviews>
+                            </view>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="actionButton" destination="dte-Y0-3ti" id="XXF-Fh-vzy"/>
+                        <outlet property="activityIndicator" destination="VkH-J0-UNL" id="Jhh-aN-eb9"/>
+                        <outlet property="backButton" destination="vMF-vO-47K" id="uw6-HE-nc9"/>
+                        <outlet property="forwardButton" destination="4oL-GD-wqg" id="PzN-ax-PEF"/>
+                        <outlet property="reloadButton" destination="3Ng-uY-Al5" id="fRI-gJ-tCq"/>
+                        <outlet property="webView" destination="MYs-bx-828" id="ZsD-Fa-UHe"/>
+                    </connections>
+                </viewController>
+            </objects>
+            <point key="canvasLocation" x="1406" y="-560"/>
         </scene>
         <!--Search Movie View Controller-->
         <scene sceneID="Pda-5p-Gwf">
@@ -459,10 +535,24 @@
         <class className="ThumbnailPickerViewController" superclassName="UIViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/ThumbnailPickerViewController.h"/>
         </class>
+        <class className="WatchedWebBrowser" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/WatchedWebBrowser.h"/>
+            <relationships>
+                <relationship kind="outlet" name="actionButton" candidateClass="UIBarButtonItem"/>
+                <relationship kind="outlet" name="activityIndicator" candidateClass="UIActivityIndicatorView"/>
+                <relationship kind="outlet" name="backButton" candidateClass="UIBarButtonItem"/>
+                <relationship kind="outlet" name="forwardButton" candidateClass="UIBarButtonItem"/>
+                <relationship kind="outlet" name="reloadButton" candidateClass="UIBarButtonItem"/>
+                <relationship kind="outlet" name="webView" candidateClass="UIWebView"/>
+            </relationships>
+        </class>
     </classes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar" statusBarStyle="blackTranslucent"/>
         <simulatedOrientationMetrics key="orientation"/>
         <simulatedScreenMetrics key="destination"/>
     </simulatedMetricsContainer>
+    <inferredMetricsTieBreakers>
+        <segue reference="dp1-K0-eya"/>
+    </inferredMetricsTieBreakers>
 </document>

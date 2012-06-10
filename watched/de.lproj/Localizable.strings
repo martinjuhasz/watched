@@ -34,6 +34,8 @@
 "SHARE_BUTTON_TWITTER"          = "Twitter";
 "SHARE_BUTTON_FACEBOOK"         = "Facebook";
 "SHARE_BUTTON_CANCEL"           = "Abbrechen";
+"SHARE_BUTTON_OPENSAFARI"       = "In Safari öffnen";
+"SHARE_BUTTON_COPYURL"          = "URL kopieren";
 "SHARE_TWITTER_TEXT"            = "Ich habe \"%@\" gesehen und mit %i of 5 Sternen bewertet";
 
 "PICKER_POP_NOPOSTER_TITLE"     = "Entschuldigung";
