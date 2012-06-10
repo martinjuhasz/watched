@@ -20,6 +20,8 @@
 		7A2CBBAA1559B4A0009ADFFB /* _Movie.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A2CBBA71559B4A0009ADFFB /* _Movie.m */; };
 		7A2CBBAB1559B4A0009ADFFB /* Movie.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A2CBBA91559B4A0009ADFFB /* Movie.m */; };
 		7A2F43DD158420FB00667E76 /* WatchedWebBrowser.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A2F43DC158420FB00667E76 /* WatchedWebBrowser.m */; };
+		7A2F43EB1584D93A00667E76 /* UIViewController+MJPopupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A2F43EA1584D93A00667E76 /* UIViewController+MJPopupViewController.m */; };
+		7A2F43EF1584DBBA00667E76 /* AddMovieViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A2F43EE1584DBBA00667E76 /* AddMovieViewController.m */; };
 		7A31CE52158132C10031F1FB /* g_barbutton.png in Resources */ = {isa = PBXBuildFile; fileRef = 7A31CE4C158132C10031F1FB /* g_barbutton.png */; };
 		7A31CE53158132C10031F1FB /* g_barbutton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7A31CE4D158132C10031F1FB /* g_barbutton@2x.png */; };
 		7A31CE54158132C10031F1FB /* g_bg_navbar.png in Resources */ = {isa = PBXBuildFile; fileRef = 7A31CE4E158132C10031F1FB /* g_bg_navbar.png */; };
@@ -61,6 +63,7 @@
 		7AED8E861582BFCD009F0416 /* mv_bg_add@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7AED8E841582BFCD009F0416 /* mv_bg_add@2x.png */; };
 		7AED8E881582C2FB009F0416 /* mv_bg_add.png in Resources */ = {isa = PBXBuildFile; fileRef = 7AED8E871582C2FB009F0416 /* mv_bg_add.png */; };
 		7AEEA3411573F697003F06E1 /* MovieDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AEEA3401573F697003F06E1 /* MovieDetailViewController.m */; };
+		7AEF90F71584F37D00C70DD2 /* UIView+FindUIViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AEF90F61584F37D00C70DD2 /* UIView+FindUIViewController.m */; };
 		7AF3AE161559C113001B36E1 /* MoviesDataModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AF3AE151559C113001B36E1 /* MoviesDataModel.m */; };
 		7AF540F01577781F0018530A /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7AF540EF1577781F0018530A /* MediaPlayer.framework */; };
 		7AF540F8157783C10018530A /* MovieCastsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AF540F7157783C10018530A /* MovieCastsTableViewController.m */; };
@@ -94,6 +97,10 @@
 		7A2CBBA91559B4A0009ADFFB /* Movie.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Movie.m; sourceTree = "<group>"; };
 		7A2F43DB158420FB00667E76 /* WatchedWebBrowser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WatchedWebBrowser.h; sourceTree = "<group>"; };
 		7A2F43DC158420FB00667E76 /* WatchedWebBrowser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WatchedWebBrowser.m; sourceTree = "<group>"; };
+		7A2F43E91584D93A00667E76 /* UIViewController+MJPopupViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+MJPopupViewController.h"; sourceTree = "<group>"; };
+		7A2F43EA1584D93A00667E76 /* UIViewController+MJPopupViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+MJPopupViewController.m"; sourceTree = "<group>"; };
+		7A2F43ED1584DBBA00667E76 /* AddMovieViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddMovieViewController.h; sourceTree = "<group>"; };
+		7A2F43EE1584DBBA00667E76 /* AddMovieViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddMovieViewController.m; sourceTree = "<group>"; };
 		7A31CE4C158132C10031F1FB /* g_barbutton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = g_barbutton.png; path = ../../../../../../Dropbox/Arbeit/iOS/watched/v2/export/g_barbutton.png; sourceTree = "<group>"; };
 		7A31CE4D158132C10031F1FB /* g_barbutton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "g_barbutton@2x.png"; path = "../../../../../../Dropbox/Arbeit/iOS/watched/v2/export/g_barbutton@2x.png"; sourceTree = "<group>"; };
 		7A31CE4E158132C10031F1FB /* g_bg_navbar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = g_bg_navbar.png; path = ../../../../../../Dropbox/Arbeit/iOS/watched/v2/export/g_bg_navbar.png; sourceTree = "<group>"; };
@@ -153,6 +160,8 @@
 		7AED8E871582C2FB009F0416 /* mv_bg_add.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = mv_bg_add.png; path = ../../../../../../Dropbox/Arbeit/iOS/watched/v2/export/mv_bg_add.png; sourceTree = "<group>"; };
 		7AEEA33F1573F697003F06E1 /* MovieDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MovieDetailViewController.h; sourceTree = "<group>"; };
 		7AEEA3401573F697003F06E1 /* MovieDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MovieDetailViewController.m; sourceTree = "<group>"; };
+		7AEF90F51584F37D00C70DD2 /* UIView+FindUIViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; path = "UIView+FindUIViewController.h"; sourceTree = "<group>"; };
+		7AEF90F61584F37D00C70DD2 /* UIView+FindUIViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+FindUIViewController.m"; sourceTree = "<group>"; };
 		7AF3AE141559C113001B36E1 /* MoviesDataModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MoviesDataModel.h; sourceTree = "<group>"; };
 		7AF3AE151559C113001B36E1 /* MoviesDataModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MoviesDataModel.m; sourceTree = "<group>"; };
 		7AF540EF1577781F0018530A /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
@@ -229,6 +238,8 @@
 				7A584D19154879DD00A548EE /* SearchMovieViewController.m */,
 				7AED8E711582800F009F0416 /* OnlineDatabaseBridge.h */,
 				7AED8E721582800F009F0416 /* OnlineDatabaseBridge.m */,
+				7A2F43ED1584DBBA00667E76 /* AddMovieViewController.h */,
+				7A2F43EE1584DBBA00667E76 /* AddMovieViewController.m */,
 			);
 			name = Search;
 			sourceTree = "<group>";
@@ -246,6 +257,10 @@
 				7A0A42721574F7690019DD5E /* UIView+Additions.m */,
 				7A0A42741574FA390019DD5E /* UIButton+Additions.h */,
 				7A0A42751574FA390019DD5E /* UIButton+Additions.m */,
+				7A2F43E91584D93A00667E76 /* UIViewController+MJPopupViewController.h */,
+				7A2F43EA1584D93A00667E76 /* UIViewController+MJPopupViewController.m */,
+				7AEF90F51584F37D00C70DD2 /* UIView+FindUIViewController.h */,
+				7AEF90F61584F37D00C70DD2 /* UIView+FindUIViewController.m */,
 			);
 			name = Categories;
 			sourceTree = "<group>";
@@ -597,6 +612,9 @@
 				7A7EEF85157D56F300EAEE01 /* ThumbnailPickerViewController.m in Sources */,
 				7AED8E731582800F009F0416 /* OnlineDatabaseBridge.m in Sources */,
 				7A2F43DD158420FB00667E76 /* WatchedWebBrowser.m in Sources */,
+				7A2F43EB1584D93A00667E76 /* UIViewController+MJPopupViewController.m in Sources */,
+				7A2F43EF1584DBBA00667E76 /* AddMovieViewController.m in Sources */,
+				7AEF90F71584F37D00C70DD2 /* UIView+FindUIViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

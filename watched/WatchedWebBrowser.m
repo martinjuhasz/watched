@@ -136,6 +136,11 @@
         if(self.webView.canGoForward) self.forwardButton.enabled = YES;
         self.reloadButton.title = @"re";
     }
+    if(!self.webView.request.URL || [[self.webView.request.URL absoluteString] isEqualToString:@""]) {
+        self.actionButton.enabled = NO;
+    } else {
+        self.actionButton.enabled = YES;
+    }
 }
 
 - (IBAction)backButtonClicked:(id)sender

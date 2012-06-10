@@ -14,12 +14,20 @@
 #import "UISearchBar+Additions.h"
 #import "OnlineDatabaseBridge.h"
 #import "Movie.h"
+#import "AddMovieViewController.h"
+#import "UIViewController+MJPopupViewController.h"
+
+
+@interface SearchMovieViewController ()<AddMovieViewDelegate>
+@end
+
 
 @implementation SearchMovieViewController
 
 @synthesize tableView;
 @synthesize searchBar;
 @synthesize searchResults;
+@synthesize addController;
 
 const int kMovieSearchLoadingCellTag = 2000;
 const int kMovieSearchCellTitleLabel = 100;
@@ -109,7 +117,18 @@ const int kMovieSearchCellImageView = 200;
 {
     [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
     SearchResult *result = [searchResults objectAtIndex:indexPath.row];
-    [self saveMovieToDatabase:result];
+    UITableViewCell *clickedCell = [self.tableView cellForRowAtIndexPath:indexPath];
+    UIImageView *coverImageView = (UIImageView *)[clickedCell viewWithTag:kMovieSearchCellImageView];
+    
+    UIStoryboard *storyBoard = [UIStoryboard storyboardWithName:@"MainStoryboard" bundle:nil];
+    self.addController = nil;
+    self.addController = (AddMovieViewController*)[storyBoard instantiateViewControllerWithIdentifier:@"AddMovieViewController"];
+    self.addController.searchResult = result;
+    self.addController.coverImage = coverImageView.image;
+    self.addController.delegate = self;
+    
+    [self presentPopupViewController:self.addController animationType:PopupViewAnimationFade];
+//    [self saveMovieToDatabase:result];
 }
 
 
@@ -224,22 +243,6 @@ const int kMovieSearchCellImageView = 200;
     hud.dimBackground = YES;
     
     OnlineDatabaseBridge *bridge = [[OnlineDatabaseBridge alloc] init];
-    
-//    bridge.completionBlock = ^(Movie *aMovie) {
-//        [self sendHUDCompletionMessage:@"Movie added" hud:hud];
-//    };
-//    
-//    bridge.failureBlock = ^(NSError *error) {
-//        NSString *errorMessage = @"Unknown Error. Please contact us if this problem exists.";
-//        
-//        if([error.domain isEqualToString:kBridgeErrorDomain]) {
-//            errorMessage = [self getErrorMessageForBridgeError:error.code];
-//        } else if([error.domain isEqualToString:AFNetworkingErrorDomain]) {
-//            errorMessage = @"Online Database not responding, please try again";
-//        }
-//        [self sendHUDCompletionMessage:errorMessage hud:hud];
-//    };
-    
     [bridge saveSearchResultAsMovie:result completion:^(Movie *aMovie) {
         
         [self sendHUDCompletionMessage:@"Movie added" hud:hud];
@@ -274,6 +277,17 @@ const int kMovieSearchCellImageView = 200;
         errorMessage = @"Movie already added";
     }
     return errorMessage;
+}
+
+
+
+////////////////////////////////////////////////////////////////////////////
+#pragma mark -
+#pragma mark AddMovieViewDelegate
+
+- (void)AddMovieControllerCancelButtonClicked:(AddMovieViewController *)addMovieViewController
+{
+    [self dismissPopupViewControllerWithanimationType:PopupViewAnimationFade];
 }
 
 
