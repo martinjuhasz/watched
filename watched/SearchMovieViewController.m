@@ -235,59 +235,12 @@ const int kMovieSearchCellImageView = 200;
 
 ////////////////////////////////////////////////////////////////////////////
 #pragma mark -
-#pragma mark Adding a Movie
-
-- (void)saveMovieToDatabase:(SearchResult*)result
-{
-    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    hud.dimBackground = YES;
-    
-    OnlineDatabaseBridge *bridge = [[OnlineDatabaseBridge alloc] init];
-    [bridge saveSearchResultAsMovie:result completion:^(Movie *aMovie) {
-        
-        [self sendHUDCompletionMessage:@"Movie added" hud:hud];
-    
-    } failure:^(NSError *error) {
-        
-        NSString *errorMessage = @"Unknown Error. Please contact us if this problem exists.";
-        if([error.domain isEqualToString:kBridgeErrorDomain]) {
-            errorMessage = [self getErrorMessageForBridgeError:error.code];
-        } else if([error.domain isEqualToString:AFNetworkingErrorDomain]) {
-            errorMessage = @"Online Database not responding, please try again";
-        }
-        [self sendHUDCompletionMessage:errorMessage hud:hud];
-    }];
-        
-}
-
-- (void)sendHUDCompletionMessage:(NSString*)message hud:(MBProgressHUD*)aHud
-{
-    dispatch_async(dispatch_get_main_queue(), ^{
-        aHud.mode = MBProgressHUDModeText;
-        aHud.labelText = message;
-        aHud.removeFromSuperViewOnHide = YES;
-        [aHud hide:YES afterDelay:1.0f];
-    });
-}
-
-- (NSString*)getErrorMessageForBridgeError:(BridgeError)aErrorCode
-{
-    NSString *errorMessage = @"";
-    if(aErrorCode == BridgeErrorMovieExists) {
-        errorMessage = @"Movie already added";
-    }
-    return errorMessage;
-}
-
-
-
-////////////////////////////////////////////////////////////////////////////
-#pragma mark -
 #pragma mark AddMovieViewDelegate
 
 - (void)AddMovieControllerCancelButtonClicked:(AddMovieViewController *)addMovieViewController
 {
     [self dismissPopupViewControllerWithanimationType:PopupViewAnimationFade];
+    addController = nil;
 }
 
 

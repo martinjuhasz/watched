@@ -25,7 +25,6 @@
 - (UITableViewCell *)resultCellAtIndexPath:(NSIndexPath *)indexPath;
 - (UITableViewCell *)loadingCell;
 - (void)startSearchWithQuery:(NSString*)query;
-- (void)saveMovieToDatabase:(SearchResult*)result;
 - (IBAction)cancelButtonClicked:(id)sender;
 
 @end

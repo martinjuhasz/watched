@@ -10,7 +10,7 @@
         <scene sceneID="He7-pS-DVI">
             <objects>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Iyw-Db-WSh" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <navigationController definesPresentationContext="YES" id="xLq-tF-y1P" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="StartNavigationController" definesPresentationContext="YES" id="xLq-tF-y1P" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="dGg-tf-XCL">
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -25,7 +25,7 @@
         <scene sceneID="ZRJ-hD-gZI">
             <objects>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Te2-9b-4ZM" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <viewController id="jkq-Yu-AXG" customClass="MoviesTableViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="MoviesTableViewController" id="jkq-Yu-AXG" customClass="MoviesTableViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="gdk-zV-uBh">
                         <rect key="frame" x="0.0" y="64" width="320" height="416"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -437,7 +437,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <navigationItem key="navigationItem" id="uSe-Fb-R0v">
-                        <barButtonItem key="rightBarButtonItem" style="plain" id="UwL-q6-h3B">
+                        <barButtonItem key="rightBarButtonItem" id="UwL-q6-h3B">
                             <view key="customView" contentMode="scaleToFill" id="BDZ-xA-BoA">
                                 <rect key="frame" x="285" y="5" width="30" height="33"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>

@@ -9,6 +9,8 @@
 #import <UIKit/UIKit.h>
 
 @class SearchResult;
+@class Movie;
+
 @protocol AddMovieViewDelegate;
 
 @interface AddMovieViewController : UIViewController
@@ -20,8 +22,10 @@
 @property (strong, nonatomic) IBOutlet UIButton *saveButton;
 @property (strong, nonatomic) IBOutlet UIBarButtonItem *cancelButton;
 @property (strong, nonatomic) SearchResult *searchResult;
+@property (strong, nonatomic) NSNumber *resultID;
 @property (strong, nonatomic) UIImage *coverImage;
 @property (assign, nonatomic) id <AddMovieViewDelegate>delegate;
+@property (strong, nonatomic) Movie *movie;
 
 - (IBAction)cancelButtonClicked:(id)sender;
 

@@ -9,6 +9,15 @@
 #import "AppDelegate.h"
 #import "OnlineMovieDatabase.h"
 
+#import "UIViewController+MJPopupViewController.h"
+#import "AddMovieViewController.h"
+
+@interface AppDelegate ()<AddMovieViewDelegate> {
+    AddMovieViewController *addController;
+}
+@end
+
+
 @implementation AppDelegate
 
 @synthesize window = _window;
@@ -117,6 +126,37 @@
      Save data if appropriate.
      See also applicationDidEnterBackground:.
      */
+}
+
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
+{
+    NSString *serverIDString = [url host];
+    if(!serverIDString) return NO;
+    
+    int serverID = [serverIDString intValue];
+    if(!serverID || serverID <= 0) return NO;
+    
+    UIStoryboard *storyBoard = [UIStoryboard storyboardWithName:@"MainStoryboard" bundle:nil];
+    addController = nil;
+    addController = (AddMovieViewController*)[storyBoard instantiateViewControllerWithIdentifier:@"AddMovieViewController"];
+    addController.delegate = self;
+    addController.resultID = [NSNumber numberWithInt:serverID];
+
+    [self.window.rootViewController presentPopupViewController:addController animationType:PopupViewAnimationFade];
+    
+    return YES;
+}
+
+
+
+////////////////////////////////////////////////////////////////////////////
+#pragma mark -
+#pragma mark AddMovieViewDelegate
+
+- (void)AddMovieControllerCancelButtonClicked:(AddMovieViewController *)addMovieViewController
+{
+    [self.window.rootViewController dismissPopupViewControllerWithanimationType:PopupViewAnimationFade];
+    addController = nil;
 }
 
 @end

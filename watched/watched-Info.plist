@@ -40,5 +40,16 @@
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
 	</array>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLName</key>
+			<string>de.martinjuhasz.de.watched</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>watchedCAPS</string>
+			</array>
+		</dict>
+	</array>
 </dict>
 </plist>

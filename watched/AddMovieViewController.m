@@ -19,6 +19,7 @@
 @interface AddMovieViewController () <MJPopupViewControllerDelegate> {
     NSDictionary *resultDict;
     BOOL appeard;
+    BOOL isAdding;
 }
 
 @end
@@ -34,6 +35,8 @@
 @synthesize searchResult;
 @synthesize coverImage;
 @synthesize delegate;
+@synthesize resultID;
+@synthesize movie;
 
 ////////////////////////////////////////////////////////////////////////////
 #pragma mark -
@@ -42,28 +45,44 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
     appeard = NO;
+    isAdding = NO;
     
-    if(!self.searchResult) return;
+    if(self.searchResult) {
+        self.resultID = self.searchResult.searchResultId;
+    }
+    if(!self.resultID) return;
     
-    self.navBar.topItem.title = self.searchResult.title;
-    [self checkButtonStates];
+    self.movie = [Movie movieWithServerId:[self.resultID intValue] usingManagedObjectContext:[[MoviesDataModel sharedDataModel] mainContext]]; 
     
-    // Image
-    if(self.coverImage) self.imageView.image = self.coverImage;
-    NSURL *imageURL = [[OnlineMovieDatabase sharedMovieDatabase] getImageURLForImagePath:self.searchResult.posterPath imageType:ImageTypePoster nearWidth:80.0f*2];
-    [self.imageView setImageWithURL:imageURL];
+    if(self.movie) {
+        [self loadContentWithExistingMovie];
+    } else if (self.searchResult) {
+        [self loadContentWithExistingSearchResult];
+    } else if (self.resultID) {
+        [self loadContentWithExistingResultID];
+    }
     
-    // Details
-    [[OnlineMovieDatabase sharedMovieDatabase] getMovieDetailsForMovieID:self.searchResult.searchResultId completion:^(NSDictionary *aResultDict) {
-        resultDict = aResultDict;
-        [self checkButtonStates];  
-        [self setContent];
-    } failure:^(NSError *error) {
-        XLog(@"%@", [error localizedDescription]);
-        [self checkButtonStates];
-        [self cancelButtonClicked:nil];
-    }];
+//    self.navBar.topItem.title = self.searchResult.title;
+//    [self checkButtonStates];
+//    
+//    // Image
+//    if(self.coverImage) self.imageView.image = self.coverImage;
+//    if(self.searchResult) {
+//        NSURL *imageURL = [[OnlineMovieDatabase sharedMovieDatabase] getImageURLForImagePath:self.searchResult.posterPath imageType:ImageTypePoster nearWidth:80.0f*2];
+//        [self.imageView setImageWithURL:imageURL];
+//    }
+//    // Details
+//    [[OnlineMovieDatabase sharedMovieDatabase] getMovieDetailsForMovieID:self.resultID completion:^(NSDictionary *aResultDict) {
+//        resultDict = aResultDict;
+//        [self checkButtonStates];  
+//        [self setContent];
+//    } failure:^(NSError *error) {
+//        XLog(@"%@", [error localizedDescription]);
+//        [self checkButtonStates];
+//        [self cancelButtonClicked:nil];
+//    }];
     
 	// Do any additional setup after loading the view.
 }
@@ -109,21 +128,55 @@
 #pragma mark -
 #pragma mark Content
 
-- (void)setContent
+- (void)loadContentWithExistingSearchResult
 {
-    self.overviewLabel.text = [resultDict objectForKeyOrNil:@"overview"];
-    [self.overviewLabel sizeToFit];
-    CGSize scrollviewContentSize = self.scrollView.frame.size;
-    scrollviewContentSize.height = self.overviewLabel.frame.size.height;
-    self.scrollView.contentSize = scrollviewContentSize;
+    self.navBar.topItem.title = self.searchResult.title;
+    NSURL *imageURL = [[OnlineMovieDatabase sharedMovieDatabase] getImageURLForImagePath:self.searchResult.posterPath imageType:ImageTypePoster nearWidth:80.0f*2];
+    [self.imageView setImageWithURL:imageURL];
+    if(self.coverImage) self.imageView.image = self.coverImage;
+    [self loadContent];
+    [self checkButtonStates];
+}
+
+- (void)loadContentWithExistingResultID
+{
+    self.navBar.topItem.title = NSLocalizedString(@"POPUP_TITLE_LOADING", nil);
+    [self loadContent];
+    [self checkButtonStates];
+}
+
+- (void)loadContentWithExistingMovie
+{
+    self.imageView.image = self.movie.poster;
+    self.navBar.topItem.title = self.movie.title;
+    [self setOverviewContent:self.movie.overview];
+    [self checkButtonStates];
+}
+
+- (void)loadContent
+{
+    [[OnlineMovieDatabase sharedMovieDatabase] getMovieDetailsForMovieID:self.resultID completion:^(NSDictionary *aResultDict) {
+        resultDict = aResultDict;
+        [self checkButtonStates];
+        
+        [self setOverviewContent:[resultDict objectForKeyOrNil:@"overview"]];
+        self.navBar.topItem.title = [resultDict objectForKeyOrNil:@"title"];
+        NSString *imagePath = [resultDict objectForKeyOrNil:@"poster_path"];
+        NSURL *imageURL = [[OnlineMovieDatabase sharedMovieDatabase] getImageURLForImagePath:imagePath imageType:ImageTypePoster nearWidth:80.0f*2];
+        [self.imageView setImageWithURL:imageURL];
+        
+        
+    } failure:^(NSError *error) {
+        XLog(@"%@", [error localizedDescription]);
+        [self checkButtonStates];
+        [self cancelButtonClicked:nil];
+    }];
 }
 
 - (void)checkButtonStates
 {
-    Movie *mov = [Movie movieWithServerId:[self.searchResult.searchResultId intValue] usingManagedObjectContext:[[MoviesDataModel sharedDataModel] mainContext]];
-    
     dispatch_async(dispatch_get_main_queue(), ^{
-        if(mov) {
+        if(self.movie) {
             [self.saveButton setTitle:NSLocalizedString(@"POPUP_SAVEBUTTON_ADDED", nil) forState:UIControlStateNormal];
             [self.saveButton setTitle:NSLocalizedString(@"POPUP_SAVEBUTTON_ADDED", nil) forState:UIControlStateDisabled];
             self.saveButton.enabled = NO;
@@ -134,6 +187,12 @@
         if(!appeard) {
             self.saveButton.enabled = NO;
             self.cancelButton.enabled = NO;
+            return;
+        }
+        
+        if(isAdding) {
+            self.saveButton.enabled = NO;
+            self.cancelButton.enabled = YES;
             return;
         }
 
@@ -156,6 +215,16 @@
     
 }
 
+- (void)setOverviewContent:(NSString*)content
+{
+    self.overviewLabel.text = content;
+    [self.overviewLabel sizeToFit];
+    
+    CGSize scrollviewContentSize = self.scrollView.frame.size;
+    scrollviewContentSize.height = self.overviewLabel.frame.size.height;
+    self.scrollView.contentSize = scrollviewContentSize;
+}
+
 
 
 ////////////////////////////////////////////////////////////////////////////
@@ -165,12 +234,17 @@
 - (void)saveMovieToDatabase
 {
     if(!appeard || !resultDict || [resultDict count] <= 0) return;
+    isAdding = YES;
     
     OnlineDatabaseBridge *bridge = [[OnlineDatabaseBridge alloc] init];
     [bridge saveSearchResultDictAsMovie:resultDict completion:^(Movie *aMovie) {
+        isAdding = NO;
+        self.movie = aMovie;
         [self checkButtonStates];
+        
     } failure:^(NSError *error) {
         XLog(@"%@", [error localizedDescription]);
+        isAdding = NO;
         [self checkButtonStates];
     }];
     
