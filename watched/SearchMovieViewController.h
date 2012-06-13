@@ -15,6 +15,8 @@
     NSString *searchQuery;
     NSInteger currentPage;
     NSInteger totalPages;
+    BOOL isLoading;
+    BOOL shouldBeEmptyTable;
 }
 
 @property (strong, nonatomic) IBOutlet UITableView *tableView;

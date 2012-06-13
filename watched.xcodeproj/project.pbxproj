@@ -67,6 +67,16 @@
 		7AF3AE161559C113001B36E1 /* MoviesDataModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AF3AE151559C113001B36E1 /* MoviesDataModel.m */; };
 		7AF540F01577781F0018530A /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7AF540EF1577781F0018530A /* MediaPlayer.framework */; };
 		7AF540F8157783C10018530A /* MovieCastsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AF540F7157783C10018530A /* MovieCastsTableViewController.m */; };
+		7AF9A72D1587EDE00016EC63 /* SettingsAboutTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AF9A72C1587EDE00016EC63 /* SettingsAboutTableViewController.m */; };
+		7AF9A731158809AE0016EC63 /* WatchedLocalWebBrowser.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AF9A730158809AD0016EC63 /* WatchedLocalWebBrowser.m */; };
+		7AF9A733158810850016EC63 /* settings_releasenotes.html in Resources */ = {isa = PBXBuildFile; fileRef = 7AF9A732158810850016EC63 /* settings_releasenotes.html */; };
+		7AF9A73B158819150016EC63 /* settings_afnetworking.html in Resources */ = {isa = PBXBuildFile; fileRef = 7AF9A734158819140016EC63 /* settings_afnetworking.html */; };
+		7AF9A73C158819150016EC63 /* settings_dlstarrating.html in Resources */ = {isa = PBXBuildFile; fileRef = 7AF9A735158819140016EC63 /* settings_dlstarrating.html */; };
+		7AF9A73D158819150016EC63 /* settings_gmgridview.html in Resources */ = {isa = PBXBuildFile; fileRef = 7AF9A736158819140016EC63 /* settings_gmgridview.html */; };
+		7AF9A73E158819150016EC63 /* settings_marius.html in Resources */ = {isa = PBXBuildFile; fileRef = 7AF9A737158819140016EC63 /* settings_marius.html */; };
+		7AF9A73F158819150016EC63 /* settings_martin.html in Resources */ = {isa = PBXBuildFile; fileRef = 7AF9A738158819150016EC63 /* settings_martin.html */; };
+		7AF9A740158819150016EC63 /* settings_testflight.html in Resources */ = {isa = PBXBuildFile; fileRef = 7AF9A739158819150016EC63 /* settings_testflight.html */; };
+		7AF9A741158819150016EC63 /* settings_tmdb.html in Resources */ = {isa = PBXBuildFile; fileRef = 7AF9A73A158819150016EC63 /* settings_tmdb.html */; };
 		AFB44DD682834673B44EF4EE /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 61811A39E2A3494C9E929164 /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -160,13 +170,25 @@
 		7AED8E871582C2FB009F0416 /* mv_bg_add.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = mv_bg_add.png; path = ../../../../../../Dropbox/Arbeit/iOS/watched/v2/export/mv_bg_add.png; sourceTree = "<group>"; };
 		7AEEA33F1573F697003F06E1 /* MovieDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MovieDetailViewController.h; sourceTree = "<group>"; };
 		7AEEA3401573F697003F06E1 /* MovieDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MovieDetailViewController.m; sourceTree = "<group>"; };
-		7AEF90F51584F37D00C70DD2 /* UIView+FindUIViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; path = "UIView+FindUIViewController.h"; sourceTree = "<group>"; };
+		7AEF90F51584F37D00C70DD2 /* UIView+FindUIViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+FindUIViewController.h"; sourceTree = "<group>"; };
 		7AEF90F61584F37D00C70DD2 /* UIView+FindUIViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+FindUIViewController.m"; sourceTree = "<group>"; };
 		7AF3AE141559C113001B36E1 /* MoviesDataModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MoviesDataModel.h; sourceTree = "<group>"; };
 		7AF3AE151559C113001B36E1 /* MoviesDataModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MoviesDataModel.m; sourceTree = "<group>"; };
 		7AF540EF1577781F0018530A /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
 		7AF540F6157783C10018530A /* MovieCastsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MovieCastsTableViewController.h; sourceTree = "<group>"; };
 		7AF540F7157783C10018530A /* MovieCastsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MovieCastsTableViewController.m; sourceTree = "<group>"; };
+		7AF9A72B1587EDE00016EC63 /* SettingsAboutTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsAboutTableViewController.h; sourceTree = "<group>"; };
+		7AF9A72C1587EDE00016EC63 /* SettingsAboutTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsAboutTableViewController.m; sourceTree = "<group>"; };
+		7AF9A72F158809AD0016EC63 /* WatchedLocalWebBrowser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WatchedLocalWebBrowser.h; sourceTree = "<group>"; };
+		7AF9A730158809AD0016EC63 /* WatchedLocalWebBrowser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WatchedLocalWebBrowser.m; sourceTree = "<group>"; };
+		7AF9A732158810850016EC63 /* settings_releasenotes.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = settings_releasenotes.html; sourceTree = "<group>"; };
+		7AF9A734158819140016EC63 /* settings_afnetworking.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = settings_afnetworking.html; sourceTree = "<group>"; };
+		7AF9A735158819140016EC63 /* settings_dlstarrating.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = settings_dlstarrating.html; sourceTree = "<group>"; };
+		7AF9A736158819140016EC63 /* settings_gmgridview.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = settings_gmgridview.html; sourceTree = "<group>"; };
+		7AF9A737158819140016EC63 /* settings_marius.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = settings_marius.html; sourceTree = "<group>"; };
+		7AF9A738158819150016EC63 /* settings_martin.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = settings_martin.html; sourceTree = "<group>"; };
+		7AF9A739158819150016EC63 /* settings_testflight.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = settings_testflight.html; sourceTree = "<group>"; };
+		7AF9A73A158819150016EC63 /* settings_tmdb.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = settings_tmdb.html; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -290,6 +312,8 @@
 			children = (
 				7A2F43DB158420FB00667E76 /* WatchedWebBrowser.h */,
 				7A2F43DC158420FB00667E76 /* WatchedWebBrowser.m */,
+				7AF9A72F158809AD0016EC63 /* WatchedLocalWebBrowser.h */,
+				7AF9A730158809AD0016EC63 /* WatchedLocalWebBrowser.m */,
 			);
 			name = WebBrowser;
 			sourceTree = "<group>";
@@ -414,6 +438,8 @@
 			children = (
 				7A8DC676157CFDDD00F6EACA /* SettingsTableViewController.h */,
 				7A8DC677157CFDDD00F6EACA /* SettingsTableViewController.m */,
+				7AF9A72B1587EDE00016EC63 /* SettingsAboutTableViewController.h */,
+				7AF9A72C1587EDE00016EC63 /* SettingsAboutTableViewController.m */,
 			);
 			name = Settings;
 			sourceTree = "<group>";
@@ -439,9 +465,18 @@
 		7ACFACAA157C15830089EB8C /* HTML-Templates */ = {
 			isa = PBXGroup;
 			children = (
+				7AF9A732158810850016EC63 /* settings_releasenotes.html */,
+				7AF9A734158819140016EC63 /* settings_afnetworking.html */,
+				7AF9A735158819140016EC63 /* settings_dlstarrating.html */,
+				7AF9A736158819140016EC63 /* settings_gmgridview.html */,
+				7AF9A737158819140016EC63 /* settings_marius.html */,
+				7AF9A738158819150016EC63 /* settings_martin.html */,
+				7AF9A739158819150016EC63 /* settings_testflight.html */,
+				7AF9A73A158819150016EC63 /* settings_tmdb.html */,
 				7ACFACA7157C157F0089EB8C /* sharebymail.html */,
 			);
 			name = "HTML-Templates";
+			path = "Assets/HTML-Templates";
 			sourceTree = "<group>";
 		};
 		7AEE00EC1552D4B0005EF8CD /* TMDB API */ = {
@@ -542,6 +577,14 @@
 				7AED8E821582BFBF009F0416 /* mv_addbutton@2x.png in Resources */,
 				7AED8E861582BFCD009F0416 /* mv_bg_add@2x.png in Resources */,
 				7AED8E881582C2FB009F0416 /* mv_bg_add.png in Resources */,
+				7AF9A733158810850016EC63 /* settings_releasenotes.html in Resources */,
+				7AF9A73B158819150016EC63 /* settings_afnetworking.html in Resources */,
+				7AF9A73C158819150016EC63 /* settings_dlstarrating.html in Resources */,
+				7AF9A73D158819150016EC63 /* settings_gmgridview.html in Resources */,
+				7AF9A73E158819150016EC63 /* settings_marius.html in Resources */,
+				7AF9A73F158819150016EC63 /* settings_martin.html in Resources */,
+				7AF9A740158819150016EC63 /* settings_testflight.html in Resources */,
+				7AF9A741158819150016EC63 /* settings_tmdb.html in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -615,6 +658,8 @@
 				7A2F43EB1584D93A00667E76 /* UIViewController+MJPopupViewController.m in Sources */,
 				7A2F43EF1584DBBA00667E76 /* AddMovieViewController.m in Sources */,
 				7AEF90F71584F37D00C70DD2 /* UIView+FindUIViewController.m in Sources */,
+				7AF9A72D1587EDE00016EC63 /* SettingsAboutTableViewController.m in Sources */,
+				7AF9A731158809AE0016EC63 /* WatchedLocalWebBrowser.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

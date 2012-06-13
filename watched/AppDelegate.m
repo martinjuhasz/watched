@@ -141,7 +141,11 @@
     addController = (AddMovieViewController*)[storyBoard instantiateViewControllerWithIdentifier:@"AddMovieViewController"];
     addController.delegate = self;
     addController.resultID = [NSNumber numberWithInt:serverID];
-
+    
+    if(self.window.rootViewController.modalViewController) {
+        [self.window.rootViewController dismissModalViewControllerAnimated:NO];
+    }
+    
     [self.window.rootViewController presentPopupViewController:addController animationType:PopupViewAnimationFade];
     
     return YES;

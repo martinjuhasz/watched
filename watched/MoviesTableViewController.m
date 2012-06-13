@@ -136,32 +136,17 @@ const int kMovieDisplayCellImageView = 200;
     titleLabel.text = movie.title;
     yearLabel.text = [movie.releaseDate description];
     coverImageView.image = movie.posterThumbnail;
-    //coverImageView.image = [UIima];
-    
-    // Retrieve the image from the database on a background queue
-//    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0);
-//    dispatch_async(queue, ^{
-//        UIImage *image = movie.poster;
-//        XLog("%@", NSStringFromCGSize(image.size));
-//        // use an index path to get at the cell we want to use because
-//        // the original may be reused by the OS.
-//        UITableViewCell *theCell = [tableView cellForRowAtIndexPath:indexPath];
-//        
-//        // check to see if the cell is visible
-//        if ([[self.tableView visibleCells] containsObject:theCell]){
-//            // put the image into the cell's imageView on the main queue
-//            dispatch_async(dispatch_get_main_queue(), ^{
-//                UIImageView *newCoverImageView = (UIImageView *)[theCell viewWithTag:kMovieDisplayCellImageView];
-//                newCoverImageView.image = image;
-//                [theCell setNeedsLayout];
-//            });
-//        }
-//    });
-    
     
     return cell;
 }
 
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+{
+    if(currentSortType != MovieSortTypeAll) return nil;
+    NSString *star = [[[fetchedResultsController sections] objectAtIndex:section] name];
+    if([star isEqualToString:@"0"]) star = NSLocalizedString(@"HEADER_TITLE_ZERORATING", nil);
+    return star;
+}
 
 
 
@@ -230,11 +215,15 @@ const int kMovieDisplayCellImageView = 200;
     
     // Filter by SortType
     NSPredicate *sortPredicate = nil;
+    NSString *sectionKeyPath = nil;
     if(sortType == MovieSortTypeUnwatched) {
         sortPredicate = [NSPredicate predicateWithFormat:@"watchedOn == nil"];
     } else if(sortType == MovieSortTypeUnrated) {
         sortPredicate = [NSPredicate predicateWithFormat:@"rating == 0"];
+    } else if (sortType == MovieSortTypeAll) {
+        sectionKeyPath = @"rating";
     }
+    
     if(sortPredicate) {
         [fetchRequest setPredicate:sortPredicate];
     }
@@ -248,11 +237,6 @@ const int kMovieDisplayCellImageView = 200;
     }
     [fetchRequest setSortDescriptors:[NSArray arrayWithObject:movieSortDescriptor]];
     
-    fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest 
-                                                                   managedObjectContext:[[MoviesDataModel sharedDataModel] mainContext] 
-                                                                     sectionNameKeyPath:nil 
-                                                                              cacheName:nil];
-    
     NSDictionary *entityProperties = [[NSEntityDescription entityForName:@"Movie" inManagedObjectContext:[[MoviesDataModel sharedDataModel] mainContext]] propertiesByName];
     [fetchRequest setPropertiesToFetch:[NSArray arrayWithObjects:
                                         [entityProperties objectForKey:@"title"],
@@ -261,6 +245,11 @@ const int kMovieDisplayCellImageView = 200;
                                         [entityProperties objectForKey:@"posterPath"],
                                         [entityProperties objectForKey:@"releaseDate"],
                                         nil]];
+    
+    fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest 
+                                                                   managedObjectContext:[[MoviesDataModel sharedDataModel] mainContext] 
+                                                                     sectionNameKeyPath:sectionKeyPath 
+                                                                              cacheName:nil];
     
     [fetchedResultsController performFetch:nil];
     [self.tableView reloadData];

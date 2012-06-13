@@ -11,7 +11,12 @@
 #import "UIView+Additions.h"
 #import "UIButton+Additions.h"
 
+
 @implementation MovieDetailView
+
+@synthesize trailerButtonEnabled;
+@synthesize websiteButtonEnabled;
+@synthesize castButtonEnabled;
 
 @synthesize mainScrollView;
 @synthesize imageLoadingView;
@@ -34,11 +39,13 @@
 @synthesize actor3Label;
 @synthesize actor3Button;
 @synthesize overviewLabel;
+@synthesize overviewTitleLabel;
 @synthesize ratingView;
 @synthesize noteButton;
 @synthesize trailerButton;
 @synthesize castsButton;
 @synthesize websiteButton;
+@synthesize refreshButton;
 @synthesize deleteButton;
 
 #define kMBackdropHeight 160.0f
@@ -70,6 +77,7 @@
 
 
 
+
 ////////////////////////////////////////////////////////////////////////////
 #pragma mark -
 #pragma mark Content Management
@@ -85,7 +93,6 @@
     self.posterButton.frame = CGRectMake(9.0f, 93.0f, 89.0f, 126.0f);
     
     self.titleLabel.frame = CGRectMake(110.0f, 170.0f, 206.0f, 46.0f);
-    [self.titleLabel sizeToFitWithMaximumNumberOfLines:3];
     
     CGRect switchFrame = CGRectZero;
     switchFrame.origin.x = 110.0f;
@@ -97,30 +104,86 @@
     self.releaseDateLabel.frame = CGRectMake(13.0f, 385.0f, 145.0f, 25.0f);
     self.runtimeLabel.frame = CGRectMake(162.0f, 385.0f, 145.0f, 25.0f);
     
-    // until here
-    self.actor1ImageView.frame = CGRectMake(16.0f, 445.0f, 83.0f, 48.0f);
-    self.actor2ImageView.frame = CGRectMake(118.0f, 445.0f, 83.0f, 48.0f);
-    self.actor3ImageView.frame = CGRectMake(220.0f, 445.0f, 83.0f, 48.0f);
-    self.actor1Label.frame = CGRectMake(16.0f, 490, 83.0f, 25.0f);
-    self.actor2Label.frame = CGRectMake(118.0f, 490, 83.0f, 25.0f);
-    self.actor3Label.frame = CGRectMake(220.0f, 490, 83.0f, 25.0f);
-    self.actor1Button.frame = CGRectMake(16.0f, 445.0f, 83.0f, 70.0f);
-    self.actor2Button.frame = CGRectMake(118.0f, 445.0f, 83.0f, 70.0f);
-    self.actor3Button.frame = CGRectMake(220.0f, 445.0f, 83.0f, 70.0f);
 }
 
 - (void)layoutSubviews
 {
     [super layoutSubviews];
+    [self.titleLabel sizeToFitWithMaximumNumberOfLines:3];
+    CGFloat lastPostition = 445.0f;
     
-    self.overviewLabel.frame = CGRectMake(13.0f, 550.0f, 294.0f, 0.0f);
+    if(self.castButtonEnabled) {
+        self.actor1ImageView.frame = CGRectMake(16.0f, 445.0f, 83.0f, 48.0f);
+        self.actor2ImageView.frame = CGRectMake(118.0f, 445.0f, 83.0f, 48.0f);
+        self.actor3ImageView.frame = CGRectMake(220.0f, 445.0f, 83.0f, 48.0f);
+        self.actor1Label.frame = CGRectMake(16.0f, 490, 83.0f, 25.0f);
+        self.actor2Label.frame = CGRectMake(118.0f, 490, 83.0f, 25.0f);
+        self.actor3Label.frame = CGRectMake(220.0f, 490, 83.0f, 25.0f);
+        self.actor1Button.frame = CGRectMake(16.0f, 445.0f, 83.0f, 70.0f);
+        self.actor2Button.frame = CGRectMake(118.0f, 445.0f, 83.0f, 70.0f);
+        self.actor3Button.frame = CGRectMake(220.0f, 445.0f, 83.0f, 70.0f);
+        self.actor1ImageView.alpha = 1.0f;
+        self.actor2ImageView.alpha = 1.0f;
+        self.actor3ImageView.alpha = 1.0f;
+        self.actor1Label.alpha = 1.0f;
+        self.actor2Label.alpha = 1.0f;
+        self.actor3Label.alpha = 1.0f;
+        self.actor1Button.alpha = 1.0f;
+        self.actor2Button.alpha = 1.0f;
+        self.actor3Button.alpha = 1.0f;
+        lastPostition = 530.0f;
+    } else {
+        self.actor1ImageView.alpha = 0.0f;
+        self.actor2ImageView.alpha = 0.0f;
+        self.actor3ImageView.alpha = 0.0f;
+        self.actor1Label.alpha = 0.0f;
+        self.actor2Label.alpha = 0.0f;
+        self.actor3Label.alpha = 0.0f;
+        self.actor1Button.alpha = 0.0f;
+        self.actor2Button.alpha = 0.0f;
+        self.actor3Button.alpha = 0.0f;
+    }
+    
+    self.overviewTitleLabel.frame = CGRectMake(13.0f, lastPostition, 300.0f, 15.0f);
+    self.overviewLabel.frame = CGRectMake(13.0f, lastPostition + 20.0f, 294.0f, 0.0f);
     [self.overviewLabel sizeToFit];
     
+    // Note Button
     self.noteButton.frame = CGRectMake(13.0f, self.overviewLabel.bottom + 30.0f, 294.0f, 25.0f);
-    self.trailerButton.frame = CGRectMake(13.0f, self.noteButton.bottom + 30.0f, 294.0f, 25.0f);
-    self.castsButton.frame = CGRectMake(13.0f, self.trailerButton.bottom + 15.0f, 294.0f, 25.0f);
-    self.websiteButton.frame = CGRectMake(13.0f, self.castsButton.bottom + 15.0f, 294.0f, 25.0f);
-    self.deleteButton.frame = CGRectMake(13.0f, self.websiteButton.bottom + 30.0f, 294.0f, 25.0f);
+   lastPostition = self.noteButton.bottom + 20.0f;
+    
+    // Trailer Button
+    if(self.trailerButtonEnabled) {
+        self.trailerButton.frame = CGRectMake(13.0f, lastPostition + 10.0f, 294.0f, 25.0f);
+        self.trailerButton.alpha = 1.0f;
+        lastPostition = self.trailerButton.bottom;
+    } else {
+        self.trailerButton.alpha = 0.0f;
+    }
+    
+    // Casts Button
+    if(self.castButtonEnabled) {
+        self.castsButton.frame = CGRectMake(13.0f, lastPostition + 10.0f, 294.0f, 25.0f);
+        self.castsButton.alpha = 1.0f;
+        lastPostition = self.castsButton.bottom;
+    } else {
+        self.castsButton.alpha = 0.0f;
+    }
+    
+    // Website Button
+    if(self.websiteButtonEnabled) {
+        self.websiteButton.frame = CGRectMake(13.0f, lastPostition + 10.0f, 294.0f, 25.0f);
+        self.websiteButton.alpha = 1.0f;
+        lastPostition = self.websiteButton.bottom;
+    } else {
+        self.websiteButton.alpha = 0.0f;
+    }
+    
+    // Refresh
+    self.refreshButton.frame = CGRectMake(13.0f, lastPostition + 30.0f, 294.0f, 25.0f);
+    
+    // Delete Button
+    self.deleteButton.frame = CGRectMake(13.0f, self.refreshButton.bottom + 10.0f, 294.0f, 25.0f);
     
     [self.mainScrollView setContentSize:CGSizeMake(320.0f, self.deleteButton.bottom + 20.0f)];
 }
@@ -243,12 +306,12 @@
     
     
     
-    UILabel *overviewTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(13.0f, 530.0f, 300.0f, 15.0f)];
-    overviewTitleLabel.text = NSLocalizedString(@"DETAIL_DESCRIPTION_TITLE", nil);
-    [self setDefaultStylesForLabels:overviewTitleLabel];
-    overviewTitleLabel.adjustsFontSizeToFitWidth = NO;
-    overviewTitleLabel.textColor = HEXColor(0xFFFFFF);
-    [self.mainScrollView addSubview:overviewTitleLabel];
+    self.overviewTitleLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+    self.overviewTitleLabel.text = NSLocalizedString(@"DETAIL_DESCRIPTION_TITLE", nil);
+    [self setDefaultStylesForLabels:self.overviewTitleLabel];
+    self.overviewTitleLabel.adjustsFontSizeToFitWidth = NO;
+    self.overviewTitleLabel.textColor = HEXColor(0xFFFFFF);
+    [self.mainScrollView addSubview:self.overviewTitleLabel];
     
     self.overviewLabel = [[UILabel alloc] init];
     [self setDefaultStylesForLabels:self.overviewLabel];
@@ -284,6 +347,13 @@
     self.websiteButton.titleColor = HEXColor(0xABADAF);
     [self.websiteButton setTitle:NSLocalizedString(@"BUTTON_VISIT_HOMEPAGE", nil)];
     [self.mainScrollView addSubview:self.websiteButton];
+    
+    self.refreshButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    self.refreshButton.titleLabel.font = [UIFont boldSystemFontOfSize:16.0f];
+    self.refreshButton.titleLabel.adjustsFontSizeToFitWidth = NO;
+    self.refreshButton.titleColor = HEXColor(0xABADAF);
+    [self.refreshButton setTitle:NSLocalizedString(@"BUTTON_REFRESH_MOVIE", nil)];
+    [self.mainScrollView addSubview:self.refreshButton];
     
     self.deleteButton = [UIButton buttonWithType:UIButtonTypeCustom];
     self.deleteButton.titleLabel.font = [UIFont boldSystemFontOfSize:16.0f];

@@ -66,7 +66,7 @@
     
     // set contents and enable buttone
     [self setContent];
-    
+
     [self.detailView.backdropButton addTarget:self action:@selector(posterButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
     [self.detailView.posterButton addTarget:self action:@selector(posterButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
     [self.detailView.watchedSwitch addTarget:self action:@selector(watchedSwitchClicked:) forControlEvents:UIControlEventValueChanged];
@@ -75,6 +75,7 @@
     [self.detailView.websiteButton addTarget:self action:@selector(websiteButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
     [self.detailView.castsButton addTarget:self action:@selector(castsButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
     [self.detailView.deleteButton addTarget:self action:@selector(deleteButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+    [self.detailView.refreshButton addTarget:self action:@selector(refreshButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
     [self.detailView.actor1Button addTarget:self action:@selector(actorButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
     [self.detailView.actor2Button addTarget:self action:@selector(actorButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
     [self.detailView.actor3Button addTarget:self action:@selector(actorButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
@@ -132,6 +133,26 @@
     
     if(self.movie.watchedOn) self.detailView.watchedSwitch.on = YES;
     
+    // Website Button
+    if(self.movie.homepage && ![self.movie.homepage isEqualToString:@""]) {
+        self.detailView.websiteButtonEnabled = YES;
+    } else {
+        self.detailView.websiteButtonEnabled = NO;
+    }
+    
+    // Casts
+    if(self.movie.casts.count > 0) {
+        self.detailView.castButtonEnabled = YES;
+    } else {
+        self.detailView.castButtonEnabled = NO;
+    }
+    
+    // Trailer
+    if(self.movie.trailers.count > 0) {
+        self.detailView.trailerButtonEnabled = YES;
+    } else {
+        self.detailView.trailerButtonEnabled = NO;
+    }
     
     
 }
@@ -151,6 +172,7 @@
     if([segue.identifier isEqualToString:@"MovieNoteSegue"]) {
         MovieNoteViewController *detailViewController = (MovieNoteViewController*)segue.destinationViewController;
         detailViewController.movie = self.movie;
+        detailViewController.title = NSLocalizedString(@"NOTES_TITLE", nil);
     }
     if([segue.identifier isEqualToString:@"ThumbnailPickerSegue"]) {
         NSDictionary *returnDict = (NSDictionary*)sender;
@@ -334,6 +356,42 @@
 - (IBAction)actorButtonClicked:(id)sender
 {
     [self performSegueWithIdentifier:@"DetailWebViewSegue" sender:sender];
+}
+
+- (IBAction)refreshButtonClicked:(id)sender
+{
+    self.detailView.refreshButton.enabled = NO;
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+        
+        // Setup Core Data with extra Context for Background Process
+        OnlineDatabaseBridge *bridge = [[OnlineDatabaseBridge alloc] init];
+        NSManagedObjectContext *context = [[NSManagedObjectContext alloc] init];
+        [context setPersistentStoreCoordinator:[[MoviesDataModel sharedDataModel] persistentStoreCoordinator]];
+        Movie *movieCopy = (Movie*)[context objectWithID:movie.objectID];
+        __block NSError *error;
+        
+        [bridge updateMovieMetadata:movieCopy inContext:context completion:^(Movie *returnedMovie) {
+            [context save:&error];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                self.detailView.refreshButton.enabled = YES;
+                [self setContent];
+                [self.detailView setNeedsLayout];
+            });
+        } failure:^(NSError *anError) {
+            XLog("%@", [anError localizedDescription]);
+            dispatch_async(dispatch_get_main_queue(), ^{
+                self.detailView.refreshButton.enabled = YES;
+            });
+        }];
+        
+        if(error) {
+            XLog("%@", [error localizedDescription]);
+        }
+    });
+    
+    
+    
+    
 }
 
 

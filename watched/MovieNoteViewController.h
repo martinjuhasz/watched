@@ -12,6 +12,7 @@
 
 @interface MovieNoteViewController : UIViewController
 
+@property (strong, nonatomic) IBOutlet UINavigationBar *navBar;
 @property (strong, nonatomic) IBOutlet UITextView *textView;
 @property (strong, nonatomic) Movie *movie;
 

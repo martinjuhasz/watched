@@ -12,6 +12,10 @@
 
 @interface MovieDetailView : UIView<UIScrollViewDelegate>
 
+@property (assign, nonatomic) BOOL trailerButtonEnabled;
+@property (assign, nonatomic) BOOL castButtonEnabled;
+@property (assign, nonatomic) BOOL websiteButtonEnabled;
+
 @property (strong, nonatomic) UIScrollView *mainScrollView;
 @property (strong, nonatomic) UIView *imageLoadingView;
 @property (strong, nonatomic) UIImageView *backdropImageView;
@@ -33,11 +37,13 @@
 @property (strong, nonatomic) UILabel *actor3Label;
 @property (strong, nonatomic) UIButton *actor3Button;
 @property (strong, nonatomic) UILabel *overviewLabel;
+@property (strong, nonatomic) UILabel *overviewTitleLabel;
 @property (strong, nonatomic) DLStarRatingControl *ratingView;
 @property (strong, nonatomic) UIButton *noteButton;
 @property (strong, nonatomic) UIButton *trailerButton;
 @property (strong, nonatomic) UIButton *castsButton;
 @property (strong, nonatomic) UIButton *websiteButton;
+@property (strong, nonatomic) UIButton *refreshButton;
 @property (strong, nonatomic) UIButton *deleteButton;
 
 - (void)toggleLoadingViewForPosterType:(ImageType)aImageType;

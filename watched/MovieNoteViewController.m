@@ -15,6 +15,7 @@
 @end
 
 @implementation MovieNoteViewController
+@synthesize navBar;
 @synthesize textView;
 @synthesize movie;
 
@@ -30,6 +31,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    self.navBar.topItem.title = self.title;
+    
     if(self.movie.note) {
         self.textView.text = self.movie.note;
     } else {
@@ -42,14 +45,9 @@
 - (void)viewDidUnload
 {
     [self setTextView:nil];
+    [self setNavBar:nil];
     [super viewDidUnload];
     // Release any retained subviews of the main view.
-}
-
-- (void)viewWillDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:animated];
-    [self saveNote];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -75,5 +73,16 @@
         
     });
 }
+
+- (IBAction)saveButtonClicked:(id)sender {
+    [self saveNote];
+    [self dismissModalViewControllerAnimated:YES];
+}
+
+- (IBAction)cancelButtonClicked:(id)sender {
+    [self dismissModalViewControllerAnimated:YES];
+}
+
+
 
 @end

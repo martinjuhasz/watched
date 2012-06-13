@@ -17,6 +17,8 @@
 #import "AddMovieViewController.h"
 #import "UIViewController+MJPopupViewController.h"
 
+#define kSearchMovieLoadingTableViewCell @"SearchMovieLoadingTableViewCell"
+#define kSearchMovieTableViewCell @"SearchMovieTableViewCell"
 
 @interface SearchMovieViewController ()<AddMovieViewDelegate>
 @end
@@ -52,7 +54,14 @@ const int kMovieSearchCellImageView = 200;
     [self.searchBar setCancelButtonActive];
     [self.searchBar becomeFirstResponder];
     
-    currentPage = 1;
+    // make sure the tableview is empty
+    UIView *emptyTable = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 1, 1)];
+    [emptyTable setBackgroundColor:[UIColor clearColor]];
+    self.tableView.tableFooterView = emptyTable;
+    
+    currentPage = 0;
+    isLoading = NO;
+    shouldBeEmptyTable = YES;
     self.searchResults = [NSMutableArray array];
 }
 
@@ -84,8 +93,17 @@ const int kMovieSearchCellImageView = 200;
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
+    // should be empty
+    if(shouldBeEmptyTable) return 0;
+    
+    // first search
+    if(isLoading) return 1;
+    
+    // no result
+    if(!isLoading && self.searchResults.count == 0) return 1;
+    
     // display extra loading cell if there are some results
-    if(self.searchResults > 0 && totalPages > currentPage) {
+    if(self.searchResults.count > 0 && totalPages > currentPage) {
         return self.searchResults.count + 1;
     }
     return self.searchResults.count;
@@ -96,6 +114,8 @@ const int kMovieSearchCellImageView = 200;
     // check to see if loading cell needs to be displayed
     if (indexPath.row < self.searchResults.count) {
         return [self resultCellAtIndexPath:indexPath];
+    } else if (!isLoading && self.searchResults.count == 0) {
+        return [self infoCell];
     } else {
         return [self loadingCell];
     }
@@ -116,7 +136,9 @@ const int kMovieSearchCellImageView = 200;
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
-    SearchResult *result = [searchResults objectAtIndex:indexPath.row];
+    if(self.searchResults.count <= indexPath.row) return;
+    
+    SearchResult *result = [self.searchResults objectAtIndex:indexPath.row];
     UITableViewCell *clickedCell = [self.tableView cellForRowAtIndexPath:indexPath];
     UIImageView *coverImageView = (UIImageView *)[clickedCell viewWithTag:kMovieSearchCellImageView];
     
@@ -128,9 +150,21 @@ const int kMovieSearchCellImageView = 200;
     self.addController.delegate = self;
     
     [self presentPopupViewController:self.addController animationType:PopupViewAnimationFade];
-//    [self saveMovieToDatabase:result];
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (indexPath.row >= self.searchResults.count) {
+        return 40.0f;
+    }
+    return 82.0f;
+}
+
+//- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
+//    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, 0)];
+//    view.backgroundColor = [UIColor whiteColor];
+//    return view;
+//}
 
 
 
@@ -140,7 +174,7 @@ const int kMovieSearchCellImageView = 200;
 
 - (UITableViewCell *)resultCellAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *CellIdentifier = @"SearchMovieTableViewCell";
+    static NSString *CellIdentifier = kSearchMovieTableViewCell;
     UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
@@ -172,6 +206,18 @@ const int kMovieSearchCellImageView = 200;
     return cell;
 }
 
+- (UITableViewCell *)infoCell
+{
+    static NSString *CellIdentifier = @"SearchMovieInfoTableViewCell";
+    UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    if (cell == nil) {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+    }
+    UILabel *titleLabel = (UILabel *)[cell viewWithTag:kMovieSearchCellTitleLabel];
+    titleLabel.text = @"no movies found";
+    return cell;
+}
+
 
 
 ////////////////////////////////////////////////////////////////////////////
@@ -185,12 +231,14 @@ const int kMovieSearchCellImageView = 200;
     // Reset all the Values
     self.searchResults = nil;
     self.searchResults = [NSMutableArray array];
-    currentPage = 1;
+    currentPage = 0;
     totalPages = 0;
-    [self.tableView reloadData];
+    isLoading = YES;
+    shouldBeEmptyTable = NO;
     
     // Start Search
-    [self startSearchWithQuery:searchQuery];
+    [self.tableView reloadData];
+//    [self startSearchWithQuery:searchQuery];
     [aSearchBar resignFirstResponder];
 }
 
@@ -213,6 +261,8 @@ const int kMovieSearchCellImageView = 200;
 {
     [[OnlineMovieDatabase sharedMovieDatabase] getMoviesWithSearchString:query atPage:currentPage completion:^(NSDictionary *results) {
         
+        isLoading = NO;
+        
         NSArray *movies = [results objectForKey:@"results"];
         totalPages = [[results objectForKey:@"total_pages"] intValue];
         
@@ -222,6 +272,7 @@ const int kMovieSearchCellImageView = 200;
         }
         [self.tableView reloadData];
     } failure:^(NSError *error) {
+        isLoading = NO;
         MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
         hud.dimBackground = YES;
         hud.mode = MBProgressHUDModeText;
