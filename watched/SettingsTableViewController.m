@@ -54,7 +54,7 @@
                       nil],
                      [NSArray arrayWithObjects:
                       [NSDictionary dictionaryWithObject:@"Feedback" forKey:@"name"],
-                      [NSDictionary dictionaryWithObject:@"Dummy Content" forKey:@"name"],
+//                      [NSDictionary dictionaryWithObject:@"Dummy Content" forKey:@"name"],
                       nil],
                  nil];
     
@@ -140,9 +140,10 @@
 
 - (void)reloadStatisticCells
 {
-    NSIndexPath *movieCountPath = [NSIndexPath indexPathForRow:1 inSection:0];
-    NSIndexPath *averageRatingPath = [NSIndexPath indexPathForRow:2 inSection:0];
-    [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObjects:movieCountPath,averageRatingPath, nil] withRowAnimation:UITableViewRowAnimationFade];
+    [self.tableView reloadData];
+//    NSIndexPath *movieCountPath = [NSIndexPath indexPathForRow:1 inSection:0];
+//    NSIndexPath *averageRatingPath = [NSIndexPath indexPathForRow:2 inSection:0];
+//    [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObjects:movieCountPath,averageRatingPath, nil] withRowAnimation:UITableViewRowAnimationNone];
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
@@ -165,7 +166,7 @@
 {
     // Statistics
     if(indexPath.section == 0) return;
-    
+
     // Settings
     if(indexPath.section == 1) {
         if(indexPath.row == 0)
@@ -220,9 +221,8 @@
         } else if (indexPath.row == 1) {
             [self loadDummyContent];
         }
+        [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
     }
-    
-//    [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 
@@ -396,33 +396,27 @@
                          [NSNumber numberWithInt:7870],
                          [NSNumber numberWithInt:11135],
                          nil];
-    __block NSInteger count = 0;
+    
+    dispatch_group_t group = dispatch_group_create();
     
     for (NSNumber *currentMovie in movieIDS) {
-        
+        dispatch_group_enter(group);
         [bridge saveMovieForID:currentMovie completion:^(Movie *returnedMovie) {
-            count++;
-            
-            if(count == movieIDS.count) {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    [hud hide:YES];
-                    [self loadStatistics];
-                    [self reloadStatisticCells];
-                });
-            }
-            XLog("%d of %d", count, movieIDS.count);
+            dispatch_group_leave(group);
         } failure:^(NSError *anError) {
-            count++;
-            if(count == movieIDS.count) {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    [hud hide:YES];
-                    [self loadStatistics];
-                    [self reloadStatisticCells];
-                });
-            }
-            XLog("%d of %d", count, movieIDS.count);
+            XLog("%@",[anError localizedDescription]);
+            dispatch_group_leave(group);
         }];
     }
+    
+    // wait until everything is finished
+    dispatch_group_wait(group, DISPATCH_TIME_FOREVER);
+    dispatch_release(group);
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [hud hide:YES];
+        [self loadStatistics];
+        [self reloadStatisticCells];
+    });
     
 }
 

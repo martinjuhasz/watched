@@ -41,6 +41,7 @@
 @synthesize overviewLabel;
 @synthesize overviewTitleLabel;
 @synthesize ratingView;
+@synthesize similarButton;
 @synthesize noteButton;
 @synthesize trailerButton;
 @synthesize castsButton;
@@ -150,7 +151,9 @@
     
     // Note Button
     self.noteButton.frame = CGRectMake(13.0f, self.overviewLabel.bottom + 30.0f, 294.0f, 25.0f);
-   lastPostition = self.noteButton.bottom + 20.0f;
+    
+    self.similarButton.frame = CGRectMake(13.0f, self.noteButton.bottom + 10.0f, 294.0f, 25.0f);
+    lastPostition = self.similarButton.bottom + 20.0f;
     
     // Trailer Button
     if(self.trailerButtonEnabled) {
@@ -319,6 +322,13 @@
     self.overviewLabel.adjustsFontSizeToFitWidth = NO;
     self.overviewLabel.textColor = HEXColor(0xFFFFFF);
     [self.mainScrollView addSubview:self.overviewLabel];
+    
+    self.similarButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    self.similarButton.titleLabel.font = [UIFont boldSystemFontOfSize:16.0f];
+    self.similarButton.titleLabel.adjustsFontSizeToFitWidth = NO;
+    self.similarButton.titleColor = HEXColor(0xABADAF);
+    [self.similarButton setTitle:NSLocalizedString(@"BUTTON_SIMILAR", nil)];
+    [self.mainScrollView addSubview:self.similarButton];
     
     self.noteButton = [UIButton buttonWithType:UIButtonTypeCustom];
     self.noteButton.titleLabel.font = [UIFont boldSystemFontOfSize:16.0f];

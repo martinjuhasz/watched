@@ -128,15 +128,26 @@
 
 - (void)saveMovieForID:(NSNumber*)movieID completion:(OnlineBridgeCompletionBlock)aCompletionBlock failure:(OnlineBridgeFailureBlock)aFailureBlock
 {
-    [[OnlineMovieDatabase sharedMovieDatabase] getMovieDetailsForMovieID:movieID completion:^(NSDictionary *movieDict) {
-        [self saveSearchResultDictAsMovie:movieDict completion:^(Movie *aMovie) {
-            aCompletionBlock(aMovie);
-        } failure:^(NSError *aError) {
-            aFailureBlock(aFailureBlock);
-        }];
-    } failure:^(NSError *aError) {
-        aFailureBlock(aError);
-    }];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+        NSManagedObjectContext *context = [[NSManagedObjectContext alloc] init];
+        [context setPersistentStoreCoordinator:[[MoviesDataModel sharedDataModel] persistentStoreCoordinator]];
+        Movie *movie = [Movie movieWithServerId:[movieID intValue] usingManagedObjectContext:context];
+        if (!movie) {
+            [[OnlineMovieDatabase sharedMovieDatabase] getMovieDetailsForMovieID:movieID completion:^(NSDictionary *movieDict) {
+                [self saveSearchResultDictAsMovie:movieDict completion:^(Movie *aMovie) {
+                    aCompletionBlock(aMovie);
+                } failure:^(NSError *aError) {
+                    aFailureBlock(aFailureBlock);
+                }];
+            } failure:^(NSError *aError) {
+                aFailureBlock(aError);
+            }];
+        } else {
+            NSError *existsError = [[NSError alloc] initWithDomain:kBridgeErrorDomain code:BridgeErrorMovieExists userInfo:[NSDictionary dictionaryWithObjectsAndKeys:@"Movie with this ID already exists", NSLocalizedDescriptionKey, nil]];
+            aFailureBlock(existsError);
+//            aFailureBlock(nil);
+        }
+    });
 }
 
 

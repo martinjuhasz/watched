@@ -153,6 +153,22 @@ static NSString *databaseURL = @"http://api.themoviedb.org/3";
     [operation start];
 }
 
+- (void)getSimilarMoviesWithMovieID:(NSNumber*)anID atPage:(NSInteger)page completion:(MovieSearchCompletionBlock)callback failure:(OnlineMovieDatabaseErrorBlock)failure
+{
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/movie/%@/similar_movies?%@&page=%d",databaseURL, anID,[self additionalURLParams] ,page]];
+    XLog(@"Searching Similar Movies at URL: %@", url);
+    NSURLRequest *request = [NSURLRequest requestWithURL:url];
+    
+    AFJSONRequestOperation *operation;
+    operation = [AFJSONRequestOperation JSONRequestOperationWithRequest:request success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
+        callback(JSON);
+    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
+        failure(error);
+    }];
+    
+    [operation start];
+}
+
 
 
 ////////////////////////////////////////////////////////////////////////////

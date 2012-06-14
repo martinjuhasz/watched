@@ -39,6 +39,7 @@
 @property (strong, nonatomic) UILabel *overviewLabel;
 @property (strong, nonatomic) UILabel *overviewTitleLabel;
 @property (strong, nonatomic) DLStarRatingControl *ratingView;
+@property (strong, nonatomic) UIButton *similarButton;
 @property (strong, nonatomic) UIButton *noteButton;
 @property (strong, nonatomic) UIButton *trailerButton;
 @property (strong, nonatomic) UIButton *castsButton;

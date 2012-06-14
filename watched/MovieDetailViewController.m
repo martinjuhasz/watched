@@ -24,6 +24,7 @@
 #import "OnlineDatabaseBridge.h"
 #import <QuartzCore/QuartzCore.h>
 #import "WatchedWebBrowser.h"
+#import "SearchMovieViewController.h"
 
 #define kImageFadeDelay 0.0f
 
@@ -70,6 +71,7 @@
     [self.detailView.backdropButton addTarget:self action:@selector(posterButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
     [self.detailView.posterButton addTarget:self action:@selector(posterButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
     [self.detailView.watchedSwitch addTarget:self action:@selector(watchedSwitchClicked:) forControlEvents:UIControlEventValueChanged];
+    [self.detailView.similarButton addTarget:self action:@selector(similarButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
     [self.detailView.noteButton addTarget:self action:@selector(noteButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
     [self.detailView.trailerButton addTarget:self action:@selector(trailerButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
     [self.detailView.websiteButton addTarget:self action:@selector(websiteButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
@@ -214,6 +216,10 @@
             NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"http://m.imdb.com/find?q=%@", encodedName]];
             detailViewController.url = url;
         }
+    }
+    if([segue.identifier isEqualToString:@"SimilarMovieSegue"]) {
+        SearchMovieViewController *detailViewController = (SearchMovieViewController*)segue.destinationViewController;
+        detailViewController.movieID = self.movie.movieID;
     }
 }
 
@@ -388,10 +394,11 @@
             XLog("%@", [error localizedDescription]);
         }
     });
-    
-    
-    
-    
+}
+
+-(IBAction)similarButtonClicked:(id)sender
+{
+    [self performSegueWithIdentifier:@"SimilarMovieSegue" sender:nil];
 }
 
 

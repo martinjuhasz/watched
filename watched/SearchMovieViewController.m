@@ -26,6 +26,8 @@
 
 @implementation SearchMovieViewController
 
+@synthesize searchQuery;
+@synthesize movieID;
 @synthesize tableView;
 @synthesize searchBar;
 @synthesize searchResults;
@@ -60,8 +62,12 @@ const int kMovieSearchCellImageView = 200;
     self.tableView.tableFooterView = emptyTable;
     
     currentPage = 0;
-    isLoading = NO;
-    shouldBeEmptyTable = YES;
+    
+    if((self.searchQuery && ![self.searchQuery isEqualToString:@""]) || (self.movieID && [self.movieID intValue] > 0)) {
+        isLoading = YES;
+    } else {
+        isLoading = NO;
+    }
     self.searchResults = [NSMutableArray array];
 }
 
@@ -94,7 +100,7 @@ const int kMovieSearchCellImageView = 200;
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     // should be empty
-    if(shouldBeEmptyTable) return 0;
+    if((!self.searchQuery || [self.searchQuery isEqualToString:@""]) && (!self.movieID || [self.movieID intValue] <= 0)) return 0;
     
     // first search
     if(isLoading) return 1;
@@ -124,7 +130,12 @@ const int kMovieSearchCellImageView = 200;
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
     if (cell.tag == kMovieSearchLoadingCellTag) {
         currentPage++;
-        [self startSearchWithQuery:searchQuery];
+        if(self.movieID) {
+            XLog("");
+            [self startSimilarSearchWithMovieID:self.movieID];
+        } else {
+            [self startSearchWithQuery:self.searchQuery];
+        }
     }
 }
 
@@ -226,7 +237,7 @@ const int kMovieSearchCellImageView = 200;
 
 - (void)searchBarSearchButtonClicked:(UISearchBar *)aSearchBar
 {
-    searchQuery = aSearchBar.text;
+    self.searchQuery = aSearchBar.text;
     
     // Reset all the Values
     self.searchResults = nil;
@@ -234,11 +245,10 @@ const int kMovieSearchCellImageView = 200;
     currentPage = 0;
     totalPages = 0;
     isLoading = YES;
-    shouldBeEmptyTable = NO;
     
     // Start Search
     [self.tableView reloadData];
-//    [self startSearchWithQuery:searchQuery];
+//    [self startSearchWithQuery:self.searchQuery];
     [aSearchBar resignFirstResponder];
 }
 
@@ -261,6 +271,30 @@ const int kMovieSearchCellImageView = 200;
 {
     [[OnlineMovieDatabase sharedMovieDatabase] getMoviesWithSearchString:query atPage:currentPage completion:^(NSDictionary *results) {
         
+        isLoading = NO;
+        
+        NSArray *movies = [results objectForKey:@"results"];
+        totalPages = [[results objectForKey:@"total_pages"] intValue];
+        
+        for (NSDictionary *movie in movies) {
+            SearchResult *aResult = [SearchResult instanceFromDictionary:movie];
+            [self.searchResults addObject:aResult];
+        }
+        [self.tableView reloadData];
+    } failure:^(NSError *error) {
+        isLoading = NO;
+        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+        hud.dimBackground = YES;
+        hud.mode = MBProgressHUDModeText;
+        hud.labelText = [error localizedDescription];
+        hud.removeFromSuperViewOnHide = YES;
+        [hud hide:YES afterDelay:1.0f];
+    }];
+}
+
+- (void)startSimilarSearchWithMovieID:(NSNumber*)anID
+{
+    [[OnlineMovieDatabase sharedMovieDatabase] getSimilarMoviesWithMovieID:anID atPage:currentPage completion:^(NSDictionary *results) {
         isLoading = NO;
         
         NSArray *movies = [results objectForKey:@"results"];

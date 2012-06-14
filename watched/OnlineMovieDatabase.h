@@ -39,5 +39,6 @@ typedef enum {
 - (void)getMovieCastsForMovieID:(NSNumber *)movieID completion:(MovieCastsCompletionBlock)callback failure:(OnlineMovieDatabaseErrorBlock)failure;
 - (void)getMovieTrailersForMovieID:(NSNumber *)movieID completion:(MovieTrailersCompletionBlock)callback failure:(OnlineMovieDatabaseErrorBlock)failure;
 - (void)getImagesForMovie:(NSNumber *)movieID completion:(MovieImagesCompletionBlock)callback failure:(OnlineMovieDatabaseErrorBlock)failure;
+- (void)getSimilarMoviesWithMovieID:(NSNumber*)anID atPage:(NSInteger)page completion:(MovieSearchCompletionBlock)callback failure:(OnlineMovieDatabaseErrorBlock)failure;
 
 @end

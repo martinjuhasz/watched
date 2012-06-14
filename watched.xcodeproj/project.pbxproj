@@ -462,6 +462,13 @@
 			name = Note;
 			sourceTree = "<group>";
 		};
+		7ABFF95F158A2F0800C18BEC /* Similar */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Similar;
+			sourceTree = "<group>";
+		};
 		7ACFACAA157C15830089EB8C /* HTML-Templates */ = {
 			isa = PBXGroup;
 			children = (
@@ -497,6 +504,7 @@
 				7AEEA3401573F697003F06E1 /* MovieDetailViewController.m */,
 				7A0A42691574DDD00019DD5E /* MovieDetailView.h */,
 				7A0A426A1574DDD00019DD5E /* MovieDetailView.m */,
+				7ABFF95F158A2F0800C18BEC /* Similar */,
 				7A7EEF82157D56C400EAEE01 /* ThumbnailPicker */,
 				7A99CCA7157C11BE0097F8E1 /* Note */,
 				7A99CCA6157C11B40097F8E1 /* Cast */,

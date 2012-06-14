@@ -12,13 +12,13 @@
 @class AddMovieViewController;
 
 @interface SearchMovieViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate> {
-    NSString *searchQuery;
     NSInteger currentPage;
     NSInteger totalPages;
     BOOL isLoading;
-    BOOL shouldBeEmptyTable;
 }
 
+@property (strong, nonatomic) NSString *searchQuery;
+@property (strong, nonatomic) NSNumber *movieID;
 @property (strong, nonatomic) IBOutlet UITableView *tableView;
 @property (strong, nonatomic) IBOutlet UISearchBar *searchBar;
 @property (strong, nonatomic) NSMutableArray *searchResults;
