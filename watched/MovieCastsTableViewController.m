@@ -13,15 +13,18 @@
 #import "Cast.h"
 #import "Crew.h"
 #import "WatchedWebBrowser.h"
+#import "Reachability.h"
 
-@interface MovieCastsTableViewController ()
+@interface MovieCastsTableViewController () {
+    Reachability *reachability;
+}
 
 @end
 
 @implementation MovieCastsTableViewController
 
 @synthesize movie;
-
+@synthesize internetAvailable;
 
 const int kMovieCastCellCharacterLabel = 100;
 const int kMovieCastCellNameLabel = 101;
@@ -44,6 +47,17 @@ const int kMovieCastCellProfileImageView = 200;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    self.internetAvailable = YES;
+    __weak MovieCastsTableViewController *blockSelf = self;
+    reachability = [Reachability reachabilityWithHostname:@"www.google.com"];
+    reachability.reachableBlock = ^(Reachability*reach) {
+        blockSelf.internetAvailable = YES;
+    };
+    reachability.unreachableBlock = ^(Reachability*reach) {
+        blockSelf.internetAvailable = NO;
+    };
+    [reachability startNotifier];
 }
 
 - (void)viewDidUnload
@@ -51,6 +65,7 @@ const int kMovieCastCellProfileImageView = 200;
     [super viewDidUnload];
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
+    [reachability stopNotifier];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -66,7 +81,16 @@ const int kMovieCastCellProfileImageView = 200;
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    
+    if(!self.internetAvailable) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"ALERT_NOINTERNET_TITLE", nil)
+                                                        message:NSLocalizedString(@"ALERT_NOINTERNET_TITLE_CONTENT", nil)
+                                                       delegate:nil 
+                                              cancelButtonTitle:NSLocalizedString(@"ALERT_NOINTERNET_TITLE_OK", nil)
+                                              otherButtonTitles:nil];
+        [alert show];
+        return;
+    }
+    [self performSegueWithIdentifier:@"CastWebViewSegue" sender:indexPath];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -160,9 +184,9 @@ const int kMovieCastCellProfileImageView = 200;
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-    if([segue.identifier isEqualToString:@"CastWebViewSegue"]) {
+    if([segue.identifier isEqualToString:@"CastWebViewSegue"] && [sender isKindOfClass:[NSIndexPath class]]) {
         
-        NSIndexPath *selectedPath = [self.tableView indexPathForSelectedRow];
+        NSIndexPath *selectedPath = (NSIndexPath*)sender;
         NSString *encodedName = @"";
         
         // get cast or crew
@@ -175,6 +199,7 @@ const int kMovieCastCellProfileImageView = 200;
         }
         
         NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"http://m.imdb.com/find?q=%@", encodedName]];
+        XLog("%@", url);
         WatchedWebBrowser *webBrowser = (WatchedWebBrowser*)segue.destinationViewController;
         webBrowser.url = url;
         

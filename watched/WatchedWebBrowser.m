@@ -9,9 +9,11 @@
 #import "WatchedWebBrowser.h"
 #import <MessageUI/MessageUI.h>
 #import <Twitter/Twitter.h>
+#import "Reachability.h"
 
-@interface WatchedWebBrowser () <UIWebViewDelegate, UIActionSheetDelegate, MFMailComposeViewControllerDelegate>
-
+@interface WatchedWebBrowser () <UIWebViewDelegate, UIActionSheetDelegate, MFMailComposeViewControllerDelegate> {
+    Reachability *reachability;
+}
 @end
 
 @implementation WatchedWebBrowser
@@ -58,6 +60,21 @@
     
     [self.webView loadRequest:[NSURLRequest requestWithURL:self.url]];
     
+    // check internet
+    reachability = [Reachability reachabilityWithHostname:@"www.google.com"];
+    reachability.unreachableBlock = ^(Reachability*reach)
+    {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"ALERT_NOINTERNET_TITLE", nil)
+                                                            message:NSLocalizedString(@"ALERT_NOINTERNET_TITLE_CONTENT", nil)
+                                                           delegate:nil 
+                                                  cancelButtonTitle:NSLocalizedString(@"ALERT_NOINTERNET_TITLE_OK", nil)
+                                                  otherButtonTitles:nil];
+            [alert show];
+        });
+    };
+    [reachability startNotifier];
+    
 }
 
 - (void)viewDidUnload
@@ -70,6 +87,8 @@
     [self setActionButton:nil];
     [super viewDidUnload];
     // Release any retained subviews of the main view.
+    
+    [reachability stopNotifier];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation

@@ -6,6 +6,10 @@
 "de"                            = "German";
 "en"                            = "English";
 "NAVIGATION_BACK"               = "back";
+"ALERT_NOINTERNET_TITLE"  = "no connection";
+"ALERT_MOVIE_NOINTERNET_TITLE_CONTENT" = "Sorry. You need an internet connection to add movies.";
+"ALERT_NOINTERNET_TITLE_CONTENT" = "Sorry. You need an internet connection for this.";
+"ALERT_NOINTERNET_TITLE_OK"     = "Ok";
 
 
 /*================================================
@@ -15,6 +19,7 @@
 "POPUP_SAVEBUTTON_ADDED"        = "added";
 "POPUP_SAVEBUTTON_ADD"          = "add";
 "POPUP_TITLE_LOADING"           = "loading...";
+"POPUP_FAILED"                  = "Sorry. Could not load Movie.";
 
 /*================================================
  Table View
@@ -37,6 +42,7 @@
 "BUTTON_WATCH_TRAILER"          = "watch Trailer";
 "BUTTON_DELETE_MOVIE"           = "delete Movie";
 "BUTTON_ADD_NOTE"               = "Add Note";
+"BUTTON_SIMILAR"                = "Similar Movies";
 "DETAIL_DESCRIPTION_TITLE"      = "Overview";
 
 "SHARE_BUTTON_TITLE"            = "Share by";

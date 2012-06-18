@@ -229,13 +229,12 @@ const int kMovieDisplayCellImageView = 200;
     }
     
     // Sorting
-    NSSortDescriptor *movieSortDescriptor = nil;
+    NSMutableArray *sortDescriptors = [NSMutableArray array];
     if(sortType == MovieSortTypeAll) {
-        movieSortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"rating" ascending:NO];
-    } else {
-        movieSortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"title" ascending:YES];
+        [sortDescriptors addObject:[NSSortDescriptor sortDescriptorWithKey:@"rating" ascending:NO]];
     }
-    [fetchRequest setSortDescriptors:[NSArray arrayWithObject:movieSortDescriptor]];
+    [sortDescriptors addObject:[NSSortDescriptor sortDescriptorWithKey:@"title" ascending:YES]];
+    [fetchRequest setSortDescriptors:sortDescriptors];
     
     NSDictionary *entityProperties = [[NSEntityDescription entityForName:@"Movie" inManagedObjectContext:[[MoviesDataModel sharedDataModel] mainContext]] propertiesByName];
     [fetchRequest setPropertiesToFetch:[NSArray arrayWithObjects:

@@ -1,422 +1,1313 @@
-// !$*UTF8*$!
-{
-	archiveVersion = 1;
-	classes = {
-	};
-	objectVersion = 46;
-	objects = {
-
-/* Begin PBXBuildFile section */
-		298DC36958204555B750F958 /* AFJSONUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = AB73FCC1B9764469B74DABCE /* AFJSONUtilities.m */; settings = {COMPILER_FLAGS = " "; }; };
-		2BF3785148B84993B0B005E2 /* AFURLConnectionOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 09AFE2C5C99944DDABE52C14 /* AFURLConnectionOperation.m */; settings = {COMPILER_FLAGS = " "; }; };
-		3011833E318C4A2C9617FD55 /* GMGridViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1FB8DD727D4046979AB248F2 /* GMGridViewCell.m */; settings = {COMPILER_FLAGS = " -fobjc-arc"; }; };
-		3304C8D84B254038AFD05389 /* UIView+Subviews.m in Sources */ = {isa = PBXBuildFile; fileRef = 193F7D8CEAA14254B846AEDA /* UIView+Subviews.m */; settings = {COMPILER_FLAGS = " "; }; };
-		377F0E8A97284BEF8449B6F2 /* UIImageView+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B696245F70C4291B84115BB /* UIImageView+AFNetworking.m */; settings = {COMPILER_FLAGS = " "; }; };
-		47B75A55B07C4A8EA9D2996C /* AFJSONRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 38A43886CEAB437699C93410 /* AFJSONRequestOperation.m */; settings = {COMPILER_FLAGS = " "; }; };
-		5EA063AD0F6E4BF892C257A2 /* DLStarRatingControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 369AE323244542799DF79891 /* DLStarRatingControl.m */; settings = {COMPILER_FLAGS = " "; }; };
-		642F3688F302473485ED35C7 /* AFXMLRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B691378FE64D9A88BF3ABC /* AFXMLRequestOperation.m */; settings = {COMPILER_FLAGS = " "; }; };
-		76F139A3C2224756873A17B3 /* GMGridViewLayoutStrategies.m in Sources */ = {isa = PBXBuildFile; fileRef = 670A152FD8634254B65BF6AA /* GMGridViewLayoutStrategies.m */; settings = {COMPILER_FLAGS = " -fobjc-arc"; }; };
-		7CB9286AD9DE473EA24D5E67 /* AFPropertyListRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = B95D28CAC0544470B67C61D3 /* AFPropertyListRequestOperation.m */; settings = {COMPILER_FLAGS = " "; }; };
-		800C527F871B4B0087DAB817 /* AFImageRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 6808AF4BD2D143CFA61E2216 /* AFImageRequestOperation.m */; settings = {COMPILER_FLAGS = " "; }; };
-		828F267B7EDB408C9D70C781 /* UIGestureRecognizer+GMGridViewAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 331380345A144F62A91DD258 /* UIGestureRecognizer+GMGridViewAdditions.m */; settings = {COMPILER_FLAGS = " -fobjc-arc"; }; };
-		87284B525E7948199BA4F859 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 94CC16B8098B46C4A1BC6895 /* Foundation.framework */; };
-		9691BF082A724EA683B468F5 /* UIView+GMGridViewAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 092F3DD4D69841AE8431A8B6 /* UIView+GMGridViewAdditions.m */; settings = {COMPILER_FLAGS = " -fobjc-arc"; }; };
-		A7AF9B02802D4E4B885E78E4 /* AFHTTPRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 37A7BB10F1FE4F0194919F8F /* AFHTTPRequestOperation.m */; settings = {COMPILER_FLAGS = " "; }; };
-		CA3B5797A8444ED193CD3184 /* AFNetworkActivityIndicatorManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F2012AE75F24D1BAD57E8B1 /* AFNetworkActivityIndicatorManager.m */; settings = {COMPILER_FLAGS = " "; }; };
-		CC9D6A585836472E8D3A86F9 /* GMGridView.m in Sources */ = {isa = PBXBuildFile; fileRef = 780BE3EBE716419D9E42E003 /* GMGridView.m */; settings = {COMPILER_FLAGS = " -fobjc-arc"; }; };
-		E910654F98E64A82ABAA2A7B /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 6521ABC4C8D44EC886145A0F /* MBProgressHUD.m */; settings = {COMPILER_FLAGS = " "; }; };
-		F58EC933231A4723BB99F245 /* AFHTTPClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 24D1F0885272409E99CA9AD1 /* AFHTTPClient.m */; settings = {COMPILER_FLAGS = " "; }; };
-		FE83AD8EABC5453481705A20 /* DLStarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DD84D543BDD404699F14295 /* DLStarView.m */; settings = {COMPILER_FLAGS = " "; }; };
-/* End PBXBuildFile section */
-
-/* Begin PBXCopyFilesBuildPhase section */
-		752ACCA4520646DE8B1D65A9 /* CopyFiles */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "$(PRODUCT_NAME)";
-			dstSubfolderSpec = 16;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXCopyFilesBuildPhase section */
-
-/* Begin PBXFileReference section */
-		092F3DD4D69841AE8431A8B6 /* UIView+GMGridViewAdditions.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = "UIView+GMGridViewAdditions.m"; path = "GMGridView/GMGridView/UIView+GMGridViewAdditions.m"; sourceTree = SOURCE_ROOT; };
-		09AFE2C5C99944DDABE52C14 /* AFURLConnectionOperation.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = AFURLConnectionOperation.m; path = AFNetworking/AFNetworking/AFURLConnectionOperation.m; sourceTree = SOURCE_ROOT; };
-		0B0B78F7FFF94154A89AEB0D /* AFPropertyListRequestOperation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = AFPropertyListRequestOperation.h; path = AFNetworking/AFNetworking/AFPropertyListRequestOperation.h; sourceTree = SOURCE_ROOT; };
-		193F7D8CEAA14254B846AEDA /* UIView+Subviews.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = "UIView+Subviews.m"; path = "DLStarRating/DLStarRating/UIView+Subviews.m"; sourceTree = SOURCE_ROOT; };
-		1FB8DD727D4046979AB248F2 /* GMGridViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = GMGridViewCell.m; path = GMGridView/GMGridView/GMGridViewCell.m; sourceTree = SOURCE_ROOT; };
-		24D1F0885272409E99CA9AD1 /* AFHTTPClient.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = AFHTTPClient.m; path = AFNetworking/AFNetworking/AFHTTPClient.m; sourceTree = SOURCE_ROOT; };
-		29E62E105A794A4EADC2AEC3 /* DLStarRatingControl.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = DLStarRatingControl.h; path = DLStarRating/DLStarRating/DLStarRatingControl.h; sourceTree = SOURCE_ROOT; };
-		331380345A144F62A91DD258 /* UIGestureRecognizer+GMGridViewAdditions.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = "UIGestureRecognizer+GMGridViewAdditions.m"; path = "GMGridView/GMGridView/UIGestureRecognizer+GMGridViewAdditions.m"; sourceTree = SOURCE_ROOT; };
-		359312E307A143BAAB2D9FB8 /* GMGridViewCell+Extended.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "GMGridViewCell+Extended.h"; path = "GMGridView/GMGridView/GMGridViewCell+Extended.h"; sourceTree = SOURCE_ROOT; };
-		369AE323244542799DF79891 /* DLStarRatingControl.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = DLStarRatingControl.m; path = DLStarRating/DLStarRating/DLStarRatingControl.m; sourceTree = SOURCE_ROOT; };
-		37A7BB10F1FE4F0194919F8F /* AFHTTPRequestOperation.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = AFHTTPRequestOperation.m; path = AFNetworking/AFNetworking/AFHTTPRequestOperation.m; sourceTree = SOURCE_ROOT; };
-		38A43886CEAB437699C93410 /* AFJSONRequestOperation.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = AFJSONRequestOperation.m; path = AFNetworking/AFNetworking/AFJSONRequestOperation.m; sourceTree = SOURCE_ROOT; };
-		41233CB16ADF4B80BAA8CE54 /* AFImageRequestOperation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = AFImageRequestOperation.h; path = AFNetworking/AFNetworking/AFImageRequestOperation.h; sourceTree = SOURCE_ROOT; };
-		45F89511389E4A2F98884645 /* GMGridViewLayoutStrategies.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = GMGridViewLayoutStrategies.h; path = GMGridView/GMGridView/GMGridViewLayoutStrategies.h; sourceTree = SOURCE_ROOT; };
-		4EA10492AB3348EE8CDD6FAE /* UIView+Subviews.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "UIView+Subviews.h"; path = "DLStarRating/DLStarRating/UIView+Subviews.h"; sourceTree = SOURCE_ROOT; };
-		5DD84D543BDD404699F14295 /* DLStarView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = DLStarView.m; path = DLStarRating/DLStarRating/DLStarView.m; sourceTree = SOURCE_ROOT; };
-		6521ABC4C8D44EC886145A0F /* MBProgressHUD.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = MBProgressHUD.m; path = MBProgressHUD/MBProgressHUD.m; sourceTree = SOURCE_ROOT; };
-		670A152FD8634254B65BF6AA /* GMGridViewLayoutStrategies.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = GMGridViewLayoutStrategies.m; path = GMGridView/GMGridView/GMGridViewLayoutStrategies.m; sourceTree = SOURCE_ROOT; };
-		6808AF4BD2D143CFA61E2216 /* AFImageRequestOperation.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = AFImageRequestOperation.m; path = AFNetworking/AFNetworking/AFImageRequestOperation.m; sourceTree = SOURCE_ROOT; };
-		6F2012AE75F24D1BAD57E8B1 /* AFNetworkActivityIndicatorManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = AFNetworkActivityIndicatorManager.m; path = AFNetworking/AFNetworking/AFNetworkActivityIndicatorManager.m; sourceTree = SOURCE_ROOT; };
-		7062D8684A8C445A81FA2DC7 /* AFURLConnectionOperation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = AFURLConnectionOperation.h; path = AFNetworking/AFNetworking/AFURLConnectionOperation.h; sourceTree = SOURCE_ROOT; };
-		73B691378FE64D9A88BF3ABC /* AFXMLRequestOperation.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = AFXMLRequestOperation.m; path = AFNetworking/AFNetworking/AFXMLRequestOperation.m; sourceTree = SOURCE_ROOT; };
-		73E61C4AE5FA43CBAE84F4C2 /* AFHTTPRequestOperation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = AFHTTPRequestOperation.h; path = AFNetworking/AFNetworking/AFHTTPRequestOperation.h; sourceTree = SOURCE_ROOT; };
-		780BE3EBE716419D9E42E003 /* GMGridView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = GMGridView.m; path = GMGridView/GMGridView/GMGridView.m; sourceTree = SOURCE_ROOT; };
-		7BFFEEEC8CF64AB3BC35BCA0 /* UIImageView+AFNetworking.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "UIImageView+AFNetworking.h"; path = "AFNetworking/AFNetworking/UIImageView+AFNetworking.h"; sourceTree = SOURCE_ROOT; };
-		8011E7510C9E4FE1B852055A /* DLStarView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = DLStarView.h; path = DLStarRating/DLStarRating/DLStarView.h; sourceTree = SOURCE_ROOT; };
-		8B25471CDE62420E876F4750 /* AFNetworking.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = AFNetworking.h; path = AFNetworking/AFNetworking/AFNetworking.h; sourceTree = SOURCE_ROOT; };
-		8B696245F70C4291B84115BB /* UIImageView+AFNetworking.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = "UIImageView+AFNetworking.m"; path = "AFNetworking/AFNetworking/UIImageView+AFNetworking.m"; sourceTree = SOURCE_ROOT; };
-		94CC16B8098B46C4A1BC6895 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
-		9AA97E6E8CC94CE08C7B9EA5 /* AFJSONUtilities.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = AFJSONUtilities.h; path = AFNetworking/AFNetworking/AFJSONUtilities.h; sourceTree = SOURCE_ROOT; };
-		A3DAB7AEF0944B2B9361015D /* Pods.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Pods.xcconfig; sourceTree = SOURCE_ROOT; };
-		A7AC11E2DFAF46A49127C092 /* AFHTTPClient.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = AFHTTPClient.h; path = AFNetworking/AFNetworking/AFHTTPClient.h; sourceTree = SOURCE_ROOT; };
-		A89EEDBA88BD4B3E91FD753F /* MBProgressHUD.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = MBProgressHUD.h; path = MBProgressHUD/MBProgressHUD.h; sourceTree = SOURCE_ROOT; };
-		AB73FCC1B9764469B74DABCE /* AFJSONUtilities.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = AFJSONUtilities.m; path = AFNetworking/AFNetworking/AFJSONUtilities.m; sourceTree = SOURCE_ROOT; };
-		B1CED007952A4036BEAAA7DC /* AFNetworkActivityIndicatorManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = AFNetworkActivityIndicatorManager.h; path = AFNetworking/AFNetworking/AFNetworkActivityIndicatorManager.h; sourceTree = SOURCE_ROOT; };
-		B95D28CAC0544470B67C61D3 /* AFPropertyListRequestOperation.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = AFPropertyListRequestOperation.m; path = AFNetworking/AFNetworking/AFPropertyListRequestOperation.m; sourceTree = SOURCE_ROOT; };
-		D24B8AC8ADD64C47A6A3C5ED /* GMGridViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = GMGridViewCell.h; path = GMGridView/GMGridView/GMGridViewCell.h; sourceTree = SOURCE_ROOT; };
-		D369F9BF3AD5415CB5B9599D /* AFXMLRequestOperation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = AFXMLRequestOperation.h; path = AFNetworking/AFNetworking/AFXMLRequestOperation.h; sourceTree = SOURCE_ROOT; };
-		E4AF4AA53A4A4EDB9944F5EE /* AFJSONRequestOperation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = AFJSONRequestOperation.h; path = AFNetworking/AFNetworking/AFJSONRequestOperation.h; sourceTree = SOURCE_ROOT; };
-		E5CD644CE1294F949CBE23A3 /* Pods-resources.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = "Pods-resources.sh"; sourceTree = SOURCE_ROOT; };
-		E7BC1388E6D5479D8E2A4F26 /* GMGridView-Constants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "GMGridView-Constants.h"; path = "GMGridView/GMGridView/GMGridView-Constants.h"; sourceTree = SOURCE_ROOT; };
-		EAEBC77FBDF14D7382691919 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		ECE4EDA5EC8F44848E563941 /* UIView+GMGridViewAdditions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "UIView+GMGridViewAdditions.h"; path = "GMGridView/GMGridView/UIView+GMGridViewAdditions.h"; sourceTree = SOURCE_ROOT; };
-		EEE0C52DDF82432FAB5AC5EC /* UIGestureRecognizer+GMGridViewAdditions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "UIGestureRecognizer+GMGridViewAdditions.h"; path = "GMGridView/GMGridView/UIGestureRecognizer+GMGridViewAdditions.h"; sourceTree = SOURCE_ROOT; };
-		EF527B11C3004679A8235CFB /* Pods-prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Pods-prefix.pch"; sourceTree = SOURCE_ROOT; };
-		EF80D9B879F64CC7B37F7DD6 /* TestFlight.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = TestFlight.h; path = TestFlightSDK/TestFlight.h; sourceTree = SOURCE_ROOT; };
-		F61794299DCB494A84302E18 /* GMGridView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = GMGridView.h; path = GMGridView/GMGridView/GMGridView.h; sourceTree = SOURCE_ROOT; };
-/* End PBXFileReference section */
-
-/* Begin PBXFrameworksBuildPhase section */
-		A6A2B8F561FC4CF781821070 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				87284B525E7948199BA4F859 /* Foundation.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXFrameworksBuildPhase section */
-
-/* Begin PBXGroup section */
-		1696C6322DDB4AFB89FAE81B /* MBProgressHUD */ = {
-			isa = PBXGroup;
-			children = (
-				A89EEDBA88BD4B3E91FD753F /* MBProgressHUD.h */,
-				6521ABC4C8D44EC886145A0F /* MBProgressHUD.m */,
-			);
-			name = MBProgressHUD;
-			sourceTree = "<group>";
-		};
-		6A52FC8867CD423588221646 /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				6D628A633165458EBFE81774 /* AFNetworking */,
-				E09DFBC649864E78B1B7E2F8 /* DLStarRating */,
-				CB2FB7D1EFA041BF80846F3C /* GMGridView */,
-				1696C6322DDB4AFB89FAE81B /* MBProgressHUD */,
-				897951F189E649379A64F44D /* TestFlightSDK */,
-			);
-			name = Pods;
-			sourceTree = "<group>";
-		};
-		6D628A633165458EBFE81774 /* AFNetworking */ = {
-			isa = PBXGroup;
-			children = (
-				A7AC11E2DFAF46A49127C092 /* AFHTTPClient.h */,
-				73E61C4AE5FA43CBAE84F4C2 /* AFHTTPRequestOperation.h */,
-				41233CB16ADF4B80BAA8CE54 /* AFImageRequestOperation.h */,
-				E4AF4AA53A4A4EDB9944F5EE /* AFJSONRequestOperation.h */,
-				9AA97E6E8CC94CE08C7B9EA5 /* AFJSONUtilities.h */,
-				B1CED007952A4036BEAAA7DC /* AFNetworkActivityIndicatorManager.h */,
-				8B25471CDE62420E876F4750 /* AFNetworking.h */,
-				0B0B78F7FFF94154A89AEB0D /* AFPropertyListRequestOperation.h */,
-				7062D8684A8C445A81FA2DC7 /* AFURLConnectionOperation.h */,
-				D369F9BF3AD5415CB5B9599D /* AFXMLRequestOperation.h */,
-				7BFFEEEC8CF64AB3BC35BCA0 /* UIImageView+AFNetworking.h */,
-				24D1F0885272409E99CA9AD1 /* AFHTTPClient.m */,
-				37A7BB10F1FE4F0194919F8F /* AFHTTPRequestOperation.m */,
-				6808AF4BD2D143CFA61E2216 /* AFImageRequestOperation.m */,
-				38A43886CEAB437699C93410 /* AFJSONRequestOperation.m */,
-				AB73FCC1B9764469B74DABCE /* AFJSONUtilities.m */,
-				6F2012AE75F24D1BAD57E8B1 /* AFNetworkActivityIndicatorManager.m */,
-				B95D28CAC0544470B67C61D3 /* AFPropertyListRequestOperation.m */,
-				09AFE2C5C99944DDABE52C14 /* AFURLConnectionOperation.m */,
-				73B691378FE64D9A88BF3ABC /* AFXMLRequestOperation.m */,
-				8B696245F70C4291B84115BB /* UIImageView+AFNetworking.m */,
-			);
-			name = AFNetworking;
-			sourceTree = "<group>";
-		};
-		897951F189E649379A64F44D /* TestFlightSDK */ = {
-			isa = PBXGroup;
-			children = (
-				EF80D9B879F64CC7B37F7DD6 /* TestFlight.h */,
-			);
-			name = TestFlightSDK;
-			sourceTree = "<group>";
-		};
-		9FB9FAC3CC1146D1959E54E9 /* Targets Support Files */ = {
-			isa = PBXGroup;
-			children = (
-				DAB110FD76574BEA934B5777 /* Pods */,
-			);
-			name = "Targets Support Files";
-			sourceTree = "<group>";
-		};
-		A113BBFCC98D4FFEAA078C4E = {
-			isa = PBXGroup;
-			children = (
-				6A52FC8867CD423588221646 /* Pods */,
-				D79906D1049342B6B6EAC795 /* Frameworks */,
-				C4DC503A92C64E63898E5C70 /* Products */,
-				9FB9FAC3CC1146D1959E54E9 /* Targets Support Files */,
-			);
-			sourceTree = "<group>";
-		};
-		C4DC503A92C64E63898E5C70 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				EAEBC77FBDF14D7382691919 /* libPods.a */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
-		CB2FB7D1EFA041BF80846F3C /* GMGridView */ = {
-			isa = PBXGroup;
-			children = (
-				E7BC1388E6D5479D8E2A4F26 /* GMGridView-Constants.h */,
-				F61794299DCB494A84302E18 /* GMGridView.h */,
-				359312E307A143BAAB2D9FB8 /* GMGridViewCell+Extended.h */,
-				D24B8AC8ADD64C47A6A3C5ED /* GMGridViewCell.h */,
-				45F89511389E4A2F98884645 /* GMGridViewLayoutStrategies.h */,
-				EEE0C52DDF82432FAB5AC5EC /* UIGestureRecognizer+GMGridViewAdditions.h */,
-				ECE4EDA5EC8F44848E563941 /* UIView+GMGridViewAdditions.h */,
-				780BE3EBE716419D9E42E003 /* GMGridView.m */,
-				1FB8DD727D4046979AB248F2 /* GMGridViewCell.m */,
-				670A152FD8634254B65BF6AA /* GMGridViewLayoutStrategies.m */,
-				331380345A144F62A91DD258 /* UIGestureRecognizer+GMGridViewAdditions.m */,
-				092F3DD4D69841AE8431A8B6 /* UIView+GMGridViewAdditions.m */,
-			);
-			name = GMGridView;
-			sourceTree = "<group>";
-		};
-		D79906D1049342B6B6EAC795 /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				94CC16B8098B46C4A1BC6895 /* Foundation.framework */,
-			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		DAB110FD76574BEA934B5777 /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				E5CD644CE1294F949CBE23A3 /* Pods-resources.sh */,
-				EF527B11C3004679A8235CFB /* Pods-prefix.pch */,
-				A3DAB7AEF0944B2B9361015D /* Pods.xcconfig */,
-			);
-			name = Pods;
-			sourceTree = "<group>";
-		};
-		E09DFBC649864E78B1B7E2F8 /* DLStarRating */ = {
-			isa = PBXGroup;
-			children = (
-				29E62E105A794A4EADC2AEC3 /* DLStarRatingControl.h */,
-				8011E7510C9E4FE1B852055A /* DLStarView.h */,
-				4EA10492AB3348EE8CDD6FAE /* UIView+Subviews.h */,
-				369AE323244542799DF79891 /* DLStarRatingControl.m */,
-				5DD84D543BDD404699F14295 /* DLStarView.m */,
-				193F7D8CEAA14254B846AEDA /* UIView+Subviews.m */,
-			);
-			name = DLStarRating;
-			sourceTree = "<group>";
-		};
-/* End PBXGroup section */
-
-/* Begin PBXNativeTarget section */
-		911F049DDC1542668E19F76F /* Pods */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 2EC521992C34421C9CE68725 /* Build configuration list for PBXNativeTarget "Pods" */;
-			buildPhases = (
-				219FA3E249BD4E46879756A7 /* Sources */,
-				A6A2B8F561FC4CF781821070 /* Frameworks */,
-				752ACCA4520646DE8B1D65A9 /* CopyFiles */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = Pods;
-			productName = Pods;
-			productReference = EAEBC77FBDF14D7382691919 /* libPods.a */;
-			productType = "com.apple.product-type.library.static";
-		};
-/* End PBXNativeTarget section */
-
-/* Begin PBXProject section */
-		007387F76D5344BCB8F764F3 /* Project object */ = {
-			isa = PBXProject;
-			attributes = {
-				LastUpgradeCheck = 0420;
-			};
-			buildConfigurationList = 62FB01B2271C4C739F18D231 /* Build configuration list for PBXProject "Pods" */;
-			compatibilityVersion = "Xcode 3.2";
-			developmentRegion = English;
-			hasScannedForEncodings = 0;
-			knownRegions = (
-				en,
-			);
-			mainGroup = A113BBFCC98D4FFEAA078C4E;
-			productRefGroup = C4DC503A92C64E63898E5C70 /* Products */;
-			projectDirPath = "";
-			projectRoot = "";
-			targets = (
-				911F049DDC1542668E19F76F /* Pods */,
-			);
-		};
-/* End PBXProject section */
-
-/* Begin PBXSourcesBuildPhase section */
-		219FA3E249BD4E46879756A7 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				F58EC933231A4723BB99F245 /* AFHTTPClient.m in Sources */,
-				A7AF9B02802D4E4B885E78E4 /* AFHTTPRequestOperation.m in Sources */,
-				800C527F871B4B0087DAB817 /* AFImageRequestOperation.m in Sources */,
-				47B75A55B07C4A8EA9D2996C /* AFJSONRequestOperation.m in Sources */,
-				298DC36958204555B750F958 /* AFJSONUtilities.m in Sources */,
-				CA3B5797A8444ED193CD3184 /* AFNetworkActivityIndicatorManager.m in Sources */,
-				7CB9286AD9DE473EA24D5E67 /* AFPropertyListRequestOperation.m in Sources */,
-				2BF3785148B84993B0B005E2 /* AFURLConnectionOperation.m in Sources */,
-				642F3688F302473485ED35C7 /* AFXMLRequestOperation.m in Sources */,
-				377F0E8A97284BEF8449B6F2 /* UIImageView+AFNetworking.m in Sources */,
-				5EA063AD0F6E4BF892C257A2 /* DLStarRatingControl.m in Sources */,
-				FE83AD8EABC5453481705A20 /* DLStarView.m in Sources */,
-				3304C8D84B254038AFD05389 /* UIView+Subviews.m in Sources */,
-				CC9D6A585836472E8D3A86F9 /* GMGridView.m in Sources */,
-				3011833E318C4A2C9617FD55 /* GMGridViewCell.m in Sources */,
-				76F139A3C2224756873A17B3 /* GMGridViewLayoutStrategies.m in Sources */,
-				828F267B7EDB408C9D70C781 /* UIGestureRecognizer+GMGridViewAdditions.m in Sources */,
-				9691BF082A724EA683B468F5 /* UIView+GMGridViewAdditions.m in Sources */,
-				E910654F98E64A82ABAA2A7B /* MBProgressHUD.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXSourcesBuildPhase section */
-
-/* Begin XCBuildConfiguration section */
-		46516D990D0E43538831D677 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				COPY_PHASE_STRIP = YES;
-				DSTROOT = /tmp/xcodeproj.dst;
-				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_VERSION = com.apple.compilers.llvmgcc42;
-				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				INSTALL_PATH = "$(BUILT_PRODUCTS_DIR)";
-				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
-				OTHER_LDFLAGS = "";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				PUBLIC_HEADERS_FOLDER_PATH = "$(TARGET_NAME)";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				VALIDATE_PRODUCT = YES;
-			};
-			name = Release;
-		};
-		9CAB0177376C4FDD9EF2E2F2 /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = A3DAB7AEF0944B2B9361015D /* Pods.xcconfig */;
-			buildSettings = {
-				DSTROOT = /tmp/xcodeproj.dst;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Pods-prefix.pch";
-				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
-				OTHER_LDFLAGS = "";
-				PODS_ROOT = "$(SRCROOT)";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SKIP_INSTALL = YES;
-			};
-			name = Release;
-		};
-		BCCA057A55444BAAB4AAB4D8 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = A3DAB7AEF0944B2B9361015D /* Pods.xcconfig */;
-			buildSettings = {
-				DSTROOT = /tmp/xcodeproj.dst;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Pods-prefix.pch";
-				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
-				OTHER_LDFLAGS = "";
-				PODS_ROOT = "$(SRCROOT)";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SKIP_INSTALL = YES;
-			};
-			name = Debug;
-		};
-		FE44A6B291444A01A384BD88 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				COPY_PHASE_STRIP = NO;
-				DSTROOT = /tmp/xcodeproj.dst;
-				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-				);
-				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				GCC_VERSION = com.apple.compilers.llvmgcc42;
-				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				INSTALL_PATH = "$(BUILT_PRODUCTS_DIR)";
-				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
-				OTHER_LDFLAGS = "";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				PUBLIC_HEADERS_FOLDER_PATH = "$(TARGET_NAME)";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-			};
-			name = Debug;
-		};
-/* End XCBuildConfiguration section */
-
-/* Begin XCConfigurationList section */
-		2EC521992C34421C9CE68725 /* Build configuration list for PBXNativeTarget "Pods" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				BCCA057A55444BAAB4AAB4D8 /* Debug */,
-				9CAB0177376C4FDD9EF2E2F2 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		62FB01B2271C4C739F18D231 /* Build configuration list for PBXProject "Pods" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				FE44A6B291444A01A384BD88 /* Debug */,
-				46516D990D0E43538831D677 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-/* End XCConfigurationList section */
-	};
-	rootObject = 007387F76D5344BCB8F764F3 /* Project object */;
-}
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>archiveVersion</key>
+	<string>1</string>
+	<key>classes</key>
+	<dict/>
+	<key>objectVersion</key>
+	<string>46</string>
+	<key>objects</key>
+	<dict>
+		<key>016462CE834E43D181675C7A</key>
+		<dict>
+			<key>fileRef</key>
+			<string>F34D0AFADA0F41D0ADAB24B5</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+			<key>settings</key>
+			<dict>
+				<key>COMPILER_FLAGS</key>
+				<string> -fobjc-arc</string>
+			</dict>
+		</dict>
+		<key>031B0D65F7864BF1B21A1164</key>
+		<dict>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>name</key>
+			<string>AFJSONRequestOperation.m</string>
+			<key>path</key>
+			<string>AFNetworking/AFNetworking/AFJSONRequestOperation.m</string>
+			<key>sourceTree</key>
+			<string>SOURCE_ROOT</string>
+		</dict>
+		<key>033711E1E9DC459F9D95F27E</key>
+		<dict>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>name</key>
+			<string>UIGestureRecognizer+GMGridViewAdditions.h</string>
+			<key>path</key>
+			<string>GMGridView/GMGridView/UIGestureRecognizer+GMGridViewAdditions.h</string>
+			<key>sourceTree</key>
+			<string>SOURCE_ROOT</string>
+		</dict>
+		<key>07287DF9C2C64B778BF6BC71</key>
+		<dict>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>name</key>
+			<string>AFHTTPClient.m</string>
+			<key>path</key>
+			<string>AFNetworking/AFNetworking/AFHTTPClient.m</string>
+			<key>sourceTree</key>
+			<string>SOURCE_ROOT</string>
+		</dict>
+		<key>0D4208C6D5124E8A98ECAE24</key>
+		<dict>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>name</key>
+			<string>DLStarRatingControl.h</string>
+			<key>path</key>
+			<string>DLStarRating/DLStarRating/DLStarRatingControl.h</string>
+			<key>sourceTree</key>
+			<string>SOURCE_ROOT</string>
+		</dict>
+		<key>0DF61C3192324E6F94776FEF</key>
+		<dict>
+			<key>children</key>
+			<array>
+				<string>47012B7D97EA484DBD7E74A2</string>
+				<string>1DE262D1B9C4442FA5ADC97E</string>
+				<string>542AF086330A4310A0062B6C</string>
+				<string>F367D7FE6B41408280EA1076</string>
+				<string>F4584DD217844AE69DC87A5C</string>
+				<string>033711E1E9DC459F9D95F27E</string>
+				<string>BB5B257E3C134B6FBF1ABCA1</string>
+				<string>138368021F95489FA00DD92A</string>
+				<string>C1F54A924839473EBEB0B06B</string>
+				<string>D4906F7E0E614B68A762D68F</string>
+				<string>333DB386135D46369751B8B8</string>
+				<string>9072A8E0485748118FB68CC7</string>
+			</array>
+			<key>isa</key>
+			<string>PBXGroup</string>
+			<key>name</key>
+			<string>GMGridView</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>0FEF87FEFD2A4991AE5371E3</key>
+		<dict>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>name</key>
+			<string>Reachability.h</string>
+			<key>path</key>
+			<string>Reachability/Reachability.h</string>
+			<key>sourceTree</key>
+			<string>SOURCE_ROOT</string>
+		</dict>
+		<key>13639A15D5204616866FBE04</key>
+		<dict>
+			<key>fileRef</key>
+			<string>512A258620854167BD739BF2</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>138368021F95489FA00DD92A</key>
+		<dict>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>name</key>
+			<string>GMGridView.m</string>
+			<key>path</key>
+			<string>GMGridView/GMGridView/GMGridView.m</string>
+			<key>sourceTree</key>
+			<string>SOURCE_ROOT</string>
+		</dict>
+		<key>16557A8C1444479E8EEA1D88</key>
+		<dict>
+			<key>explicitFileType</key>
+			<string>archive.ar</string>
+			<key>includeInIndex</key>
+			<string>0</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>name</key>
+			<string>libPods.a</string>
+			<key>path</key>
+			<string>libPods.a</string>
+			<key>sourceTree</key>
+			<string>BUILT_PRODUCTS_DIR</string>
+		</dict>
+		<key>185DBF355B6B4773A3409B3E</key>
+		<dict>
+			<key>fileRef</key>
+			<string>6734ED665C1D43CE998DFDBE</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+			<key>settings</key>
+			<dict>
+				<key>COMPILER_FLAGS</key>
+				<string> </string>
+			</dict>
+		</dict>
+		<key>186CE6FDF3B74BAE9E0729BE</key>
+		<dict>
+			<key>fileRef</key>
+			<string>07287DF9C2C64B778BF6BC71</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+			<key>settings</key>
+			<dict>
+				<key>COMPILER_FLAGS</key>
+				<string> </string>
+			</dict>
+		</dict>
+		<key>1DD73B8A7085484FBA987BF0</key>
+		<dict>
+			<key>fileRef</key>
+			<string>84AE5AB709734B8986B321F4</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+			<key>settings</key>
+			<dict>
+				<key>COMPILER_FLAGS</key>
+				<string> </string>
+			</dict>
+		</dict>
+		<key>1DE262D1B9C4442FA5ADC97E</key>
+		<dict>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>name</key>
+			<string>GMGridView.h</string>
+			<key>path</key>
+			<string>GMGridView/GMGridView/GMGridView.h</string>
+			<key>sourceTree</key>
+			<string>SOURCE_ROOT</string>
+		</dict>
+		<key>203FE0B5D59F4F2FA42CC8A4</key>
+		<dict>
+			<key>children</key>
+			<array>
+				<string>94913C81894C488197E684B4</string>
+				<string>3994B611A5CF430ABF2D1C5F</string>
+				<string>511BE7C261E54F87AFD1343C</string>
+			</array>
+			<key>isa</key>
+			<string>PBXGroup</string>
+			<key>name</key>
+			<string>Pods</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>227E681572B54BC1988C8020</key>
+		<dict>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>name</key>
+			<string>AFJSONUtilities.h</string>
+			<key>path</key>
+			<string>AFNetworking/AFNetworking/AFJSONUtilities.h</string>
+			<key>sourceTree</key>
+			<string>SOURCE_ROOT</string>
+		</dict>
+		<key>247E3B7814BC476F9EB57E62</key>
+		<dict>
+			<key>children</key>
+			<array>
+				<string>4A9EF3FE56A44B15B22C9C35</string>
+				<string>7CF5A37647404041A58D0545</string>
+				<string>B1ADFD5CA06646CD970B1F1F</string>
+				<string>A2C94BDB8C5F4322A224A9B1</string>
+			</array>
+			<key>isa</key>
+			<string>PBXGroup</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>2F361B6A3E6A4848A1377246</key>
+		<dict>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>name</key>
+			<string>AFNetworkActivityIndicatorManager.h</string>
+			<key>path</key>
+			<string>AFNetworking/AFNetworking/AFNetworkActivityIndicatorManager.h</string>
+			<key>sourceTree</key>
+			<string>SOURCE_ROOT</string>
+		</dict>
+		<key>2F539C67BA2A43289CFDE39D</key>
+		<dict>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>name</key>
+			<string>AFImageRequestOperation.m</string>
+			<key>path</key>
+			<string>AFNetworking/AFNetworking/AFImageRequestOperation.m</string>
+			<key>sourceTree</key>
+			<string>SOURCE_ROOT</string>
+		</dict>
+		<key>31061AB39B044C568A697AD8</key>
+		<dict>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>name</key>
+			<string>AFNetworkActivityIndicatorManager.m</string>
+			<key>path</key>
+			<string>AFNetworking/AFNetworking/AFNetworkActivityIndicatorManager.m</string>
+			<key>sourceTree</key>
+			<string>SOURCE_ROOT</string>
+		</dict>
+		<key>333DB386135D46369751B8B8</key>
+		<dict>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>name</key>
+			<string>UIGestureRecognizer+GMGridViewAdditions.m</string>
+			<key>path</key>
+			<string>GMGridView/GMGridView/UIGestureRecognizer+GMGridViewAdditions.m</string>
+			<key>sourceTree</key>
+			<string>SOURCE_ROOT</string>
+		</dict>
+		<key>385C61A8898E47EBA3559E30</key>
+		<dict>
+			<key>buildConfigurationList</key>
+			<string>F359494ECB7F49868468C71C</string>
+			<key>buildPhases</key>
+			<array>
+				<string>805CB9CD25BB4DEC87E05145</string>
+				<string>CBF027F2A71243FEAF9E0E73</string>
+				<string>4CE922A2022D4795A057F99E</string>
+			</array>
+			<key>buildRules</key>
+			<array/>
+			<key>dependencies</key>
+			<array/>
+			<key>isa</key>
+			<string>PBXNativeTarget</string>
+			<key>name</key>
+			<string>Pods</string>
+			<key>productName</key>
+			<string>Pods</string>
+			<key>productReference</key>
+			<string>16557A8C1444479E8EEA1D88</string>
+			<key>productType</key>
+			<string>com.apple.product-type.library.static</string>
+		</dict>
+		<key>3994B611A5CF430ABF2D1C5F</key>
+		<dict>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>name</key>
+			<string>Pods-prefix.pch</string>
+			<key>path</key>
+			<string>Pods-prefix.pch</string>
+			<key>sourceTree</key>
+			<string>SOURCE_ROOT</string>
+		</dict>
+		<key>3C6A5AE473084DE78AA56A59</key>
+		<dict>
+			<key>baseConfigurationReference</key>
+			<string>511BE7C261E54F87AFD1343C</string>
+			<key>buildSettings</key>
+			<dict>
+				<key>DSTROOT</key>
+				<string>/tmp/xcodeproj.dst</string>
+				<key>GCC_PRECOMPILE_PREFIX_HEADER</key>
+				<string>YES</string>
+				<key>GCC_PREFIX_HEADER</key>
+				<string>Pods-prefix.pch</string>
+				<key>GCC_VERSION</key>
+				<string>com.apple.compilers.llvm.clang.1_0</string>
+				<key>OTHER_LDFLAGS</key>
+				<string></string>
+				<key>PODS_ROOT</key>
+				<string>$(SRCROOT)</string>
+				<key>PRODUCT_NAME</key>
+				<string>$(TARGET_NAME)</string>
+				<key>SKIP_INSTALL</key>
+				<string>YES</string>
+			</dict>
+			<key>isa</key>
+			<string>XCBuildConfiguration</string>
+			<key>name</key>
+			<string>Release</string>
+		</dict>
+		<key>47012B7D97EA484DBD7E74A2</key>
+		<dict>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>name</key>
+			<string>GMGridView-Constants.h</string>
+			<key>path</key>
+			<string>GMGridView/GMGridView/GMGridView-Constants.h</string>
+			<key>sourceTree</key>
+			<string>SOURCE_ROOT</string>
+		</dict>
+		<key>4A9EF3FE56A44B15B22C9C35</key>
+		<dict>
+			<key>children</key>
+			<array>
+				<string>C9A8DECA95F24DC89BC9A631</string>
+				<string>E7413FD2645E4AB18B7D1E86</string>
+				<string>0DF61C3192324E6F94776FEF</string>
+				<string>B82D8E154A304CCBB725A913</string>
+				<string>ACA037E8F79C445B90603386</string>
+				<string>7407FDB06CF94312BEDE527B</string>
+			</array>
+			<key>isa</key>
+			<string>PBXGroup</string>
+			<key>name</key>
+			<string>Pods</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>4CE922A2022D4795A057F99E</key>
+		<dict>
+			<key>buildActionMask</key>
+			<string>2147483647</string>
+			<key>dstPath</key>
+			<string>$(PRODUCT_NAME)</string>
+			<key>dstSubfolderSpec</key>
+			<string>16</string>
+			<key>files</key>
+			<array/>
+			<key>isa</key>
+			<string>PBXCopyFilesBuildPhase</string>
+			<key>runOnlyForDeploymentPostprocessing</key>
+			<string>0</string>
+		</dict>
+		<key>511BE7C261E54F87AFD1343C</key>
+		<dict>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>text.xcconfig</string>
+			<key>name</key>
+			<string>Pods.xcconfig</string>
+			<key>path</key>
+			<string>Pods.xcconfig</string>
+			<key>sourceTree</key>
+			<string>SOURCE_ROOT</string>
+		</dict>
+		<key>512A258620854167BD739BF2</key>
+		<dict>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>wrapper.framework</string>
+			<key>name</key>
+			<string>Foundation.framework</string>
+			<key>path</key>
+			<string>System/Library/Frameworks/Foundation.framework</string>
+			<key>sourceTree</key>
+			<string>SDKROOT</string>
+		</dict>
+		<key>542AF086330A4310A0062B6C</key>
+		<dict>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>name</key>
+			<string>GMGridViewCell+Extended.h</string>
+			<key>path</key>
+			<string>GMGridView/GMGridView/GMGridViewCell+Extended.h</string>
+			<key>sourceTree</key>
+			<string>SOURCE_ROOT</string>
+		</dict>
+		<key>56F6F9000C0C4D4AA64AF223</key>
+		<dict>
+			<key>fileRef</key>
+			<string>D4CDC75F08334E1DBB737CC2</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+			<key>settings</key>
+			<dict>
+				<key>COMPILER_FLAGS</key>
+				<string> </string>
+			</dict>
+		</dict>
+		<key>5EF5FF9E825D41CF9EFA98A8</key>
+		<dict>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>name</key>
+			<string>UIView+Subviews.h</string>
+			<key>path</key>
+			<string>DLStarRating/DLStarRating/UIView+Subviews.h</string>
+			<key>sourceTree</key>
+			<string>SOURCE_ROOT</string>
+		</dict>
+		<key>6539C68E78334872963F99DE</key>
+		<dict>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>name</key>
+			<string>TestFlight.h</string>
+			<key>path</key>
+			<string>TestFlightSDK/TestFlight.h</string>
+			<key>sourceTree</key>
+			<string>SOURCE_ROOT</string>
+		</dict>
+		<key>6734ED665C1D43CE998DFDBE</key>
+		<dict>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>name</key>
+			<string>AFHTTPRequestOperation.m</string>
+			<key>path</key>
+			<string>AFNetworking/AFNetworking/AFHTTPRequestOperation.m</string>
+			<key>sourceTree</key>
+			<string>SOURCE_ROOT</string>
+		</dict>
+		<key>67925C145C3647B8AA441C43</key>
+		<dict>
+			<key>fileRef</key>
+			<string>B11F70B1DF3242E2A8CCD4DC</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+			<key>settings</key>
+			<dict>
+				<key>COMPILER_FLAGS</key>
+				<string> </string>
+			</dict>
+		</dict>
+		<key>6BAE0BCCCCA44358B91A27D7</key>
+		<dict>
+			<key>fileRef</key>
+			<string>EB84D8072C68405AAEE5D641</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+			<key>settings</key>
+			<dict>
+				<key>COMPILER_FLAGS</key>
+				<string> </string>
+			</dict>
+		</dict>
+		<key>6DB83FAE6C1E42178BCB2213</key>
+		<dict>
+			<key>buildSettings</key>
+			<dict>
+				<key>ALWAYS_SEARCH_USER_PATHS</key>
+				<string>NO</string>
+				<key>ARCHS</key>
+				<string>$(ARCHS_STANDARD_32_BIT)</string>
+				<key>COPY_PHASE_STRIP</key>
+				<string>NO</string>
+				<key>DSTROOT</key>
+				<string>/tmp/xcodeproj.dst</string>
+				<key>GCC_C_LANGUAGE_STANDARD</key>
+				<string>gnu99</string>
+				<key>GCC_DYNAMIC_NO_PIC</key>
+				<string>NO</string>
+				<key>GCC_OPTIMIZATION_LEVEL</key>
+				<string>0</string>
+				<key>GCC_PRECOMPILE_PREFIX_HEADER</key>
+				<string>YES</string>
+				<key>GCC_PREPROCESSOR_DEFINITIONS</key>
+				<array>
+					<string>DEBUG=1</string>
+					<string>$(inherited)</string>
+				</array>
+				<key>GCC_SYMBOLS_PRIVATE_EXTERN</key>
+				<string>NO</string>
+				<key>GCC_VERSION</key>
+				<string>com.apple.compilers.llvmgcc42</string>
+				<key>GCC_WARN_ABOUT_MISSING_PROTOTYPES</key>
+				<string>YES</string>
+				<key>GCC_WARN_ABOUT_RETURN_TYPE</key>
+				<string>YES</string>
+				<key>GCC_WARN_UNUSED_VARIABLE</key>
+				<string>YES</string>
+				<key>INSTALL_PATH</key>
+				<string>$(BUILT_PRODUCTS_DIR)</string>
+				<key>IPHONEOS_DEPLOYMENT_TARGET</key>
+				<string>4.3</string>
+				<key>OTHER_LDFLAGS</key>
+				<string></string>
+				<key>PRODUCT_NAME</key>
+				<string>$(TARGET_NAME)</string>
+				<key>PUBLIC_HEADERS_FOLDER_PATH</key>
+				<string>$(TARGET_NAME)</string>
+				<key>SDKROOT</key>
+				<string>iphoneos</string>
+				<key>SKIP_INSTALL</key>
+				<string>YES</string>
+			</dict>
+			<key>isa</key>
+			<string>XCBuildConfiguration</string>
+			<key>name</key>
+			<string>Debug</string>
+		</dict>
+		<key>6E8F5DFEC22F40F192C72D32</key>
+		<dict>
+			<key>fileRef</key>
+			<string>2F539C67BA2A43289CFDE39D</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+			<key>settings</key>
+			<dict>
+				<key>COMPILER_FLAGS</key>
+				<string> </string>
+			</dict>
+		</dict>
+		<key>7006888C99EE4FF2AA7FE227</key>
+		<dict>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>name</key>
+			<string>AFHTTPRequestOperation.h</string>
+			<key>path</key>
+			<string>AFNetworking/AFNetworking/AFHTTPRequestOperation.h</string>
+			<key>sourceTree</key>
+			<string>SOURCE_ROOT</string>
+		</dict>
+		<key>7407FDB06CF94312BEDE527B</key>
+		<dict>
+			<key>children</key>
+			<array>
+				<string>6539C68E78334872963F99DE</string>
+			</array>
+			<key>isa</key>
+			<string>PBXGroup</string>
+			<key>name</key>
+			<string>TestFlightSDK</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>758DE54FA8A440A991F1C790</key>
+		<dict>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>name</key>
+			<string>DLStarView.m</string>
+			<key>path</key>
+			<string>DLStarRating/DLStarRating/DLStarView.m</string>
+			<key>sourceTree</key>
+			<string>SOURCE_ROOT</string>
+		</dict>
+		<key>781A2534FD614956B91D7922</key>
+		<dict>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>name</key>
+			<string>AFXMLRequestOperation.h</string>
+			<key>path</key>
+			<string>AFNetworking/AFNetworking/AFXMLRequestOperation.h</string>
+			<key>sourceTree</key>
+			<string>SOURCE_ROOT</string>
+		</dict>
+		<key>789F0FF1CE5046E9AE6D5985</key>
+		<dict>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>name</key>
+			<string>MBProgressHUD.h</string>
+			<key>path</key>
+			<string>MBProgressHUD/MBProgressHUD.h</string>
+			<key>sourceTree</key>
+			<string>SOURCE_ROOT</string>
+		</dict>
+		<key>7CF5A37647404041A58D0545</key>
+		<dict>
+			<key>children</key>
+			<array>
+				<string>512A258620854167BD739BF2</string>
+			</array>
+			<key>isa</key>
+			<string>PBXGroup</string>
+			<key>name</key>
+			<string>Frameworks</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>7DCDB8C73B9C4D498A13095F</key>
+		<dict>
+			<key>fileRef</key>
+			<string>BA85B22C3E5243D0A2942582</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+			<key>settings</key>
+			<dict>
+				<key>COMPILER_FLAGS</key>
+				<string> </string>
+			</dict>
+		</dict>
+		<key>805CB9CD25BB4DEC87E05145</key>
+		<dict>
+			<key>buildActionMask</key>
+			<string>2147483647</string>
+			<key>files</key>
+			<array>
+				<string>186CE6FDF3B74BAE9E0729BE</string>
+				<string>185DBF355B6B4773A3409B3E</string>
+				<string>6E8F5DFEC22F40F192C72D32</string>
+				<string>C7947B772E1645358B89EF0F</string>
+				<string>9E792B10863D4908B80F1495</string>
+				<string>C172A8A5334149F184489E8D</string>
+				<string>56F6F9000C0C4D4AA64AF223</string>
+				<string>6BAE0BCCCCA44358B91A27D7</string>
+				<string>1DD73B8A7085484FBA987BF0</string>
+				<string>DDF9FDB6B6F247A5AFAFA872</string>
+				<string>7DCDB8C73B9C4D498A13095F</string>
+				<string>868E1A0D47AB4E62B25DA57B</string>
+				<string>67925C145C3647B8AA441C43</string>
+				<string>83D5DF13C11D440292B91D49</string>
+				<string>E3D73FCBCA3949BE9060AC34</string>
+				<string>964EE7BA34C2494A8674C7C7</string>
+				<string>8CA8C7D25A0E43E9A6A3709B</string>
+				<string>916D16EEB9C64E9A92EE87DA</string>
+				<string>FDECCB5470224F76A1E685C8</string>
+				<string>016462CE834E43D181675C7A</string>
+			</array>
+			<key>isa</key>
+			<string>PBXSourcesBuildPhase</string>
+			<key>runOnlyForDeploymentPostprocessing</key>
+			<string>0</string>
+		</dict>
+		<key>8184772CD56D4480BC02E311</key>
+		<dict>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>name</key>
+			<string>UIImageView+AFNetworking.h</string>
+			<key>path</key>
+			<string>AFNetworking/AFNetworking/UIImageView+AFNetworking.h</string>
+			<key>sourceTree</key>
+			<string>SOURCE_ROOT</string>
+		</dict>
+		<key>83D5DF13C11D440292B91D49</key>
+		<dict>
+			<key>fileRef</key>
+			<string>138368021F95489FA00DD92A</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+			<key>settings</key>
+			<dict>
+				<key>COMPILER_FLAGS</key>
+				<string> -fobjc-arc</string>
+			</dict>
+		</dict>
+		<key>84AE5AB709734B8986B321F4</key>
+		<dict>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>name</key>
+			<string>AFXMLRequestOperation.m</string>
+			<key>path</key>
+			<string>AFNetworking/AFNetworking/AFXMLRequestOperation.m</string>
+			<key>sourceTree</key>
+			<string>SOURCE_ROOT</string>
+		</dict>
+		<key>868E1A0D47AB4E62B25DA57B</key>
+		<dict>
+			<key>fileRef</key>
+			<string>758DE54FA8A440A991F1C790</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+			<key>settings</key>
+			<dict>
+				<key>COMPILER_FLAGS</key>
+				<string> </string>
+			</dict>
+		</dict>
+		<key>89F908F85E974ACDA3E8EAC7</key>
+		<dict>
+			<key>buildSettings</key>
+			<dict>
+				<key>ALWAYS_SEARCH_USER_PATHS</key>
+				<string>NO</string>
+				<key>ARCHS</key>
+				<string>$(ARCHS_STANDARD_32_BIT)</string>
+				<key>COPY_PHASE_STRIP</key>
+				<string>YES</string>
+				<key>DSTROOT</key>
+				<string>/tmp/xcodeproj.dst</string>
+				<key>GCC_C_LANGUAGE_STANDARD</key>
+				<string>gnu99</string>
+				<key>GCC_PRECOMPILE_PREFIX_HEADER</key>
+				<string>YES</string>
+				<key>GCC_VERSION</key>
+				<string>com.apple.compilers.llvmgcc42</string>
+				<key>GCC_WARN_ABOUT_MISSING_PROTOTYPES</key>
+				<string>YES</string>
+				<key>GCC_WARN_ABOUT_RETURN_TYPE</key>
+				<string>YES</string>
+				<key>GCC_WARN_UNUSED_VARIABLE</key>
+				<string>YES</string>
+				<key>INSTALL_PATH</key>
+				<string>$(BUILT_PRODUCTS_DIR)</string>
+				<key>IPHONEOS_DEPLOYMENT_TARGET</key>
+				<string>4.3</string>
+				<key>OTHER_LDFLAGS</key>
+				<string></string>
+				<key>PRODUCT_NAME</key>
+				<string>$(TARGET_NAME)</string>
+				<key>PUBLIC_HEADERS_FOLDER_PATH</key>
+				<string>$(TARGET_NAME)</string>
+				<key>SDKROOT</key>
+				<string>iphoneos</string>
+				<key>SKIP_INSTALL</key>
+				<string>YES</string>
+				<key>VALIDATE_PRODUCT</key>
+				<string>YES</string>
+			</dict>
+			<key>isa</key>
+			<string>XCBuildConfiguration</string>
+			<key>name</key>
+			<string>Release</string>
+		</dict>
+		<key>8C2EE540D14A4E65B6493A02</key>
+		<dict>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>name</key>
+			<string>DLStarView.h</string>
+			<key>path</key>
+			<string>DLStarRating/DLStarRating/DLStarView.h</string>
+			<key>sourceTree</key>
+			<string>SOURCE_ROOT</string>
+		</dict>
+		<key>8CA8C7D25A0E43E9A6A3709B</key>
+		<dict>
+			<key>fileRef</key>
+			<string>333DB386135D46369751B8B8</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+			<key>settings</key>
+			<dict>
+				<key>COMPILER_FLAGS</key>
+				<string> -fobjc-arc</string>
+			</dict>
+		</dict>
+		<key>9072A8E0485748118FB68CC7</key>
+		<dict>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>name</key>
+			<string>UIView+GMGridViewAdditions.m</string>
+			<key>path</key>
+			<string>GMGridView/GMGridView/UIView+GMGridViewAdditions.m</string>
+			<key>sourceTree</key>
+			<string>SOURCE_ROOT</string>
+		</dict>
+		<key>916D16EEB9C64E9A92EE87DA</key>
+		<dict>
+			<key>fileRef</key>
+			<string>9072A8E0485748118FB68CC7</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+			<key>settings</key>
+			<dict>
+				<key>COMPILER_FLAGS</key>
+				<string> -fobjc-arc</string>
+			</dict>
+		</dict>
+		<key>94913C81894C488197E684B4</key>
+		<dict>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>name</key>
+			<string>Pods-resources.sh</string>
+			<key>path</key>
+			<string>Pods-resources.sh</string>
+			<key>sourceTree</key>
+			<string>SOURCE_ROOT</string>
+		</dict>
+		<key>963772CA6464447BB19166F9</key>
+		<dict>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>name</key>
+			<string>AFImageRequestOperation.h</string>
+			<key>path</key>
+			<string>AFNetworking/AFNetworking/AFImageRequestOperation.h</string>
+			<key>sourceTree</key>
+			<string>SOURCE_ROOT</string>
+		</dict>
+		<key>964EE7BA34C2494A8674C7C7</key>
+		<dict>
+			<key>fileRef</key>
+			<string>D4906F7E0E614B68A762D68F</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+			<key>settings</key>
+			<dict>
+				<key>COMPILER_FLAGS</key>
+				<string> -fobjc-arc</string>
+			</dict>
+		</dict>
+		<key>968F4A30E68E487BAA3ECB72</key>
+		<dict>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>name</key>
+			<string>AFPropertyListRequestOperation.h</string>
+			<key>path</key>
+			<string>AFNetworking/AFNetworking/AFPropertyListRequestOperation.h</string>
+			<key>sourceTree</key>
+			<string>SOURCE_ROOT</string>
+		</dict>
+		<key>9ACA2025B6304566937686F3</key>
+		<dict>
+			<key>attributes</key>
+			<dict>
+				<key>LastUpgradeCheck</key>
+				<string>0420</string>
+			</dict>
+			<key>buildConfigurationList</key>
+			<string>F70CBA024CA44B06970373BC</string>
+			<key>compatibilityVersion</key>
+			<string>Xcode 3.2</string>
+			<key>developmentRegion</key>
+			<string>English</string>
+			<key>hasScannedForEncodings</key>
+			<string>0</string>
+			<key>isa</key>
+			<string>PBXProject</string>
+			<key>knownRegions</key>
+			<array>
+				<string>en</string>
+			</array>
+			<key>mainGroup</key>
+			<string>247E3B7814BC476F9EB57E62</string>
+			<key>productRefGroup</key>
+			<string>B1ADFD5CA06646CD970B1F1F</string>
+			<key>projectDirPath</key>
+			<string></string>
+			<key>projectRoot</key>
+			<string></string>
+			<key>targets</key>
+			<array>
+				<string>385C61A8898E47EBA3559E30</string>
+			</array>
+		</dict>
+		<key>9E792B10863D4908B80F1495</key>
+		<dict>
+			<key>fileRef</key>
+			<string>E99A91C8760C49A8BA35A58D</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+			<key>settings</key>
+			<dict>
+				<key>COMPILER_FLAGS</key>
+				<string> </string>
+			</dict>
+		</dict>
+		<key>9F0CAAC4C3AC4B53BA4F4BD7</key>
+		<dict>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>name</key>
+			<string>AFURLConnectionOperation.h</string>
+			<key>path</key>
+			<string>AFNetworking/AFNetworking/AFURLConnectionOperation.h</string>
+			<key>sourceTree</key>
+			<string>SOURCE_ROOT</string>
+		</dict>
+		<key>9FCDBC92522F4275AC6F9C17</key>
+		<dict>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>name</key>
+			<string>AFNetworking.h</string>
+			<key>path</key>
+			<string>AFNetworking/AFNetworking/AFNetworking.h</string>
+			<key>sourceTree</key>
+			<string>SOURCE_ROOT</string>
+		</dict>
+		<key>A2C94BDB8C5F4322A224A9B1</key>
+		<dict>
+			<key>children</key>
+			<array>
+				<string>203FE0B5D59F4F2FA42CC8A4</string>
+			</array>
+			<key>isa</key>
+			<string>PBXGroup</string>
+			<key>name</key>
+			<string>Targets Support Files</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>ACA037E8F79C445B90603386</key>
+		<dict>
+			<key>children</key>
+			<array>
+				<string>0FEF87FEFD2A4991AE5371E3</string>
+				<string>F34D0AFADA0F41D0ADAB24B5</string>
+			</array>
+			<key>isa</key>
+			<string>PBXGroup</string>
+			<key>name</key>
+			<string>Reachability</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>B11F70B1DF3242E2A8CCD4DC</key>
+		<dict>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>name</key>
+			<string>UIView+Subviews.m</string>
+			<key>path</key>
+			<string>DLStarRating/DLStarRating/UIView+Subviews.m</string>
+			<key>sourceTree</key>
+			<string>SOURCE_ROOT</string>
+		</dict>
+		<key>B1ADFD5CA06646CD970B1F1F</key>
+		<dict>
+			<key>children</key>
+			<array>
+				<string>16557A8C1444479E8EEA1D88</string>
+			</array>
+			<key>isa</key>
+			<string>PBXGroup</string>
+			<key>name</key>
+			<string>Products</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>B82D8E154A304CCBB725A913</key>
+		<dict>
+			<key>children</key>
+			<array>
+				<string>789F0FF1CE5046E9AE6D5985</string>
+				<string>FC1DC6D47EE041C999543E6A</string>
+			</array>
+			<key>isa</key>
+			<string>PBXGroup</string>
+			<key>name</key>
+			<string>MBProgressHUD</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>BA85B22C3E5243D0A2942582</key>
+		<dict>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>name</key>
+			<string>DLStarRatingControl.m</string>
+			<key>path</key>
+			<string>DLStarRating/DLStarRating/DLStarRatingControl.m</string>
+			<key>sourceTree</key>
+			<string>SOURCE_ROOT</string>
+		</dict>
+		<key>BB5B257E3C134B6FBF1ABCA1</key>
+		<dict>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>name</key>
+			<string>UIView+GMGridViewAdditions.h</string>
+			<key>path</key>
+			<string>GMGridView/GMGridView/UIView+GMGridViewAdditions.h</string>
+			<key>sourceTree</key>
+			<string>SOURCE_ROOT</string>
+		</dict>
+		<key>C172A8A5334149F184489E8D</key>
+		<dict>
+			<key>fileRef</key>
+			<string>31061AB39B044C568A697AD8</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+			<key>settings</key>
+			<dict>
+				<key>COMPILER_FLAGS</key>
+				<string> </string>
+			</dict>
+		</dict>
+		<key>C1F54A924839473EBEB0B06B</key>
+		<dict>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>name</key>
+			<string>GMGridViewCell.m</string>
+			<key>path</key>
+			<string>GMGridView/GMGridView/GMGridViewCell.m</string>
+			<key>sourceTree</key>
+			<string>SOURCE_ROOT</string>
+		</dict>
+		<key>C7947B772E1645358B89EF0F</key>
+		<dict>
+			<key>fileRef</key>
+			<string>031B0D65F7864BF1B21A1164</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+			<key>settings</key>
+			<dict>
+				<key>COMPILER_FLAGS</key>
+				<string> </string>
+			</dict>
+		</dict>
+		<key>C9A8DECA95F24DC89BC9A631</key>
+		<dict>
+			<key>children</key>
+			<array>
+				<string>F089996AE7A74C1480A02D2D</string>
+				<string>7006888C99EE4FF2AA7FE227</string>
+				<string>963772CA6464447BB19166F9</string>
+				<string>FB3A16E0FF96496EBFBAE495</string>
+				<string>227E681572B54BC1988C8020</string>
+				<string>2F361B6A3E6A4848A1377246</string>
+				<string>9FCDBC92522F4275AC6F9C17</string>
+				<string>968F4A30E68E487BAA3ECB72</string>
+				<string>9F0CAAC4C3AC4B53BA4F4BD7</string>
+				<string>781A2534FD614956B91D7922</string>
+				<string>8184772CD56D4480BC02E311</string>
+				<string>07287DF9C2C64B778BF6BC71</string>
+				<string>6734ED665C1D43CE998DFDBE</string>
+				<string>2F539C67BA2A43289CFDE39D</string>
+				<string>031B0D65F7864BF1B21A1164</string>
+				<string>E99A91C8760C49A8BA35A58D</string>
+				<string>31061AB39B044C568A697AD8</string>
+				<string>D4CDC75F08334E1DBB737CC2</string>
+				<string>EB84D8072C68405AAEE5D641</string>
+				<string>84AE5AB709734B8986B321F4</string>
+				<string>FA95359CFC41421098766B31</string>
+			</array>
+			<key>isa</key>
+			<string>PBXGroup</string>
+			<key>name</key>
+			<string>AFNetworking</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>CBF027F2A71243FEAF9E0E73</key>
+		<dict>
+			<key>buildActionMask</key>
+			<string>2147483647</string>
+			<key>files</key>
+			<array>
+				<string>13639A15D5204616866FBE04</string>
+			</array>
+			<key>isa</key>
+			<string>PBXFrameworksBuildPhase</string>
+			<key>runOnlyForDeploymentPostprocessing</key>
+			<string>0</string>
+		</dict>
+		<key>D4906F7E0E614B68A762D68F</key>
+		<dict>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>name</key>
+			<string>GMGridViewLayoutStrategies.m</string>
+			<key>path</key>
+			<string>GMGridView/GMGridView/GMGridViewLayoutStrategies.m</string>
+			<key>sourceTree</key>
+			<string>SOURCE_ROOT</string>
+		</dict>
+		<key>D4CDC75F08334E1DBB737CC2</key>
+		<dict>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>name</key>
+			<string>AFPropertyListRequestOperation.m</string>
+			<key>path</key>
+			<string>AFNetworking/AFNetworking/AFPropertyListRequestOperation.m</string>
+			<key>sourceTree</key>
+			<string>SOURCE_ROOT</string>
+		</dict>
+		<key>DDF9FDB6B6F247A5AFAFA872</key>
+		<dict>
+			<key>fileRef</key>
+			<string>FA95359CFC41421098766B31</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+			<key>settings</key>
+			<dict>
+				<key>COMPILER_FLAGS</key>
+				<string> </string>
+			</dict>
+		</dict>
+		<key>DEB695C5D6C849A49DFBEF12</key>
+		<dict>
+			<key>baseConfigurationReference</key>
+			<string>511BE7C261E54F87AFD1343C</string>
+			<key>buildSettings</key>
+			<dict>
+				<key>DSTROOT</key>
+				<string>/tmp/xcodeproj.dst</string>
+				<key>GCC_PRECOMPILE_PREFIX_HEADER</key>
+				<string>YES</string>
+				<key>GCC_PREFIX_HEADER</key>
+				<string>Pods-prefix.pch</string>
+				<key>GCC_VERSION</key>
+				<string>com.apple.compilers.llvm.clang.1_0</string>
+				<key>OTHER_LDFLAGS</key>
+				<string></string>
+				<key>PODS_ROOT</key>
+				<string>$(SRCROOT)</string>
+				<key>PRODUCT_NAME</key>
+				<string>$(TARGET_NAME)</string>
+				<key>SKIP_INSTALL</key>
+				<string>YES</string>
+			</dict>
+			<key>isa</key>
+			<string>XCBuildConfiguration</string>
+			<key>name</key>
+			<string>Debug</string>
+		</dict>
+		<key>E3D73FCBCA3949BE9060AC34</key>
+		<dict>
+			<key>fileRef</key>
+			<string>C1F54A924839473EBEB0B06B</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+			<key>settings</key>
+			<dict>
+				<key>COMPILER_FLAGS</key>
+				<string> -fobjc-arc</string>
+			</dict>
+		</dict>
+		<key>E7413FD2645E4AB18B7D1E86</key>
+		<dict>
+			<key>children</key>
+			<array>
+				<string>0D4208C6D5124E8A98ECAE24</string>
+				<string>8C2EE540D14A4E65B6493A02</string>
+				<string>5EF5FF9E825D41CF9EFA98A8</string>
+				<string>BA85B22C3E5243D0A2942582</string>
+				<string>758DE54FA8A440A991F1C790</string>
+				<string>B11F70B1DF3242E2A8CCD4DC</string>
+			</array>
+			<key>isa</key>
+			<string>PBXGroup</string>
+			<key>name</key>
+			<string>DLStarRating</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>E99A91C8760C49A8BA35A58D</key>
+		<dict>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>name</key>
+			<string>AFJSONUtilities.m</string>
+			<key>path</key>
+			<string>AFNetworking/AFNetworking/AFJSONUtilities.m</string>
+			<key>sourceTree</key>
+			<string>SOURCE_ROOT</string>
+		</dict>
+		<key>EB84D8072C68405AAEE5D641</key>
+		<dict>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>name</key>
+			<string>AFURLConnectionOperation.m</string>
+			<key>path</key>
+			<string>AFNetworking/AFNetworking/AFURLConnectionOperation.m</string>
+			<key>sourceTree</key>
+			<string>SOURCE_ROOT</string>
+		</dict>
+		<key>F089996AE7A74C1480A02D2D</key>
+		<dict>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>name</key>
+			<string>AFHTTPClient.h</string>
+			<key>path</key>
+			<string>AFNetworking/AFNetworking/AFHTTPClient.h</string>
+			<key>sourceTree</key>
+			<string>SOURCE_ROOT</string>
+		</dict>
+		<key>F34D0AFADA0F41D0ADAB24B5</key>
+		<dict>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>name</key>
+			<string>Reachability.m</string>
+			<key>path</key>
+			<string>Reachability/Reachability.m</string>
+			<key>sourceTree</key>
+			<string>SOURCE_ROOT</string>
+		</dict>
+		<key>F359494ECB7F49868468C71C</key>
+		<dict>
+			<key>buildConfigurations</key>
+			<array>
+				<string>DEB695C5D6C849A49DFBEF12</string>
+				<string>3C6A5AE473084DE78AA56A59</string>
+			</array>
+			<key>isa</key>
+			<string>XCConfigurationList</string>
+		</dict>
+		<key>F367D7FE6B41408280EA1076</key>
+		<dict>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>name</key>
+			<string>GMGridViewCell.h</string>
+			<key>path</key>
+			<string>GMGridView/GMGridView/GMGridViewCell.h</string>
+			<key>sourceTree</key>
+			<string>SOURCE_ROOT</string>
+		</dict>
+		<key>F4584DD217844AE69DC87A5C</key>
+		<dict>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>name</key>
+			<string>GMGridViewLayoutStrategies.h</string>
+			<key>path</key>
+			<string>GMGridView/GMGridView/GMGridViewLayoutStrategies.h</string>
+			<key>sourceTree</key>
+			<string>SOURCE_ROOT</string>
+		</dict>
+		<key>F70CBA024CA44B06970373BC</key>
+		<dict>
+			<key>buildConfigurations</key>
+			<array>
+				<string>6DB83FAE6C1E42178BCB2213</string>
+				<string>89F908F85E974ACDA3E8EAC7</string>
+			</array>
+			<key>defaultConfigurationIsVisible</key>
+			<string>0</string>
+			<key>defaultConfigurationName</key>
+			<string>Release</string>
+			<key>isa</key>
+			<string>XCConfigurationList</string>
+		</dict>
+		<key>FA95359CFC41421098766B31</key>
+		<dict>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>name</key>
+			<string>UIImageView+AFNetworking.m</string>
+			<key>path</key>
+			<string>AFNetworking/AFNetworking/UIImageView+AFNetworking.m</string>
+			<key>sourceTree</key>
+			<string>SOURCE_ROOT</string>
+		</dict>
+		<key>FB3A16E0FF96496EBFBAE495</key>
+		<dict>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>name</key>
+			<string>AFJSONRequestOperation.h</string>
+			<key>path</key>
+			<string>AFNetworking/AFNetworking/AFJSONRequestOperation.h</string>
+			<key>sourceTree</key>
+			<string>SOURCE_ROOT</string>
+		</dict>
+		<key>FC1DC6D47EE041C999543E6A</key>
+		<dict>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>name</key>
+			<string>MBProgressHUD.m</string>
+			<key>path</key>
+			<string>MBProgressHUD/MBProgressHUD.m</string>
+			<key>sourceTree</key>
+			<string>SOURCE_ROOT</string>
+		</dict>
+		<key>FDECCB5470224F76A1E685C8</key>
+		<dict>
+			<key>fileRef</key>
+			<string>FC1DC6D47EE041C999543E6A</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+			<key>settings</key>
+			<dict>
+				<key>COMPILER_FLAGS</key>
+				<string> </string>
+			</dict>
+		</dict>
+	</dict>
+	<key>rootObject</key>
+	<string>9ACA2025B6304566937686F3</string>
+</dict>
+</plist>

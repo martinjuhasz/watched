@@ -16,11 +16,14 @@
 #import "Movie.h"
 #import "AddMovieViewController.h"
 #import "UIViewController+MJPopupViewController.h"
+#import "Reachability.h"
 
 #define kSearchMovieLoadingTableViewCell @"SearchMovieLoadingTableViewCell"
 #define kSearchMovieTableViewCell @"SearchMovieTableViewCell"
 
-@interface SearchMovieViewController ()<AddMovieViewDelegate>
+@interface SearchMovieViewController ()<AddMovieViewDelegate> {
+    Reachability* reachability;
+}
 @end
 
 
@@ -84,6 +87,30 @@ const int kMovieSearchCellImageView = 200;
 {
     // Return YES for supported orientations
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    // check reachability
+    reachability = [Reachability reachabilityWithHostname:@"www.google.com"];
+    reachability.unreachableBlock = ^(Reachability*reach)
+    {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"ALERT_NOINTERNET_TITLE", nil)
+                                                            message:NSLocalizedString(@"ALERT_MOVIE_NOINTERNET_TITLE_CONTENT", nil)
+                                                           delegate:nil 
+                                                  cancelButtonTitle:NSLocalizedString(@"ALERT_NOINTERNET_TITLE_OK", nil)
+                                                  otherButtonTitles:nil];
+            [alert show];
+        });
+    };
+    [reachability startNotifier];
+}
+
+- (void)viewDidDisappear:(BOOL)animated
+{
+    [reachability stopNotifier];
 }
 
 
@@ -283,12 +310,15 @@ const int kMovieSearchCellImageView = 200;
         [self.tableView reloadData];
     } failure:^(NSError *error) {
         isLoading = NO;
+        [self.tableView reloadData];
+        
         MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
         hud.dimBackground = YES;
         hud.mode = MBProgressHUDModeText;
         hud.labelText = [error localizedDescription];
         hud.removeFromSuperViewOnHide = YES;
         [hud hide:YES afterDelay:1.0f];
+        
     }];
 }
 

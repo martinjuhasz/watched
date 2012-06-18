@@ -15,8 +15,10 @@
 #import "OnlineDatabaseBridge.h"
 #import "MoviesDataModel.h"
 #import "Movie.h"
+#import "Reachability.h"
 
 @interface AddMovieViewController () <MJPopupViewControllerDelegate> {
+    Reachability *reachability;
     NSDictionary *resultDict;
     BOOL appeard;
     BOOL isAdding;
@@ -27,6 +29,10 @@
 @implementation AddMovieViewController
 
 @synthesize navBar;
+@synthesize loadingView;
+@synthesize displayView;
+@synthesize infoView;
+@synthesize infoLabel;
 @synthesize imageView;
 @synthesize scrollView;
 @synthesize overviewLabel;
@@ -52,7 +58,6 @@
     if(self.searchResult) {
         self.resultID = self.searchResult.searchResultId;
     }
-    if(!self.resultID) return;
     
     self.movie = [Movie movieWithServerId:[self.resultID intValue] usingManagedObjectContext:[[MoviesDataModel sharedDataModel] mainContext]]; 
     
@@ -64,27 +69,6 @@
         [self loadContentWithExistingResultID];
     }
     
-//    self.navBar.topItem.title = self.searchResult.title;
-//    [self checkButtonStates];
-//    
-//    // Image
-//    if(self.coverImage) self.imageView.image = self.coverImage;
-//    if(self.searchResult) {
-//        NSURL *imageURL = [[OnlineMovieDatabase sharedMovieDatabase] getImageURLForImagePath:self.searchResult.posterPath imageType:ImageTypePoster nearWidth:80.0f*2];
-//        [self.imageView setImageWithURL:imageURL];
-//    }
-//    // Details
-//    [[OnlineMovieDatabase sharedMovieDatabase] getMovieDetailsForMovieID:self.resultID completion:^(NSDictionary *aResultDict) {
-//        resultDict = aResultDict;
-//        [self checkButtonStates];  
-//        [self setContent];
-//    } failure:^(NSError *error) {
-//        XLog(@"%@", [error localizedDescription]);
-//        [self checkButtonStates];
-//        [self cancelButtonClicked:nil];
-//    }];
-    
-	// Do any additional setup after loading the view.
 }
 
 - (void)viewDidUnload
@@ -95,6 +79,10 @@
     [self setOverviewLabel:nil];
     [self setSaveButton:nil];
     [self setCancelButton:nil];
+    [self setLoadingView:nil];
+    [self setDisplayView:nil];
+    [self setInfoView:nil];
+    [self setInfoLabel:nil];
     [super viewDidUnload];
     // Release any retained subviews of the main view.
 }
@@ -102,6 +90,31 @@
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    // check reachability
+    reachability = [Reachability reachabilityWithHostname:@"www.google.com"];
+    reachability.unreachableBlock = ^(Reachability*reach)
+    {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"ALERT_NOINTERNET_TITLE", nil)
+                                                            message:NSLocalizedString(@"ALERT_NOINTERNET_TITLE_CONTENT", nil)
+                                                           delegate:nil 
+                                                  cancelButtonTitle:NSLocalizedString(@"ALERT_NOINTERNET_TITLE_OK", nil)
+                                                  otherButtonTitles:nil];
+            [alert show];
+        });
+    };
+    [reachability startNotifier];
+}
+
+- (void)viewDidDisappear:(BOOL)animated
+{
+    [reachability stopNotifier];
 }
 
 ////////////////////////////////////////////////////////////////////////////
@@ -118,7 +131,7 @@
 - (IBAction)saveButtonClicked:(id)sender
 {
     if(!resultDict) return;
-    [self checkButtonStates];
+    XLog("");
     [self saveMovieToDatabase];
 }
 
@@ -135,14 +148,12 @@
     [self.imageView setImageWithURL:imageURL];
     if(self.coverImage) self.imageView.image = self.coverImage;
     [self loadContent];
-    [self checkButtonStates];
 }
 
 - (void)loadContentWithExistingResultID
 {
     self.navBar.topItem.title = NSLocalizedString(@"POPUP_TITLE_LOADING", nil);
     [self loadContent];
-    [self checkButtonStates];
 }
 
 - (void)loadContentWithExistingMovie
@@ -151,48 +162,47 @@
     self.navBar.topItem.title = self.movie.title;
     [self setOverviewContent:self.movie.overview];
     [self checkButtonStates];
+    [self showContent];
 }
 
 - (void)loadContent
 {
     [[OnlineMovieDatabase sharedMovieDatabase] getMovieDetailsForMovieID:self.resultID completion:^(NSDictionary *aResultDict) {
         resultDict = aResultDict;
-        [self checkButtonStates];
         
         [self setOverviewContent:[resultDict objectForKeyOrNil:@"overview"]];
         self.navBar.topItem.title = [resultDict objectForKeyOrNil:@"title"];
-        NSString *imagePath = [resultDict objectForKeyOrNil:@"poster_path"];
-        NSURL *imageURL = [[OnlineMovieDatabase sharedMovieDatabase] getImageURLForImagePath:imagePath imageType:ImageTypePoster nearWidth:80.0f*2];
-        [self.imageView setImageWithURL:imageURL];
         
+        if(!self.imageView.image) {
+            NSString *imagePath = [resultDict objectForKeyOrNil:@"poster_path"];
+            NSURL *imageURL = [[OnlineMovieDatabase sharedMovieDatabase] getImageURLForImagePath:imagePath 
+                                                                                       imageType:ImageTypePoster 
+                                                                                       nearWidth:80.0f*2];
+            [self.imageView setImageWithURL:imageURL];
+        }
+        
+        [self checkButtonStates];
+        [self showContent];
         
     } failure:^(NSError *error) {
         XLog(@"%@", [error localizedDescription]);
-        [self checkButtonStates];
-        [self cancelButtonClicked:nil];
+        [self showInfoContentWithText:NSLocalizedString(@"POPUP_FAILED", nil)];
     }];
 }
 
 - (void)checkButtonStates
 {
     dispatch_async(dispatch_get_main_queue(), ^{
+        
         if(self.movie) {
             [self.saveButton setTitle:NSLocalizedString(@"POPUP_SAVEBUTTON_ADDED", nil) forState:UIControlStateNormal];
             [self.saveButton setTitle:NSLocalizedString(@"POPUP_SAVEBUTTON_ADDED", nil) forState:UIControlStateDisabled];
             self.saveButton.enabled = NO;
-            self.cancelButton.enabled = YES;
-            return;
-        }
-
-        if(!appeard) {
-            self.saveButton.enabled = NO;
-            self.cancelButton.enabled = NO;
             return;
         }
         
         if(isAdding) {
             self.saveButton.enabled = NO;
-            self.cancelButton.enabled = YES;
             return;
         }
 
@@ -200,7 +210,6 @@
             [self.saveButton setTitle:NSLocalizedString(@"POPUP_SAVEBUTTON_ADD", nil) forState:UIControlStateNormal];
             [self.saveButton setTitle:NSLocalizedString(@"POPUP_SAVEBUTTON_ADD", nil) forState:UIControlStateDisabled];
             self.saveButton.enabled = YES;
-            self.cancelButton.enabled = YES;
             return;
         }
 
@@ -208,7 +217,6 @@
             [self.saveButton setTitle:NSLocalizedString(@"POPUP_SAVEBUTTON_ADD", nil) forState:UIControlStateNormal];
             [self.saveButton setTitle:NSLocalizedString(@"POPUP_SAVEBUTTON_ADD", nil) forState:UIControlStateDisabled];
             self.saveButton.enabled = NO;
-            self.cancelButton.enabled = YES;
         }
     });
    
@@ -225,6 +233,27 @@
     self.scrollView.contentSize = scrollviewContentSize;
 }
 
+- (void)showContent
+{
+    [self.displayView setAlpha:1.0f];
+    [self.infoView setAlpha:0.0f];
+    [self.loadingView setAlpha:0.0f];
+}
+
+- (void)hideContent
+{
+    [self.loadingView setAlpha:1.0f];
+    [self.infoView setAlpha:0.0f];
+    [self.displayView setAlpha:0.0f];
+}
+
+- (void)showInfoContentWithText:(NSString*)aText
+{
+    self.infoLabel.text = aText;
+    [self.infoView setAlpha:1.0f];
+    [self.loadingView setAlpha:0.0f];
+    [self.displayView setAlpha:0.0f];
+}
 
 
 ////////////////////////////////////////////////////////////////////////////
@@ -235,13 +264,13 @@
 {
     if(!appeard || !resultDict || [resultDict count] <= 0) return;
     isAdding = YES;
+    [self checkButtonStates];
     
     OnlineDatabaseBridge *bridge = [[OnlineDatabaseBridge alloc] init];
     [bridge saveSearchResultDictAsMovie:resultDict completion:^(Movie *aMovie) {
         isAdding = NO;
         self.movie = aMovie;
         [self checkButtonStates];
-        
     } failure:^(NSError *error) {
         XLog(@"%@", [error localizedDescription]);
         isAdding = NO;
@@ -258,8 +287,7 @@
 
 - (void)MJPopViewControllerDidAppearCompletely
 {
-    appeard = YES;
-    [self checkButtonStates];
+    appeard = YES;    
 }
 
 

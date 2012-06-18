@@ -5,5 +5,6 @@ dependency 'MBProgressHUD'
 dependency 'DLStarRating', :podspec => 'DLStarRating.podspec'
 dependency 'TestFlightSDK'
 dependency 'GMGridView'
+dependency 'Reachability'
 
 #dependency 'MJYoutubePlayer', :podspec => 'MJYoutubePlayer.podspec'

@@ -13,5 +13,6 @@
 @interface MovieCastsTableViewController : UITableViewController
 
 @property (nonatomic, strong) Movie *movie;
+@property (nonatomic, assign) BOOL internetAvailable;
 
 @end

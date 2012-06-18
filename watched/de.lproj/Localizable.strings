@@ -6,7 +6,10 @@
 "de"                            = "Deutsch";
 "en"                            = "Englisch";
 "NAVIGATION_BACK"               = "zurück";
-
+"ALERT_NOINTERNET_TITLE"  = "keine Verbindung";
+"ALERT_MOVIE_NOINTERNET_TITLE_CONTENT" = "Entschuldigung. Sie benötigen eine Internet-Verbindung um Filme hinzufügen zu können.";
+"ALERT_NOINTERNET_TITLE_CONTENT" = "Entschuldigung. Hierfür benötigen Sie eine Internet-Verbindung.";
+"ALERT_NOINTERNET_TITLE_OK"     = "Ok";
 
 /*================================================
  Search
@@ -15,6 +18,7 @@
 "POPUP_SAVEBUTTON_ADDED"        = "vorhanden";
 "POPUP_SAVEBUTTON_ADD"          = "hinzufügen";
 "POPUP_TITLE_LOADING"           = "laden...";
+"POPUP_FAILED"                  = "Entschuldigung. Der Film konnte nicht geladen werden.";
 
 /*================================================
  Table View
@@ -37,6 +41,7 @@
 "BUTTON_WATCH_TRAILER"          = "Trailer ansehen";
 "BUTTON_DELETE_MOVIE"           = "Film löschen";
 "BUTTON_ADD_NOTE"               = "Notiz hinzufügen";
+"BUTTON_SIMILAR"                = "ähnliche Filme";
 "DETAIL_DESCRIPTION_TITLE"      = "Zusammenfassung";
 
 "SHARE_BUTTON_TITLE"            = "Teilen mit";

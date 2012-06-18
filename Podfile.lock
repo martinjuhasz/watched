@@ -3,6 +3,7 @@ PODS:
   - DLStarRating (1.0)
   - GMGridView (1.1.1)
   - MBProgressHUD (0.5)
+  - Reachability (3.0.0)
   - TestFlightSDK (1.0)
 
 DEPENDENCIES:
@@ -10,4 +11,5 @@ DEPENDENCIES:
   - DLStarRating (from `DLStarRating.podspec')
   - GMGridView
   - MBProgressHUD
+  - Reachability
   - TestFlightSDK

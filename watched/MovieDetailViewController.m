@@ -14,7 +14,6 @@
 #import <CoreData/CoreData.h>
 #import "MoviesDataModel.h"
 #import "MovieDetailView.h"
-#import "UIImageView+AFNetworking.h"
 #import "OnlineMovieDatabase.h"
 #import <MediaPlayer/MediaPlayer.h>
 #import "MovieCastsTableViewController.h"
@@ -25,11 +24,14 @@
 #import <QuartzCore/QuartzCore.h>
 #import "WatchedWebBrowser.h"
 #import "SearchMovieViewController.h"
+#import "AFImageRequestOperation.h"
+#import "Reachability.h"
 
 #define kImageFadeDelay 0.0f
 
 @interface MovieDetailViewController ()<ThumbnailPickerDelegate> {
     BOOL isLoadingImages;
+    Reachability *reachability;
 }
 
 @end
@@ -38,6 +40,7 @@
 
 @synthesize movie;
 @synthesize detailView;
+@synthesize internetAvailable;
 
 
 
@@ -81,12 +84,26 @@
     [self.detailView.actor1Button addTarget:self action:@selector(actorButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
     [self.detailView.actor2Button addTarget:self action:@selector(actorButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
     [self.detailView.actor3Button addTarget:self action:@selector(actorButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+    
+    
+    // check reachability
+    internetAvailable = YES;
+    __weak MovieDetailViewController *blockSelf = self;
+    reachability = [Reachability reachabilityWithHostname:@"www.google.com"];
+    reachability.reachableBlock = ^(Reachability*reach) {
+        blockSelf.internetAvailable = YES;
+    };
+    reachability.unreachableBlock = ^(Reachability*reach) {
+        blockSelf.internetAvailable = NO;
+    };
+    [reachability startNotifier];
 }
 
 - (void)viewDidUnload
 {
     [super viewDidUnload];
     // Release any retained subviews of the main view.
+    [reachability stopNotifier];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -118,19 +135,22 @@
         Cast *cast1 = (Cast*)[sortedCast objectAtIndex:0];
         NSURL *cast1Url = [[OnlineMovieDatabase sharedMovieDatabase] getImageURLForImagePath:cast1.profilePath imageType:ImageTypeProfile nearWidth:400.0f];
         self.detailView.actor1Label.text = cast1.name;
-        [self.detailView.actor1ImageView setImageWithURL:cast1Url];
+        [self setGreyActorImageWithURL:cast1Url forImageView:self.detailView.actor1ImageView];
+//        [self.detailView.actor1ImageView setImageWithURL:cast1Url];
     }
     if(sortedCast.count >= 2) {
         Cast *cast2 = (Cast*)[sortedCast objectAtIndex:1];
         NSURL *cast2Url = [[OnlineMovieDatabase sharedMovieDatabase] getImageURLForImagePath:cast2.profilePath imageType:ImageTypeProfile nearWidth:400.0f];
         self.detailView.actor2Label.text = cast2.name;
-        [self.detailView.actor2ImageView setImageWithURL:cast2Url];
+        [self setGreyActorImageWithURL:cast2Url forImageView:self.detailView.actor2ImageView];
+//        [self.detailView.actor2ImageView setImageWithURL:cast2Url];
     }
     if(sortedCast.count >= 3) {
         Cast *cast3 = (Cast*)[sortedCast objectAtIndex:2];
         NSURL *cast3Url = [[OnlineMovieDatabase sharedMovieDatabase] getImageURLForImagePath:cast3.profilePath imageType:ImageTypeProfile nearWidth:400.0f];
         self.detailView.actor3Label.text = cast3.name;
-        [self.detailView.actor3ImageView setImageWithURL:cast3Url];
+        [self setGreyActorImageWithURL:cast3Url forImageView:self.detailView.actor3ImageView];
+//        [self.detailView.actor3ImageView setImageWithURL:cast3Url];
     }
     
     if(self.movie.watchedOn) self.detailView.watchedSwitch.on = YES;
@@ -159,6 +179,54 @@
     
 }
 
+- (void)setGreyActorImageWithURL:(NSURL*)url forImageView:(UIImageView*)imageView
+{
+    AFImageRequestOperation *operation = [AFImageRequestOperation imageRequestOperationWithRequest:[NSURLRequest requestWithURL:url] imageProcessingBlock:^UIImage *(UIImage *returnedImage) {
+        return [self grayScaleImage:returnedImage];
+    } cacheName:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+        imageView.image = image;
+    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
+        XLog("%@", [error localizedDescription]);
+    }];
+    [operation start];
+}
+
+-(UIImage*)grayScaleImage:(UIImage*)image
+{
+    CGImageRef inputImage = [image CGImage];
+    size_t width = CGImageGetWidth(inputImage);
+    size_t height = CGImageGetHeight(inputImage);
+        
+    // Create a gray scale context and render the input image into that
+    CGColorSpaceRef colorspace = CGColorSpaceCreateDeviceGray();
+    CGContextRef context = CGBitmapContextCreate(NULL, width, height, 8, 
+                                                     4*width, colorspace, kCGBitmapByteOrderDefault);
+    CGContextDrawImage(context, CGRectMake(0,0, width,height), inputImage);
+        
+    // Get an image representation of the grayscale context which the input
+    //    was rendered into.
+    CGImageRef outputImage = CGBitmapContextCreateImage(context);
+        
+    // Cleanup
+    CGContextRelease(context);
+    CGColorSpaceRelease(colorspace);
+    UIImage *returnedImage = [UIImage imageWithCGImage:outputImage];
+    CGImageRelease(outputImage);
+    return returnedImage;
+}
+
+- (bool)isInternetAvailable
+{
+    if(!self.internetAvailable) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"ALERT_NOINTERNET_TITLE", nil)
+                                                        message:NSLocalizedString(@"ALERT_NOINTERNET_TITLE_CONTENT", nil)
+                                                       delegate:nil 
+                                              cancelButtonTitle:NSLocalizedString(@"ALERT_NOINTERNET_TITLE_OK", nil)
+                                              otherButtonTitles:nil];
+        [alert show];
+    }
+    return self.internetAvailable;
+}
 
 
 ////////////////////////////////////////////////////////////////////////////
@@ -231,6 +299,7 @@
 
 - (IBAction)posterButtonClicked:(id)sender
 {
+    if(![self isInternetAvailable]) return;
     if(isLoadingImages) return;
     isLoadingImages = YES;
     
@@ -270,6 +339,7 @@
 
 - (IBAction)trailerButtonClicked:(id)sender
 {
+    if(![self isInternetAvailable]) return;
     if(!self.movie.bestTrailer) return;
     NSURL *videoURL = nil;
     
@@ -289,6 +359,7 @@
 
 - (IBAction)websiteButtonClicked:(id)sender
 {
+    if(![self isInternetAvailable]) return;
     if(self.movie.homepage) {
         [self performSegueWithIdentifier:@"DetailWebViewSegue" sender:sender];
     }
@@ -361,11 +432,13 @@
 
 - (IBAction)actorButtonClicked:(id)sender
 {
+//    if(![self isInternetAvailable]) return;
     [self performSegueWithIdentifier:@"DetailWebViewSegue" sender:sender];
 }
 
 - (IBAction)refreshButtonClicked:(id)sender
 {
+    if(![self isInternetAvailable]) return;
     self.detailView.refreshButton.enabled = NO;
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
         
@@ -398,6 +471,7 @@
 
 -(IBAction)similarButtonClicked:(id)sender
 {
+    if(![self isInternetAvailable]) return;
     [self performSegueWithIdentifier:@"SimilarMovieSegue" sender:nil];
 }
 
