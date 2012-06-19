@@ -47,8 +47,24 @@ const int kMovieCastCellProfileImageView = 200;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+}
+
+- (void)viewDidUnload
+{
+    [super viewDidUnload];
+}
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+{
+    return (interfaceOrientation == UIInterfaceOrientationPortrait);
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
     
-    self.internetAvailable = YES;
+    // check reachability
+    internetAvailable = YES;
     __weak MovieCastsTableViewController *blockSelf = self;
     reachability = [Reachability reachabilityWithHostname:@"www.google.com"];
     reachability.reachableBlock = ^(Reachability*reach) {
@@ -60,18 +76,18 @@ const int kMovieCastCellProfileImageView = 200;
     [reachability startNotifier];
 }
 
-- (void)viewDidUnload
+- (void)viewDidDisappear:(BOOL)animated
 {
-    [super viewDidUnload];
-    // Release any retained subviews of the main view.
-    // e.g. self.myOutlet = nil;
+    [super viewDidDisappear:animated];
     [reachability stopNotifier];
+    reachability = nil;
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+- (void)dealloc
 {
-    return (interfaceOrientation == UIInterfaceOrientationPortrait);
+    XLog("");
 }
+
 
 
 

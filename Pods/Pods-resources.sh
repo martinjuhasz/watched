@@ -13,9 +13,9 @@ install_resource()
       ;;
   esac
 }
-install_resource 'DLStarRating/DLStarRating/images/star.png'
-install_resource 'DLStarRating/DLStarRating/images/star@2x.png'
-install_resource 'DLStarRating/DLStarRating/images/star_highlighted-darker.png'
-install_resource 'DLStarRating/DLStarRating/images/star_highlighted-darker@2x.png'
-install_resource 'DLStarRating/DLStarRating/images/star_highlighted.png'
-install_resource 'DLStarRating/DLStarRating/images/star_highlighted@2x.png'
+install_resource 'MJStarRating/DLStarRating/images/star.png'
+install_resource 'MJStarRating/DLStarRating/images/star@2x.png'
+install_resource 'MJStarRating/DLStarRating/images/star_highlighted-darker.png'
+install_resource 'MJStarRating/DLStarRating/images/star_highlighted-darker@2x.png'
+install_resource 'MJStarRating/DLStarRating/images/star_highlighted.png'
+install_resource 'MJStarRating/DLStarRating/images/star_highlighted@2x.png'

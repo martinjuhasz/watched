@@ -58,7 +58,9 @@ static NSString *databaseURL = @"http://api.themoviedb.org/3";
 - (void)setApiKey:(NSString *)aApiKey
 {
     apiKey = aApiKey;
-    [self loadConfigurationWithFailure:nil];
+    [self loadConfigurationWithFailure:^(NSError *error) {
+        XLog("%@", [error localizedDescription]);
+    }];
 }
 
 - (NSString*)additionalURLParams
@@ -136,7 +138,7 @@ static NSString *databaseURL = @"http://api.themoviedb.org/3";
 #pragma mark -
 #pragma mark Searching
 
-- (void)getMoviesWithSearchString:(NSString*)value atPage:(NSInteger)page completion:(MovieSearchCompletionBlock)callback failure:(OnlineMovieDatabaseErrorBlock)failure
+- (AFJSONRequestOperation*)getMoviesWithSearchString:(NSString*)value atPage:(NSInteger)page completion:(MovieSearchCompletionBlock)callback failure:(OnlineMovieDatabaseErrorBlock)failure
 {
     value = [value stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/search/movie?%@&query=%@&page=%d",databaseURL, [self additionalURLParams], value, page]];
@@ -150,10 +152,10 @@ static NSString *databaseURL = @"http://api.themoviedb.org/3";
         failure(error);
     }];
     
-    [operation start];
+    return operation;
 }
 
-- (void)getSimilarMoviesWithMovieID:(NSNumber*)anID atPage:(NSInteger)page completion:(MovieSearchCompletionBlock)callback failure:(OnlineMovieDatabaseErrorBlock)failure
+- (AFJSONRequestOperation*)getSimilarMoviesWithMovieID:(NSNumber*)anID atPage:(NSInteger)page completion:(MovieSearchCompletionBlock)callback failure:(OnlineMovieDatabaseErrorBlock)failure
 {
     NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/movie/%@/similar_movies?%@&page=%d",databaseURL, anID,[self additionalURLParams] ,page]];
     XLog(@"Searching Similar Movies at URL: %@", url);
@@ -166,7 +168,7 @@ static NSString *databaseURL = @"http://api.themoviedb.org/3";
         failure(error);
     }];
     
-    [operation start];
+    return operation;
 }
 
 
@@ -183,7 +185,7 @@ static NSString *databaseURL = @"http://api.themoviedb.org/3";
     return returnURL;
 }
 
-- (void)getImageForImagePath:(NSString *)imagePath 
+- (AFImageRequestOperation*)getImageForImagePath:(NSString *)imagePath 
                    imageType:(ImageType)type 
                    withWidth:(CGFloat)width 
                   completion:(MovieImageComppletionBlock)callback  
@@ -204,7 +206,7 @@ static NSString *databaseURL = @"http://api.themoviedb.org/3";
                                                                   failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
                                                                       failure(error);
                                                                   }];
-    [operation start];
+    return operation;
 }
 
 - (void)resizeImage:(UIImage *)image toWidth:(CGFloat)width completion:(MovieImageComppletionBlock)callback
@@ -222,7 +224,7 @@ static NSString *databaseURL = @"http://api.themoviedb.org/3";
     });
 }
 
-- (void)getImagesForMovie:(NSNumber *)movieID completion:(MovieImagesCompletionBlock)callback failure:(OnlineMovieDatabaseErrorBlock)failure
+- (AFJSONRequestOperation*)getImagesForMovie:(NSNumber *)movieID completion:(MovieImagesCompletionBlock)callback failure:(OnlineMovieDatabaseErrorBlock)failure
 {
     NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/movie/%d/images?api_key=%@",databaseURL, [movieID intValue], apiKey]];
     XLog("Getting Movie Images at URL: %@", url);
@@ -235,7 +237,7 @@ static NSString *databaseURL = @"http://api.themoviedb.org/3";
         failure(error);
     }];
     
-    [operation start];
+    return operation;
 }
 
 
@@ -243,7 +245,7 @@ static NSString *databaseURL = @"http://api.themoviedb.org/3";
 #pragma mark -
 #pragma mark Movie Details
 
-- (void)getMovieDetailsForMovieID:(NSNumber *)movieID completion:(MovieDetailCompletionBlock)callback failure:(OnlineMovieDatabaseErrorBlock)failure
+- (AFJSONRequestOperation*)getMovieDetailsForMovieID:(NSNumber *)movieID completion:(MovieDetailCompletionBlock)callback failure:(OnlineMovieDatabaseErrorBlock)failure
 {
     NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/movie/%d?%@",databaseURL, [movieID intValue], [self additionalURLParams]]];
     XLog("Getting Movie Details at URL: %@", url);
@@ -256,10 +258,10 @@ static NSString *databaseURL = @"http://api.themoviedb.org/3";
         failure(error);
     }];
     
-    [operation start];
+    return operation;
 }
 
-- (void)getMovieCastsForMovieID:(NSNumber *)movieID completion:(MovieCastsCompletionBlock)callback failure:(OnlineMovieDatabaseErrorBlock)failure
+- (AFJSONRequestOperation*)getMovieCastsForMovieID:(NSNumber *)movieID completion:(MovieCastsCompletionBlock)callback failure:(OnlineMovieDatabaseErrorBlock)failure
 {
     // http://api.themoviedb.org/3/movie/11/casts
     NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/movie/%d/casts?api_key=%@",databaseURL, [movieID intValue], apiKey]];
@@ -273,10 +275,10 @@ static NSString *databaseURL = @"http://api.themoviedb.org/3";
         failure(error);
     }];
     
-    [operation start];    
+    return operation;   
 }
 
-- (void)getMovieTrailersForMovieID:(NSNumber *)movieID completion:(MovieTrailersCompletionBlock)callback failure:(OnlineMovieDatabaseErrorBlock)failure
+- (AFJSONRequestOperation*)getMovieTrailersForMovieID:(NSNumber *)movieID completion:(MovieTrailersCompletionBlock)callback failure:(OnlineMovieDatabaseErrorBlock)failure
 {
     // http://api.themoviedb.org/3/movie/11/casts
     NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/movie/%d/trailers?%@",databaseURL, [movieID intValue], [self additionalURLParams]]];
@@ -314,7 +316,7 @@ static NSString *databaseURL = @"http://api.themoviedb.org/3";
         failure(error);
     }];
     
-    [operation start];    
+    return operation;   
 }
 
 @end

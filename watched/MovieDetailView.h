@@ -44,7 +44,7 @@
 @property (strong, nonatomic) UIButton *trailerButton;
 @property (strong, nonatomic) UIButton *castsButton;
 @property (strong, nonatomic) UIButton *websiteButton;
-@property (strong, nonatomic) UIButton *refreshButton;
+//@property (strong, nonatomic) UIButton *refreshButton;
 @property (strong, nonatomic) UIButton *deleteButton;
 
 - (void)toggleLoadingViewForPosterType:(ImageType)aImageType;

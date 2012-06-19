@@ -17,6 +17,7 @@
 #import "AddMovieViewController.h"
 #import "UIViewController+MJPopupViewController.h"
 #import "Reachability.h"
+#import "AFJSONRequestOperation.h"
 
 #define kSearchMovieLoadingTableViewCell @"SearchMovieLoadingTableViewCell"
 #define kSearchMovieTableViewCell @"SearchMovieTableViewCell"
@@ -110,8 +111,11 @@ const int kMovieSearchCellImageView = 200;
 
 - (void)viewDidDisappear:(BOOL)animated
 {
+    [super viewWillDisappear:animated];
     [reachability stopNotifier];
+    reachability = nil;
 }
+
 
 
 
@@ -187,7 +191,7 @@ const int kMovieSearchCellImageView = 200;
     self.addController.coverImage = coverImageView.image;
     self.addController.delegate = self;
     
-    [self presentPopupViewController:self.addController animationType:PopupViewAnimationFade];
+    [self presentPopupViewController:self.addController animationType:PopupViewAnimationSlideBottomBottom];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -296,7 +300,7 @@ const int kMovieSearchCellImageView = 200;
 
 - (void)startSearchWithQuery:(NSString*)query
 {
-    [[OnlineMovieDatabase sharedMovieDatabase] getMoviesWithSearchString:query atPage:currentPage completion:^(NSDictionary *results) {
+    AFJSONRequestOperation *operation = [[OnlineMovieDatabase sharedMovieDatabase] getMoviesWithSearchString:query atPage:currentPage completion:^(NSDictionary *results) {
         
         isLoading = NO;
         
@@ -320,11 +324,12 @@ const int kMovieSearchCellImageView = 200;
         [hud hide:YES afterDelay:1.0f];
         
     }];
+    [operation start];
 }
 
 - (void)startSimilarSearchWithMovieID:(NSNumber*)anID
 {
-    [[OnlineMovieDatabase sharedMovieDatabase] getSimilarMoviesWithMovieID:anID atPage:currentPage completion:^(NSDictionary *results) {
+    AFJSONRequestOperation *operation = [[OnlineMovieDatabase sharedMovieDatabase] getSimilarMoviesWithMovieID:anID atPage:currentPage completion:^(NSDictionary *results) {
         isLoading = NO;
         
         NSArray *movies = [results objectForKey:@"results"];
@@ -344,6 +349,7 @@ const int kMovieSearchCellImageView = 200;
         hud.removeFromSuperViewOnHide = YES;
         [hud hide:YES afterDelay:1.0f];
     }];
+    [operation start];
 }
 
 
@@ -354,7 +360,7 @@ const int kMovieSearchCellImageView = 200;
 
 - (void)AddMovieControllerCancelButtonClicked:(AddMovieViewController *)addMovieViewController
 {
-    [self dismissPopupViewControllerWithanimationType:PopupViewAnimationFade];
+    [self dismissPopupViewControllerWithanimationType:PopupViewAnimationSlideBottomBottom];
     addController = nil;
 }
 

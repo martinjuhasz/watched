@@ -146,7 +146,7 @@
         [self.window.rootViewController dismissModalViewControllerAnimated:NO];
     }
     
-    [self.window.rootViewController presentPopupViewController:addController animationType:PopupViewAnimationFade];
+    [self.window.rootViewController presentPopupViewController:addController animationType:PopupViewAnimationSlideBottomBottom];
     
     return YES;
 }
@@ -159,7 +159,7 @@
 
 - (void)AddMovieControllerCancelButtonClicked:(AddMovieViewController *)addMovieViewController
 {
-    [self.window.rootViewController dismissPopupViewControllerWithanimationType:PopupViewAnimationFade];
+    [self.window.rootViewController dismissPopupViewControllerWithanimationType:PopupViewAnimationSlideBottomBottom];
     addController = nil;
 }
 

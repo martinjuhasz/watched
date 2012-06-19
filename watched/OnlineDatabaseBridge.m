@@ -17,6 +17,7 @@
 #import "Cast.h"
 #import "Crew.h"
 #import "Trailer.h"
+#import "AFJSONRequestOperation.h"
 
 
 @interface OnlineDatabaseBridge()
@@ -107,13 +108,15 @@
     });
 }
 
-- (void)saveSearchResultAsMovie:(SearchResult*)result completion:(OnlineBridgeCompletionBlock)aCompletionBlock failure:(OnlineBridgeFailureBlock)aFailureBlock
+- (AFJSONRequestOperation*)saveSearchResultAsMovie:(SearchResult*)result completion:(OnlineBridgeCompletionBlock)aCompletionBlock failure:(OnlineBridgeFailureBlock)aFailureBlock
 {
-    [self saveMovieForID:result.searchResultId completion:^(Movie *aMovie) {
+    AFJSONRequestOperation *operation = nil;
+    operation = [self saveMovieForID:result.searchResultId completion:^(Movie *aMovie) {
         aCompletionBlock(aMovie);
     } failure:^(NSError *anError) {
         aFailureBlock(anError);
     }];
+    return operation;
     
 //    [[OnlineMovieDatabase sharedMovieDatabase] getMovieDetailsForMovieID:result.searchResultId completion:^(NSDictionary *movieDict) {
 //        [self saveSearchResultDictAsMovie:movieDict completion:^(Movie *aMovie) {
@@ -126,28 +129,28 @@
 //    }];
 }
 
-- (void)saveMovieForID:(NSNumber*)movieID completion:(OnlineBridgeCompletionBlock)aCompletionBlock failure:(OnlineBridgeFailureBlock)aFailureBlock
+- (AFJSONRequestOperation*)saveMovieForID:(NSNumber*)movieID completion:(OnlineBridgeCompletionBlock)aCompletionBlock failure:(OnlineBridgeFailureBlock)aFailureBlock
 {
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
-        NSManagedObjectContext *context = [[NSManagedObjectContext alloc] init];
-        [context setPersistentStoreCoordinator:[[MoviesDataModel sharedDataModel] persistentStoreCoordinator]];
-        Movie *movie = [Movie movieWithServerId:[movieID intValue] usingManagedObjectContext:context];
-        if (!movie) {
-            [[OnlineMovieDatabase sharedMovieDatabase] getMovieDetailsForMovieID:movieID completion:^(NSDictionary *movieDict) {
-                [self saveSearchResultDictAsMovie:movieDict completion:^(Movie *aMovie) {
-                    aCompletionBlock(aMovie);
-                } failure:^(NSError *aError) {
-                    aFailureBlock(aFailureBlock);
-                }];
+    AFJSONRequestOperation *operation = nil;
+    NSManagedObjectContext *context = [[NSManagedObjectContext alloc] init];
+    [context setPersistentStoreCoordinator:[[MoviesDataModel sharedDataModel] persistentStoreCoordinator]];
+    Movie *movie = [Movie movieWithServerId:[movieID intValue] usingManagedObjectContext:context];
+    if (!movie) {
+        operation = [[OnlineMovieDatabase sharedMovieDatabase] getMovieDetailsForMovieID:movieID completion:^(NSDictionary *movieDict) {
+            [self saveSearchResultDictAsMovie:movieDict completion:^(Movie *aMovie) {
+                aCompletionBlock(aMovie);
             } failure:^(NSError *aError) {
-                aFailureBlock(aError);
+                aFailureBlock(aFailureBlock);
             }];
-        } else {
-            NSError *existsError = [[NSError alloc] initWithDomain:kBridgeErrorDomain code:BridgeErrorMovieExists userInfo:[NSDictionary dictionaryWithObjectsAndKeys:@"Movie with this ID already exists", NSLocalizedDescriptionKey, nil]];
-            aFailureBlock(existsError);
+        } failure:^(NSError *aError) {
+            aFailureBlock(aError);
+        }];
+    } else {
+        NSError *existsError = [[NSError alloc] initWithDomain:kBridgeErrorDomain code:BridgeErrorMovieExists userInfo:[NSDictionary dictionaryWithObjectsAndKeys:@"Movie with this ID already exists", NSLocalizedDescriptionKey, nil]];
+        aFailureBlock(existsError);
 //            aFailureBlock(nil);
-        }
-    });
+    }
+    return operation;
 }
 
 
@@ -157,12 +160,13 @@
 #pragma mark -
 #pragma mark Updating Data
 
-- (void)updateMovieMetadata:(Movie*)aMovie inContext:(NSManagedObjectContext*)aContext completion:(OnlineBridgeCompletionBlock)aCompletionBlock failure:(OnlineBridgeFailureBlock)aFailureBlock
+- (AFJSONRequestOperation*)updateMovieMetadata:(Movie*)aMovie inContext:(NSManagedObjectContext*)aContext completion:(OnlineBridgeCompletionBlock)aCompletionBlock failure:(OnlineBridgeFailureBlock)aFailureBlock
 {
     NSSet *oldCasts = aMovie.casts;
     NSSet *oldCrew = aMovie.crews;
     NSSet *oldTrailers = aMovie.trailers;
     
+    AFJSONRequestOperation *operation = nil;
 //    
 //    for (Cast *aCast in oldCasts) {
 //        [aMovie.managedObjectContext deleteObject:aCast];
@@ -177,7 +181,7 @@
 //    }
 //    aCompletionBlock(aMovie);
     
-    [[OnlineMovieDatabase sharedMovieDatabase] getMovieDetailsForMovieID:aMovie.movieID completion:^(NSDictionary *movieDict) {
+    operation = [[OnlineMovieDatabase sharedMovieDatabase] getMovieDetailsForMovieID:aMovie.movieID completion:^(NSDictionary *movieDict) {
         [self updateMovie:aMovie withSearchResultDict:movieDict completion:^(Movie *returnedMovie) {
             for (Cast *aCast in oldCasts) {
                 [aContext deleteObject:aCast];
@@ -197,6 +201,8 @@
     } failure:^(NSError *aError) {
         aFailureBlock(aError);
     }];
+    
+    return operation;
 }
 
 - (void)updateMovie:(Movie*)movie withSearchResultDict:(NSDictionary*)movieDict completion:(OnlineBridgeCompletionBlock)aCompletionBlock failure:(OnlineBridgeFailureBlock)aFailureBlock
@@ -336,7 +342,7 @@
 
 - (void)setCastsToMovie:(Movie*)aMovie success:(void (^)(void))successBlock failure:(OnlineBridgeFailureBlock)aFailureBlock
 {
-    [[OnlineMovieDatabase sharedMovieDatabase] getMovieCastsForMovieID:aMovie.movieID completion:^(NSDictionary *returnArray) {
+    AFJSONRequestOperation *operation = [[OnlineMovieDatabase sharedMovieDatabase] getMovieCastsForMovieID:aMovie.movieID completion:^(NSDictionary *returnArray) {
         
         NSArray *casts = [returnArray objectForKeyOrNil:@"cast"];
         NSArray *crew = [returnArray objectForKeyOrNil:@"crew"];
@@ -369,11 +375,12 @@
     } failure:^(NSError *aError) {
         aFailureBlock(aError);
     }];
+    [operation start];
 }
 
 - (void)setTrailersToMovie:(Movie*)aMovie success:(void (^)(void))successBlock failure:(OnlineBridgeFailureBlock)aFailureBlock
 {
-    [[OnlineMovieDatabase sharedMovieDatabase] getMovieTrailersForMovieID:aMovie.movieID completion:^(NSDictionary *returnArray) {
+    AFJSONRequestOperation *operation = [[OnlineMovieDatabase sharedMovieDatabase] getMovieTrailersForMovieID:aMovie.movieID completion:^(NSDictionary *returnArray) {
         
         NSArray *quicktime = [returnArray objectForKeyOrNil:@"quicktime"];
         NSArray *youtube = [returnArray objectForKeyOrNil:@"youtube"];
@@ -411,6 +418,7 @@
     } failure:^(NSError *aError) {
         aFailureBlock(aError);
     }];
+    [operation start];
 }
 
 

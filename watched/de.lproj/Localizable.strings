@@ -19,6 +19,7 @@
 "POPUP_SAVEBUTTON_ADD"          = "hinzufügen";
 "POPUP_TITLE_LOADING"           = "laden...";
 "POPUP_FAILED"                  = "Entschuldigung. Der Film konnte nicht geladen werden.";
+"POPUP_SUCCESS_ADDED"           = "Film hinzugefügt.";
 
 /*================================================
  Table View
@@ -110,5 +111,6 @@
  ================================================*/
 
 "INITIAL_NOTE"                  = "Hier eine Notiz hinterlassen";
-
+"THUMBNAILVIEW_TITLE_POSTER"    = "Cover wählen";
+"THUMBNAILVIEW_TITLE_BACKDROP"  = "Hintergrund wählen";
 

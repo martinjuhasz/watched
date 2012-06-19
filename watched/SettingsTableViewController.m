@@ -13,6 +13,7 @@
 #import "MBProgressHUD.h"
 #import "WatchedWebBrowser.h"
 #import <MessageUI/MessageUI.h>
+#import "AFJSONRequestOperation.h"
 
 @interface SettingsTableViewController () <MFMailComposeViewControllerDelegate>
 
@@ -54,7 +55,7 @@
                       nil],
                      [NSArray arrayWithObjects:
                       [NSDictionary dictionaryWithObject:@"Feedback" forKey:@"name"],
-//                      [NSDictionary dictionaryWithObject:@"Dummy Content" forKey:@"name"],
+                      [NSDictionary dictionaryWithObject:@"Dummy Content" forKey:@"name"],
                       nil],
                  nil];
     
@@ -316,6 +317,9 @@
 - (void)refreshAllMovies
 {
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
+    hud.mode = MBProgressHUDModeDeterminate;
+    hud.progress = 0.0f;
+    
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
         
         // Setup Core Data with extra Context for Background Process
@@ -329,19 +333,36 @@
         [movieRequest setEntity:entity];
         NSArray *movies = [context executeFetchRequest:movieRequest error:nil];
         
+        // queue all
+        NSOperationQueue *queue = [[NSOperationQueue alloc] init];
+        [queue setMaxConcurrentOperationCount:2];
+        [queue setSuspended:YES];
+        
         // Error Handling
         __block NSError *error;
         dispatch_group_t group = dispatch_group_create();
+        float total = movies.count;
+        __block int current = 0;
         
         for (Movie *currentMovie in movies) {
             dispatch_group_enter(group);
-            [bridge updateMovieMetadata:currentMovie inContext:context completion:^(Movie *returnedMovie) {
+            AFJSONRequestOperation *operation = [bridge updateMovieMetadata:currentMovie inContext:context completion:^(Movie *returnedMovie) {
+                current++;
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    hud.progress = current / total;
+                });
                 dispatch_group_leave(group);
             } failure:^(NSError *anError) {
+                current++;
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    hud.progress = current / total;
+                });
                 error = anError;
                 dispatch_group_leave(group);
             }];
+            [queue addOperation:operation];
         }
+        [queue setSuspended:NO];
         
         // wait until everything is finished
         dispatch_group_wait(group, DISPATCH_TIME_FOREVER);
@@ -373,51 +394,96 @@
 
 - (void)loadDummyContent
 {
-    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
-//    hud.mode = MBProgressHUDModeDeterminate;
+    __block MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
+    hud.mode = MBProgressHUDModeDeterminate;
+    hud.progress = 0.0f;
     
-    OnlineDatabaseBridge *bridge = [[OnlineDatabaseBridge alloc] init];
-    
-    NSArray *movieIDS = [NSArray arrayWithObjects:
-                         [NSNumber numberWithInt:1726],
-                         [NSNumber numberWithInt:58595],
-                         [NSNumber numberWithInt:41154],
-                         [NSNumber numberWithInt:70981],
-                         [NSNumber numberWithInt:59961],
-                         [NSNumber numberWithInt:24428],
-                         [NSNumber numberWithInt:10138],
-                         [NSNumber numberWithInt:49527],
-                         [NSNumber numberWithInt:557],
-                         [NSNumber numberWithInt:1930],
-                         [NSNumber numberWithInt:14160],
-                         [NSNumber numberWithInt:15563],
-                         [NSNumber numberWithInt:855],
-                         [NSNumber numberWithInt:50918],
-                         [NSNumber numberWithInt:7870],
-                         [NSNumber numberWithInt:11135],
-                         nil];
-    
-    dispatch_group_t group = dispatch_group_create();
-    
-    for (NSNumber *currentMovie in movieIDS) {
-        dispatch_group_enter(group);
-        [bridge saveMovieForID:currentMovie completion:^(Movie *returnedMovie) {
-            dispatch_group_leave(group);
-        } failure:^(NSError *anError) {
-            XLog("%@",[anError localizedDescription]);
-            dispatch_group_leave(group);
-        }];
-    }
-    
-    // wait until everything is finished
-    dispatch_group_wait(group, DISPATCH_TIME_FOREVER);
-    dispatch_release(group);
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [hud hide:YES];
-        [self loadStatistics];
-        [self reloadStatisticCells];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+        OnlineDatabaseBridge *bridge = [[OnlineDatabaseBridge alloc] init];
+        NSOperationQueue *queue = [[NSOperationQueue alloc] init];
+        [queue setMaxConcurrentOperationCount:2];
+        [queue setSuspended:YES];
+        
+        NSArray *movieIDS = [NSArray arrayWithObjects:
+                             [NSNumber numberWithInt:1726],
+                             [NSNumber numberWithInt:58595],
+                             [NSNumber numberWithInt:41154],
+                             [NSNumber numberWithInt:70981],
+                             [NSNumber numberWithInt:59961],
+                             [NSNumber numberWithInt:24428],
+                             [NSNumber numberWithInt:10138],
+                             [NSNumber numberWithInt:49527],
+                             [NSNumber numberWithInt:557],
+                             [NSNumber numberWithInt:1930],
+                             [NSNumber numberWithInt:14160],
+                             [NSNumber numberWithInt:15563],
+                             [NSNumber numberWithInt:855],
+                             [NSNumber numberWithInt:50918],
+                             [NSNumber numberWithInt:7870],
+                             [NSNumber numberWithInt:11135],
+                             [NSNumber numberWithInt:80321],
+                             [NSNumber numberWithInt:57165],
+                             [NSNumber numberWithInt:80585],
+                             [NSNumber numberWithInt:49529],
+                             [NSNumber numberWithInt:426],
+                             [NSNumber numberWithInt:6282],
+                             [NSNumber numberWithInt:13],
+                             [NSNumber numberWithInt:105],
+                             [NSNumber numberWithInt:22954],
+                             [NSNumber numberWithInt:429],
+                             [NSNumber numberWithInt:387],
+                             [NSNumber numberWithInt:9533],
+                             [NSNumber numberWithInt:50348],
+                             [NSNumber numberWithInt:3034],
+                             [NSNumber numberWithInt:603],
+                             [NSNumber numberWithInt:243],
+                             [NSNumber numberWithInt:525],
+                             [NSNumber numberWithInt:812],
+                             [NSNumber numberWithInt:7549],
+                             [NSNumber numberWithInt:613],
+                             [NSNumber numberWithInt:857],
+                             [NSNumber numberWithInt:44639],
+                             [NSNumber numberWithInt:13016],
+                             [NSNumber numberWithInt:36419],
+                             [NSNumber numberWithInt:238],
+                             [NSNumber numberWithInt:10193],
+                             nil];
+        
+        dispatch_group_t group = dispatch_group_create();
+        
+        float total = movieIDS.count; 
+        __block int current = 0;
+        
+        for (NSNumber *currentMovie in movieIDS) {
+            dispatch_group_enter(group);
+            AFJSONRequestOperation *operation = [bridge saveMovieForID:currentMovie completion:^(Movie *returnedMovie) {
+                current++;
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    hud.progress = current / total;
+                });
+                dispatch_group_leave(group);
+            } failure:^(NSError *anError) {
+                current++;
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    hud.progress = current / total;
+                });
+                XLog("%@",[anError localizedDescription]);
+                dispatch_group_leave(group);
+            }];
+            [queue addOperation:operation];
+            
+        }
+        [queue setSuspended:NO];
+        
+        // wait until everything is finished
+        dispatch_group_wait(group, DISPATCH_TIME_FOREVER);
+        dispatch_release(group);
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [hud hide:YES];
+            [self loadStatistics];
+            [self reloadStatisticCells];
+        });
     });
-    
 }
 
 

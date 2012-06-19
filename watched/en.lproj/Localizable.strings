@@ -20,6 +20,7 @@
 "POPUP_SAVEBUTTON_ADD"          = "add";
 "POPUP_TITLE_LOADING"           = "loading...";
 "POPUP_FAILED"                  = "Sorry. Could not load Movie.";
+"POPUP_SUCCESS_ADDED"           = "Movie added successfully.";
 
 /*================================================
  Table View
@@ -108,7 +109,11 @@
 
 
 /*================================================
- NOTES
+ OTHER
  ================================================*/
 
 "INITIAL_NOTE"                  = "Add your note here";
+"THUMBNAILVIEW_TITLE_POSTER"    = "Set a Poster";
+"THUMBNAILVIEW_TITLE_BACKDROP"  = "Set a Backdrop";
+
+

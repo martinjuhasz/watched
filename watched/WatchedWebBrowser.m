@@ -59,22 +59,6 @@
     self.webView.delegate = self;
     
     [self.webView loadRequest:[NSURLRequest requestWithURL:self.url]];
-    
-    // check internet
-    reachability = [Reachability reachabilityWithHostname:@"www.google.com"];
-    reachability.unreachableBlock = ^(Reachability*reach)
-    {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"ALERT_NOINTERNET_TITLE", nil)
-                                                            message:NSLocalizedString(@"ALERT_NOINTERNET_TITLE_CONTENT", nil)
-                                                           delegate:nil 
-                                                  cancelButtonTitle:NSLocalizedString(@"ALERT_NOINTERNET_TITLE_OK", nil)
-                                                  otherButtonTitles:nil];
-            [alert show];
-        });
-    };
-    [reachability startNotifier];
-    
 }
 
 - (void)viewDidUnload
@@ -87,8 +71,6 @@
     [self setActionButton:nil];
     [super viewDidUnload];
     // Release any retained subviews of the main view.
-    
-    [reachability stopNotifier];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -96,10 +78,44 @@
     return YES;
 }
 
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    // check reachability
+    reachability = [Reachability reachabilityWithHostname:@"www.google.com"];
+    reachability.unreachableBlock = ^(Reachability*reach) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"ALERT_NOINTERNET_TITLE", nil)
+                                                            message:NSLocalizedString(@"ALERT_NOINTERNET_TITLE_CONTENT", nil)
+                                                           delegate:nil 
+                                                  cancelButtonTitle:NSLocalizedString(@"ALERT_NOINTERNET_TITLE_OK", nil)
+                                                  otherButtonTitles:nil];
+            [alert show];
+        });
+    };
+    [reachability startNotifier];
+}
+
+- (void)viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
+    [reachability stopNotifier];
+    reachability = nil;
+}
+
 - (void)dealloc
 {
     [self.webView setDelegate:nil];
 }
+
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+    XLog("");
+    [self.navigationController setNavigationBarHidden:YES animated:YES];
+    [self.navigationController setNavigationBarHidden:NO animated:YES];
+}
+
+
 
 
 ////////////////////////////////////////////////////////////////////////////

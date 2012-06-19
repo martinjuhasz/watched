@@ -46,7 +46,7 @@
 @synthesize trailerButton;
 @synthesize castsButton;
 @synthesize websiteButton;
-@synthesize refreshButton;
+//@synthesize refreshButton;
 @synthesize deleteButton;
 
 #define kMBackdropHeight 160.0f
@@ -183,10 +183,10 @@
     }
     
     // Refresh
-    self.refreshButton.frame = CGRectMake(13.0f, lastPostition + 30.0f, 294.0f, 25.0f);
+//    self.refreshButton.frame = CGRectMake(13.0f, lastPostition + 30.0f, 294.0f, 25.0f);
     
     // Delete Button
-    self.deleteButton.frame = CGRectMake(13.0f, self.refreshButton.bottom + 10.0f, 294.0f, 25.0f);
+    self.deleteButton.frame = CGRectMake(13.0f, lastPostition + 30.0f, 294.0f, 25.0f);
     
     [self.mainScrollView setContentSize:CGSizeMake(320.0f, self.deleteButton.bottom + 20.0f)];
 }
@@ -358,12 +358,12 @@
     [self.websiteButton setTitle:NSLocalizedString(@"BUTTON_VISIT_HOMEPAGE", nil)];
     [self.mainScrollView addSubview:self.websiteButton];
     
-    self.refreshButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    self.refreshButton.titleLabel.font = [UIFont boldSystemFontOfSize:16.0f];
-    self.refreshButton.titleLabel.adjustsFontSizeToFitWidth = NO;
-    self.refreshButton.titleColor = HEXColor(0xABADAF);
-    [self.refreshButton setTitle:NSLocalizedString(@"BUTTON_REFRESH_MOVIE", nil)];
-    [self.mainScrollView addSubview:self.refreshButton];
+//    self.refreshButton = [UIButton buttonWithType:UIButtonTypeCustom];
+//    self.refreshButton.titleLabel.font = [UIFont boldSystemFontOfSize:16.0f];
+//    self.refreshButton.titleLabel.adjustsFontSizeToFitWidth = NO;
+//    self.refreshButton.titleColor = HEXColor(0xABADAF);
+//    [self.refreshButton setTitle:NSLocalizedString(@"BUTTON_REFRESH_MOVIE", nil)];
+//    [self.mainScrollView addSubview:self.refreshButton];
     
     self.deleteButton = [UIButton buttonWithType:UIButtonTypeCustom];
     self.deleteButton.titleLabel.font = [UIFont boldSystemFontOfSize:16.0f];

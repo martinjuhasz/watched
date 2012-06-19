@@ -53,6 +53,11 @@ const int kMovieDisplayCellImageView = 200;
 {
     [super viewDidLoad];
     
+    // TODO: CHECK THIS OUT
+//    self.wantsFullScreenLayout = YES;
+//    self.navigationController.navigationBar.translucent = YES;
+//    [[UIApplication sharedApplication] setStatusBarStyle: UIStatusBarStyleBlackTranslucent];
+    
     // Add Button
     UIImage *addButtonBgImage = [[UIImage imageNamed:@"mv_addbutton.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(26, 8, 26, 8)];
     [self.addButton setBackgroundImage:addButtonBgImage forState:UIControlStateNormal];
@@ -100,6 +105,7 @@ const int kMovieDisplayCellImageView = 200;
     NSIndexPath *selectedIndexPath = [self.tableView indexPathForSelectedRow];
     [self.tableView deselectRowAtIndexPath:selectedIndexPath animated:YES];
 }
+
 
 
 

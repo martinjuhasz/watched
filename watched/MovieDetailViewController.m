@@ -26,6 +26,7 @@
 #import "SearchMovieViewController.h"
 #import "AFImageRequestOperation.h"
 #import "Reachability.h"
+#import "AFJSONRequestOperation.h"
 
 #define kImageFadeDelay 0.0f
 
@@ -65,6 +66,7 @@
     // add detail view
     self.detailView = [[MovieDetailView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, 416.0f)];
     [self.view addSubview:self.detailView];
+    
     self.detailView.ratingView.delegate = self;
     isLoadingImages = NO;
     
@@ -80,11 +82,26 @@
     [self.detailView.websiteButton addTarget:self action:@selector(websiteButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
     [self.detailView.castsButton addTarget:self action:@selector(castsButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
     [self.detailView.deleteButton addTarget:self action:@selector(deleteButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
-    [self.detailView.refreshButton addTarget:self action:@selector(refreshButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+//    [self.detailView.refreshButton addTarget:self action:@selector(refreshButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
     [self.detailView.actor1Button addTarget:self action:@selector(actorButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
     [self.detailView.actor2Button addTarget:self action:@selector(actorButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
     [self.detailView.actor3Button addTarget:self action:@selector(actorButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
-    
+}
+
+- (void)viewDidUnload
+{
+    [super viewDidUnload];
+    // Release any retained subviews of the main view.
+}
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+{
+    return (interfaceOrientation == UIInterfaceOrientationPortrait);
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
     
     // check reachability
     internetAvailable = YES;
@@ -99,16 +116,11 @@
     [reachability startNotifier];
 }
 
-- (void)viewDidUnload
+- (void)viewDidDisappear:(BOOL)animated
 {
-    [super viewDidUnload];
-    // Release any retained subviews of the main view.
+    [super viewDidDisappear:animated];
     [reachability stopNotifier];
-}
-
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{
-    return (interfaceOrientation == UIInterfaceOrientationPortrait);
+    reachability = nil;
 }
 
 
@@ -306,7 +318,7 @@
     ImageType selectedType = ((UIButton*)sender == self.detailView.posterButton) ? ImageTypePoster : ImageTypeBackdrop;
     [self.detailView toggleLoadingViewForPosterType:selectedType];
     
-    [[OnlineMovieDatabase sharedMovieDatabase] getImagesForMovie:self.movie.movieID completion:^(NSDictionary *imageDict) {
+    AFJSONRequestOperation *operation = [[OnlineMovieDatabase sharedMovieDatabase] getImagesForMovie:self.movie.movieID completion:^(NSDictionary *imageDict) {
         isLoadingImages = NO;
         [self.detailView toggleLoadingViewForPosterType:selectedType];
         if(selectedType == ImageTypePoster) {
@@ -319,6 +331,7 @@
         [self.detailView toggleLoadingViewForPosterType:selectedType];
         XLog("%@", [error localizedDescription]);
     }];
+    [operation start];
 }
 
 - (void)newRating:(DLStarRatingControl *)control :(float)newRating
@@ -436,38 +449,40 @@
     [self performSegueWithIdentifier:@"DetailWebViewSegue" sender:sender];
 }
 
-- (IBAction)refreshButtonClicked:(id)sender
-{
-    if(![self isInternetAvailable]) return;
-    self.detailView.refreshButton.enabled = NO;
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
-        
-        // Setup Core Data with extra Context for Background Process
-        OnlineDatabaseBridge *bridge = [[OnlineDatabaseBridge alloc] init];
-        NSManagedObjectContext *context = [[NSManagedObjectContext alloc] init];
-        [context setPersistentStoreCoordinator:[[MoviesDataModel sharedDataModel] persistentStoreCoordinator]];
-        Movie *movieCopy = (Movie*)[context objectWithID:movie.objectID];
-        __block NSError *error;
-        
-        [bridge updateMovieMetadata:movieCopy inContext:context completion:^(Movie *returnedMovie) {
-            [context save:&error];
-            dispatch_async(dispatch_get_main_queue(), ^{
-                self.detailView.refreshButton.enabled = YES;
-                [self setContent];
-                [self.detailView setNeedsLayout];
-            });
-        } failure:^(NSError *anError) {
-            XLog("%@", [anError localizedDescription]);
-            dispatch_async(dispatch_get_main_queue(), ^{
-                self.detailView.refreshButton.enabled = YES;
-            });
-        }];
-        
-        if(error) {
-            XLog("%@", [error localizedDescription]);
-        }
-    });
-}
+//- (IBAction)refreshButtonClicked:(id)sender
+//{
+//    if(![self isInternetAvailable]) return;
+//    self.detailView.refreshButton.enabled = NO;
+//    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+//        
+//        // Setup Core Data with extra Context for Background Process
+//        OnlineDatabaseBridge *bridge = [[OnlineDatabaseBridge alloc] init];
+//        NSManagedObjectContext *context = [[NSManagedObjectContext alloc] init];
+//        [context setPersistentStoreCoordinator:[[MoviesDataModel sharedDataModel] persistentStoreCoordinator]];
+//        Movie *movieCopy = (Movie*)[context objectWithID:movie.objectID];
+//        
+//        AFJSONRequestOperation *operation = [bridge updateMovieMetadata:movieCopy inContext:context completion:^(Movie *returnedMovie) {
+//            NSError *error;
+//            [context save:&error];
+//            if(error) {
+//                XLog("%@", [error localizedDescription]);
+//            }
+//            
+//            dispatch_async(dispatch_get_main_queue(), ^{
+//                self.detailView.refreshButton.enabled = YES;
+//                [self setContent];
+//                [self.detailView setNeedsLayout];
+//            });
+//            
+//        } failure:^(NSError *anError) {
+//            XLog("%@", [anError localizedDescription]);
+//            dispatch_async(dispatch_get_main_queue(), ^{
+//                self.detailView.refreshButton.enabled = YES;
+//            });
+//        }];
+//        [operation start];
+//    });
+//}
 
 -(IBAction)similarButtonClicked:(id)sender
 {

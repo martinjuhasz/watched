@@ -45,6 +45,7 @@
                       [NSDictionary dictionaryWithObject:NSLocalizedString(@"GMGridView", nil) forKey:@"name"],
                       [NSDictionary dictionaryWithObject:NSLocalizedString(@"TestFlight", nil) forKey:@"name"],
                       [NSDictionary dictionaryWithObject:NSLocalizedString(@"DLStarRating", nil) forKey:@"name"],
+                      [NSDictionary dictionaryWithObject:NSLocalizedString(@"Reachability", nil) forKey:@"name"],
                       nil],
                      nil];
 
@@ -66,6 +67,8 @@
 {
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
+
+
 
 ////////////////////////////////////////////////////////////////////////////
 #pragma mark -
@@ -156,6 +159,9 @@
                 break;
             case 4:
                 fileName = @"settings_dlstarrating";
+                break;
+            case 5:
+                fileName = @"settings_reachability";
                 break;
         }
         url = [NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:fileName ofType:@"html"]];

@@ -9,7 +9,9 @@
 #import <UIKit/UIKit.h>
 
 typedef enum {
-    PopupViewAnimationSlide = 1,
+    PopupViewAnimationSlideBottomTop = 1,
+    PopupViewAnimationSlideRightLeft,
+    PopupViewAnimationSlideBottomBottom,
     PopupViewAnimationFade
 } PopupViewAnimation;
 

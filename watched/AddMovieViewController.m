@@ -16,6 +16,8 @@
 #import "MoviesDataModel.h"
 #import "Movie.h"
 #import "Reachability.h"
+#import "AFJSONRequestOperation.h"
+
 
 @interface AddMovieViewController () <MJPopupViewControllerDelegate> {
     Reachability *reachability;
@@ -114,8 +116,12 @@
 
 - (void)viewDidDisappear:(BOOL)animated
 {
+    [super viewDidDisappear:animated];
     [reachability stopNotifier];
+    reachability = nil;
 }
+
+
 
 ////////////////////////////////////////////////////////////////////////////
 #pragma mark -
@@ -131,7 +137,6 @@
 - (IBAction)saveButtonClicked:(id)sender
 {
     if(!resultDict) return;
-    XLog("");
     [self saveMovieToDatabase];
 }
 
@@ -167,7 +172,7 @@
 
 - (void)loadContent
 {
-    [[OnlineMovieDatabase sharedMovieDatabase] getMovieDetailsForMovieID:self.resultID completion:^(NSDictionary *aResultDict) {
+    AFJSONRequestOperation *operation = [[OnlineMovieDatabase sharedMovieDatabase] getMovieDetailsForMovieID:self.resultID completion:^(NSDictionary *aResultDict) {
         resultDict = aResultDict;
         
         [self setOverviewContent:[resultDict objectForKeyOrNil:@"overview"]];
@@ -188,6 +193,7 @@
         XLog(@"%@", [error localizedDescription]);
         [self showInfoContentWithText:NSLocalizedString(@"POPUP_FAILED", nil)];
     }];
+    [operation start];
 }
 
 - (void)checkButtonStates
@@ -250,9 +256,13 @@
 - (void)showInfoContentWithText:(NSString*)aText
 {
     self.infoLabel.text = aText;
-    [self.infoView setAlpha:1.0f];
-    [self.loadingView setAlpha:0.0f];
-    [self.displayView setAlpha:0.0f];
+    [self.view bringSubviewToFront:self.infoLabel];
+    [UIView animateWithDuration:0.3f animations:^{
+        [self.infoView setAlpha:1.0f];
+    } completion:^(BOOL finished) {
+        [self.loadingView setAlpha:0.0f];
+        [self.displayView setAlpha:0.0f];
+    }];
 }
 
 
@@ -271,6 +281,13 @@
         isAdding = NO;
         self.movie = aMovie;
         [self checkButtonStates];
+        
+        // show info and close window
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self showInfoContentWithText:NSLocalizedString(@"POPUP_SUCCESS_ADDED", nil)];
+            [self performSelector:@selector(cancelButtonClicked:) withObject:self afterDelay:1.5f];
+        });
+        
     } failure:^(NSError *error) {
         XLog(@"%@", [error localizedDescription]);
         isAdding = NO;

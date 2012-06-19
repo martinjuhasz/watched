@@ -40,13 +40,20 @@
     
     self.gridView = [[GMGridView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, 416.0f)];
     self.gridView.backgroundColor = [UIColor clearColor];
-    self.gridView.style = GMGridViewStyleSwap;
+    self.gridView.style = GMGridViewStylePush;
     self.gridView.itemSpacing = 10.0f;
     self.gridView.minEdgeInsets = UIEdgeInsetsMake(10.0f, 10.0f, 10.0f, 10.0f);
-    self.gridView.centerGrid = YES;
+    self.gridView.centerGrid = NO;
+    self.gridView.alwaysBounceVertical = YES;
     self.gridView.actionDelegate = self;
     self.gridView.dataSource = self;
     [self.view addSubview:self.gridView];
+    
+    if(self.imageType == ImageTypePoster) {
+        self.title = NSLocalizedString(@"THUMBNAILVIEW_TITLE_POSTER", nil);
+    } else {
+        self.title = NSLocalizedString(@"THUMBNAILVIEW_TITLE_BACKDROP", nil);
+    }
 
 }
 
