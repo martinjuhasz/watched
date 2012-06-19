@@ -1,6 +1,7 @@
 #import "_Movie.h"
 
 @class Trailer;
+@class Crew;
 
 @interface Movie : _Movie {}
 
@@ -12,6 +13,7 @@
 @property (readonly, nonatomic) Trailer *bestTrailer;
 @property (readonly, nonatomic) NSArray *sortedCasts;
 @property (readonly, nonatomic) NSArray *sortedCrews;
+@property (readonly, nonatomic) Crew *director;
 
 + (Movie *)movieWithServerId:(NSInteger)serverId usingManagedObjectContext:(NSManagedObjectContext *)moc;
 - (void)updateAttributes:(NSDictionary *)attributes;

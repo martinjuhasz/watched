@@ -27,6 +27,7 @@
 @synthesize posterButton;
 @synthesize titleLabel;
 @synthesize watchedSwitch;
+@synthesize directorLabel;
 @synthesize releaseDateLabel;
 @synthesize runtimeLabel;
 @synthesize actor1ImageView;
@@ -83,8 +84,6 @@
 #pragma mark -
 #pragma mark Content Management
 
-// TODO: only layout needed
-
 - (void)firstLayout
 {
     self.backdropImageView.frame = CGRectMake(-30.0f, 0.0f, 380.0f, kMBackdropHeight);
@@ -102,6 +101,7 @@
     
     self.ratingView.frame = CGRectMake(0.0f, 278.0f, 320.0f, 56.0f);
     
+    self.directorLabel.frame = CGRectMake(13.0f, 355.0f, 145.0f, 25.0f);
     self.releaseDateLabel.frame = CGRectMake(13.0f, 385.0f, 145.0f, 25.0f);
     self.runtimeLabel.frame = CGRectMake(162.0f, 385.0f, 145.0f, 25.0f);
     
@@ -242,6 +242,14 @@
     
     self.ratingView =[[DLStarRatingControl alloc] initWithFrame:CGRectZero andStars:5 isFractional:NO]; 
     [self.mainScrollView addSubview:self.ratingView];
+    
+    self.directorLabel = [[UILabel alloc] init];
+    [self setDefaultStylesForLabels:self.directorLabel];
+    self.directorLabel.font = [UIFont systemFontOfSize:14.0f];
+    self.directorLabel.adjustsFontSizeToFitWidth = NO;
+    self.directorLabel.textColor = HEXColor(0xFFFFFF);
+    self.directorLabel.textAlignment = UITextAlignmentRight;
+    [self.mainScrollView addSubview:self.directorLabel];
     
     self.releaseDateLabel = [[UILabel alloc] init];
     [self setDefaultStylesForLabels:self.releaseDateLabel];

@@ -25,6 +25,7 @@
 @property (strong, nonatomic) UIButton *posterButton;
 @property (strong, nonatomic) UILabel *titleLabel;
 @property (strong, nonatomic) UISwitch *watchedSwitch;
+@property (strong, nonatomic) UILabel *directorLabel;
 @property (strong, nonatomic) UILabel *releaseDateLabel;
 @property (strong, nonatomic) UILabel *runtimeLabel;
 @property (strong, nonatomic) UIImageView *actor1ImageView;

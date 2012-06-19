@@ -12,6 +12,7 @@
 
 @property (nonatomic, strong) NSArray *settings;
 @property (nonatomic, strong) NSNumber *movieCount;
+@property (nonatomic, strong) NSNumber *movieVotedCount;
 @property (nonatomic, strong) NSNumber *averageRating;
 
 - (IBAction)doneButtonClicked:(id)sender;

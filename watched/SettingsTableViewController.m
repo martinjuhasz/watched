@@ -23,6 +23,7 @@
 
 @synthesize settings;
 @synthesize movieCount;
+@synthesize movieVotedCount;
 @synthesize averageRating;
 
 ////////////////////////////////////////////////////////////////////////////
@@ -127,7 +128,7 @@
     aCell.selectionStyle = UITableViewCellSelectionStyleNone;
     if(indexPath.row == 0)
     {
-        aCell.detailTextLabel.text = [NSString stringWithFormat:@"%i", [movieCount intValue]];
+        aCell.detailTextLabel.text = [NSString stringWithFormat:@"%i / %i", [movieVotedCount intValue], [movieCount intValue]];
     }
     else if(indexPath.row == 1)
     {
@@ -253,18 +254,21 @@
     NSEntityDescription *entity = [NSEntityDescription entityForName:[Movie entityName] inManagedObjectContext:managedObjectContext];
     [movieRequest setEntity:entity];
     NSDictionary *entityProperties = [entity propertiesByName];
-    NSPredicate *ratingPredicate = [NSPredicate predicateWithFormat:@"rating > 0"];
-    [movieRequest setPredicate:ratingPredicate];
     [movieRequest setPropertiesToFetch:[NSArray arrayWithObject:[entityProperties objectForKey:@"rating"]]];
     NSArray *movies = [managedObjectContext executeFetchRequest:movieRequest error:nil];
     
+    // rated
+    NSPredicate *ratingPredicate = [NSPredicate predicateWithFormat:@"rating > 0"];
+    NSArray *ratedMovies = [movies filteredArrayUsingPredicate:ratingPredicate];
+    
     // Movie Count
     self.movieCount = [NSNumber numberWithInteger:[movies count]];
+    self.movieVotedCount = [NSNumber numberWithInteger:[ratedMovies count]];
     
     // Average Rating
     float averageValue = 0.0f;
     NSUInteger ratedMovieCount = 0;
-    for(Movie *movie in movies) {
+    for(Movie *movie in ratedMovies) {
         if([[movie rating] floatValue] > 0.0f) ratedMovieCount++;
         averageValue += [[movie rating] floatValue];
     }

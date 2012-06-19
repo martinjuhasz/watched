@@ -135,6 +135,7 @@
     self.detailView.titleLabel.text = self.movie.title;
     self.detailView.backdropImageView.image = self.movie.backdrop;
     self.detailView.posterImageView.image = self.movie.poster;
+    self.detailView.directorLabel.text = self.movie.director.name;
     self.detailView.releaseDateLabel.text = self.movie.releaseDateFormatted;
     self.detailView.runtimeLabel.text = self.movie.runtimeFormatted;
     self.detailView.overviewLabel.text = self.movie.overview;

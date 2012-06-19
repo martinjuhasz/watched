@@ -1,5 +1,6 @@
 #import "Movie.h"
 #import "Trailer.h"
+#import "Crew.h"
 #import "NSDictionary+ObjectForKeyOrNil.h"
 
 #define kBackdropFolder @"backdrops"
@@ -17,6 +18,7 @@
 @synthesize poster;
 @synthesize releaseDateFormatted;
 @synthesize runtimeFormatted;
+@synthesize director;
 
 
 
@@ -279,5 +281,17 @@
     NSArray *sortedCrewArray = [[self.crews allObjects] sortedArrayUsingDescriptors:[NSArray arrayWithObject:sortCrewDescriptor]];
     return sortedCrewArray;
 }
+
+- (Crew*)director
+{
+    // try to get a quicktime one
+    NSPredicate *dirPredicate = [NSPredicate predicateWithFormat:@"job ==[c] %@", @"Director"];
+    NSArray *directors = [[self.crews allObjects] filteredArrayUsingPredicate:dirPredicate];
+    if(directors.count > 0) {
+        return [directors objectAtIndex:0];
+    }
+    return nil;
+}
+
 
 @end
