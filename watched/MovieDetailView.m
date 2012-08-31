@@ -10,47 +10,13 @@
 #import "UILabel+Additions.h"
 #import "UIView+Additions.h"
 #import "UIButton+Additions.h"
+#import "UILabel+Additions.h"
+#import <QuartzCore/QuartzCore.h>
 
 
 @implementation MovieDetailView
 
-@synthesize trailerButtonEnabled;
-@synthesize websiteButtonEnabled;
-@synthesize castButtonEnabled;
-
-@synthesize mainScrollView;
-@synthesize imageLoadingView;
-@synthesize backdropImageView;
-@synthesize backdropBottomShadow;
-@synthesize posterImageView;
-@synthesize backdropButton;
-@synthesize posterButton;
-@synthesize titleLabel;
-@synthesize watchedSwitch;
-@synthesize directorLabel;
-@synthesize releaseDateLabel;
-@synthesize runtimeLabel;
-@synthesize actor1ImageView;
-@synthesize actor1Label;
-@synthesize actor1Button;
-@synthesize actor2ImageView;
-@synthesize actor2Label;
-@synthesize actor2Button;
-@synthesize actor3ImageView;
-@synthesize actor3Label;
-@synthesize actor3Button;
-@synthesize overviewLabel;
-@synthesize overviewTitleLabel;
-@synthesize ratingView;
-@synthesize similarButton;
-@synthesize noteButton;
-@synthesize trailerButton;
-@synthesize castsButton;
-@synthesize websiteButton;
-//@synthesize refreshButton;
-@synthesize deleteButton;
-
-#define kMBackdropHeight 160.0f
+#define kMBackdropHeight 190.0f
 #define kMBackdropScrollStop 50.0f
 
 ////////////////////////////////////////////////////////////////////////////
@@ -86,114 +52,67 @@
 
 - (void)firstLayout
 {
-    self.backdropImageView.frame = CGRectMake(-30.0f, 0.0f, 380.0f, kMBackdropHeight);
+    self.backdropImageView.frame = CGRectMake(-60.0f, 0.0f, 440.0f, kMBackdropHeight);
     self.backdropBottomShadow.frame = CGRectMake(0.0f, 0.0f, 320.0f, kMBackdropHeight);
-    self.posterImageView.frame = CGRectMake(9.0f, 93.0f, 89.0f, 126.0f);
-    self.backdropButton.frame = CGRectMake(0.0f, 0.0f, 320.0f, kMBackdropHeight);
-    self.posterButton.frame = CGRectMake(9.0f, 93.0f, 89.0f, 126.0f);
-    
-    self.titleLabel.frame = CGRectMake(110.0f, 170.0f, 206.0f, 46.0f);
-    
-    CGRect switchFrame = CGRectZero;
-    switchFrame.origin.x = 110.0f;
-    switchFrame.origin.y = 235.0f;
-    self.watchedSwitch.frame = switchFrame;
-    
-    self.ratingView.frame = CGRectMake(0.0f, 278.0f, 320.0f, 56.0f);
-    
-    self.directorLabel.frame = CGRectMake(13.0f, 355.0f, 145.0f, 25.0f);
-    self.releaseDateLabel.frame = CGRectMake(13.0f, 385.0f, 145.0f, 25.0f);
-    self.runtimeLabel.frame = CGRectMake(162.0f, 385.0f, 145.0f, 25.0f);
-    
+    self.posterImageView.frame = CGRectMake(11.0f, 136.0f, 71.0f, 99.0f);
+    self.backdropButton.frame = CGRectMake(0.0f, 0.0f, 320.0f, 120.0f);
+    self.posterButton.frame = CGRectMake(11.0f, 136.0f, 71.0f, 99.0f);
+    self.watchedControl.frame = CGRectMake(101.0f, 207.0f, 209.0f, 30.0f);
+    self.ratingView.frame = CGRectMake(0.0f, 251.0f, 320.0f, 55.0f);
+    self.directorLabel.frame = CGRectMake(110.0f, 318.0f, 165.0f, 20.0f);
+    self.actor1Label.frame = CGRectMake(110.0f, 343.0f, 165.0f, 20.0f);
+    self.actor2Label.frame = CGRectMake(110.0f, 361.0f, 165.0f, 20.0f);
+    self.actor3Label.frame = CGRectMake(110.0f, 379.0f, 165.0f, 20.0f);
+    self.actor4Label.frame = CGRectMake(110.0f, 397.0f, 165.0f, 20.0f);
 }
 
 - (void)layoutSubviews
 {
     [super layoutSubviews];
-    [self.titleLabel sizeToFitWithMaximumNumberOfLines:3];
-    CGFloat lastPostition = 445.0f;
+    [self.titleLabel sizeToFitWithWith:165.0f andMaximumNumberOfLines:2];
+    self.titleLabel.frame = CGRectMake(101.0f, 137.0f, 165.0f, self.titleLabel.frame.size.height);
+    self.yearLabel.frame = CGRectMake(101.0f, self.titleLabel.bottom + 3.0f, 165.0f, 20.0f);
+    CGFloat lastPostition = 343.0f;
     
-    if(self.castButtonEnabled) {
-        self.actor1ImageView.frame = CGRectMake(16.0f, 445.0f, 83.0f, 48.0f);
-        self.actor2ImageView.frame = CGRectMake(118.0f, 445.0f, 83.0f, 48.0f);
-        self.actor3ImageView.frame = CGRectMake(220.0f, 445.0f, 83.0f, 48.0f);
-        self.actor1Label.frame = CGRectMake(16.0f, 490, 83.0f, 25.0f);
-        self.actor2Label.frame = CGRectMake(118.0f, 490, 83.0f, 25.0f);
-        self.actor3Label.frame = CGRectMake(220.0f, 490, 83.0f, 25.0f);
-        self.actor1Button.frame = CGRectMake(16.0f, 445.0f, 83.0f, 70.0f);
-        self.actor2Button.frame = CGRectMake(118.0f, 445.0f, 83.0f, 70.0f);
-        self.actor3Button.frame = CGRectMake(220.0f, 445.0f, 83.0f, 70.0f);
-        self.actor1ImageView.alpha = 1.0f;
-        self.actor2ImageView.alpha = 1.0f;
-        self.actor3ImageView.alpha = 1.0f;
-        self.actor1Label.alpha = 1.0f;
-        self.actor2Label.alpha = 1.0f;
-        self.actor3Label.alpha = 1.0f;
-        self.actor1Button.alpha = 1.0f;
-        self.actor2Button.alpha = 1.0f;
-        self.actor3Button.alpha = 1.0f;
-        lastPostition = 530.0f;
-    } else {
-        self.actor1ImageView.alpha = 0.0f;
-        self.actor2ImageView.alpha = 0.0f;
-        self.actor3ImageView.alpha = 0.0f;
-        self.actor1Label.alpha = 0.0f;
-        self.actor2Label.alpha = 0.0f;
-        self.actor3Label.alpha = 0.0f;
-        self.actor1Button.alpha = 0.0f;
-        self.actor2Button.alpha = 0.0f;
-        self.actor3Button.alpha = 0.0f;
-    }
+    if(self.actor1Label.text) lastPostition += 20.0f;
+    if(self.actor2Label.text) lastPostition += 20.0f;
+    if(self.actor3Label.text) lastPostition += 20.0f;
+    if(self.actor4Label.text) lastPostition += 20.0f;
     
-    self.overviewTitleLabel.frame = CGRectMake(13.0f, lastPostition, 300.0f, 15.0f);
-    self.overviewLabel.frame = CGRectMake(13.0f, lastPostition + 20.0f, 294.0f, 0.0f);
+    // add extra space for time and release date
+    lastPostition += 47.0f;
+    
+    self.movieDetailsBackgroundView.height = lastPostition - self.movieDetailsBackgroundView.top;
+    self.releaseDateButton.frame = CGRectMake(165.0f, lastPostition - 40.0f, 145.0f, 25.0f);
+    self.runtimeButton.frame = CGRectMake(10.0f, lastPostition - 40.0f, 145.0f, 25.0f);
+    self.runtimeTitleLabel.frame = CGRectMake(20.0f, lastPostition - 41.0f, 145.0f, 25.0f);
+    self.releaseDateTitleLabel.frame = CGRectMake(175.0f, lastPostition - 41.0f, 145.0f, 25.0f);
+    
+    self.overviewTitleLabel.frame = CGRectMake(10.0f, lastPostition + 12.0f, 300.0f, 15.0f);
+    self.overviewLabel.frame = CGRectMake(10.0f, lastPostition + 32.0f, 294.0f, 0.0f);
     [self.overviewLabel sizeToFit];
+    self.overviewBackgroundView.frame = CGRectMake(0.0f, lastPostition, 320.0f, self.overviewLabel.bottom - lastPostition + 16.0f);
+    
+    self.overviewBottomDividerView.frame = CGRectMake(0.0f, self.overviewBackgroundView.bottom, 320.0f, 10.0f);
+    self.overviewBottomDividerDropshadowView.frame = CGRectMake(0.0f, self.overviewBottomDividerView.bottom, 320.0f, 3.0f);
+    self.metaTableView.frame = CGRectMake(0.0f, self.overviewBottomDividerDropshadowView.top, 320.0f, 181.0f);
+    
+    self.bottomBackgroundView.frame = CGRectMake(0.0f, self.metaTableView.bottom, 320.0f, 62.0f);
     
     // Note Button
-    self.noteButton.frame = CGRectMake(13.0f, self.overviewLabel.bottom + 30.0f, 294.0f, 25.0f);
+    self.noteButton.frame = CGRectMake(165.0f, self.bottomBackgroundView.top + 11.0f, 145.0f, 30.0f);
     
-    self.similarButton.frame = CGRectMake(13.0f, self.noteButton.bottom + 10.0f, 294.0f, 25.0f);
-    lastPostition = self.similarButton.bottom + 20.0f;
+    self.similarButton.frame = CGRectMake(10.0f, self.bottomBackgroundView.top + 11.0f, 145.0f, 30.0f);
+    lastPostition = self.similarButton.bottom + 30.0f;
+
+    self.deleteButton.frame = CGRectMake(13.0f, lastPostition, 294.0f, 25.0f);
     
-    // Trailer Button
-    if(self.trailerButtonEnabled) {
-        self.trailerButton.frame = CGRectMake(13.0f, lastPostition + 10.0f, 294.0f, 25.0f);
-        self.trailerButton.alpha = 1.0f;
-        lastPostition = self.trailerButton.bottom;
-    } else {
-        self.trailerButton.alpha = 0.0f;
-    }
-    
-    // Casts Button
-    if(self.castButtonEnabled) {
-        self.castsButton.frame = CGRectMake(13.0f, lastPostition + 10.0f, 294.0f, 25.0f);
-        self.castsButton.alpha = 1.0f;
-        lastPostition = self.castsButton.bottom;
-    } else {
-        self.castsButton.alpha = 0.0f;
-    }
-    
-    // Website Button
-    if(self.websiteButtonEnabled) {
-        self.websiteButton.frame = CGRectMake(13.0f, lastPostition + 10.0f, 294.0f, 25.0f);
-        self.websiteButton.alpha = 1.0f;
-        lastPostition = self.websiteButton.bottom;
-    } else {
-        self.websiteButton.alpha = 0.0f;
-    }
-    
-    // Refresh
-//    self.refreshButton.frame = CGRectMake(13.0f, lastPostition + 30.0f, 294.0f, 25.0f);
-    
-    // Delete Button
-    self.deleteButton.frame = CGRectMake(13.0f, lastPostition + 30.0f, 294.0f, 25.0f);
-    
-    [self.mainScrollView setContentSize:CGSizeMake(320.0f, self.deleteButton.bottom + 20.0f)];
+    [self.mainScrollView setContentSize:CGSizeMake(320.0f, self.deleteButton.bottom + 10.0f)];
 }
 
 - (void)setupContent
 {
-    self.backgroundColor = HEXColor(0x2f2f2f);
+    self.backgroundColor = HEXColor(DEFAULT_COLOR_BG);
     
     self.mainScrollView = [[UIScrollView alloc] initWithFrame:self.frame];
     self.mainScrollView.delegate = self;
@@ -209,13 +128,17 @@
     self.backdropBottomShadow.clipsToBounds = YES;
     [self.mainScrollView addSubview:self.backdropBottomShadow];
     
+    self.backdropButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [self.mainScrollView addSubview:self.backdropButton];
+    
+    UIImageView *titleOverlayImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"dv_title-overlay.png"]];
+    titleOverlayImageView.frame = CGRectMake(0.0f, 119.0f, 320.0f, 132.0f);
+    [self.mainScrollView addSubview:titleOverlayImageView];
+    
     self.posterImageView = [[UIImageView alloc] init];
     self.posterImageView.contentMode = UIViewContentModeScaleAspectFill;
     self.posterImageView.clipsToBounds = YES;
     [self.mainScrollView addSubview:self.posterImageView];
-    
-    self.backdropButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [self.mainScrollView addSubview:self.backdropButton];
     
     self.posterButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [self.mainScrollView addSubview:self.posterButton];
@@ -230,106 +153,154 @@
     [activityIndicator startAnimating];
     [self.imageLoadingView addSubview:activityIndicator];
     
+    // cover
+    UIImageView *posterCover = [[UIImageView alloc] initWithFrame:CGRectMake(9.0f, 134.0f, 75.0f, 103.0f)];
+    posterCover.image = [UIImage imageNamed:@"dv_cover-overlay.png"];
+    posterCover.contentMode = UIViewContentModeScaleAspectFill;
+    posterCover.clipsToBounds = YES;
+    [self.mainScrollView addSubview:posterCover];
+    
     self.titleLabel = [[UILabel alloc] init];
     [self setDefaultStylesForLabels:self.titleLabel];
-    self.titleLabel.font = [UIFont boldSystemFontOfSize:18.0f];
+    self.titleLabel.font = [UIFont boldSystemFontOfSize:17.0f];
     self.titleLabel.adjustsFontSizeToFitWidth = NO;
-    self.titleLabel.textColor = HEXColor(0xFFFFFF);
+    self.titleLabel.textColor = HEXColor(0x000000);
+    self.titleLabel.shadowColor = [UIColor colorWithRed:255.0f green:255.0f blue:255.0f alpha:0.33f];
+    self.titleLabel.shadowOffset = CGSizeMake(0.0f, 1.0f);
     [self.mainScrollView addSubview:self.titleLabel];
     
-    self.watchedSwitch = [[UISwitch alloc] init];
-    [self.mainScrollView addSubview:self.watchedSwitch];
+    self.yearLabel = [[UILabel alloc] init];
+    [self setDefaultStylesForLabels:self.yearLabel];
+    self.yearLabel.font = [UIFont systemFontOfSize:14.0f];
+    self.yearLabel.adjustsFontSizeToFitWidth = NO;
+    self.yearLabel.textColor = HEXColor(0x919191);
+    self.yearLabel.shadowColor = [UIColor colorWithRed:255.0f green:255.0f blue:255.0f alpha:0.33f];
+    self.yearLabel.shadowOffset = CGSizeMake(0.0f, 1.0f);
+    [self.mainScrollView addSubview:self.yearLabel];
     
-    self.ratingView =[[DLStarRatingControl alloc] initWithFrame:CGRectZero andStars:5 isFractional:NO]; 
+    UIView *divider = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 306.0f, 320.0f, 1.0f)];
+    divider.backgroundColor = [UIColor blackColor];
+    [self.mainScrollView addSubview:divider];
+    
+    self.movieDetailsBackgroundView = [[MJGradientView alloc] initWithFrame:CGRectMake(0.0f, 307.0f, 320.0f, 100.0f)];
+    self.movieDetailsBackgroundView.startColor = HEXColor(0x5A5A5A);
+    self.movieDetailsBackgroundView.stopColor = HEXColor(0x464646);
+    self.movieDetailsBackgroundView.topColor = HEXColor(0x757575);
+    self.movieDetailsBackgroundView.bottomColor = HEXColor(0x000000);
+    [self.mainScrollView addSubview:self.movieDetailsBackgroundView];
+    
+    UILabel *directorTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(10.0f, 318.0f, 165.0f, 20.0f)];
+    directorTitleLabel.text = [ NSLocalizedString(@"DETAIL_DIRECTOR_TITLE", nil) uppercaseString];
+    [self setDefaultStylesForLabels:directorTitleLabel];
+    directorTitleLabel.font = [UIFont fontWithName:@"HelveticaNeue-Bold" size:10.0f];
+    directorTitleLabel.adjustsFontSizeToFitWidth = NO;
+    directorTitleLabel.textColor = HEXColor(0xFFFFFF);
+    directorTitleLabel.shadowColor = [UIColor colorWithRed:0.0f green:0.0f blue:0.0f alpha:0.8f];
+    directorTitleLabel.shadowOffset = CGSizeMake(0.0f, 1.0f);
+    [self.mainScrollView addSubview:directorTitleLabel];
+    
+    UILabel *starringTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(10.0f, 343.0f, 165.0f, 20.0f)];
+    starringTitleLabel.text = [NSLocalizedString(@"DETAIL_STARRING_TITLE", nil) uppercaseString];
+    [self setDefaultStylesForLabels:starringTitleLabel];
+    starringTitleLabel.font = [UIFont fontWithName:@"HelveticaNeue-Bold" size:10.0f];
+    starringTitleLabel.adjustsFontSizeToFitWidth = NO;
+    starringTitleLabel.textColor = HEXColor(0xFFFFFF);
+    starringTitleLabel.shadowColor = [UIColor colorWithRed:0.0f green:0.0f blue:0.0f alpha:0.8f];
+    starringTitleLabel.shadowOffset = CGSizeMake(0.0f, 1.0f);
+    [self.mainScrollView addSubview:starringTitleLabel];
+    
+    self.watchedControl = [[UISegmentedControl alloc] initWithItems:[NSArray arrayWithObjects:
+                                                                     NSLocalizedString(@"DV_CONTROL_WATCHED", nil),
+                                                                     NSLocalizedString(@"DV_CONTROL_UNWATCHED", nil), nil]];
+    
+    UIImage *segmentedControlBgImage = [[UIImage imageNamed:@"dv_watched.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 4, 0, 4)];
+    UIImage *segmentedControlBgImageActive = [[UIImage imageNamed:@"dv_watched-highlighted.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 14, 0, 14)];
+    UIImage *segmentedDividerNN = [UIImage imageNamed:@"dv_watched-dv-nn.png"];
+    UIImage *segmentedDividerAN = [UIImage imageNamed:@"dv_watched-dv-an.png"];
+    UIImage *segmentedDividerNA = [UIImage imageNamed:@"dv_watched-dv-na.png"];
+    
+    
+    [self.watchedControl setBackgroundImage:segmentedControlBgImage forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
+    [self.watchedControl setBackgroundImage:segmentedControlBgImageActive forState:UIControlStateSelected barMetrics:UIBarMetricsDefault];
+    [self.watchedControl setDividerImage:segmentedDividerNN forLeftSegmentState:UIControlStateNormal rightSegmentState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
+    [self.watchedControl setDividerImage:segmentedDividerAN forLeftSegmentState:UIControlStateSelected rightSegmentState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
+    [self.watchedControl setDividerImage:segmentedDividerNA forLeftSegmentState:UIControlStateNormal rightSegmentState:UIControlStateSelected barMetrics:UIBarMetricsDefault];
+    
+    [self.mainScrollView addSubview:self.watchedControl];
+    
+    self.ratingView =[[DLStarRatingControl alloc] initWithFrame:CGRectMake(0.0f, 251.0f, 320.0f, 55.0f) andStars:5 isFractional:NO];
+    self.ratingView.star = [UIImage imageNamed:@"dv_star.png"];
+    self.ratingView.highlightedStar = [UIImage imageNamed:@"dv_star-highlighted.png"];
+    self.ratingView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"dv_bg_rating.png"]];
     [self.mainScrollView addSubview:self.ratingView];
     
+    
+    self.metaTableView = [[UITableView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, 181.0f) style:UITableViewStyleGrouped];
+    self.metaTableView.scrollEnabled = NO;
+    self.metaTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    self.metaTableView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"g_bg-grp_table.png"]];
+    self.metaTableView.contentInset = UIEdgeInsetsMake(15.0f, 0.0f, 15.0f, 0.0f);
+    [self.mainScrollView addSubview:self.metaTableView];
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+     
     self.directorLabel = [[UILabel alloc] init];
     [self setDefaultStylesForLabels:self.directorLabel];
-    self.directorLabel.font = [UIFont systemFontOfSize:14.0f];
+    self.directorLabel.font = [UIFont fontWithName:@"HelveticaNeue-Bold" size:12.0f];
     self.directorLabel.adjustsFontSizeToFitWidth = NO;
-    self.directorLabel.textColor = HEXColor(0xFFFFFF);
-    self.directorLabel.textAlignment = UITextAlignmentRight;
+    self.directorLabel.textColor = HEXColor(0xD1D1D1);
+    self.directorLabel.shadowColor = [UIColor colorWithRed:0.0f green:0.0f blue:0.0f alpha:0.8f];
+    self.directorLabel.shadowOffset = CGSizeMake(0.0f, 1.0f);
     [self.mainScrollView addSubview:self.directorLabel];
+
+    UIImage *metaBackground = [[UIImage imageNamed:@"dv_bg-meta.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(8, 8, 8, 8)];
+
+    self.releaseDateButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    self.releaseDateButton.titleLabel.font = [UIFont fontWithName:@"HelveticaNeue-Bold" size:10.0f];
+    self.releaseDateButton.titleLabel.adjustsFontSizeToFitWidth = NO;
+    [self.releaseDateButton setTitleColor:HEXColor(0xD1D1D1)];
+    self.releaseDateButton.contentHorizontalAlignment = UITextAlignmentRight;
+    self.releaseDateButton.titleEdgeInsets = UIEdgeInsetsMake(0.0f, 10.0f, 0.0f, 10.0f);
+    [self.releaseDateButton setBackgroundImage:metaBackground];
+    [self.mainScrollView addSubview:self.releaseDateButton];
     
-    self.releaseDateLabel = [[UILabel alloc] init];
-    [self setDefaultStylesForLabels:self.releaseDateLabel];
-    self.releaseDateLabel.font = [UIFont systemFontOfSize:14.0f];
-    self.releaseDateLabel.adjustsFontSizeToFitWidth = NO;
-    self.releaseDateLabel.textColor = HEXColor(0xFFFFFF);
-    self.releaseDateLabel.textAlignment = UITextAlignmentRight;
-    [self.mainScrollView addSubview:self.releaseDateLabel];
-    
-    self.runtimeLabel = [[UILabel alloc] init];
-    [self setDefaultStylesForLabels:self.runtimeLabel];
-    self.runtimeLabel.font = [UIFont systemFontOfSize:14.0f];
-    self.runtimeLabel.adjustsFontSizeToFitWidth = NO;
-    self.runtimeLabel.textColor = HEXColor(0xFFFFFF);
-    self.runtimeLabel.textAlignment = UITextAlignmentRight;
-    [self.mainScrollView addSubview:self.runtimeLabel];
-    
-    
-    // Actors
-    
-    self.actor1ImageView = [[UIImageView alloc] init];
-    self.actor1ImageView.contentMode = UIViewContentModeScaleAspectFill;
-    self.actor1ImageView.clipsToBounds = YES;
-    [self.mainScrollView addSubview:self.actor1ImageView];
-    
-    self.actor1Label = [[UILabel alloc] init];
-    [self setDefaultStylesForLabels:self.actor1Label];
-    self.actor1Label.font = [UIFont systemFontOfSize:12.0f];
-    self.actor1Label.adjustsFontSizeToFitWidth = NO;
-    self.actor1Label.textColor = HEXColor(0xFFFFFF);
-    [self.mainScrollView addSubview:self.actor1Label];
-    
-    self.actor1Button = [UIButton buttonWithType:UIButtonTypeCustom];
-    [self.mainScrollView addSubview:self.actor1Button];
-    
-    self.actor2ImageView = [[UIImageView alloc] init];
-    self.actor2ImageView.contentMode = UIViewContentModeScaleAspectFill;
-    self.actor2ImageView.clipsToBounds = YES;
-    [self.mainScrollView addSubview:self.actor2ImageView];
-    
-    self.actor2Label = [[UILabel alloc] init];
-    [self setDefaultStylesForLabels:self.actor2Label];
-    self.actor2Label.font = [UIFont systemFontOfSize:12.0f];
-    self.actor2Label.adjustsFontSizeToFitWidth = NO;
-    self.actor2Label.textColor = HEXColor(0xFFFFFF);
-    [self.mainScrollView addSubview:self.actor2Label];
-    
-    self.actor2Button = [UIButton buttonWithType:UIButtonTypeCustom];
-    [self.mainScrollView addSubview:self.actor2Button];
-    
-    self.actor3ImageView = [[UIImageView alloc] init];
-    self.actor3ImageView.contentMode = UIViewContentModeScaleAspectFill;
-    self.actor3ImageView.clipsToBounds = YES;
-    [self.mainScrollView addSubview:self.actor3ImageView];
-    
-    self.actor3Label = [[UILabel alloc] init];
-    [self setDefaultStylesForLabels:self.actor3Label];
-    self.actor3Label.font = [UIFont systemFontOfSize:12.0f];
-    self.actor3Label.adjustsFontSizeToFitWidth = NO;
-    self.actor3Label.textColor = HEXColor(0xFFFFFF);
-    [self.mainScrollView addSubview:self.actor3Label];
-    
-    self.actor3Button = [UIButton buttonWithType:UIButtonTypeCustom];
-    [self.mainScrollView addSubview:self.actor3Button];
-    
-    
-    
-    self.overviewTitleLabel = [[UILabel alloc] initWithFrame:CGRectZero];
-    self.overviewTitleLabel.text = NSLocalizedString(@"DETAIL_DESCRIPTION_TITLE", nil);
-    [self setDefaultStylesForLabels:self.overviewTitleLabel];
-    self.overviewTitleLabel.adjustsFontSizeToFitWidth = NO;
-    self.overviewTitleLabel.textColor = HEXColor(0xFFFFFF);
-    [self.mainScrollView addSubview:self.overviewTitleLabel];
-    
-    self.overviewLabel = [[UILabel alloc] init];
-    [self setDefaultStylesForLabels:self.overviewLabel];
-    self.overviewLabel.font = [UIFont systemFontOfSize:14.0f];
-    self.overviewLabel.adjustsFontSizeToFitWidth = NO;
-    self.overviewLabel.textColor = HEXColor(0xFFFFFF);
-    [self.mainScrollView addSubview:self.overviewLabel];
+    self.runtimeButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    self.runtimeButton.titleLabel.font = [UIFont fontWithName:@"HelveticaNeue-Bold" size:10.0f];
+    self.runtimeButton.titleLabel.adjustsFontSizeToFitWidth = NO;
+    [self.runtimeButton setTitleColor:HEXColor(0xD1D1D1)];
+    self.runtimeButton.contentHorizontalAlignment = UITextAlignmentRight;
+    self.runtimeButton.titleEdgeInsets = UIEdgeInsetsMake(0.0f, 10.0f, 0.0f, 10.0f);
+    [self.runtimeButton setBackgroundImage:metaBackground];
+    [self.mainScrollView addSubview:self.runtimeButton];
+
+    self.releaseDateTitleLabel = [[UILabel alloc] init];
+    [self setDefaultStylesForLabels:self.releaseDateTitleLabel];
+    self.releaseDateTitleLabel.font = [UIFont fontWithName:@"HelveticaNeue-Bold" size:10.0f];
+    self.releaseDateTitleLabel.adjustsFontSizeToFitWidth = NO;
+    self.releaseDateTitleLabel.textColor = HEXColor(0xFFFFFF);
+    self.releaseDateTitleLabel.shadowColor = [UIColor colorWithRed:0.0f green:0.0f blue:0.0f alpha:0.8f];
+    self.releaseDateTitleLabel.shadowOffset = CGSizeMake(0.0f, 1.0f);
+    self.releaseDateTitleLabel.text = [NSLocalizedString(@"DETAIL_RELEASEDATE_TITLE", nil) uppercaseString];
+    [self.mainScrollView addSubview:self.releaseDateTitleLabel];
+
+    self.runtimeTitleLabel = [[UILabel alloc] init];
+    [self setDefaultStylesForLabels:self.runtimeTitleLabel];
+    self.runtimeTitleLabel.font = [UIFont fontWithName:@"HelveticaNeue-Bold" size:10.0f];
+    self.runtimeTitleLabel.adjustsFontSizeToFitWidth = NO;
+    self.runtimeTitleLabel.textColor = HEXColor(0xFFFFFF);
+    self.runtimeTitleLabel.shadowColor = [UIColor colorWithRed:0.0f green:0.0f blue:0.0f alpha:0.8f];
+    self.runtimeTitleLabel.shadowOffset = CGSizeMake(0.0f, 1.0f);
+    self.runtimeTitleLabel.text = [NSLocalizedString(@"DETAIL_RUNTIME_TITLE", nil) uppercaseString];
+    [self.mainScrollView addSubview:self.runtimeTitleLabel];
     
     self.similarButton = [UIButton buttonWithType:UIButtonTypeCustom];
     self.similarButton.titleLabel.font = [UIFont boldSystemFontOfSize:16.0f];
@@ -338,46 +309,129 @@
     [self.similarButton setTitle:NSLocalizedString(@"BUTTON_SIMILAR", nil)];
     [self.mainScrollView addSubview:self.similarButton];
     
+    
+    
+
+    
+    self.actor1Label = [[UILabel alloc] init];
+    self.actor1Label.backgroundColor = [UIColor clearColor];
+    self.actor1Label.font = [UIFont fontWithName:@"HelveticaNeue-Bold" size:12.0f];
+    self.actor1Label.adjustsFontSizeToFitWidth = NO;
+    self.actor1Label.textColor = HEXColor(0xD1D1D1);
+    self.actor1Label.shadowColor = [UIColor colorWithRed:0.0f green:0.0f blue:0.0f alpha:0.8f];
+    self.actor1Label.shadowOffset = CGSizeMake(0.0f, 1.0f);
+    [self.mainScrollView addSubview:self.actor1Label];
+    
+    self.actor2Label = [[UILabel alloc] init];
+    self.actor2Label.backgroundColor = [UIColor clearColor];
+    self.actor2Label.font = [UIFont fontWithName:@"HelveticaNeue-Bold" size:12.0f];
+    self.actor2Label.adjustsFontSizeToFitWidth = NO;
+    self.actor2Label.textColor = HEXColor(0xD1D1D1);
+    self.actor2Label.shadowColor = [UIColor colorWithRed:0.0f green:0.0f blue:0.0f alpha:0.8f];
+    self.actor2Label.shadowOffset = CGSizeMake(0.0f, 1.0f);
+    [self.mainScrollView addSubview:self.actor2Label];
+    
+    self.actor3Label = [[UILabel alloc] init];
+    self.actor3Label.backgroundColor = [UIColor clearColor];
+    self.actor3Label.font = [UIFont fontWithName:@"HelveticaNeue-Bold" size:12.0f];
+    self.actor3Label.adjustsFontSizeToFitWidth = NO;
+    self.actor3Label.textColor = HEXColor(0xD1D1D1);
+    self.actor3Label.shadowColor = [UIColor colorWithRed:0.0f green:0.0f blue:0.0f alpha:0.8f];
+    self.actor3Label.shadowOffset = CGSizeMake(0.0f, 1.0f);
+    [self.mainScrollView addSubview:self.actor3Label];
+    
+    self.actor4Label = [[UILabel alloc] init];
+    self.actor4Label.backgroundColor = [UIColor clearColor];
+    self.actor4Label.font = [UIFont fontWithName:@"HelveticaNeue-Bold" size:12.0f];
+    self.actor4Label.adjustsFontSizeToFitWidth = NO;
+    self.actor4Label.textColor = HEXColor(0xD1D1D1);
+    self.actor4Label.shadowColor = [UIColor colorWithRed:0.0f green:0.0f blue:0.0f alpha:0.8f];
+    self.actor4Label.shadowOffset = CGSizeMake(0.0f, 1.0f);
+    [self.mainScrollView addSubview:self.actor4Label];
+    
+    
+    
+    
+    
+    self.overviewBackgroundView = [[MJGradientView alloc] initWithFrame:CGRectMake(0.0f, 308.0f, 320.0f, 100.0f)];
+    self.overviewBackgroundView.startColor = HEXColor(0xE6E6E6);
+    self.overviewBackgroundView.stopColor = HEXColor(0xC9C9C9);
+    self.overviewBackgroundView.topColor = HEXColor(0xFCFCFC);
+    self.overviewBackgroundView.bottomColor = HEXColor(0x1F1F1F);
+    [self.mainScrollView addSubview:self.overviewBackgroundView];
+    
+    self.overviewTitleLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+    self.overviewTitleLabel.text = [NSLocalizedString(@"DETAIL_DESCRIPTION_TITLE", nil) uppercaseString];
+    [self setDefaultStylesForLabels:self.overviewTitleLabel];
+    self.overviewTitleLabel.font = [UIFont fontWithName:@"HelveticaNeue-Bold" size:10.0f];
+    self.overviewTitleLabel.adjustsFontSizeToFitWidth = NO;
+    self.overviewTitleLabel.textColor = HEXColor(0x000000);
+    self.overviewTitleLabel.shadowColor = [UIColor colorWithRed:255.0f green:255.0f blue:255.0f alpha:0.33f];
+    self.overviewTitleLabel.shadowOffset = CGSizeMake(0.0f, 1.0f);
+    [self.mainScrollView addSubview:self.overviewTitleLabel];
+    
+    self.overviewLabel = [[UILabel alloc] init];
+    [self setDefaultStylesForLabels:self.overviewLabel];
+    self.overviewLabel.font = [UIFont boldSystemFontOfSize:12.0f];
+    self.overviewLabel.adjustsFontSizeToFitWidth = NO;
+    self.overviewLabel.textColor = HEXColor(0x666666);
+    self.overviewLabel.shadowColor = [UIColor colorWithRed:255.0f green:255.0f blue:255.0f alpha:0.33f];
+    self.overviewLabel.shadowOffset = CGSizeMake(0.0f, 1.0f);
+    [self.mainScrollView addSubview:self.overviewLabel];
+    
+    
+    self.overviewBottomDividerView = [[MJGradientView alloc] initWithFrame:CGRectMake(0.0f, 308.0f, 320.0f, 10.0f)];
+    self.overviewBottomDividerView.startColor = HEXColor(0x949494);
+    self.overviewBottomDividerView.stopColor = HEXColor(0x828282);
+    self.overviewBottomDividerView.topColor = HEXColor(0xA7A7A7);
+    self.overviewBottomDividerView.bottomColor = HEXColor(0x2C2C2C);
+    [self.mainScrollView addSubview:self.overviewBottomDividerView];
+    
+    self.overviewBottomDividerDropshadowView = [[MJGradientView alloc] initWithFrame:CGRectMake(0.0f, 308.0f, 320.0f, 3.0f)];
+    self.overviewBottomDividerDropshadowView.startColor = [UIColor colorWithRed:0.0f green:0.0f blue:0.0f alpha:0.2f];
+    self.overviewBottomDividerDropshadowView.stopColor = [UIColor clearColor];
+    [self.mainScrollView addSubview:self.overviewBottomDividerDropshadowView];
+    
+    
+    
+    self.bottomBackgroundView = [[UIView alloc] initWithFrame:CGRectZero];
+    self.bottomBackgroundView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"dv_bg-more.png"]];
+    [self.mainScrollView addSubview:self.bottomBackgroundView];
+    
+    UIImage *moreButtonBgImage = [[UIImage imageNamed:@"dv_button-more.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(4, 4, 5, 4)];
+    UIImage *moreButtonActiveBgImage = [[UIImage imageNamed:@"dv_button-more_highlighted.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(4, 4, 5, 4)];
+    
+    self.similarButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    self.similarButton.titleLabel.font = [UIFont boldSystemFontOfSize:12.0f];
+    self.similarButton.titleLabel.adjustsFontSizeToFitWidth = NO;
+    self.similarButton.titleColor = HEXColor(0xFFFFFF);
+    self.similarButton.titleLabel.shadowColor = [UIColor colorWithRed:0.0f green:0.0f blue:0.0f alpha:0.80f];
+    self.similarButton.titleLabel.shadowOffset = CGSizeMake(0.0f, 1.0f);
+    [self.similarButton setBackgroundImage:moreButtonBgImage];
+    [self.similarButton setBackgroundImage:moreButtonActiveBgImage forState:UIControlStateHighlighted];
+    [self.similarButton setTitle:[NSLocalizedString(@"BUTTON_SIMILAR", nil) uppercaseString]];
+    [self.mainScrollView addSubview:self.similarButton];
+    
     self.noteButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    self.noteButton.titleLabel.font = [UIFont boldSystemFontOfSize:16.0f];
+    self.noteButton.titleLabel.font = [UIFont boldSystemFontOfSize:12.0f];
     self.noteButton.titleLabel.adjustsFontSizeToFitWidth = NO;
-    self.noteButton.titleColor = HEXColor(0xABADAF);
-    [self.noteButton setTitle:NSLocalizedString(@"BUTTON_ADD_NOTE", nil)];
+    self.noteButton.titleColor = HEXColor(0xFFFFFF);
+    self.noteButton.titleLabel.shadowColor = [UIColor colorWithRed:0.0f green:0.0f blue:0.0f alpha:0.80f];
+    self.noteButton.titleLabel.shadowOffset = CGSizeMake(0.0f, 1.0f);
+    [self.noteButton setBackgroundImage:moreButtonBgImage];
+    [self.noteButton setBackgroundImage:moreButtonActiveBgImage forState:UIControlStateHighlighted];
+    [self.noteButton setTitle:[NSLocalizedString(@"BUTTON_ADD_NOTE", nil) uppercaseString]];
     [self.mainScrollView addSubview:self.noteButton];
     
-    self.trailerButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    self.trailerButton.titleLabel.font = [UIFont boldSystemFontOfSize:16.0f];
-    self.trailerButton.titleLabel.adjustsFontSizeToFitWidth = NO;
-    self.trailerButton.titleColor = HEXColor(0xABADAF);
-    [self.trailerButton setTitle:NSLocalizedString(@"BUTTON_WATCH_TRAILER", nil)];
-    [self.mainScrollView addSubview:self.trailerButton];
-    
-    self.castsButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    self.castsButton.titleLabel.font = [UIFont boldSystemFontOfSize:16.0f];
-    self.castsButton.titleLabel.adjustsFontSizeToFitWidth = NO;
-    self.castsButton.titleColor = HEXColor(0xABADAF);
-    [self.castsButton setTitle:NSLocalizedString(@"BUTTON_SHOW_CAST", nil)];
-    [self.mainScrollView addSubview:self.castsButton];
-    
-    self.websiteButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    self.websiteButton.titleLabel.font = [UIFont boldSystemFontOfSize:16.0f];
-    self.websiteButton.titleLabel.adjustsFontSizeToFitWidth = NO;
-    self.websiteButton.titleColor = HEXColor(0xABADAF);
-    [self.websiteButton setTitle:NSLocalizedString(@"BUTTON_VISIT_HOMEPAGE", nil)];
-    [self.mainScrollView addSubview:self.websiteButton];
-    
-//    self.refreshButton = [UIButton buttonWithType:UIButtonTypeCustom];
-//    self.refreshButton.titleLabel.font = [UIFont boldSystemFontOfSize:16.0f];
-//    self.refreshButton.titleLabel.adjustsFontSizeToFitWidth = NO;
-//    self.refreshButton.titleColor = HEXColor(0xABADAF);
-//    [self.refreshButton setTitle:NSLocalizedString(@"BUTTON_REFRESH_MOVIE", nil)];
-//    [self.mainScrollView addSubview:self.refreshButton];
-    
     self.deleteButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    self.deleteButton.titleLabel.font = [UIFont boldSystemFontOfSize:16.0f];
+    self.deleteButton.titleLabel.font = [UIFont boldSystemFontOfSize:12.0f];
     self.deleteButton.titleLabel.adjustsFontSizeToFitWidth = NO;
-    self.deleteButton.titleColor = HEXColor(0xABADAF);
-    [self.deleteButton setTitle:NSLocalizedString(@"BUTTON_DELETE_MOVIE", nil)];
+    self.deleteButton.titleColor = HEXColor(0xFFFFFF);
+    self.deleteButton.titleLabel.shadowColor = [UIColor colorWithRed:0.0f green:0.0f blue:0.0f alpha:0.80f];
+    self.deleteButton.titleLabel.shadowOffset = CGSizeMake(0.0f, 1.0f);
+    [self.deleteButton setForegroundImage:[UIImage imageNamed:@"dv_button-delete-icon.png"]];
+    self.deleteButton.titleEdgeInsets = UIEdgeInsetsMake(0.0f, 7.0f, 0.0f, 0.0f);
+    [self.deleteButton setTitle:[NSLocalizedString(@"BUTTON_DELETE_MOVIE", nil) uppercaseString]];
     [self.mainScrollView addSubview:self.deleteButton];
     
 }
@@ -418,14 +472,19 @@
         // set em
         self.backdropBottomShadow.frame = shadowRect;
         self.backdropImageView.frame = imageViewRect;
-        self.backdropButton.frame = imageViewRect;
+//        self.backdropButton.frame = imageViewRect;
     }
 }
 
 - (void)toggleLoadingViewForPosterType:(ImageType)aImageType
 {
     UIImageView *targetView = (aImageType == ImageTypeBackdrop) ? self.backdropImageView : self.posterImageView;
-    self.imageLoadingView.frame = targetView.frame;
+    if(aImageType == ImageTypeBackdrop) {
+        self.imageLoadingView.frame = CGRectMake(0.0f, 0.0f, 320.0f, 120.0f);
+    } else {
+        self.imageLoadingView.frame = targetView.frame;
+    }
+    
 
     if(self.imageLoadingView.alpha <= 0.0f) {
         [self.mainScrollView insertSubview:self.imageLoadingView aboveSubview:targetView];

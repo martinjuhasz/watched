@@ -1,5 +1,5 @@
-PODS_ROOT = $(SRCROOT)/Pods
-HEADER_SEARCH_PATHS = "$(PODS_ROOT)/Headers" "$(PODS_ROOT)/Headers/AFNetworking" "$(PODS_ROOT)/Headers/GMGridView" "$(PODS_ROOT)/Headers/MBProgressHUD" "$(PODS_ROOT)/Headers/MJStarRating" "$(PODS_ROOT)/Headers/Reachability" "$(PODS_ROOT)/Headers/TestFlightSDK"
+PODS_ROOT = ${SRCROOT}/Pods
 ALWAYS_SEARCH_USER_PATHS = YES
-OTHER_LDFLAGS = -ObjC -all_load -framework SystemConfiguration -framework QuartzCore -framework CoreGraphics -framework SystemConfiguration -lTestFlight -lz
-LIBRARY_SEARCH_PATHS = "$(SRCROOT)/Pods/TestFlightSDK"
+OTHER_LDFLAGS = -ObjC -lTestFlight -lz -framework CoreGraphics -framework QuartzCore -framework SystemConfiguration -framework UIKit
+LIBRARY_SEARCH_PATHS = "$(PODS_ROOT)/TestFlightSDK"
+HEADER_SEARCH_PATHS = "${PODS_ROOT}/Headers" "${PODS_ROOT}/Headers/AFNetworking" "${PODS_ROOT}/Headers/GMGridView" "${PODS_ROOT}/Headers/MBProgressHUD" "${PODS_ROOT}/Headers/MJStarRating" "${PODS_ROOT}/Headers/OBGradientView" "${PODS_ROOT}/Headers/Reachability" "${PODS_ROOT}/Headers/TestFlightSDK"

@@ -11,12 +11,16 @@
 #import "MoviesDataModel.h"
 #import "MovieDetailViewController.h"
 #import "UIImageView+AFNetworking.h"
+#import "UILabel+Additions.h"
+#import "MJCustomAccessoryControl.h"
+#import "UIView+Additions.h"
 
 
 const int kMovieDisplayCellTitleLabel = 100;
 const int kMovieDisplayCellYearLabel = 101;
 const int kMovieDisplayCellImageView = 200;
 
+#define kSectionHeaderHeight 24.0f
 
 @interface MoviesTableViewController ()
 @property(nonatomic, strong) NSFetchedResultsController *fetchedResultsController;
@@ -53,16 +57,13 @@ const int kMovieDisplayCellImageView = 200;
 {
     [super viewDidLoad];
     
-    // TODO: CHECK THIS OUT
-//    self.wantsFullScreenLayout = YES;
-//    self.navigationController.navigationBar.translucent = YES;
-//    [[UIApplication sharedApplication] setStatusBarStyle: UIStatusBarStyleBlackTranslucent];
-    
     // Add Button
     UIImage *addButtonBgImage = [[UIImage imageNamed:@"mv_addbutton.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(26, 8, 26, 8)];
+    UIImage *addButtonBgImageActive = [[UIImage imageNamed:@"mv_addbutton_active.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(26, 8, 26, 8)];
     [self.addButton setBackgroundImage:addButtonBgImage forState:UIControlStateNormal];
+    [self.addButton setBackgroundImage:addButtonBgImageActive forState:UIControlStateHighlighted];
     [self.addButton setTitleColor:HEXColor(0xFFFFFF) forState:UIControlStateNormal];
-    [self.addButton setTitleShadowColor:[UIColor colorWithRed:255.0f green:255.0f blue:255.0f alpha:0.33f] forState:UIControlStateNormal];
+    [self.addButton setTitleShadowColor:[UIColor colorWithRed:0.0f green:0.0f blue:0.0f alpha:0.33f] forState:UIControlStateNormal];
     [[self.addButton titleLabel] setShadowOffset:CGSizeMake(0.0f, 1.0f)];
     self.addButtonBackgroundView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"mv_bg_add.png"]];
     [self.addButton setTitle:NSLocalizedString(@"BUTTON_ADDMOVIE_TITLE", nil) forState:UIControlStateNormal];
@@ -132,6 +133,18 @@ const int kMovieDisplayCellImageView = 200;
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     }
     
+    // appearance
+    UIView *tableCellBackgroundView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, 79.0f)];
+    tableCellBackgroundView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"g_bg-table.png"]];
+    UIView *tableCellBackgroundViewSelected = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, 79.0f)];
+    tableCellBackgroundViewSelected.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"g_bg-table_active.png"]];
+//    UIImageView *accessoryView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"g_table-accessory.png"]];
+    MJCustomAccessoryControl *accessoryView = [MJCustomAccessoryControl accessory];
+    
+    [cell setBackgroundView:tableCellBackgroundView];
+    [cell setSelectedBackgroundView:tableCellBackgroundViewSelected];
+    [cell setAccessoryView:accessoryView];
+    
     UILabel *titleLabel = (UILabel *)[cell viewWithTag:kMovieDisplayCellTitleLabel];
     UILabel *yearLabel = (UILabel *)[cell viewWithTag:kMovieDisplayCellYearLabel];
     UIImageView *coverImageView = (UIImageView *)[cell viewWithTag:kMovieDisplayCellImageView];
@@ -139,8 +152,17 @@ const int kMovieDisplayCellImageView = 200;
     
     Movie *movie = [fetchedResultsController objectAtIndexPath:indexPath];
     
+    // get year
+    NSUInteger componentFlags = NSYearCalendarUnit;
+    NSDateComponents *components = [[NSCalendar currentCalendar] components:componentFlags fromDate:movie.releaseDate];
+    NSInteger year = [components year];
+    
     titleLabel.text = movie.title;
-    yearLabel.text = [movie.releaseDate description];
+    [titleLabel sizeToFitWithWith:200.0f andMaximumNumberOfLines:2];
+    CGRect yearLabelRect = yearLabel.frame;
+    yearLabelRect.origin.y = titleLabel.bottom;
+    yearLabel.frame = yearLabelRect;
+    yearLabel.text = [NSString stringWithFormat:@"%d", year];
     coverImageView.image = movie.posterThumbnail;
     
     return cell;
@@ -154,6 +176,45 @@ const int kMovieDisplayCellImageView = 200;
     return star;
 }
 
+- (CGFloat)tableView:(UITableView *)aTableView heightForHeaderInSection:(NSInteger)section
+{
+    if ([self tableView:aTableView titleForHeaderInSection:section] != nil) {
+        return kSectionHeaderHeight-1;
+    }
+   return 0;
+}
+
+- (UIView*)tableView:(UITableView *)aTableView viewForHeaderInSection:(NSInteger)section
+{
+    NSString *sectionTitle = [self tableView:aTableView titleForHeaderInSection:section];
+    if (sectionTitle == nil) {
+        return nil;
+    }
+    
+    int rating = [sectionTitle intValue];
+    
+    UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0.0f, 320, kSectionHeaderHeight)];
+    UIView *backgroundView = [[UIView alloc] initWithFrame:CGRectMake(0, -1.0f, 320, kSectionHeaderHeight)];
+    backgroundView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"mv_sectionheader.png"]];
+    
+    if(rating > 0) {
+        UIView *starView = [[UIView alloc] initWithFrame:CGRectMake(10.0f, 5.0f, 18.0f*rating, 14.0f)];
+        [starView setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"mv_sectionheader-star.png"]]];
+        [backgroundView addSubview:starView];
+    } else {
+        UILabel *unratedLabel = [[UILabel alloc] initWithFrame:CGRectMake(10.0f, 0.0f, 320.0f, kSectionHeaderHeight-1.0f)];
+        unratedLabel.backgroundColor = [UIColor clearColor];
+        unratedLabel.textColor = [UIColor whiteColor];
+        unratedLabel.shadowColor = [UIColor colorWithRed:0.0f green:0.0f blue:0.0f alpha:0.44f];
+        unratedLabel.shadowOffset = CGSizeMake(0.0f, 1.0f);
+        unratedLabel.font = [UIFont fontWithName:@"HelveticaNeue-Bold" size:12.0f];
+        unratedLabel.text = NSLocalizedString(@"HEADER_TITLE_ZERORATING", nil);
+        [backgroundView addSubview:unratedLabel];
+    }
+    
+    [headerView addSubview:backgroundView];
+    return headerView;
+}
 
 
 
@@ -168,7 +229,7 @@ const int kMovieDisplayCellImageView = 200;
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 82.0f;
+    return 78.0f;
 }
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {

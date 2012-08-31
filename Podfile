@@ -1,11 +1,13 @@
 platform :ios
 
-dependency 'AFNetworking'
-dependency 'MBProgressHUD'
-#dependency 'DLStarRating', :podspec => 'DLStarRating.podspec'
-dependency 'MJStarRating', :podspec => 'MJStarRating.podspec'
-dependency 'TestFlightSDK'
-dependency 'GMGridView'
-dependency 'Reachability'
+pod 'AFNetworking'
+pod 'MBProgressHUD'
+#pod 'DLStarRating', :podspec => 'DLStarRating.podspec'
+pod 'MJStarRating', :podspec => 'MJStarRating.podspec'
+pod 'TestFlightSDK'
+pod 'GMGridView'
+pod 'Reachability'
+pod 'OBGradientView', :podspec => 'OBGradientView.podspec'
 
-#dependency 'MJYoutubePlayer', :podspec => 'MJYoutubePlayer.podspec'
+#pod 'iOSHierarchyViewer', :podspec => 'iOSHierarchyViewer.podspec'
+#pod 'MJYoutubePlayer', :podspec => 'MJYoutubePlayer.podspec'

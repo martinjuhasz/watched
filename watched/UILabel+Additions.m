@@ -19,4 +19,11 @@
     self.frame = CGRectMake(self.frame.origin.x, self.frame.origin.y, size.width, size.height);
 }
 
+- (void)sizeToFitWithWith:(CGFloat)width andMaximumNumberOfLines:(int)lines {
+    CGRect currentFrame = self.frame;
+    currentFrame.size.width = width;
+    self.frame = currentFrame;
+    [self sizeToFitWithMaximumNumberOfLines:lines];
+}
+
 @end

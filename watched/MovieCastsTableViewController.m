@@ -14,6 +14,8 @@
 #import "Crew.h"
 #import "WatchedWebBrowser.h"
 #import "Reachability.h"
+#import "MovieCastTableViewCell.h"
+#import "MJCustomAccessoryControl.h"
 
 @interface MovieCastsTableViewController () {
     Reachability *reachability;
@@ -47,6 +49,8 @@ const int kMovieCastCellProfileImageView = 200;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    self.title = NSLocalizedString(@"CAST_TITLE", nil);
 }
 
 - (void)viewDidUnload
@@ -83,12 +87,6 @@ const int kMovieCastCellProfileImageView = 200;
     reachability = nil;
 }
 
-- (void)dealloc
-{
-    XLog("");
-}
-
-
 
 
 ////////////////////////////////////////////////////////////////////////////
@@ -111,7 +109,7 @@ const int kMovieCastCellProfileImageView = 200;
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 82.0f;
+    return 54.0f;
 }
 
 
@@ -149,13 +147,46 @@ const int kMovieCastCellProfileImageView = 200;
     return NSLocalizedString(@"SECTION_HEADER_CREW", nil);
 }
 
-- (UITableViewCell *)castCellAtIndexPath:(NSIndexPath *)indexPath
+- (UIView *) tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+	UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, tableView.bounds.size.width, 43.0f)];
+	tableView.sectionHeaderHeight = headerView.frame.size.height;
+	UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(20.0f, 10.0f, headerView.frame.size.width - 20.0f, 22.0f)];
+	label.text = [self tableView:tableView titleForHeaderInSection:section];
+	label.font = [UIFont boldSystemFontOfSize:17.0f];
+	label.shadowOffset = CGSizeMake(0.0f, 1.0f);
+    label.textColor = [UIColor whiteColor];
+	label.shadowColor = [UIColor colorWithRed:0.0f green:0.0f blue:0.0f alpha:0.44f];
+	label.backgroundColor = [UIColor clearColor];
+    
+	[headerView addSubview:label];
+	return headerView;
+}
+
+- (CGFloat)tableView:(UITableView *)aTableView heightForHeaderInSection:(NSInteger)section
+{
+    return 43.0f;
+}
+
+- (UITableViewCell*)defaultCellAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *CellIdentifier = @"MovieCastsActorCell";
-    UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    MovieCastTableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+        cell = [[MovieCastTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     }
+    
+    MJCustomAccessoryControl *accessoryView = [MJCustomAccessoryControl accessory];
+    [cell setAccessoryView:accessoryView];
+    // Configure the cell...
+    [cell configureForTableView:self.tableView indexPath:indexPath];
+    
+    return cell;
+}
+
+- (UITableViewCell *)castCellAtIndexPath:(NSIndexPath *)indexPath
+{
+    UITableViewCell *cell = [self defaultCellAtIndexPath:indexPath];
     
     UILabel *characterLabel = (UILabel *)[cell viewWithTag:kMovieCastCellCharacterLabel];
     UILabel *nameLabel = (UILabel *)[cell viewWithTag:kMovieCastCellNameLabel];
@@ -166,18 +197,14 @@ const int kMovieCastCellProfileImageView = 200;
     characterLabel.text = [NSString stringWithFormat:NSLocalizedString(@"CAST_CHARACTER_PREFIX", nil), currentCast.character];
     nameLabel.text = currentCast.name;
     NSURL *imageURL = [[OnlineMovieDatabase sharedMovieDatabase] getImageURLForImagePath:currentCast.profilePath imageType:ImageTypeProfile nearWidth:200.0f];
-    [profileImageView setImageWithURL:imageURL];
+    [profileImageView setImageWithURL:imageURL placeholderImage:[UIImage imageNamed:@"cv_actor-placeholder.png"]];
     
     return cell;
 }
 
 - (UITableViewCell *)crewCellAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *CellIdentifier = @"MovieCastsActorCell";
-    UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-    }
+    UITableViewCell *cell = [self defaultCellAtIndexPath:indexPath];
     
     UILabel *characterLabel = (UILabel *)[cell viewWithTag:kMovieCastCellCharacterLabel];
     UILabel *nameLabel = (UILabel *)[cell viewWithTag:kMovieCastCellNameLabel];
@@ -188,7 +215,7 @@ const int kMovieCastCellProfileImageView = 200;
     characterLabel.text = currentCrew.job;
     nameLabel.text = currentCrew.name;
     NSURL *imageURL = [[OnlineMovieDatabase sharedMovieDatabase] getImageURLForImagePath:currentCrew.profilePath imageType:ImageTypeProfile nearWidth:200.0f];
-    [profileImageView setImageWithURL:imageURL];
+    [profileImageView setImageWithURL:imageURL placeholderImage:[UIImage imageNamed:@"cv_actor-placeholder.png"]];
     
     return cell;
 }

@@ -14,17 +14,14 @@
 #import "WatchedWebBrowser.h"
 #import <MessageUI/MessageUI.h>
 #import "AFJSONRequestOperation.h"
+#import "MJCustomTableViewCell.h"
+#import "MJCustomAccessoryControl.h"
 
 @interface SettingsTableViewController () <MFMailComposeViewControllerDelegate>
 
 @end
 
 @implementation SettingsTableViewController
-
-@synthesize settings;
-@synthesize movieCount;
-@synthesize movieVotedCount;
-@synthesize averageRating;
 
 ////////////////////////////////////////////////////////////////////////////
 #pragma mark -
@@ -39,10 +36,6 @@
     
     self.settings = [NSArray arrayWithObjects:
                      [NSArray arrayWithObjects:
-                      [NSDictionary dictionaryWithObject:NSLocalizedString(@"SETTINGS_MOVIECOUNT", nil) forKey:@"name"],
-                      [NSDictionary dictionaryWithObject:NSLocalizedString(@"SETTINGS_AVERAGERATING", nil) forKey:@"name"],
-                  nil],
-                     [NSArray arrayWithObjects:
                       [NSDictionary dictionaryWithObject:NSLocalizedString(@"SETTINGS_RESET", nil) forKey:@"name"],
                       [NSDictionary dictionaryWithObject:NSLocalizedString(@"SETTINGS_REFRESH", nil) forKey:@"name"],
                       nil],
@@ -52,13 +45,14 @@
                        [NSDictionary dictionaryWithObject:NSLocalizedString(@"SETTINGS_TWITTER", nil) forKey:@"name"],
                       nil],
                      [NSArray arrayWithObjects:
-                      [NSDictionary dictionaryWithObject:NSLocalizedString(@"SETTINGS_ABOUT", nil) forKey:@"name"],
-                      nil],
-                     [NSArray arrayWithObjects:
                       [NSDictionary dictionaryWithObject:@"Feedback" forKey:@"name"],
                       [NSDictionary dictionaryWithObject:@"Dummy Content" forKey:@"name"],
                       nil],
                  nil];
+    
+    
+    [self addHeaderView];
+    [self addFooterView];
     
 }
 
@@ -85,16 +79,20 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [[settings objectAtIndex:section] count];
+    return [[_settings objectAtIndex:section] count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *CellIdentifier = @"SettingsTableViewCell";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    static NSString *CellIdentifier = @"SettingsTableViewCellCustom";
+    MJCustomTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    if (cell == nil) {
+        cell = [[MJCustomTableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier];
+    }
+    [cell configureForTableView:tableView indexPath:indexPath];
     
     // Configure the cell...
-    cell.textLabel.text = [[[settings objectAtIndex:indexPath.section] objectAtIndex:indexPath.row] objectForKey:@"name"];
+    cell.textLabel.text = [[[_settings objectAtIndex:indexPath.section] objectAtIndex:indexPath.row] objectForKey:@"name"];
     [self configureCellForRowAtIndexPath:indexPath cell:cell];
     return cell;
 }
@@ -104,60 +102,59 @@
     aCell.selectionStyle = UITableViewCellSelectionStyleBlue;
     
     // Accecory Type
-    if(indexPath.section == 0 || indexPath.section == 1) {
+    if(indexPath.section == 0) {
         aCell.accessoryType = UITableViewCellAccessoryNone;
     } else {
-        aCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-    }
-    
-    if(indexPath.section == 0) {
-        [self configureCellForStatisticsAtIndexPath:indexPath cell:aCell];
-        return;
-    }
-    
-    if(indexPath.section == 3 && indexPath.row == 0) {
-        aCell.detailTextLabel.text = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
-        return;
+        MJCustomAccessoryControl *accessoryView = [MJCustomAccessoryControl accessory];
+        [aCell setAccessoryView:accessoryView];
     }
     
     aCell.detailTextLabel.text = @"";
 }
 
-- (void)configureCellForStatisticsAtIndexPath:(NSIndexPath*)indexPath cell:(UITableViewCell*)aCell
-{
-    aCell.selectionStyle = UITableViewCellSelectionStyleNone;
-    if(indexPath.row == 0)
-    {
-        aCell.detailTextLabel.text = [NSString stringWithFormat:@"%i / %i", [movieVotedCount intValue], [movieCount intValue]];
-    }
-    else if(indexPath.row == 1)
-    {
-        if([averageRating floatValue] > 0) {
-            aCell.detailTextLabel.text = [NSString stringWithFormat:@"%.1f", [averageRating floatValue]];
-        } else {
-            aCell.detailTextLabel.text = NSLocalizedString(@"SETTINGS_RATING_NONE", nil);
-        }
-    }
-}
-
 - (void)reloadStatisticCells
 {
-    [self.tableView reloadData];
-//    NSIndexPath *movieCountPath = [NSIndexPath indexPathForRow:1 inSection:0];
-//    NSIndexPath *averageRatingPath = [NSIndexPath indexPathForRow:2 inSection:0];
-//    [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObjects:movieCountPath,averageRatingPath, nil] withRowAnimation:UITableViewRowAnimationNone];
+    if([_averageRating floatValue] > 0) {
+        self.averageRatingLabel.text = [NSString stringWithFormat:@"%.1f", [_averageRating floatValue]];
+    } else {
+        self.averageRatingLabel.text = @"-";
+    }
+    self.movieCountLabel.text = [NSString stringWithFormat:@"%i / %i", [_movieVotedCount intValue], [_movieCount intValue]];
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
-    if(section == 0) return NSLocalizedString(@"SETTINGS_HEADER_STATISTICS", nil);
-    if(section == 1) return NSLocalizedString(@"SETTINGS_HEADER_SETTINGS", nil);
-    if(section == 2) return NSLocalizedString(@"SETTINGS_HEADER_CONTACT", nil);
-    if(section == 3) return nil;
-    if(section == 4) return NSLocalizedString(@"SETTINGS_HEADER_BETA", nil);
+    if(section == 0) return NSLocalizedString(@"SETTINGS_HEADER_SETTINGS", nil);
+    if(section == 1) return NSLocalizedString(@"SETTINGS_HEADER_CONTACT", nil);
+    if(section == 2) return NSLocalizedString(@"SETTINGS_HEADER_BETA", nil);
     return nil;
 }
 
+- (UIView *) tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+	UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, tableView.bounds.size.width, 43.0f)];
+	tableView.sectionHeaderHeight = headerView.frame.size.height;
+	UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(20.0f, 10.0f, headerView.frame.size.width - 20.0f, 22.0f)];
+	label.text = [self tableView:tableView titleForHeaderInSection:section];
+	label.font = [UIFont boldSystemFontOfSize:17.0f];
+	label.shadowOffset = CGSizeMake(0.0f, 1.0f);
+    label.textColor = [UIColor whiteColor];
+	label.shadowColor = [UIColor colorWithRed:0.0f green:0.0f blue:0.0f alpha:0.44f];
+	label.backgroundColor = [UIColor clearColor];
+    
+	[headerView addSubview:label];
+	return headerView;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    return 43.0f;
+}
+
+- (float)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return 43.0f;
+}
 
 
 ////////////////////////////////////////////////////////////////////////////
@@ -166,11 +163,9 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    // Statistics
-    if(indexPath.section == 0) return;
 
     // Settings
-    if(indexPath.section == 1) {
+    if(indexPath.section == 0) {
         if(indexPath.row == 0)
         {
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"SETTINGS_POP_RESET_TITLE", nil)
@@ -185,7 +180,7 @@
         [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
     }
     
-    if(indexPath.section == 2) {
+    if(indexPath.section == 1) {
         if(indexPath.row == 0) {
             // check if can send mail
             if(![MFMailComposeViewController canSendMail]) return;
@@ -210,14 +205,8 @@
         }
     }
     
-    if(indexPath.section == 3) {
-        if(indexPath.row == 0) {
-            [self performSegueWithIdentifier:@"SettingsAboutSegue" sender:nil];
-        }
-    }
-    
     // Beta
-    if(indexPath.section == 4) {
+    if(indexPath.section == 2) {
         if(indexPath.row == 0) {
             [TestFlight openFeedbackView];
         } else if (indexPath.row == 1) {
@@ -515,6 +504,101 @@
 - (void)mailComposeController:(MFMailComposeViewController*)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError*)error
 {
     [self dismissModalViewControllerAnimated:YES];
+}
+
+
+
+////////////////////////////////////////////////////////////////////////////
+#pragma mark -
+#pragma mark Header and Footer View
+
+- (void)addHeaderView
+{
+    // Statistic View
+    UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, 118.0f)];
+    headerView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"sv_bg_stats.png"]];
+    
+    UILabel *ratedLabel = [[UILabel alloc] initWithFrame:CGRectMake(12.0f, 70.0f, 141.0f, 13.0f)];
+    UILabel *averageLabel = [[UILabel alloc] initWithFrame:CGRectMake(167.0f, 70.0f, 141.0f, 13.0f)];
+    ratedLabel.text = NSLocalizedString(@"SETTINGS_MOVIECOUNT", nil);
+    ratedLabel.font = [UIFont boldSystemFontOfSize:10.0f];
+    ratedLabel.shadowColor = [UIColor colorWithRed:255.0f green:255.0f blue:255.0f alpha:0.2f];
+    ratedLabel.shadowOffset = CGSizeMake(0.0f, 1.0f);
+    ratedLabel.textColor = HEXColor(0x666666);
+    ratedLabel.textAlignment = UITextAlignmentCenter;
+    ratedLabel.backgroundColor = [UIColor clearColor];
+    averageLabel.text = NSLocalizedString(@"SETTINGS_AVERAGERATING", nil);
+    averageLabel.font = [UIFont boldSystemFontOfSize:10.0f];
+    averageLabel.shadowColor = [UIColor colorWithRed:255.0f green:255.0f blue:255.0f alpha:0.2f];
+    averageLabel.shadowOffset = CGSizeMake(0.0f, 1.0f);
+    averageLabel.textColor = HEXColor(0x666666);
+    averageLabel.textAlignment = UITextAlignmentCenter;
+    averageLabel.backgroundColor = [UIColor clearColor];
+    [headerView addSubview:ratedLabel];
+    [headerView addSubview:averageLabel];
+    
+    self.movieCountLabel = [[UILabel alloc] initWithFrame:CGRectMake(14.0f, 18.0f, 137.0f, 46.0f)];
+    self.movieCountLabel.font = [UIFont boldSystemFontOfSize:37.0f];
+    self.movieCountLabel.shadowColor = [UIColor colorWithRed:255.0f green:255.0f blue:255.0f alpha:0.2f];
+    self.movieCountLabel.shadowOffset = CGSizeMake(0.0f, 1.0f);
+    self.movieCountLabel.textColor = HEXColor(0x4C4C4C);
+    self.movieCountLabel.textAlignment = UITextAlignmentCenter;
+    self.movieCountLabel.backgroundColor = [UIColor clearColor];
+    
+    self.averageRatingLabel = [[UILabel alloc] initWithFrame:CGRectMake(169.0f, 18.0f, 137.0f, 46.0f)];
+    self.averageRatingLabel.font = [UIFont boldSystemFontOfSize:37.0f];
+    self.averageRatingLabel.shadowColor = [UIColor colorWithRed:255.0f green:255.0f blue:255.0f alpha:0.2f];
+    self.averageRatingLabel.shadowOffset = CGSizeMake(0.0f, 1.0f);
+    self.averageRatingLabel.textColor = HEXColor(0x4C4C4C);
+    self.averageRatingLabel.textAlignment = UITextAlignmentCenter;
+    self.averageRatingLabel.backgroundColor = [UIColor clearColor];
+    
+    [self reloadStatisticCells];
+    
+    [headerView addSubview:self.movieCountLabel];
+    [headerView addSubview:self.averageRatingLabel];
+    
+    self.tableView.tableHeaderView = headerView;
+}
+
+- (void)addFooterView {
+    UIView *footerView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 20.0f, 320.0f, 52.0f)];
+    footerView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"sv_bg_footerview.png"]];
+    
+    UILabel *watchedLabel = [[UILabel alloc] initWithFrame:CGRectMake(14.0f, 2.0f, 140.0f, 30.0f)];
+    watchedLabel.font = [UIFont boldSystemFontOfSize:16.0f];
+    watchedLabel.shadowColor = [UIColor colorWithRed:0.0f green:0.0f blue:0.0f alpha:0.8f];
+    watchedLabel.shadowOffset = CGSizeMake(0.0f, 1.0f);
+    watchedLabel.textColor = [UIColor whiteColor];
+    watchedLabel.text = @"watched.";
+    watchedLabel.backgroundColor = [UIColor clearColor];
+    [footerView addSubview:watchedLabel];
+    
+    UILabel *versionLabel = [[UILabel alloc] initWithFrame:CGRectMake(14.0f, 22.0f, 140.0f, 30.0f)];
+    versionLabel.font = [UIFont boldSystemFontOfSize:16.0f];
+    versionLabel.shadowColor = [UIColor colorWithRed:0.0f green:0.0f blue:0.0f alpha:0.44f];
+    versionLabel.shadowOffset = CGSizeMake(0.0f, 1.0f);
+    versionLabel.textColor = HEXColor(0xCCCCCC);
+    versionLabel.text = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
+    versionLabel.backgroundColor = [UIColor clearColor];
+    [footerView addSubview:versionLabel];
+    
+    UIButton *actionButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [actionButton addTarget:self action:@selector(watchedButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+    actionButton.frame = footerView.frame;
+    
+    UIView *wrapperView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, 72.0f)];
+    wrapperView.backgroundColor = [UIColor clearColor];
+    
+    [wrapperView addSubview:footerView];
+    [wrapperView addSubview:actionButton];
+    
+    self.tableView.tableFooterView = wrapperView;
+}
+
+- (IBAction)watchedButtonClicked:(id)sender
+{
+    [self performSegueWithIdentifier:@"SettingsAboutSegue" sender:nil];
 }
 
 

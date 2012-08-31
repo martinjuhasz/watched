@@ -15,5 +15,7 @@
 @property (strong, nonatomic) IBOutlet UINavigationBar *navBar;
 @property (strong, nonatomic) IBOutlet UITextView *textView;
 @property (strong, nonatomic) Movie *movie;
+@property (strong, nonatomic) IBOutlet UILabel *titleLabel;
+@property (strong, nonatomic) IBOutlet UIImageView *starImageView;
 
 @end

@@ -40,10 +40,20 @@
 "BUTTON_VISIT_HOMEPAGE"         = "Webseite besuchen";
 "BUTTON_REFRESH_MOVIE"          = "Daten erneuern";
 "BUTTON_WATCH_TRAILER"          = "Trailer ansehen";
-"BUTTON_DELETE_MOVIE"           = "Film löschen";
-"BUTTON_ADD_NOTE"               = "Notiz hinzufügen";
+"BUTTON_DELETE_MOVIE"           = "diesen Film entfernen";
+"BUTTON_ADD_NOTE"               = "meine Notizen";
 "BUTTON_SIMILAR"                = "ähnliche Filme";
 "DETAIL_DESCRIPTION_TITLE"      = "Zusammenfassung";
+"DETAIL_DIRECTOR_TITLE"         = "REGISSEUR";
+"DETAIL_STARRING_TITLE"         = "HAUPTROLLEN";
+"BUTTON_WATCHED_WATCHED"        = "gesehen";
+"BUTTON_WATCHED_UNWATCHED"      = "nicht gesehen";
+"DETAIL_RUNTIME_TITLE"          = "LAUFZEIT";
+"DETAIL_RELEASEDATE_TITLE"      = "RELEASE";
+"OVERVIEW_NO-CONTENT"           = "Keine Beschreibung verfügbar";
+
+"DV_CONTROL_WATCHED"            = "GESEHEN";
+"DV_CONTROL_UNWATCHED"          = "UNGESEHEN";
 
 "SHARE_BUTTON_TITLE"            = "Teilen mit";
 "SHARE_BUTTON_EMAIL"            = "E-Mail";
@@ -63,6 +73,11 @@
 
 "NOTES_TITLE"                   = "Notizen";
 
+"DETAIL_POP_DELETE_TITLE"      = "Achtung";
+"DETAIL_POP_DELETE_CONTENT"    = "Sind sie sicher, dass sie diesen Film löschen möchten?";
+"DETAIL_POP_DELETE_CANCEL"     = "abbrechen";
+"DETAIL_POP_DELETE_OK"         = "löschen";
+
 /*================================================
  CAST
  ================================================*/
@@ -70,6 +85,7 @@
 "SECTION_HEADER_CAST"           = "Besetzung";
 "SECTION_HEADER_CREW"           = "Crew";
 "CAST_CHARACTER_PREFIX"         = "als %@";
+"CAST_TITLE"                    = "Mitwirkende";
 
 /*================================================
  SETTINGS
@@ -77,8 +93,8 @@
 
 "TITLE_SETTINGS"                = "Einstellungen";
 "SETTINGS_VERSION"              = "Version";
-"SETTINGS_MOVIECOUNT"           = "bewertete Filme";
-"SETTINGS_AVERAGERATING"        = "Durchschnittliche Bewertung";
+"SETTINGS_MOVIECOUNT"           = "BEWERTETE FILME";
+"SETTINGS_AVERAGERATING"        = "DURCHSCHN. WERTUNG";
 "SETTINGS_LANGUAGE"             = "Filmsprache";
 "SETTINGS_FEEDBACK"             = "Feedback senden";
 "SETTINGS_WEBSITE"              = "Besuche unsere Webseite";
@@ -99,6 +115,9 @@
 "SETTINGS_RATING_NONE"          = "keine";
 "SETTINGS_FEEDBACK_EMAILTITLE"  = "Feedback für watched";
 "SETTINGS_FEEDBACK_EMAILTO"     = "info@martinjuhasz.de";
+"SETTINGS_META_LOADING"         = "lade Filme ...";
+"SETTINGS_META_NOMOVIES"        = "keine Filme gefunden";
+"SETTINGS_META_ERROR"           = "Fehler. Versuche es nochmal";
 
 "SETTINGS_ABOUT_TITLE"          = "Über";
 "SETTINGS_ABOUT_VERSION"        = "Versionsnummer";

@@ -45,6 +45,28 @@
     return [results objectAtIndex:0];
 }
 
++ (BOOL)movieWithServerIDExists:(NSInteger)serverID usingManagedObjectContext:(NSManagedObjectContext *)moc {
+    NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:[Movie entityName]];
+    [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"movieID = %d", serverID]];
+    [fetchRequest setFetchLimit:1];
+    
+    
+    NSError *error = nil;
+    NSUInteger count = [moc countForFetchRequest:fetchRequest error:&error];
+    
+    if (error) {
+        NSLog(@"ERROR: %@ %@", [error localizedDescription], [error userInfo]);
+        exit(1);
+    }
+    
+    if (!error && count > 0){
+        return YES;
+    }
+    else {
+        return NO;
+    }
+}
+
 - (void)prepareForDeletion
 {
     [super prepareForDeletion];
@@ -76,7 +98,6 @@
 - (void)updateAttributes:(NSDictionary *)attributes {
     self.adult = [attributes objectForKeyOrNil:@"adult"];
 	self.budget = [attributes objectForKeyOrNil:@"budget"];
-	self.homepage = [attributes objectForKeyOrNil:@"homepage"];
 	self.imdbID = [attributes objectForKeyOrNil:@"imdb_id"];
 	self.movieID = [NSNumber numberWithInt:[[attributes objectForKeyOrNil:@"id"] intValue]];
 	self.originalTitle = [attributes objectForKeyOrNil:@"original_title"];
@@ -86,6 +107,10 @@
 	self.runtime = [NSNumber numberWithFloat:[[attributes objectForKeyOrNil:@"runtime"] floatValue]];
 	self.tagline = [attributes objectForKeyOrNil:@"tagline"];
 	self.title = [attributes objectForKeyOrNil:@"title"];
+    
+    if([attributes objectForKeyOrNil:@"homepage"] && ![[attributes objectForKeyOrNil:@"homepage"] isEqualToString:@""]) {
+        self.homepage = [attributes objectForKeyOrNil:@"homepage"];
+    }
     
     // release Date
     if([attributes objectForKeyOrNil:@"release_date"]) {

@@ -8,14 +8,17 @@
 
 #import <UIKit/UIKit.h>
 
+@class BrowserBarButtonItem;
+
 @interface WatchedWebBrowser : UIViewController
 
 @property (strong, nonatomic) IBOutlet UIWebView *webView;
 @property (strong, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
-@property (strong, nonatomic) IBOutlet UIBarButtonItem *reloadButton;
-@property (strong, nonatomic) IBOutlet UIBarButtonItem *forwardButton;
-@property (strong, nonatomic) IBOutlet UIBarButtonItem *backButton;
-@property (strong, nonatomic) IBOutlet UIBarButtonItem *actionButton;
+@property (strong, nonatomic) BrowserBarButtonItem *reloadButton;
+@property (strong, nonatomic) BrowserBarButtonItem *forwardButton;
+@property (strong, nonatomic) BrowserBarButtonItem *backButton;
+@property (strong, nonatomic) BrowserBarButtonItem *actionButton;
+@property (strong, nonatomic) IBOutlet UIToolbar *toolbar;
 
 @property (strong, nonatomic) NSURL *url;
 

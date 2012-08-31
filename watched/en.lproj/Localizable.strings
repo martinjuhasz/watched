@@ -26,7 +26,7 @@
  Table View
  ================================================*/
 
-"BUTTON_ADDMOVIE_TITLE"         = "add Movie";
+"BUTTON_ADDMOVIE_TITLE"         = "Add new Movie";
 "CONTROL_SORTMOVIES_TITLE_ALL"  = "All Movies";
 "CONTROL_SORTMOVIES_TITLE_UNWATCHED"  = "Unwatched";
 "CONTROL_SORTMOVIES_TITLE_UNRATED"    = "Unrated";
@@ -37,14 +37,24 @@
  ================================================*/
 
 "TITLE_WATCHEDON"               = "Watched on:";
-"BUTTON_SHOW_CAST"              = "Show Cast";
-"BUTTON_VISIT_HOMEPAGE"         = "visit Website";
+"BUTTON_SHOW_CAST"              = "Show Complete Cast";
+"BUTTON_VISIT_HOMEPAGE"         = "Visit Official Website";
 "BUTTON_REFRESH_MOVIE"         = "refresh Metadata";
-"BUTTON_WATCH_TRAILER"          = "watch Trailer";
-"BUTTON_DELETE_MOVIE"           = "delete Movie";
-"BUTTON_ADD_NOTE"               = "Add Note";
+"BUTTON_WATCH_TRAILER"          = "Watch Trailer";
+"BUTTON_DELETE_MOVIE"           = "remove this movie";
+"BUTTON_ADD_NOTE"               = "My Notes";
 "BUTTON_SIMILAR"                = "Similar Movies";
 "DETAIL_DESCRIPTION_TITLE"      = "Overview";
+"DETAIL_DIRECTOR_TITLE"         = "DIRECTOR";
+"DETAIL_STARRING_TITLE"         = "STARRING";
+"BUTTON_WATCHED_WATCHED"        = "watched";
+"BUTTON_WATCHED_UNWATCHED"      = "unwatched";
+"DETAIL_RUNTIME_TITLE"          = "RUNTIME";
+"DETAIL_RELEASEDATE_TITLE"      = "RELEASE";
+"OVERVIEW_NO-CONTENT"           = "No description available";
+
+"DV_CONTROL_WATCHED"            = "WATCHED";
+"DV_CONTROL_UNWATCHED"          = "UNWATCHED";
 
 "SHARE_BUTTON_TITLE"            = "Share by";
 "SHARE_BUTTON_EMAIL"            = "E-Mail";
@@ -64,13 +74,20 @@
 
 "NOTES_TITLE"                   = "Notes";
 
+"DETAIL_POP_DELETE_TITLE"      = "Beware";
+"DETAIL_POP_DELETE_CONTENT"    = "Are you sure you want to delete this movie?";
+"DETAIL_POP_DELETE_CANCEL"     = "cancel";
+"DETAIL_POP_DELETE_OK"         = "delete";
+
+
 /*================================================
  CAST
  ================================================*/
 
-"SECTION_HEADER_CAST"           = "Cast";
+"SECTION_HEADER_CAST"           = "Actors";
 "SECTION_HEADER_CREW"           = "Crew";
 "CAST_CHARACTER_PREFIX"         = "as %@";
+"CAST_TITLE"                    = "Cast";
 
 /*================================================
  SETTINGS
@@ -78,8 +95,8 @@
 
 "TITLE_SETTINGS"                = "Settings";
 "SETTINGS_VERSION"              = "Version";
-"SETTINGS_MOVIECOUNT"           = "rated Movies";
-"SETTINGS_AVERAGERATING"        = "Average Rating";
+"SETTINGS_MOVIECOUNT"           = "RATED MOVIES";
+"SETTINGS_AVERAGERATING"        = "AVERAGE RATING";
 "SETTINGS_LANGUAGE"             = "Movie Language";
 "SETTINGS_FEEDBACK"             = "Send Feedback";
 "SETTINGS_WEBSITE"              = "Visit our Website";
@@ -100,13 +117,15 @@
 "SETTINGS_RATING_NONE"          = "none";
 "SETTINGS_FEEDBACK_EMAILTITLE"  = "Feedback for watched";
 "SETTINGS_FEEDBACK_EMAILTO"     = "info@martinjuhasz.de";
+"SETTINGS_META_LOADING"         = "loading movies ...";
+"SETTINGS_META_NOMOVIES"        = "no movies found";
+"SETTINGS_META_ERROR"           = "Error. Please try again";
 
 "SETTINGS_ABOUT_TITLE"          = "About";
 "SETTINGS_ABOUT_VERSION"        = "Version Number";
 "SETTINGS_ABOUT_RELEASENOTES"   = "Release Notes";
 "SETTINGS_ABOUT_TITLE_DES-DEV"  = "Design & Developement";
 "SETTINGS_ABOUT_VENDOR"         = "Resources & 3rd-Party-Libraries";
-
 
 /*================================================
  OTHER

@@ -11,5 +11,6 @@
 @interface UILabel(Additions)
 
 - (void)sizeToFitWithMaximumNumberOfLines:(int)lines;
+- (void)sizeToFitWithWith:(CGFloat)width andMaximumNumberOfLines:(int)lines;
 
 @end

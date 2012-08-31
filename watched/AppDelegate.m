@@ -11,6 +11,9 @@
 
 #import "UIViewController+MJPopupViewController.h"
 #import "AddMovieViewController.h"
+#import "MJCustomTableViewCell.h"
+#import "WatchedWebBrowser.h"
+
 
 @interface AppDelegate ()<AddMovieViewDelegate> {
     AddMovieViewController *addController;
@@ -49,32 +52,47 @@
     
     // UINavigationBar
     UIImage *navigationBarBgImage = [[UIImage imageNamed:@"g_bg_navbar.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
+    UIImage *navigationBarBgImageLS = [[UIImage imageNamed:@"g_bg_navbar_landscape.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
     UIImage *navigationBarBackBgImage = [[UIImage imageNamed:@"g_backbutton.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 13, 0, 4)];
+    UIImage *navigationBarBackBgImageLS = [[UIImage imageNamed:@"g_backbutton_landscape.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 13, 0, 4)];
+    UIImage *navigationBarBackBgImageActive = [[UIImage imageNamed:@"g_backbutton_active.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 13, 0, 4)];
+    UIImage *navigationBarBackBgImageActiveLS = [[UIImage imageNamed:@"g_backbutton_landscape_active.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 13, 0, 4)];
+    
     [[UINavigationBar appearance] setBackgroundImage:navigationBarBgImage forBarMetrics:UIBarMetricsDefault];
     [[UIBarButtonItem appearance] setBackButtonBackgroundImage:navigationBarBackBgImage forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
+    [[UIBarButtonItem appearance] setBackButtonBackgroundImage:navigationBarBackBgImageActive forState:UIControlStateHighlighted barMetrics:UIBarMetricsDefault];
+    
+    [[UINavigationBar appearance] setBackgroundImage:navigationBarBgImageLS forBarMetrics:UIBarMetricsLandscapePhone];
+    [[UIBarButtonItem appearance] setBackButtonBackgroundImage:navigationBarBackBgImageLS forState:UIControlStateNormal barMetrics:UIBarMetricsLandscapePhone];
+    [[UIBarButtonItem appearance] setBackButtonBackgroundImage:navigationBarBackBgImageActiveLS forState:UIControlStateHighlighted barMetrics:UIBarMetricsLandscapePhone];
+    
     [[UINavigationBar appearance] setTitleTextAttributes:
      [NSDictionary dictionaryWithObjectsAndKeys:
-      HEXColor(0x4C4F59), 
+      HEXColor(0xFFFFFF), 
       UITextAttributeTextColor, 
-      [UIColor colorWithRed:255.0f green:255.0f blue:255.0f alpha:0.33f], 
+      [UIColor colorWithRed:0.0f green:0.0f blue:0.0f alpha:0.44f], 
       UITextAttributeTextShadowColor, 
       [NSValue valueWithUIOffset:UIOffsetMake(0, 1)], 
       UITextAttributeTextShadowOffset, 
-      [UIFont fontWithName:@"HelveticaNeue-Bold" size:18.0f], 
+      [UIFont fontWithName:@"HelveticaNeue-Bold" size:18.0f],
       UITextAttributeFont, 
       nil]];
     
     // UIToolbar
+    UIImage *browserBarBgImage = [[UIImage imageNamed:@"g_browser.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
     [[UIToolbar appearance] setBackgroundImage:navigationBarBgImage forToolbarPosition:UIToolbarPositionAny barMetrics:UIBarMetricsDefault];
+    [[UIToolbar appearanceWhenContainedIn:[WatchedWebBrowser class], nil] setBackgroundImage:browserBarBgImage forToolbarPosition:UIToolbarPositionAny barMetrics:UIBarMetricsDefault];
     
     // UIBarButtonItem
-    UIImage *barButtonBgInage = [[UIImage imageNamed:@"g_barbutton.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(15, 4, 15, 4)];
-    [[UIBarButtonItem appearance] setBackgroundImage:barButtonBgInage forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
+    UIImage *barButtonBgImage = [[UIImage imageNamed:@"g_barbutton.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(15, 4, 15, 4)];
+    UIImage *barButtonBgImageActive = [[UIImage imageNamed:@"g_barbutton_active.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(15, 4, 15, 4)];
+    [[UIBarButtonItem appearance] setBackgroundImage:barButtonBgImage forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
+    [[UIBarButtonItem appearance] setBackgroundImage:barButtonBgImageActive forState:UIControlStateSelected barMetrics:UIBarMetricsDefault];
     [[UIBarButtonItem appearance] setTitleTextAttributes:
      [NSDictionary dictionaryWithObjectsAndKeys:
-      HEXColor(0x4C4F59), 
+      HEXColor(0xFFFFFF), 
       UITextAttributeTextColor, 
-      [UIColor colorWithRed:255.0f green:255.0f blue:255.0f alpha:0.33f], 
+      [UIColor colorWithRed:0.0f green:0.0f blue:0.0f alpha:0.44f], 
       UITextAttributeTextShadowColor, 
       [NSValue valueWithUIOffset:UIOffsetMake(0, 1)], 
       UITextAttributeTextShadowOffset, 
@@ -85,8 +103,37 @@
     // UISearchBar
     [[UISearchBar appearance] setBackgroundImage:navigationBarBgImage];
     
+    // TableView
+    [[UITableView appearance] setBackgroundColor:HEXColor(DEFAULT_COLOR_BG)];
+    [[UITableView appearance] setSeparatorColor:HEXColor(0x595959)];
+    
     // UISegmentedControl
-    //[[UISegmentedControl appearance] setBackgroundImage:navigationBarBgImage forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
+    UIImage *segmentedControlBgImage = [[UIImage imageNamed:@"mv_segmented.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 4, 0, 4)];
+    UIImage *segmentedControlBgImageActive = [[UIImage imageNamed:@"mv_segmented_active.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 14, 0, 14)];
+    UIImage *segmentedDividerNN = [UIImage imageNamed:@"mv_segmented-dv-nn.png"];
+    UIImage *segmentedDividerAN = [UIImage imageNamed:@"mv_segmented-dv-an.png"];
+    UIImage *segmentedDividerNA = [UIImage imageNamed:@"mv_segmented-dv-na.png"];
+    [[UISegmentedControl appearance] setBackgroundImage:segmentedControlBgImage forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
+    [[UISegmentedControl appearance] setBackgroundImage:segmentedControlBgImageActive forState:UIControlStateSelected barMetrics:UIBarMetricsDefault];
+    [[UISegmentedControl appearance] setDividerImage:segmentedDividerNN forLeftSegmentState:UIControlStateNormal rightSegmentState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
+    [[UISegmentedControl appearance] setDividerImage:segmentedDividerAN forLeftSegmentState:UIControlStateSelected rightSegmentState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
+    [[UISegmentedControl appearance] setDividerImage:segmentedDividerNA forLeftSegmentState:UIControlStateNormal rightSegmentState:UIControlStateSelected barMetrics:UIBarMetricsDefault];
+    [[UISegmentedControl appearance] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
+                                                 HEXColor(0xFFFFFF),
+                                                 UITextAttributeTextColor,
+                                                 [UIColor colorWithRed:0.0f green:0.0f blue:0.0f alpha:0.44f],
+                                                 UITextAttributeTextShadowColor,
+                                                 [NSValue valueWithUIOffset:UIOffsetMake(0, 1)],
+                                                 UITextAttributeTextShadowOffset,
+                                                 [UIFont fontWithName:@"HelveticaNeue-Bold" size:12.0f],
+                                                 UITextAttributeFont,
+                                                 nil] forState:UIControlStateNormal];
+    
+    
+//    [[UILabel appearanceWhenContainedIn:[MJCustomTableViewCell class], nil] setBackgroundColor:[UIColor clearColor]];
+//    [[UILabel appearance] setBackgroundColor:[UIColor redColor]];
+//    [[UILabel appearance] setBackgroundImage:[UIImage imageNamed:@"mv_segmented-dv-na.png"] forState:UIControlStateNormal];
+    
 }
 							
 - (void)applicationWillResignActive:(UIApplication *)application

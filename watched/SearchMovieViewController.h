@@ -15,8 +15,10 @@
     NSInteger currentPage;
     NSInteger totalPages;
     BOOL isLoading;
+    BOOL isError;
 }
 
+@property (strong, nonatomic) IBOutlet UINavigationBar *navigationBar;
 @property (strong, nonatomic) NSString *searchQuery;
 @property (strong, nonatomic) NSNumber *movieID;
 @property (strong, nonatomic) IBOutlet UITableView *tableView;

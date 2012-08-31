@@ -27,6 +27,9 @@
 #import "AFImageRequestOperation.h"
 #import "Reachability.h"
 #import "AFJSONRequestOperation.h"
+#import "UIButton+Additions.h"
+#import "MJCustomTableViewCell.h"
+#import "MJCustomAccessoryControl.h"
 
 #define kImageFadeDelay 0.0f
 
@@ -53,7 +56,7 @@
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        // Custom initialization
+        // Custom initializatio
     }
     return self;
 }
@@ -75,17 +78,10 @@
 
     [self.detailView.backdropButton addTarget:self action:@selector(posterButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
     [self.detailView.posterButton addTarget:self action:@selector(posterButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
-    [self.detailView.watchedSwitch addTarget:self action:@selector(watchedSwitchClicked:) forControlEvents:UIControlEventValueChanged];
+    [self.detailView.watchedControl addTarget:self action:@selector(watchedControlChanged:) forControlEvents:UIControlEventValueChanged];
     [self.detailView.similarButton addTarget:self action:@selector(similarButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
     [self.detailView.noteButton addTarget:self action:@selector(noteButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
-    [self.detailView.trailerButton addTarget:self action:@selector(trailerButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
-    [self.detailView.websiteButton addTarget:self action:@selector(websiteButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
-    [self.detailView.castsButton addTarget:self action:@selector(castsButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
     [self.detailView.deleteButton addTarget:self action:@selector(deleteButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
-//    [self.detailView.refreshButton addTarget:self action:@selector(refreshButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
-    [self.detailView.actor1Button addTarget:self action:@selector(actorButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
-    [self.detailView.actor2Button addTarget:self action:@selector(actorButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
-    [self.detailView.actor3Button addTarget:self action:@selector(actorButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
 }
 
 - (void)viewDidUnload
@@ -123,6 +119,12 @@
     reachability = nil;
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+	NSIndexPath *selection = [self.detailView.metaTableView indexPathForSelectedRow];
+	if (selection) [self.detailView.metaTableView deselectRowAtIndexPath:selection animated:YES];
+}
+
 
 
 ////////////////////////////////////////////////////////////////////////////
@@ -132,100 +134,85 @@
 - (void)setContent
 {
     self.title = self.movie.title;
+    self.detailView.metaTableView.dataSource = self;
+    self.detailView.metaTableView.delegate = self;
     self.detailView.titleLabel.text = self.movie.title;
-    self.detailView.backdropImageView.image = self.movie.backdrop;
-    self.detailView.posterImageView.image = self.movie.poster;
-    self.detailView.directorLabel.text = self.movie.director.name;
-    self.detailView.releaseDateLabel.text = self.movie.releaseDateFormatted;
-    self.detailView.runtimeLabel.text = self.movie.runtimeFormatted;
-    self.detailView.overviewLabel.text = self.movie.overview;
     self.detailView.ratingView.rating = [self.movie.rating floatValue];
+    
+    // Director
+    if(self.movie.director) {
+        self.detailView.directorLabel.text = self.movie.director.name;
+    } else {
+        self.detailView.directorLabel.text = @"-";
+    }
+    
+    // Overview
+    if (self.movie.overview) {
+        self.detailView.overviewLabel.text = self.movie.overview;
+    } else {
+        self.detailView.overviewLabel.text = NSLocalizedString(@"OVERVIEW_NO-CONTENT", nil);
+    }
+    
+    // Release Date
+    if (self.movie.releaseDate) {
+        [self.detailView.releaseDateButton setTitle:self.movie.releaseDateFormatted];
+    } else {
+        [self.detailView.releaseDateButton setTitle:@"-"];
+    }
+    
+    // RUNTIME
+    if([self.movie.runtime floatValue] > 0) {
+        [self.detailView.runtimeButton setTitle:self.movie.runtimeFormatted];
+    } else {
+        [self.detailView.runtimeButton setTitle:@"-"];
+    }
+    
+    // Poster
+    if (self.movie.poster) {
+        self.detailView.posterImageView.image = self.movie.poster;
+    } else {
+        self.detailView.posterImageView.image = [UIImage imageNamed:@"dv_placeholder-cover.png"];
+    }
+    
+    // Backdrop
+    if (self.movie.backdrop) {
+         self.detailView.backdropImageView.image = self.movie.backdrop;
+    } else {
+        self.detailView.backdropImageView.image = [UIImage imageNamed:@"dv_placeholder-backdrop.png"];
+    }
+    
+    self.detailView.watchedControl.selectedSegmentIndex = (self.movie.watchedOn) ? 0 : 1;
+    
+    // year
+    NSUInteger componentFlags = NSYearCalendarUnit;
+    NSDateComponents *components = [[NSCalendar currentCalendar] components:componentFlags fromDate:self.movie.releaseDate];
+    NSInteger year = [components year];
+    self.detailView.yearLabel.text = [NSString stringWithFormat:@"%d", year];
     
     // actors
     NSSortDescriptor *actorSort = [[NSSortDescriptor alloc] initWithKey:@"order" ascending:YES];
     NSArray *sortedCast = [[self.movie.casts allObjects] sortedArrayUsingDescriptors:[NSArray arrayWithObject:actorSort]];
+    if(sortedCast.count <= 0) {
+        self.detailView.actor1Label.text = @"-";
+    }
     if(sortedCast.count >= 1) {
         Cast *cast1 = (Cast*)[sortedCast objectAtIndex:0];
-        NSURL *cast1Url = [[OnlineMovieDatabase sharedMovieDatabase] getImageURLForImagePath:cast1.profilePath imageType:ImageTypeProfile nearWidth:400.0f];
         self.detailView.actor1Label.text = cast1.name;
-        [self setGreyActorImageWithURL:cast1Url forImageView:self.detailView.actor1ImageView];
-//        [self.detailView.actor1ImageView setImageWithURL:cast1Url];
     }
     if(sortedCast.count >= 2) {
         Cast *cast2 = (Cast*)[sortedCast objectAtIndex:1];
-        NSURL *cast2Url = [[OnlineMovieDatabase sharedMovieDatabase] getImageURLForImagePath:cast2.profilePath imageType:ImageTypeProfile nearWidth:400.0f];
         self.detailView.actor2Label.text = cast2.name;
-        [self setGreyActorImageWithURL:cast2Url forImageView:self.detailView.actor2ImageView];
-//        [self.detailView.actor2ImageView setImageWithURL:cast2Url];
     }
     if(sortedCast.count >= 3) {
         Cast *cast3 = (Cast*)[sortedCast objectAtIndex:2];
-        NSURL *cast3Url = [[OnlineMovieDatabase sharedMovieDatabase] getImageURLForImagePath:cast3.profilePath imageType:ImageTypeProfile nearWidth:400.0f];
         self.detailView.actor3Label.text = cast3.name;
-        [self setGreyActorImageWithURL:cast3Url forImageView:self.detailView.actor3ImageView];
-//        [self.detailView.actor3ImageView setImageWithURL:cast3Url];
     }
     
-    if(self.movie.watchedOn) self.detailView.watchedSwitch.on = YES;
-    
-    // Website Button
-    if(self.movie.homepage && ![self.movie.homepage isEqualToString:@""]) {
-        self.detailView.websiteButtonEnabled = YES;
-    } else {
-        self.detailView.websiteButtonEnabled = NO;
+    if(sortedCast.count >= 4) {
+        Cast *cast4 = (Cast*)[sortedCast objectAtIndex:3];
+        self.detailView.actor4Label.text = cast4.name;
     }
-    
-    // Casts
-    if(self.movie.casts.count > 0) {
-        self.detailView.castButtonEnabled = YES;
-    } else {
-        self.detailView.castButtonEnabled = NO;
-    }
-    
-    // Trailer
-    if(self.movie.trailers.count > 0) {
-        self.detailView.trailerButtonEnabled = YES;
-    } else {
-        self.detailView.trailerButtonEnabled = NO;
-    }
-    
-    
-}
 
-- (void)setGreyActorImageWithURL:(NSURL*)url forImageView:(UIImageView*)imageView
-{
-    AFImageRequestOperation *operation = [AFImageRequestOperation imageRequestOperationWithRequest:[NSURLRequest requestWithURL:url] imageProcessingBlock:^UIImage *(UIImage *returnedImage) {
-        return [self grayScaleImage:returnedImage];
-    } cacheName:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-        imageView.image = image;
-    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
-        XLog("%@", [error localizedDescription]);
-    }];
-    [operation start];
-}
-
--(UIImage*)grayScaleImage:(UIImage*)image
-{
-    CGImageRef inputImage = [image CGImage];
-    size_t width = CGImageGetWidth(inputImage);
-    size_t height = CGImageGetHeight(inputImage);
-        
-    // Create a gray scale context and render the input image into that
-    CGColorSpaceRef colorspace = CGColorSpaceCreateDeviceGray();
-    CGContextRef context = CGBitmapContextCreate(NULL, width, height, 8, 
-                                                     4*width, colorspace, kCGBitmapByteOrderDefault);
-    CGContextDrawImage(context, CGRectMake(0,0, width,height), inputImage);
-        
-    // Get an image representation of the grayscale context which the input
-    //    was rendered into.
-    CGImageRef outputImage = CGBitmapContextCreateImage(context);
-        
-    // Cleanup
-    CGContextRelease(context);
-    CGColorSpaceRelease(colorspace);
-    UIImage *returnedImage = [UIImage imageWithCGImage:outputImage];
-    CGImageRelease(outputImage);
-    return returnedImage;
 }
 
 - (bool)isInternetAvailable
@@ -269,38 +256,16 @@
             detailViewController.imageType = selectedImageType;
         }
     }
-    if([segue.identifier isEqualToString:@"DetailWebViewSegue"]) {
-        if(![sender isKindOfClass:[UIButton class]]) return;
-        UIButton *actionButton = (UIButton*)sender;
-        WatchedWebBrowser *detailViewController = (WatchedWebBrowser*)segue.destinationViewController;
-        
-        if(actionButton == self.detailView.websiteButton) {
-            detailViewController.url = [NSURL URLWithString:self.movie.homepage];
-        
-        } else if (actionButton == self.detailView.trailerButton) {
-            NSURL *videoURL = [NSURL URLWithString:[NSString stringWithFormat:@"http://m.youtube.com/watch?v=%@",self.movie.bestTrailer.url]];
-            detailViewController.url = videoURL;
-        
-        } else if (actionButton == self.detailView.actor1Button || actionButton == self.detailView.actor2Button || actionButton == self.detailView.actor3Button ) {
-            Cast *selectedCast = nil;
-            NSSortDescriptor *actorSort = [[NSSortDescriptor alloc] initWithKey:@"order" ascending:YES];
-            NSArray *sortedCast = [[self.movie.casts allObjects] sortedArrayUsingDescriptors:[NSArray arrayWithObject:actorSort]];
-            
-            if(actionButton == self.detailView.actor1Button) {
-                selectedCast = [sortedCast objectAtIndex:0];
-            } else if (actionButton == self.detailView.actor2Button) {
-                selectedCast = [sortedCast objectAtIndex:1];
-            } else  {
-                selectedCast = [sortedCast objectAtIndex:2];
-            }
-            NSString *encodedName = [selectedCast.name stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-            NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"http://m.imdb.com/find?q=%@", encodedName]];
-            detailViewController.url = url;
-        }
-    }
     if([segue.identifier isEqualToString:@"SimilarMovieSegue"]) {
         SearchMovieViewController *detailViewController = (SearchMovieViewController*)segue.destinationViewController;
         detailViewController.movieID = self.movie.movieID;
+    }
+    
+    if([segue.identifier isEqualToString:@"DetailWebViewSegue"]) {
+        if(![sender isKindOfClass:[NSURL class]]) return;
+        NSURL *url = sender;
+        WatchedWebBrowser *detailViewController = (WatchedWebBrowser*)segue.destinationViewController;
+        detailViewController.url = url;
     }
 }
 
@@ -351,7 +316,7 @@
     });
 }
 
-- (IBAction)trailerButtonClicked:(id)sender
+- (void)trailerRowClicked
 {
     if(![self isInternetAvailable]) return;
     if(!self.movie.bestTrailer) return;
@@ -362,20 +327,23 @@
         MPMoviePlayerViewController *moviePlayer = [[MPMoviePlayerViewController alloc] initWithContentURL:videoURL];
         [self.navigationController presentMoviePlayerViewControllerAnimated:moviePlayer];
     } else {
-        [self performSegueWithIdentifier:@"DetailWebViewSegue" sender:sender];
+         NSURL *videoURL = [NSURL URLWithString:[NSString stringWithFormat:@"http://m.youtube.com/watch?v=%@",self.movie.bestTrailer.url]];
+        [self performSegueWithIdentifier:@"DetailWebViewSegue" sender:videoURL];
     }
 }
 
-- (IBAction)castsButtonClicked:(id)sender
+- (void)castsRowClicked
 {
     [self performSegueWithIdentifier:@"MovieCastSegue" sender:self];
 }
 
-- (IBAction)websiteButtonClicked:(id)sender
+- (void)websiteRowClicked
 {
     if(![self isInternetAvailable]) return;
     if(self.movie.homepage) {
-        [self performSegueWithIdentifier:@"DetailWebViewSegue" sender:sender];
+        NSURL *url = [NSURL URLWithString:self.movie.homepage];
+        XLog(@"%@", self.movie.homepage);
+        [self performSegueWithIdentifier:@"DetailWebViewSegue" sender:url];
     }
 }
 
@@ -384,9 +352,11 @@
     [self performSegueWithIdentifier:@"MovieNoteSegue" sender:self];
 }
 
-- (IBAction)watchedSwitchClicked:(id)sender {
+- (IBAction)watchedControlChanged:(id)sender {
     NSDate *watchedDate = nil;
-    if(self.detailView.watchedSwitch.on) {
+    NSInteger selectedIndex = self.detailView.watchedControl.selectedSegmentIndex;
+    
+    if(selectedIndex == 0) {
         watchedDate = [NSDate date];
     }
     
@@ -400,7 +370,6 @@
         if(error) {
             XLog("%@", [error localizedDescription]);
         }
-        
     }); 
 }
 
@@ -426,6 +395,16 @@
 
 - (IBAction)deleteButtonClicked:(id)sender
 {
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"DETAIL_POP_DELETE_TITLE", nil)
+                                                    message:NSLocalizedString(@"DETAIL_POP_DELETE_CONTENT", nil)
+                                                   delegate:self
+                                          cancelButtonTitle:NSLocalizedString(@"DETAIL_POP_DELETE_CANCEL", nil)
+                                          otherButtonTitles:NSLocalizedString(@"DETAIL_POP_DELETE_OK", nil), nil];
+    [alert show];
+}
+
+- (void)deleteMovie
+{
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
         
         // Setup Core Data with extra Context for Background Process
@@ -433,7 +412,7 @@
         [context setPersistentStoreCoordinator:[[MoviesDataModel sharedDataModel] persistentStoreCoordinator]];
         
         NSError *error;
-
+        
         [context deleteObject:[context objectWithID:movie.objectID]];
         [context save:&error];
         if(error) {
@@ -443,47 +422,6 @@
     });
     [self.navigationController popViewControllerAnimated:YES];
 }
-
-- (IBAction)actorButtonClicked:(id)sender
-{
-//    if(![self isInternetAvailable]) return;
-    [self performSegueWithIdentifier:@"DetailWebViewSegue" sender:sender];
-}
-
-//- (IBAction)refreshButtonClicked:(id)sender
-//{
-//    if(![self isInternetAvailable]) return;
-//    self.detailView.refreshButton.enabled = NO;
-//    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
-//        
-//        // Setup Core Data with extra Context for Background Process
-//        OnlineDatabaseBridge *bridge = [[OnlineDatabaseBridge alloc] init];
-//        NSManagedObjectContext *context = [[NSManagedObjectContext alloc] init];
-//        [context setPersistentStoreCoordinator:[[MoviesDataModel sharedDataModel] persistentStoreCoordinator]];
-//        Movie *movieCopy = (Movie*)[context objectWithID:movie.objectID];
-//        
-//        AFJSONRequestOperation *operation = [bridge updateMovieMetadata:movieCopy inContext:context completion:^(Movie *returnedMovie) {
-//            NSError *error;
-//            [context save:&error];
-//            if(error) {
-//                XLog("%@", [error localizedDescription]);
-//            }
-//            
-//            dispatch_async(dispatch_get_main_queue(), ^{
-//                self.detailView.refreshButton.enabled = YES;
-//                [self setContent];
-//                [self.detailView setNeedsLayout];
-//            });
-//            
-//        } failure:^(NSError *anError) {
-//            XLog("%@", [anError localizedDescription]);
-//            dispatch_async(dispatch_get_main_queue(), ^{
-//                self.detailView.refreshButton.enabled = YES;
-//            });
-//        }];
-//        [operation start];
-//    });
-//}
 
 -(IBAction)similarButtonClicked:(id)sender
 {
@@ -522,8 +460,7 @@
     TWTweetComposeViewController *twitter = [[TWTweetComposeViewController alloc] init];
     [twitter addImage:self.movie.poster];
     [twitter setInitialText:text];
-    // TODO: Add Real URL
-    //[twitter addURL:[NSURL URLWithString:@"http://martinjuhasz.de"]];
+    [twitter addURL:[NSURL URLWithString:@"http://watchedforios.com"]];
     
     [self presentModalViewController:twitter animated:YES];
 }
@@ -541,7 +478,22 @@
     sharebymailString = [sharebymailString stringByReplacingOccurrencesOfString:@"###IMAGE_URL###" withString:imageURL];
     sharebymailString = [sharebymailString stringByReplacingOccurrencesOfString:@"###MOVIE_TITLE###" withString:self.movie.title];
     sharebymailString = [sharebymailString stringByReplacingOccurrencesOfString:@"###MOVIE_DESCRIPTION###" withString:self.movie.overview];
-    sharebymailString = [sharebymailString stringByReplacingOccurrencesOfString:@"###MOVIE_RATING###" withString:[NSString stringWithFormat:@"%d",[self.movie.rating intValue]]];
+    
+    
+    int rating = [self.movie.rating intValue];
+    if(rating > 0) {
+        
+        NSString *starEntidy = @"&#9733;";
+        NSString *ratedString = [@"" stringByPaddingToLength:[starEntidy length]*rating withString:starEntidy startingAtIndex:0];
+        NSString *unratedString = [@"" stringByPaddingToLength:[starEntidy length]*(5-rating) withString:starEntidy startingAtIndex:0];;
+        
+        sharebymailString = [sharebymailString stringByReplacingOccurrencesOfString:@"###MOVIE_RATING_RATED###" withString:ratedString];
+        sharebymailString = [sharebymailString stringByReplacingOccurrencesOfString:@"###MOVIE_RATING_UNRATED###" withString:unratedString];
+    } else {
+        sharebymailString = [sharebymailString stringByReplacingOccurrencesOfString:@"###MOVIE_RATING_RATED###" withString:@""];
+        sharebymailString = [sharebymailString stringByReplacingOccurrencesOfString:@"###MOVIE_RATING_UNRATED###" withString:@""];
+    }
+    
     
     // Generate Mail Composer and View it
     MFMailComposeViewController *mailViewController = [[MFMailComposeViewController alloc] init];
@@ -608,7 +560,6 @@
 - (void) thumbnailPicker:(ThumbnailPickerViewController*)aPicker didSelectImage:(NSString*)aImage forImageType:(ImageType)aImageType
 {
     [self.navigationController popViewControllerAnimated:YES];
-    
     OnlineDatabaseBridge *bridge = [[OnlineDatabaseBridge alloc] init];
     
     // Backdrop
@@ -664,6 +615,134 @@
         } failure:^(NSError *error) {
             XLog("%@", [error localizedDescription]);
         }];
+    }
+}
+
+
+
+////////////////////////////////////////////////////////////////////////////
+#pragma mark -
+#pragma mark UITableViewDataSource
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    return 1;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return 3;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)aTableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    static NSString *CellIdentifier = @"MetaTableCell";
+    MJCustomTableViewCell *cell = [aTableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    if (cell == nil) {
+        cell = [[MJCustomTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+    }
+    
+    MJCustomAccessoryControl *accessoryView = [MJCustomAccessoryControl accessory];
+    [cell setAccessoryView:accessoryView];
+    
+    if(indexPath.row == 0) {
+        // trailer
+        cell.textLabel.text = NSLocalizedString(@"BUTTON_WATCH_TRAILER", nil);
+        if(!self.movie.bestTrailer) {
+            cell.activated = NO;
+            cell.userInteractionEnabled = NO;
+            accessoryView.controlImageView.image = [UIImage imageNamed:@"g_table-accessory_disabled.png"];
+            cell.imageView.image = [UIImage imageNamed:@"dv_icon_trailer_disabled.png"];
+        } else {
+            cell.imageView.image = [UIImage imageNamed:@"dv_icon_trailer.png"];
+        }
+    } else if (indexPath.row == 1) {
+        // cast
+        cell.textLabel.text = NSLocalizedString(@"BUTTON_SHOW_CAST", nil);
+        if(self.movie.casts.count <= 0) {
+            cell.activated = NO;
+            cell.userInteractionEnabled = NO;
+            accessoryView.controlImageView.image = [UIImage imageNamed:@"g_table-accessory_disabled.png"];
+            cell.imageView.image = [UIImage imageNamed:@"dv_icon_cast_disabled.png"];
+        } else {
+            cell.imageView.image = [UIImage imageNamed:@"dv_icon_cast.png"];
+        }
+    } else {
+        // website
+        cell.textLabel.text = NSLocalizedString(@"BUTTON_VISIT_HOMEPAGE", nil);
+        if(!self.movie.homepage) {
+            cell.activated = NO;
+            cell.userInteractionEnabled = NO;
+            accessoryView.controlImageView.image = [UIImage imageNamed:@"g_table-accessory_disabled.png"];
+            cell.imageView.image = [UIImage imageNamed:@"dv_icon_website_disabled.png"];
+        } else {
+            cell.imageView.image = [UIImage imageNamed:@"dv_icon_website.png"];
+        }
+    }
+    
+    // Configure the cell...
+    [cell configureForTableView:aTableView indexPath:indexPath];
+    
+    return cell;
+}
+
+- (float)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    //    MJCellPosition position = [self positionForIndexPath:indexPath inTableView:self.tableView];
+    //    if(position == MJCellPositionTop) {
+    //        return 44.0f;
+    //    }
+    return 43.0f;
+}
+
+
+
+////////////////////////////////////////////////////////////////////////////
+#pragma mark -
+#pragma mark UITableViewDelegate
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if(indexPath.row == 0) {
+        // trailer
+        [self trailerRowClicked];
+    } else if (indexPath.row == 1) {
+        // cast
+        [self castsRowClicked];
+    } else {
+        // website
+        [self websiteRowClicked];
+    }
+}
+
+- (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if(indexPath.row == 0) {
+        // trailer
+        if(!self.movie.bestTrailer) return nil;
+    } else if (indexPath.row == 1) {
+        // cast
+        if(self.movie.casts.count <= 0) return nil;
+    } else {
+        // website
+        if(!self.movie.homepage) return nil;
+    }
+    
+    return indexPath;
+}
+
+
+
+////////////////////////////////////////////////////////////////////////////
+#pragma mark -
+#pragma mark UIAlertViewDelegate
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if([alertView.title isEqualToString:NSLocalizedString(@"DETAIL_POP_DELETE_TITLE", nil)]) {
+        if(buttonIndex == 1) {
+            [self deleteMovie];
+        }
     }
 }
 

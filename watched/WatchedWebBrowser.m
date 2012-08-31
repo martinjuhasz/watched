@@ -10,6 +10,9 @@
 #import <MessageUI/MessageUI.h>
 #import <Twitter/Twitter.h>
 #import "Reachability.h"
+#import "BrowserBarButtonItem.h"
+
+#define kButtonViewTag 500
 
 @interface WatchedWebBrowser () <UIWebViewDelegate, UIActionSheetDelegate, MFMailComposeViewControllerDelegate> {
     Reachability *reachability;
@@ -17,15 +20,6 @@
 @end
 
 @implementation WatchedWebBrowser
-
-@synthesize webView;
-@synthesize activityIndicator;
-@synthesize reloadButton;
-@synthesize forwardButton;
-@synthesize backButton;
-@synthesize actionButton;
-
-@synthesize url;
 
 
 
@@ -57,8 +51,23 @@
 	// Do any additional setup after loading the view.
     
     self.webView.delegate = self;
-    
     [self.webView loadRequest:[NSURLRequest requestWithURL:self.url]];
+    
+    self.reloadButton = [BrowserBarButtonItem browserItemWithImageName:@"g_browser_reload.png" disabledImageName:nil];
+    [self.reloadButton.button addTarget:self action:@selector(reloadButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+    self.forwardButton = [BrowserBarButtonItem browserItemWithImageName:@"g_browser_forward.png" disabledImageName:nil];
+    [self.forwardButton.button addTarget:self action:@selector(forwardButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+    self.backButton = [BrowserBarButtonItem browserItemWithImageName:@"g_browser_back.png" disabledImageName:nil];
+    [self.backButton.button addTarget:self action:@selector(backButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+    self.actionButton = [BrowserBarButtonItem browserItemWithImageName:@"g_browser_action.png" disabledImageName:nil];
+    [self.actionButton.button addTarget:self action:@selector(actionButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+    
+    UIBarButtonItem *fixed = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
+    fixed.width = 35.0f;
+    UIBarButtonItem *flexible = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+
+    self.toolbar.items = [NSArray arrayWithObjects:self.backButton,fixed,self.forwardButton,fixed,self.reloadButton,flexible,self.actionButton, nil];
+    
 }
 
 - (void)viewDidUnload
@@ -69,6 +78,7 @@
     [self setForwardButton:nil];
     [self setBackButton:nil];
     [self setActionButton:nil];
+    [self setToolbar:nil];
     [super viewDidUnload];
     // Release any retained subviews of the main view.
 }
@@ -104,15 +114,40 @@
     reachability = nil;
 }
 
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    self.navigationController.navigationBar.titleTextAttributes = [NSDictionary dictionaryWithObjectsAndKeys:
+                                                                   [UIFont fontWithName:@"HelveticaNeue-Bold" size:18.0f],
+                                                                   UITextAttributeFont,
+                                                                   nil];
+}
+
 - (void)dealloc
 {
     [self.webView setDelegate:nil];
 }
 
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
-    XLog("");
-    [self.navigationController setNavigationBarHidden:YES animated:YES];
-    [self.navigationController setNavigationBarHidden:NO animated:YES];
+    
+    if(UIInterfaceOrientationIsLandscape(toInterfaceOrientation)) {
+        self.navigationController.navigationBar.titleTextAttributes = [NSDictionary dictionaryWithObjectsAndKeys:
+                                                                       [UIFont fontWithName:@"HelveticaNeue-Bold" size:14.0f],
+                                                                       UITextAttributeFont, 
+                                                                       nil];
+    } else {
+        self.navigationController.navigationBar.titleTextAttributes = [NSDictionary dictionaryWithObjectsAndKeys:
+                                                                       [UIFont fontWithName:@"HelveticaNeue-Bold" size:18.0f],
+                                                                       UITextAttributeFont,
+                                                                       nil];
+    }
+    
+    [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationNone];
+    
+    // work-around for navigation bar appearing under status bar - must be called before -setNavigationBarHidden:
+    self.view.window.rootViewController.view.frame = [UIScreen mainScreen].applicationFrame;
+    
+    [self.navigationController setNavigationBarHidden:NO animated:NO];
 }
 
 
@@ -165,11 +200,18 @@
     if(self.webView.isLoading) {
         self.backButton.enabled = NO;
         self.forwardButton.enabled = NO;
-        self.reloadButton.title = @"st"; 
+        
+        UIImage *buttonImage = [UIImage imageNamed:@"g_browser_stop.png"];
+        [self.reloadButton.button setImage:buttonImage forState:UIControlStateNormal];
+        
     } else if (!self.webView.isLoading) {
         if(self.webView.canGoBack) self.backButton.enabled = YES;
         if(self.webView.canGoForward) self.forwardButton.enabled = YES;
-        self.reloadButton.title = @"re";
+        
+        UIImage *buttonImage = [UIImage imageNamed:@"g_browser_reload.png"];
+        [self.reloadButton.button setImage:buttonImage forState:UIControlStateNormal];
+        
+        
     }
     if(!self.webView.request.URL || [[self.webView.request.URL absoluteString] isEqualToString:@""]) {
         self.actionButton.enabled = NO;
@@ -223,6 +265,24 @@
     [shareActionSheet setCancelButtonIndex:[shareActionSheet numberOfButtons]-1];
     
     [shareActionSheet showInView:[UIApplication sharedApplication].keyWindow];
+}
+
+- (UIBarButtonItem*)buttonItemForToolbarWithImageName:(NSString*)imageName target:(SEL)target
+{
+    // Initialize the UIButton
+    UIImage *buttonImage = [UIImage imageNamed:imageName];
+    UIButton *aButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [aButton setImage:buttonImage forState:UIControlStateNormal];
+    aButton.frame = CGRectMake(0.0, 0.0, buttonImage.size.width, buttonImage.size.height);
+    aButton.showsTouchWhenHighlighted = YES;
+    aButton.tag = kButtonViewTag;
+    
+    // Initialize the UIBarButtonItem
+    UIBarButtonItem *aBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:aButton];
+    
+    // Set the Target and Action for aButton
+    [aButton addTarget:self action:target forControlEvents:UIControlEventTouchUpInside];
+    return aBarButtonItem;
 }
 
 

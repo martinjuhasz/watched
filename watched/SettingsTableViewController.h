@@ -14,6 +14,8 @@
 @property (nonatomic, strong) NSNumber *movieCount;
 @property (nonatomic, strong) NSNumber *movieVotedCount;
 @property (nonatomic, strong) NSNumber *averageRating;
+@property (nonatomic, strong) UILabel *movieCountLabel;
+@property (nonatomic, strong) UILabel *averageRatingLabel;
 
 - (IBAction)doneButtonClicked:(id)sender;
 

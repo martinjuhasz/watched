@@ -15,9 +15,6 @@
 @end
 
 @implementation MovieNoteViewController
-@synthesize navBar;
-@synthesize textView;
-@synthesize movie;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -32,7 +29,14 @@
 {
     [super viewDidLoad];
     self.navBar.topItem.title = self.title;
+    self.textView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"nv_bg_text.png"]];
     
+    self.titleLabel.text = self.movie.title;
+    
+    UIImage *starImage = [UIImage imageNamed:[NSString stringWithFormat:@"nv_rating%d.png", [self.movie.rating intValue]]];
+    self.starImageView.image = starImage;
+    
+    // adding default note
     if(self.movie.note) {
         self.textView.text = self.movie.note;
     } else {
@@ -46,6 +50,8 @@
 {
     [self setTextView:nil];
     [self setNavBar:nil];
+    [self setTitleLabel:nil];
+    [self setStarImageView:nil];
     [super viewDidUnload];
     // Release any retained subviews of the main view.
 }

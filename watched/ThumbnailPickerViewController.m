@@ -20,6 +20,9 @@
 @synthesize imageType;
 @synthesize delegate;
 
+#define kOverlayTag 23142
+#define kImageTag 23141
+
 
 ////////////////////////////////////////////////////////////////////////////
 #pragma mark -
@@ -39,10 +42,13 @@
     [super viewDidLoad];
     
     self.gridView = [[GMGridView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, 416.0f)];
-    self.gridView.backgroundColor = [UIColor clearColor];
+    self.gridView.backgroundColor = HEXColor(0xe6e6e6);
     self.gridView.style = GMGridViewStylePush;
-    self.gridView.itemSpacing = 10.0f;
-    self.gridView.minEdgeInsets = UIEdgeInsetsMake(10.0f, 10.0f, 10.0f, 10.0f);
+    self.gridView.itemSpacing = 3.0f;
+    if(self.imageType == ImageTypeBackdrop) {
+        self.gridView.minEdgeInsets = UIEdgeInsetsMake(9.0f, 9.0f, 9.0f, 0.0f);
+        self.gridView.itemSpacing = 8.0f;
+    }
     self.gridView.centerGrid = NO;
     self.gridView.alwaysBounceVertical = YES;
     self.gridView.actionDelegate = self;
@@ -81,8 +87,8 @@
 
 - (CGSize)GMGridView:(GMGridView *)gridView sizeForItemsInInterfaceOrientation:(UIInterfaceOrientation)orientation
 {
-    if(self.imageType == ImageTypePoster) return CGSizeMake(89.0f, 126.0f);
-    return CGSizeMake(300.0f, 126.0f);
+    if(self.imageType == ImageTypePoster) return CGSizeMake(75.0f, 103.0f);
+    return CGSizeMake(302.0f, 102.0f);
 }
 
 - (GMGridViewCell *)GMGridView:(GMGridView *)aGridView cellForItemAtIndex:(NSInteger)index
@@ -95,21 +101,47 @@
     {
         cell = [[GMGridViewCell alloc] init];
         
-        UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, size.width, size.height)];
-        view.backgroundColor = [UIColor grayColor];
-
+        UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, size.width, size.height)];
+        view.backgroundColor = [UIColor clearColor];
+        
+        // image
+        UIImageView *posterImageView = [[UIImageView alloc] init];
+        posterImageView.contentMode = UIViewContentModeScaleAspectFill;
+        posterImageView.clipsToBounds = YES;
+        if(self.imageType == ImageTypePoster) {
+            posterImageView.frame = CGRectMake(2.0f, 2.0f, 71.0f, 99.0f);
+        } else {
+            posterImageView.frame = CGRectMake(1.0f, 1.0f, 300.0f, 100.0f);
+        }
+        posterImageView.tag = kImageTag;
+        [view addSubview:posterImageView];
+        
+        // cover
+        UIImageView *posterCover = [[UIImageView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, size.width, size.height)];
+        posterCover.contentMode = UIViewContentModeScaleAspectFill;
+        posterCover.clipsToBounds = YES;
+        posterCover.tag = kOverlayTag;
+        if(self.imageType == ImageTypePoster) {
+            posterCover.image = [UIImage imageNamed:@"dv_cover-overlay.png"];
+        } else {
+            posterCover.image = [UIImage imageNamed:@"dv_poster-overlay.png"];
+        }
+        [view addSubview:posterCover];
+        
         cell.contentView = view;
     }
     
-    [[cell.contentView subviews] makeObjectsPerformSelector:@selector(removeFromSuperview)];
+    UIImageView *posterImageView = (UIImageView *)[cell viewWithTag:kImageTag];
+    UIImage *placeHolder;
     
-    UIImageView *imageView = [[UIImageView alloc] initWithFrame:cell.contentView.bounds];
-    imageView.clipsToBounds = YES;
-    imageView.contentMode = UIViewContentModeScaleAspectFill;
-    imageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    [imageView setImageWithURL:[[self.imageURLs objectAtIndex:index] objectForKey:@"url"]];
-    [cell.contentView addSubview:imageView];
+    if(self.imageType == ImageTypePoster) {
+        placeHolder = [UIImage imageNamed:@"dv_placeholder-cover.png"];
+    } else {
+        placeHolder = [UIImage imageNamed:@"dv_placeholder-poster.png"];
+    }
     
+    [posterImageView setImageWithURL:[[self.imageURLs objectAtIndex:index] objectForKey:@"url"] placeholderImage:placeHolder];
+
     return cell;
 }
 

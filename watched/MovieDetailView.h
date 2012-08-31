@@ -9,12 +9,9 @@
 #import <UIKit/UIKit.h>
 #import "DLStarRatingControl.h"
 #import "OnlineMovieDatabase.h"
+#import "MJGradientView.h"
 
 @interface MovieDetailView : UIView<UIScrollViewDelegate>
-
-@property (assign, nonatomic) BOOL trailerButtonEnabled;
-@property (assign, nonatomic) BOOL castButtonEnabled;
-@property (assign, nonatomic) BOOL websiteButtonEnabled;
 
 @property (strong, nonatomic) UIScrollView *mainScrollView;
 @property (strong, nonatomic) UIView *imageLoadingView;
@@ -24,29 +21,29 @@
 @property (strong, nonatomic) UIButton *backdropButton;
 @property (strong, nonatomic) UIButton *posterButton;
 @property (strong, nonatomic) UILabel *titleLabel;
-@property (strong, nonatomic) UISwitch *watchedSwitch;
+@property (strong, nonatomic) UILabel *yearLabel;
+@property (strong, nonatomic) UISegmentedControl *watchedControl;
 @property (strong, nonatomic) UILabel *directorLabel;
-@property (strong, nonatomic) UILabel *releaseDateLabel;
-@property (strong, nonatomic) UILabel *runtimeLabel;
-@property (strong, nonatomic) UIImageView *actor1ImageView;
+@property (strong, nonatomic) UIButton *releaseDateButton;
+@property (strong, nonatomic) UIButton *runtimeButton;
+@property (strong, nonatomic) UILabel *releaseDateTitleLabel;
+@property (strong, nonatomic) UILabel *runtimeTitleLabel;
 @property (strong, nonatomic) UILabel *actor1Label;
-@property (strong, nonatomic) UIButton *actor1Button;
-@property (strong, nonatomic) UIImageView *actor2ImageView;
 @property (strong, nonatomic) UILabel *actor2Label;
-@property (strong, nonatomic) UIButton *actor2Button;
-@property (strong, nonatomic) UIImageView *actor3ImageView;
 @property (strong, nonatomic) UILabel *actor3Label;
-@property (strong, nonatomic) UIButton *actor3Button;
+@property (strong, nonatomic) UILabel *actor4Label;
 @property (strong, nonatomic) UILabel *overviewLabel;
 @property (strong, nonatomic) UILabel *overviewTitleLabel;
 @property (strong, nonatomic) DLStarRatingControl *ratingView;
 @property (strong, nonatomic) UIButton *similarButton;
 @property (strong, nonatomic) UIButton *noteButton;
-@property (strong, nonatomic) UIButton *trailerButton;
-@property (strong, nonatomic) UIButton *castsButton;
-@property (strong, nonatomic) UIButton *websiteButton;
-//@property (strong, nonatomic) UIButton *refreshButton;
 @property (strong, nonatomic) UIButton *deleteButton;
+@property (strong, nonatomic) MJGradientView *movieDetailsBackgroundView;
+@property (strong, nonatomic) MJGradientView *overviewBackgroundView;
+@property (strong, nonatomic) MJGradientView *overviewBottomDividerView;
+@property (strong, nonatomic) MJGradientView *overviewBottomDividerDropshadowView;
+@property (strong, nonatomic) UIView *bottomBackgroundView;
+@property (strong, nonatomic) UITableView *metaTableView;
 
 - (void)toggleLoadingViewForPosterType:(ImageType)aImageType;
 
