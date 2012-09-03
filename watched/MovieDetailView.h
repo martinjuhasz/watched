@@ -10,6 +10,7 @@
 #import "DLStarRatingControl.h"
 #import "OnlineMovieDatabase.h"
 #import "MJGradientView.h"
+#import "MJSegmentedControl.h"
 
 @interface MovieDetailView : UIView<UIScrollViewDelegate>
 
@@ -22,7 +23,7 @@
 @property (strong, nonatomic) UIButton *posterButton;
 @property (strong, nonatomic) UILabel *titleLabel;
 @property (strong, nonatomic) UILabel *yearLabel;
-@property (strong, nonatomic) UISegmentedControl *watchedControl;
+@property (strong, nonatomic) MJSegmentedControl *watchedControl;
 @property (strong, nonatomic) UILabel *directorLabel;
 @property (strong, nonatomic) UIButton *releaseDateButton;
 @property (strong, nonatomic) UIButton *runtimeButton;
@@ -35,8 +36,6 @@
 @property (strong, nonatomic) UILabel *overviewLabel;
 @property (strong, nonatomic) UILabel *overviewTitleLabel;
 @property (strong, nonatomic) DLStarRatingControl *ratingView;
-@property (strong, nonatomic) UIButton *similarButton;
-@property (strong, nonatomic) UIButton *noteButton;
 @property (strong, nonatomic) UIButton *deleteButton;
 @property (strong, nonatomic) MJGradientView *movieDetailsBackgroundView;
 @property (strong, nonatomic) MJGradientView *overviewBackgroundView;

@@ -95,24 +95,18 @@
     
     self.overviewBottomDividerView.frame = CGRectMake(0.0f, self.overviewBackgroundView.bottom, 320.0f, 10.0f);
     self.overviewBottomDividerDropshadowView.frame = CGRectMake(0.0f, self.overviewBottomDividerView.bottom, 320.0f, 3.0f);
-    self.metaTableView.frame = CGRectMake(0.0f, self.overviewBottomDividerDropshadowView.top, 320.0f, 181.0f);
+    self.metaTableView.frame = CGRectMake(0.0f, self.overviewBottomDividerDropshadowView.top, 320.0f, 287.0f);
     
-    self.bottomBackgroundView.frame = CGRectMake(0.0f, self.metaTableView.bottom, 320.0f, 62.0f);
+    self.bottomBackgroundView.frame = CGRectMake(0.0f, self.metaTableView.bottom, 320.0f, 70.0f);
     
-    // Note Button
-    self.noteButton.frame = CGRectMake(165.0f, self.bottomBackgroundView.top + 11.0f, 145.0f, 30.0f);
+    self.deleteButton.frame = CGRectMake(10.0f, self.metaTableView.bottom + 16.0f, 300.0f, 40.0f);
     
-    self.similarButton.frame = CGRectMake(10.0f, self.bottomBackgroundView.top + 11.0f, 145.0f, 30.0f);
-    lastPostition = self.similarButton.bottom + 30.0f;
-
-    self.deleteButton.frame = CGRectMake(13.0f, lastPostition, 294.0f, 25.0f);
-    
-    [self.mainScrollView setContentSize:CGSizeMake(320.0f, self.deleteButton.bottom + 10.0f)];
+    [self.mainScrollView setContentSize:CGSizeMake(320.0f, self.bottomBackgroundView.bottom)];
 }
 
 - (void)setupContent
 {
-    self.backgroundColor = HEXColor(DEFAULT_COLOR_BG);
+    self.backgroundColor = HEXColor(0x333433);
     
     self.mainScrollView = [[UIScrollView alloc] initWithFrame:self.frame];
     self.mainScrollView.delegate = self;
@@ -209,7 +203,7 @@
     starringTitleLabel.shadowOffset = CGSizeMake(0.0f, 1.0f);
     [self.mainScrollView addSubview:starringTitleLabel];
     
-    self.watchedControl = [[UISegmentedControl alloc] initWithItems:[NSArray arrayWithObjects:
+    self.watchedControl = [[MJSegmentedControl alloc] initWithItems:[NSArray arrayWithObjects:
                                                                      NSLocalizedString(@"DV_CONTROL_WATCHED", nil),
                                                                      NSLocalizedString(@"DV_CONTROL_UNWATCHED", nil), nil]];
     
@@ -235,7 +229,7 @@
     [self.mainScrollView addSubview:self.ratingView];
     
     
-    self.metaTableView = [[UITableView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, 181.0f) style:UITableViewStyleGrouped];
+    self.metaTableView = [[UITableView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, 287.0f) style:UITableViewStyleGrouped];
     self.metaTableView.scrollEnabled = NO;
     self.metaTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.metaTableView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"g_bg-grp_table.png"]];
@@ -301,13 +295,6 @@
     self.runtimeTitleLabel.shadowOffset = CGSizeMake(0.0f, 1.0f);
     self.runtimeTitleLabel.text = [NSLocalizedString(@"DETAIL_RUNTIME_TITLE", nil) uppercaseString];
     [self.mainScrollView addSubview:self.runtimeTitleLabel];
-    
-    self.similarButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    self.similarButton.titleLabel.font = [UIFont boldSystemFontOfSize:16.0f];
-    self.similarButton.titleLabel.adjustsFontSizeToFitWidth = NO;
-    self.similarButton.titleColor = HEXColor(0xABADAF);
-    [self.similarButton setTitle:NSLocalizedString(@"BUTTON_SIMILAR", nil)];
-    [self.mainScrollView addSubview:self.similarButton];
     
     
     
@@ -395,43 +382,22 @@
     
     
     self.bottomBackgroundView = [[UIView alloc] initWithFrame:CGRectZero];
-    self.bottomBackgroundView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"dv_bg-more.png"]];
+    self.bottomBackgroundView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"dv_bg-delete.png"]];
     [self.mainScrollView addSubview:self.bottomBackgroundView];
     
-    UIImage *moreButtonBgImage = [[UIImage imageNamed:@"dv_button-more.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(4, 4, 5, 4)];
-    UIImage *moreButtonActiveBgImage = [[UIImage imageNamed:@"dv_button-more_highlighted.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(4, 4, 5, 4)];
-    
-    self.similarButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    self.similarButton.titleLabel.font = [UIFont boldSystemFontOfSize:12.0f];
-    self.similarButton.titleLabel.adjustsFontSizeToFitWidth = NO;
-    self.similarButton.titleColor = HEXColor(0xFFFFFF);
-    self.similarButton.titleLabel.shadowColor = [UIColor colorWithRed:0.0f green:0.0f blue:0.0f alpha:0.80f];
-    self.similarButton.titleLabel.shadowOffset = CGSizeMake(0.0f, 1.0f);
-    [self.similarButton setBackgroundImage:moreButtonBgImage];
-    [self.similarButton setBackgroundImage:moreButtonActiveBgImage forState:UIControlStateHighlighted];
-    [self.similarButton setTitle:[NSLocalizedString(@"BUTTON_SIMILAR", nil) uppercaseString]];
-    [self.mainScrollView addSubview:self.similarButton];
-    
-    self.noteButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    self.noteButton.titleLabel.font = [UIFont boldSystemFontOfSize:12.0f];
-    self.noteButton.titleLabel.adjustsFontSizeToFitWidth = NO;
-    self.noteButton.titleColor = HEXColor(0xFFFFFF);
-    self.noteButton.titleLabel.shadowColor = [UIColor colorWithRed:0.0f green:0.0f blue:0.0f alpha:0.80f];
-    self.noteButton.titleLabel.shadowOffset = CGSizeMake(0.0f, 1.0f);
-    [self.noteButton setBackgroundImage:moreButtonBgImage];
-    [self.noteButton setBackgroundImage:moreButtonActiveBgImage forState:UIControlStateHighlighted];
-    [self.noteButton setTitle:[NSLocalizedString(@"BUTTON_ADD_NOTE", nil) uppercaseString]];
-    [self.mainScrollView addSubview:self.noteButton];
-    
     self.deleteButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    self.deleteButton.titleLabel.font = [UIFont boldSystemFontOfSize:12.0f];
+    self.deleteButton.titleLabel.font = [UIFont boldSystemFontOfSize:14.0f];
     self.deleteButton.titleLabel.adjustsFontSizeToFitWidth = NO;
     self.deleteButton.titleColor = HEXColor(0xFFFFFF);
-    self.deleteButton.titleLabel.shadowColor = [UIColor colorWithRed:0.0f green:0.0f blue:0.0f alpha:0.80f];
+    self.deleteButton.titleLabel.shadowColor = [UIColor colorWithRed:0.0f green:0.0f blue:0.0f alpha:0.44f];
     self.deleteButton.titleLabel.shadowOffset = CGSizeMake(0.0f, 1.0f);
-    [self.deleteButton setForegroundImage:[UIImage imageNamed:@"dv_button-delete-icon.png"]];
-    self.deleteButton.titleEdgeInsets = UIEdgeInsetsMake(0.0f, 7.0f, 0.0f, 0.0f);
     [self.deleteButton setTitle:[NSLocalizedString(@"BUTTON_DELETE_MOVIE", nil) uppercaseString]];
+    
+    UIImage *deleteBg = [[UIImage imageNamed:@"dv_button-delete.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(4, 4, 4, 4)];
+    UIImage *deleteBgActive = [[UIImage imageNamed:@"dv_button-delete-selected.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(4, 4, 4, 4)];
+    
+    [self.deleteButton setBackgroundImage:deleteBg];
+    [self.deleteButton setBackgroundImage:deleteBgActive forState:UIControlStateHighlighted];
     [self.mainScrollView addSubview:self.deleteButton];
     
 }

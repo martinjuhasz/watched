@@ -13,6 +13,8 @@
 #import "AddMovieViewController.h"
 #import "MJCustomTableViewCell.h"
 #import "WatchedWebBrowser.h"
+#import "AddMovieViewController.h"
+#import "MJInternetConnection.h"
 
 
 @interface AppDelegate ()<AddMovieViewDelegate> {
@@ -28,6 +30,7 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     [self setStyles];
+    [MJInternetConnection sharedInternetConnection];
     
     // Override point for customization after application launch.
     [TestFlight takeOff:@"bd44b4d15d82ebee20573cbad8c85c83_MzE1MTMyMDExLTExLTA1IDEzOjA0OjU2LjU3ODE3Mg"];
@@ -65,6 +68,13 @@
     [[UINavigationBar appearance] setBackgroundImage:navigationBarBgImageLS forBarMetrics:UIBarMetricsLandscapePhone];
     [[UIBarButtonItem appearance] setBackButtonBackgroundImage:navigationBarBackBgImageLS forState:UIControlStateNormal barMetrics:UIBarMetricsLandscapePhone];
     [[UIBarButtonItem appearance] setBackButtonBackgroundImage:navigationBarBackBgImageActiveLS forState:UIControlStateHighlighted barMetrics:UIBarMetricsLandscapePhone];
+    
+    // UINavigationBar Popover
+    UIImage *navigationPopoverBarBgImage = [[UIImage imageNamed:@"pv_bg_navbar.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(16.0f, 12.0f, 7.0f, 12.0f)];
+     [[UINavigationBar appearanceWhenContainedIn:[AddMovieViewController class], nil] setBackgroundImage:navigationPopoverBarBgImage forBarMetrics:UIBarMetricsDefault];
+    [[UIToolbar appearanceWhenContainedIn:[AddMovieViewController class], nil] setBackgroundImage:navigationPopoverBarBgImage forToolbarPosition:UIToolbarPositionAny barMetrics:UIBarMetricsDefault];
+    
+    
     
     [[UINavigationBar appearance] setTitleTextAttributes:
      [NSDictionary dictionaryWithObjectsAndKeys:

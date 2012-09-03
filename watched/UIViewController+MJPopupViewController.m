@@ -64,14 +64,17 @@
     if ([sourceView.subviews containsObject:popupView]) return;
     
     // customize popupView
-//    popupView.layer.cornerRadius = 6.0f;
+//    popupView.layer.cornerRadius = 10.0f;
+//    popupView.layer.borderWidth = 1.0f;
+//    popupView.layer.borderColor = [UIColor blackColor].CGColor;
 //    popupView.layer.shadowPath = [UIBezierPath bezierPathWithRoundedRect:popupView.bounds cornerRadius:6.0f].CGPath;
 //    popupView.layer.masksToBounds = YES;
-    popupView.layer.shadowPath = [UIBezierPath bezierPathWithRect:popupView.bounds].CGPath;
-    popupView.layer.masksToBounds = NO;
-    popupView.layer.shadowOffset = CGSizeMake(5, 5);
-    popupView.layer.shadowRadius = 5;
-    popupView.layer.shadowOpacity = 0.5;
+////    popupView.layer.shadowPath = [UIBezierPath bezierPathWithRect:popupView.bounds].CGPath;
+////    popupView.layer.masksToBounds = NO;
+//    popupView.layer.shadowOffset = CGSizeMake(5, 5);
+//    popupView.layer.shadowRadius = 5;
+//    popupView.layer.shadowOpacity = 0.5;
+
     
     // Add semi overlay
     UIView *overlayView = [[UIView alloc] initWithFrame:sourceView.bounds];
@@ -89,6 +92,7 @@
     UIButton * dismissButton = [UIButton buttonWithType:UIButtonTypeCustom];
     dismissButton.backgroundColor = [UIColor clearColor];
     dismissButton.frame = sourceView.frame;
+    dismissButton.enabled = NO;
     [overlayView addSubview:dismissButton];
     
     popupView.alpha = 0.0f;
@@ -169,23 +173,23 @@
     // Generating Start and Stop Positions
     CGSize sourceSize = sourceView.frame.size;
     CGSize popupSize = popupView.frame.size;
+    
     CGRect popupStartRect;
     if(animationType == PopupViewAnimationSlideBottomTop || animationType == PopupViewAnimationSlideBottomBottom) {
-        popupStartRect = CGRectMake((sourceSize.width - popupSize.width) / 2, 
+        popupStartRect = CGRectMake(floorf((sourceSize.width - popupSize.width) / 2),
                                     sourceSize.height, 
                                     popupSize.width, 
                                     popupSize.height);
     } else {
         popupStartRect = CGRectMake(sourceSize.width, 
-                                    (sourceSize.height - popupSize.height) / 2,
+                                    floorf((sourceSize.height - popupSize.height) / 2),
                                     popupSize.width, 
                                     popupSize.height);
     }
-    CGRect popupEndRect = CGRectMake((sourceSize.width - popupSize.width) / 2, 
-                                     (sourceSize.height - popupSize.height) / 2,
+    CGRect popupEndRect = CGRectMake(floorf((sourceSize.width - popupSize.width) / 2),
+                                     floorf((sourceSize.height - popupSize.height) / 2),
                                      popupSize.width, 
                                      popupSize.height);
-    
     // Set starting properties
     popupView.frame = popupStartRect;
     popupView.alpha = 1.0f;
@@ -205,12 +209,12 @@
     CGSize popupSize = popupView.frame.size;
     CGRect popupEndRect;
     if(animationType == PopupViewAnimationSlideBottomTop) {
-        popupEndRect = CGRectMake((sourceSize.width - popupSize.width) / 2, 
+        popupEndRect = CGRectMake(floorf((sourceSize.width - popupSize.width) / 2),
                                   -popupSize.height, 
                                   popupSize.width, 
                                   popupSize.height);
     } else if(animationType == PopupViewAnimationSlideBottomBottom) {
-        popupEndRect = CGRectMake((sourceSize.width - popupSize.width) / 2, 
+        popupEndRect = CGRectMake(floorf((sourceSize.width - popupSize.width) / 2),
                                   sourceSize.height, 
                                   popupSize.width, 
                                   popupSize.height);
@@ -239,8 +243,8 @@
     // Generating Start and Stop Positions
     CGSize sourceSize = sourceView.frame.size;
     CGSize popupSize = popupView.frame.size;
-    CGRect popupEndRect = CGRectMake((sourceSize.width - popupSize.width) / 2, 
-                                     (sourceSize.height - popupSize.height) / 2,
+    CGRect popupEndRect = CGRectMake(floorf((sourceSize.width - popupSize.width) / 2),
+                                     floorf((sourceSize.height - popupSize.height) / 2),
                                      popupSize.width, 
                                      popupSize.height);
     

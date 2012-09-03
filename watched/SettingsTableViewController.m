@@ -16,6 +16,8 @@
 #import "AFJSONRequestOperation.h"
 #import "MJCustomTableViewCell.h"
 #import "MJCustomAccessoryControl.h"
+#import "PDDebugger.h"
+#import "BlockAlertView.h"
 
 @interface SettingsTableViewController () <MFMailComposeViewControllerDelegate>
 
@@ -47,6 +49,7 @@
                      [NSArray arrayWithObjects:
                       [NSDictionary dictionaryWithObject:@"Feedback" forKey:@"name"],
                       [NSDictionary dictionaryWithObject:@"Dummy Content" forKey:@"name"],
+                      [NSDictionary dictionaryWithObject:@"Toggle debugger" forKey:@"name"],
                       nil],
                  nil];
     
@@ -134,7 +137,7 @@
 {
 	UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, tableView.bounds.size.width, 43.0f)];
 	tableView.sectionHeaderHeight = headerView.frame.size.height;
-	UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(20.0f, 10.0f, headerView.frame.size.width - 20.0f, 22.0f)];
+	UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(11.0f, 10.0f, headerView.frame.size.width - 20.0f, 22.0f)];
 	label.text = [self tableView:tableView titleForHeaderInSection:section];
 	label.font = [UIFont boldSystemFontOfSize:17.0f];
 	label.shadowOffset = CGSizeMake(0.0f, 1.0f);
@@ -168,12 +171,16 @@
     if(indexPath.section == 0) {
         if(indexPath.row == 0)
         {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"SETTINGS_POP_RESET_TITLE", nil)
-                                                            message:NSLocalizedString(@"SETTINGS_POP_RESET_CONTENT", nil)
-                                                           delegate:self 
-                                                  cancelButtonTitle:NSLocalizedString(@"SETTINGS_POP_RESET_CANCEL", nil)
-                                                  otherButtonTitles:NSLocalizedString(@"SETTINGS_POP_RESET_OK", nil), nil];
+            
+            BlockAlertView *alert = [BlockAlertView alertWithTitle:NSLocalizedString(@"SETTINGS_POP_RESET_TITLE", nil)
+                                                           message:NSLocalizedString(@"SETTINGS_POP_RESET_CONTENT", nil)];
+            
+            [alert setCancelButtonWithTitle:NSLocalizedString(@"SETTINGS_POP_RESET_CANCEL", nil) block:nil];
+            [alert setDestructiveButtonWithTitle:NSLocalizedString(@"SETTINGS_POP_RESET_OK", nil) block:^{
+                [self removeAllMovies];
+            }];
             [alert show];
+            
         } else if (indexPath.row == 1) {
             [self refreshAllMovies];
         }
@@ -196,12 +203,17 @@
 
         }
         if(indexPath.row == 1) {
-            NSURL *url = [NSURL URLWithString:@"http://martinjuhasz.de"];
+            NSURL *url = [NSURL URLWithString:@"http://watchedforios.com"];
             [self performSegueWithIdentifier:@"SettingsBrowserSegue" sender:url];
         }
         if (indexPath.row == 2) {
-            NSURL *url = [NSURL URLWithString:@"https://twitter.com/watchedapp"];
-            [self performSegueWithIdentifier:@"SettingsBrowserSegue" sender:url];
+            if([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"twitter://"]]) {
+                [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"twitter://user?screen_name=watchedapp"]];
+                [tableView deselectRowAtIndexPath:indexPath animated:YES];
+            } else {
+                NSURL *url = [NSURL URLWithString:@"https://twitter.com/watchedapp"];
+                [self performSegueWithIdentifier:@"SettingsBrowserSegue" sender:url];
+            }
         }
     }
     
@@ -211,6 +223,8 @@
             [TestFlight openFeedbackView];
         } else if (indexPath.row == 1) {
             [self loadDummyContent];
+        } else if (indexPath.row == 2) {
+            [self toggleDebugger];
         }
         [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
     }
@@ -267,18 +281,18 @@
 
 
 
-////////////////////////////////////////////////////////////////////////////
-#pragma mark -
-#pragma mark UIAlertViewDelegate
-
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-    if([alertView.title isEqualToString:NSLocalizedString(@"SETTINGS_POP_RESET_TITLE", nil)]) {
-        if(buttonIndex == 1) {
-            [self removeAllMovies];
-        }
-    }
-}
+//////////////////////////////////////////////////////////////////////////////
+//#pragma mark -
+//#pragma mark UIAlertViewDelegate
+//
+//- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+//{
+//    if([alertView.title isEqualToString:NSLocalizedString(@"SETTINGS_POP_RESET_TITLE", nil)]) {
+//        if(buttonIndex == 1) {
+//            [self removeAllMovies];
+//        }
+//    }
+//}
 
 
 
@@ -384,6 +398,37 @@
 ////////////////////////////////////////////////////////////////////////////
 #pragma mark -
 #pragma mark BETA
+
+- (void)toggleDebugger
+{
+    PDDebugger *debugger = [PDDebugger defaultInstance];
+    NSString *status;
+    if(![debugger isConnected]) {
+        // http debug
+        [debugger connectToURL:[NSURL URLWithString:@"ws://10.0.1.11:9000/device"]];
+        [debugger enableNetworkTrafficDebugging];
+        // TODO: Private API Call!
+        [debugger forwardAllNetworkTraffic];
+        
+        status = @"activated";
+        
+        // core data
+        [debugger enableCoreDataDebugging];
+        [debugger addManagedObjectContext:[[MoviesDataModel sharedDataModel] mainContext] withName:@"Main Context"];
+    } else {
+        [debugger removeManagedObjectContext:[[MoviesDataModel sharedDataModel] mainContext]];
+        [debugger disconnect];
+        status = @"disabled";
+    }
+    
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Debugger"
+                                                    message:[NSString stringWithFormat:@"Debugger %@", status]
+                                                   delegate:nil
+                                          cancelButtonTitle:@"OK"
+                                          otherButtonTitles:nil];
+    [alert show];
+    
+}
 
 - (void)loadDummyContent
 {
@@ -565,7 +610,7 @@
     UIView *footerView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 20.0f, 320.0f, 52.0f)];
     footerView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"sv_bg_footerview.png"]];
     
-    UILabel *watchedLabel = [[UILabel alloc] initWithFrame:CGRectMake(14.0f, 2.0f, 140.0f, 30.0f)];
+    UILabel *watchedLabel = [[UILabel alloc] initWithFrame:CGRectMake(12.0f, 4.0f, 140.0f, 30.0f)];
     watchedLabel.font = [UIFont boldSystemFontOfSize:16.0f];
     watchedLabel.shadowColor = [UIColor colorWithRed:0.0f green:0.0f blue:0.0f alpha:0.8f];
     watchedLabel.shadowOffset = CGSizeMake(0.0f, 1.0f);
@@ -574,12 +619,13 @@
     watchedLabel.backgroundColor = [UIColor clearColor];
     [footerView addSubview:watchedLabel];
     
-    UILabel *versionLabel = [[UILabel alloc] initWithFrame:CGRectMake(14.0f, 22.0f, 140.0f, 30.0f)];
-    versionLabel.font = [UIFont boldSystemFontOfSize:16.0f];
+    UILabel *versionLabel = [[UILabel alloc] initWithFrame:CGRectMake(13.0f, 19.0f, 140.0f, 30.0f)];
+    versionLabel.font = [UIFont systemFontOfSize:10.0f];
     versionLabel.shadowColor = [UIColor colorWithRed:0.0f green:0.0f blue:0.0f alpha:0.44f];
     versionLabel.shadowOffset = CGSizeMake(0.0f, 1.0f);
     versionLabel.textColor = HEXColor(0xCCCCCC);
-    versionLabel.text = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
+    NSString *versionString = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
+    versionLabel.text = [NSString stringWithFormat:@"%@ %@",NSLocalizedString(@"SETTINGS_VERSION", nil), versionString];
     versionLabel.backgroundColor = [UIColor clearColor];
     [footerView addSubview:versionLabel];
     

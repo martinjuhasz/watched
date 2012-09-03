@@ -195,17 +195,14 @@ static NSString *databaseURL = @"http://api.themoviedb.org/3";
     NSURLRequest *request = [NSURLRequest requestWithURL:imageURL];
 
     AFImageRequestOperation *operation;
-    operation = [AFImageRequestOperation imageRequestOperationWithRequest:request 
-                                                     imageProcessingBlock:nil 
-                                                                cacheName:nil 
-                                                                  success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-                                                                      [self resizeImage:image toWidth:width completion:^(UIImage *resizedImage){
-                                                                          callback(resizedImage);
-                                                                      }];
-                                                                  } 
-                                                                  failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
-                                                                      failure(error);
-                                                                  }];
+    operation = [AFImageRequestOperation imageRequestOperationWithRequest:request imageProcessingBlock:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+        [self resizeImage:image toWidth:width completion:^(UIImage *resizedImage){
+            callback(resizedImage);
+        }];
+    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
+        failure(error);
+    }];
+
     return operation;
 }
 

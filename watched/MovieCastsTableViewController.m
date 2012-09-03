@@ -13,20 +13,15 @@
 #import "Cast.h"
 #import "Crew.h"
 #import "WatchedWebBrowser.h"
-#import "Reachability.h"
 #import "MovieCastTableViewCell.h"
 #import "MJCustomAccessoryControl.h"
 
-@interface MovieCastsTableViewController () {
-    Reachability *reachability;
-}
-
+@interface MovieCastsTableViewController ()
 @end
 
 @implementation MovieCastsTableViewController
 
 @synthesize movie;
-@synthesize internetAvailable;
 
 const int kMovieCastCellCharacterLabel = 100;
 const int kMovieCastCellNameLabel = 101;
@@ -63,30 +58,6 @@ const int kMovieCastCellProfileImageView = 200;
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
-- (void)viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
-    
-    // check reachability
-    internetAvailable = YES;
-    __weak MovieCastsTableViewController *blockSelf = self;
-    reachability = [Reachability reachabilityWithHostname:@"www.google.com"];
-    reachability.reachableBlock = ^(Reachability*reach) {
-        blockSelf.internetAvailable = YES;
-    };
-    reachability.unreachableBlock = ^(Reachability*reach) {
-        blockSelf.internetAvailable = NO;
-    };
-    [reachability startNotifier];
-}
-
-- (void)viewDidDisappear:(BOOL)animated
-{
-    [super viewDidDisappear:animated];
-    [reachability stopNotifier];
-    reachability = nil;
-}
-
 
 
 ////////////////////////////////////////////////////////////////////////////
@@ -95,15 +66,6 @@ const int kMovieCastCellProfileImageView = 200;
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if(!self.internetAvailable) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"ALERT_NOINTERNET_TITLE", nil)
-                                                        message:NSLocalizedString(@"ALERT_NOINTERNET_TITLE_CONTENT", nil)
-                                                       delegate:nil 
-                                              cancelButtonTitle:NSLocalizedString(@"ALERT_NOINTERNET_TITLE_OK", nil)
-                                              otherButtonTitles:nil];
-        [alert show];
-        return;
-    }
     [self performSegueWithIdentifier:@"CastWebViewSegue" sender:indexPath];
 }
 
@@ -194,7 +156,12 @@ const int kMovieCastCellProfileImageView = 200;
     
     Cast *currentCast = [self.movie.sortedCasts objectAtIndex:indexPath.row];
     
-    characterLabel.text = [NSString stringWithFormat:NSLocalizedString(@"CAST_CHARACTER_PREFIX", nil), currentCast.character];
+    if(currentCast.character && ![currentCast.character isEqualToString:@""]) {
+        characterLabel.text = [NSString stringWithFormat:NSLocalizedString(@"CAST_CHARACTER_PREFIX", nil), currentCast.character];
+    } else {
+        characterLabel.text = @"";
+    }
+    
     nameLabel.text = currentCast.name;
     NSURL *imageURL = [[OnlineMovieDatabase sharedMovieDatabase] getImageURLForImagePath:currentCast.profilePath imageType:ImageTypeProfile nearWidth:200.0f];
     [profileImageView setImageWithURL:imageURL placeholderImage:[UIImage imageNamed:@"cv_actor-placeholder.png"]];
@@ -212,7 +179,12 @@ const int kMovieCastCellProfileImageView = 200;
     
     Crew *currentCrew = [self.movie.sortedCrews objectAtIndex:indexPath.row];
     
-    characterLabel.text = currentCrew.job;
+    if(currentCrew.job && ![currentCrew.job isEqualToString:@""]) {
+        characterLabel.text = currentCrew.job;
+    } else {
+        characterLabel.text = @"";
+    }
+    
     nameLabel.text = currentCrew.name;
     NSURL *imageURL = [[OnlineMovieDatabase sharedMovieDatabase] getImageURLForImagePath:currentCrew.profilePath imageType:ImageTypeProfile nearWidth:200.0f];
     [profileImageView setImageWithURL:imageURL placeholderImage:[UIImage imageNamed:@"cv_actor-placeholder.png"]];

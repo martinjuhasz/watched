@@ -1,17 +1,21 @@
 PODS:
-  - AFNetworking (1.0RC1)
+  - AFNetworking (0.10.0)
+  - BlockAlertsAnd-ActionSheets (1.0.0)
   - GMGridView (1.1.1)
   - MBProgressHUD (0.5)
   - MJStarRating (1.0)
   - OBGradientView (1.0)
-  - Reachability (3.0.0)
-  - TestFlightSDK (1.0)
+  - PonyDebugger (0.0.1):
+    - SocketRocket
+  - SocketRocket (0.1)
+  - TestFlightSDK (1.1.beta1)
 
 DEPENDENCIES:
-  - AFNetworking
+  - AFNetworking (from `https://raw.github.com/AFNetworking/AFNetworking/730c35926ad926cab80d053c895f3444daa85f23/AFNetworking.podspec')
+  - BlockAlertsAnd-ActionSheets (from `BlockAlertsAnd-ActionSheets.podspec')
   - GMGridView
   - MBProgressHUD
   - MJStarRating (from `MJStarRating.podspec')
   - OBGradientView (from `OBGradientView.podspec')
-  - Reachability
+  - PonyDebugger
   - TestFlightSDK

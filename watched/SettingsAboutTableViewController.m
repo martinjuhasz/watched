@@ -10,6 +10,10 @@
 #import "WatchedLocalWebBrowser.h"
 #import "MJCustomTableViewCell.h"
 #import "MJCustomAccessoryControl.h"
+#import "WatchedWebBrowser.h"
+
+#define kCreatorImageView 64826
+#define kCreatorNameLabel 64827
 
 @interface SettingsAboutTableViewController ()
 
@@ -84,18 +88,60 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    MJCustomTableViewCell *cell;
+    
+    if(indexPath.section == 0) {
+        cell = [self creatorCellForIndexPath:indexPath];
+    } else {
+        cell = [self defaultCellForIndexPath:indexPath];
+    }
+    
+    [cell configureForTableView:tableView indexPath:indexPath];
+    
+    return cell;
+}
+
+- (MJCustomTableViewCell*)defaultCellForIndexPath:(NSIndexPath*)indexPath
+{
     static NSString *CellIdentifier = @"SettingsTableViewCellCustom";
-    MJCustomTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    
+    MJCustomTableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
         cell = [[MJCustomTableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier];
     }
-    [cell configureForTableView:tableView indexPath:indexPath];
     
     MJCustomAccessoryControl *accessoryView = [MJCustomAccessoryControl accessory];
     [cell setAccessoryView:accessoryView];
     
     // Configure the cell...
     cell.textLabel.text = [[[settings objectAtIndex:indexPath.section] objectAtIndex:indexPath.row] objectForKey:@"name"];
+    
+    return cell;
+}
+
+- (MJCustomTableViewCell*)creatorCellForIndexPath:(NSIndexPath*)indexPath
+{
+    static NSString *CellIdentifier = @"AboutCreatorTableCell";
+    
+    MJCustomTableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    if (cell == nil) {
+        cell = [[MJCustomTableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier];
+    }
+    
+    MJCustomAccessoryControl *accessoryView = [MJCustomAccessoryControl accessory];
+    [cell setAccessoryView:accessoryView];
+    
+    UIImageView *imageView = (UIImageView*)[cell viewWithTag:kCreatorImageView];
+    UILabel *nameLabel = (UILabel*)[cell viewWithTag:kCreatorNameLabel];
+    
+    // Configure the cell...
+    nameLabel.text = [[[settings objectAtIndex:indexPath.section] objectAtIndex:indexPath.row] objectForKey:@"name"];
+    if(indexPath.row == 0) {
+        imageView.image = [UIImage imageNamed:@"av_thumbnail-martin.png"];
+    } else {
+        imageView.image = [UIImage imageNamed:@"av_thumbnail-marius.png"];
+    }
+    
     
     return cell;
 }
@@ -116,7 +162,7 @@
 {
 	UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, tableView.bounds.size.width, 43.0f)];
 	tableView.sectionHeaderHeight = headerView.frame.size.height;
-	UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(20.0f, 10.0f, headerView.frame.size.width - 20.0f, 22.0f)];
+	UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(11.0f, 10.0f, headerView.frame.size.width - 20.0f, 22.0f)];
 	label.text = [self tableView:tableView titleForHeaderInSection:section];
 	label.font = [UIFont boldSystemFontOfSize:17.0f];
 	label.shadowOffset = CGSizeMake(0.0f, 1.0f);
@@ -142,14 +188,16 @@
 {
     
     NSURL *url;
-    
+    NSString *segueName;
     if (indexPath.section == 0) {
+        segueName = @"SettingsBrowserSegue";
         if(indexPath.row == 0) {
-            url = [NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"settings_martin" ofType:@"html"]];
+            url = [NSURL URLWithString:@"http://martinjuhasz.de"];
         } else if(indexPath.row == 1) {
-            url = [NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"settings_marius" ofType:@"html"]];
+            url = [NSURL URLWithString:@"http://dribbble.com/rnarius"];
         }
     } else if (indexPath.section == 1) {
+        segueName = @"SettingsLocalBrowserSegue";
         NSString *fileName = @"";
         switch (indexPath.row) {
             case 0:
@@ -173,7 +221,7 @@
         }
         url = [NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:fileName ofType:@"html"]];
     }
-    [self performSegueWithIdentifier:@"SettingsLocalBrowserSegue" sender:url];
+    [self performSegueWithIdentifier:segueName sender:url];
 }
 
 
@@ -190,6 +238,11 @@
             WatchedLocalWebBrowser *browser = (WatchedLocalWebBrowser*)segue.destinationViewController;
             browser.url = sender;
             browser.title = aCell.textLabel.text;
+        }
+    } else if([segue.identifier isEqualToString:@"SettingsBrowserSegue"]) {
+        if([sender isKindOfClass:[NSURL class]]) {
+            WatchedWebBrowser *browser = (WatchedWebBrowser*)segue.destinationViewController;
+            browser.url = sender;
         }
     }
 }

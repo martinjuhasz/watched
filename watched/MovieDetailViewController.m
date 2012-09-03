@@ -25,17 +25,18 @@
 #import "WatchedWebBrowser.h"
 #import "SearchMovieViewController.h"
 #import "AFImageRequestOperation.h"
-#import "Reachability.h"
 #import "AFJSONRequestOperation.h"
 #import "UIButton+Additions.h"
 #import "MJCustomTableViewCell.h"
 #import "MJCustomAccessoryControl.h"
+#import "BlockActionSheet.h"
+#import "BlockAlertView.h"
+#import "MJInternetConnection.h"
 
 #define kImageFadeDelay 0.0f
 
 @interface MovieDetailViewController ()<ThumbnailPickerDelegate> {
     BOOL isLoadingImages;
-    Reachability *reachability;
 }
 
 @end
@@ -44,7 +45,6 @@
 
 @synthesize movie;
 @synthesize detailView;
-@synthesize internetAvailable;
 
 
 
@@ -73,16 +73,17 @@
     self.detailView.ratingView.delegate = self;
     isLoadingImages = NO;
     
+    
     // set contents and enable buttone
     [self setContent];
 
     [self.detailView.backdropButton addTarget:self action:@selector(posterButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
     [self.detailView.posterButton addTarget:self action:@selector(posterButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
     [self.detailView.watchedControl addTarget:self action:@selector(watchedControlChanged:) forControlEvents:UIControlEventValueChanged];
-    [self.detailView.similarButton addTarget:self action:@selector(similarButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
-    [self.detailView.noteButton addTarget:self action:@selector(noteButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
     [self.detailView.deleteButton addTarget:self action:@selector(deleteButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
 }
+
+
 
 - (void)viewDidUnload
 {
@@ -93,30 +94,6 @@
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
-}
-
-- (void)viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
-    
-    // check reachability
-    internetAvailable = YES;
-    __weak MovieDetailViewController *blockSelf = self;
-    reachability = [Reachability reachabilityWithHostname:@"www.google.com"];
-    reachability.reachableBlock = ^(Reachability*reach) {
-        blockSelf.internetAvailable = YES;
-    };
-    reachability.unreachableBlock = ^(Reachability*reach) {
-        blockSelf.internetAvailable = NO;
-    };
-    [reachability startNotifier];
-}
-
-- (void)viewDidDisappear:(BOOL)animated
-{
-    [super viewDidDisappear:animated];
-    [reachability stopNotifier];
-    reachability = nil;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -212,20 +189,6 @@
         Cast *cast4 = (Cast*)[sortedCast objectAtIndex:3];
         self.detailView.actor4Label.text = cast4.name;
     }
-
-}
-
-- (bool)isInternetAvailable
-{
-    if(!self.internetAvailable) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"ALERT_NOINTERNET_TITLE", nil)
-                                                        message:NSLocalizedString(@"ALERT_NOINTERNET_TITLE_CONTENT", nil)
-                                                       delegate:nil 
-                                              cancelButtonTitle:NSLocalizedString(@"ALERT_NOINTERNET_TITLE_OK", nil)
-                                              otherButtonTitles:nil];
-        [alert show];
-    }
-    return self.internetAvailable;
 }
 
 
@@ -277,7 +240,11 @@
 
 - (IBAction)posterButtonClicked:(id)sender
 {
-    if(![self isInternetAvailable]) return;
+    if(![[MJInternetConnection sharedInternetConnection] internetAvailable]) {
+        [[MJInternetConnection sharedInternetConnection] displayAlert];
+        return;
+    }
+    
     if(isLoadingImages) return;
     isLoadingImages = YES;
     
@@ -318,7 +285,6 @@
 
 - (void)trailerRowClicked
 {
-    if(![self isInternetAvailable]) return;
     if(!self.movie.bestTrailer) return;
     NSURL *videoURL = nil;
     
@@ -338,8 +304,7 @@
 }
 
 - (void)websiteRowClicked
-{
-    if(![self isInternetAvailable]) return;
+{    
     if(self.movie.homepage) {
         NSURL *url = [NSURL URLWithString:self.movie.homepage];
         XLog(@"%@", self.movie.homepage);
@@ -347,7 +312,7 @@
     }
 }
 
-- (IBAction)noteButtonClicked:(id)sender
+- (IBAction)noteRowClicked
 {
     [self performSegueWithIdentifier:@"MovieNoteSegue" sender:self];
 }
@@ -375,32 +340,63 @@
 
 - (IBAction)shareButtonClicked:(id)sender
 {
-    UIActionSheet *shareActionSheet = [[UIActionSheet alloc] init];
-    shareActionSheet.delegate = self;
-    shareActionSheet.title = NSLocalizedString(@"SHARE_BUTTON_TITLE",nil);
+//    UIActionSheet *shareActionSheet = [[UIActionSheet alloc] init];
+//    shareActionSheet.delegate = self;
+//    shareActionSheet.title = NSLocalizedString(@"SHARE_BUTTON_TITLE",nil);
+//    
+//    // E-Mail
+//    if([MFMailComposeViewController canSendMail])
+//        [shareActionSheet addButtonWithTitle:NSLocalizedString(@"SHARE_BUTTON_EMAIL",nil)];
+//    
+//    // Twitter
+//    [shareActionSheet addButtonWithTitle:NSLocalizedString(@"SHARE_BUTTON_TWITTER",nil)];
+//
+//    // Cancel Button
+//    [shareActionSheet addButtonWithTitle:NSLocalizedString(@"SHARE_BUTTON_CANCEL",nil)];
+//    [shareActionSheet setCancelButtonIndex:[shareActionSheet numberOfButtons]-1];
+//    
+//    [shareActionSheet showInView:[UIApplication sharedApplication].keyWindow];
+    
+    
+    BlockActionSheet *sheet = [BlockActionSheet sheetWithTitle:NSLocalizedString(@"SHARE_BUTTON_TITLE",nil)];
     
     // E-Mail
-    if([MFMailComposeViewController canSendMail])
-        [shareActionSheet addButtonWithTitle:NSLocalizedString(@"SHARE_BUTTON_EMAIL",nil)];
+    if([MFMailComposeViewController canSendMail]) {
+        [sheet addButtonWithTitle:NSLocalizedString(@"SHARE_BUTTON_EMAIL",nil) block:^{
+            [self shareWithEmail];
+        }];
+    }
     
     // Twitter
-    [shareActionSheet addButtonWithTitle:NSLocalizedString(@"SHARE_BUTTON_TWITTER",nil)];
-
-    // Cancel Button
-    [shareActionSheet addButtonWithTitle:NSLocalizedString(@"SHARE_BUTTON_CANCEL",nil)];
-    [shareActionSheet setCancelButtonIndex:[shareActionSheet numberOfButtons]-1];
+    [sheet addButtonWithTitle:NSLocalizedString(@"SHARE_BUTTON_TWITTER",nil) block:^{
+        [self shareWithTwitter];
+    }];
     
-    [shareActionSheet showInView:[UIApplication sharedApplication].keyWindow];
+    // Cancel Button
+    [sheet setCancelButtonWithTitle:NSLocalizedString(@"SHARE_BUTTON_CANCEL",nil) block:nil];
+    
+    [sheet showInView:[UIApplication sharedApplication].keyWindow];
+    
 }
 
 - (IBAction)deleteButtonClicked:(id)sender
 {
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"DETAIL_POP_DELETE_TITLE", nil)
-                                                    message:NSLocalizedString(@"DETAIL_POP_DELETE_CONTENT", nil)
-                                                   delegate:self
-                                          cancelButtonTitle:NSLocalizedString(@"DETAIL_POP_DELETE_CANCEL", nil)
-                                          otherButtonTitles:NSLocalizedString(@"DETAIL_POP_DELETE_OK", nil), nil];
+//    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"DETAIL_POP_DELETE_TITLE", nil)
+//                                                    message:NSLocalizedString(@"DETAIL_POP_DELETE_CONTENT", nil)
+//                                                   delegate:self
+//                                          cancelButtonTitle:NSLocalizedString(@"DETAIL_POP_DELETE_CANCEL", nil)
+//                                          otherButtonTitles:NSLocalizedString(@"DETAIL_POP_DELETE_OK", nil), nil];
+//    [alert show];
+    
+    BlockAlertView *alert = [BlockAlertView alertWithTitle:NSLocalizedString(@"DETAIL_POP_DELETE_TITLE", nil)
+                                                   message:NSLocalizedString(@"DETAIL_POP_DELETE_CONTENT", nil)];
+    
+    [alert setCancelButtonWithTitle:NSLocalizedString(@"DETAIL_POP_DELETE_CANCEL", nil) block:nil];
+    [alert setDestructiveButtonWithTitle:NSLocalizedString(@"DETAIL_POP_DELETE_OK", nil) block:^{
+        [self deleteMovie];
+    }];
     [alert show];
+    
 }
 
 - (void)deleteMovie
@@ -423,28 +419,34 @@
     [self.navigationController popViewControllerAnimated:YES];
 }
 
--(IBAction)similarButtonClicked:(id)sender
+-(IBAction)similarRowClicked
 {
-    if(![self isInternetAvailable]) return;
+    if(![[MJInternetConnection sharedInternetConnection] internetAvailable]) {
+        [[MJInternetConnection sharedInternetConnection] displayAlert];
+        NSIndexPath *path = [NSIndexPath indexPathForRow:0 inSection:1];
+        [self.detailView.metaTableView deselectRowAtIndexPath:path animated:YES];
+        return;
+    }
+    
     [self performSegueWithIdentifier:@"SimilarMovieSegue" sender:nil];
 }
 
 
 
 ////////////////////////////////////////////////////////////////////////////
-#pragma mark -
-#pragma mark UIActionSheetDelegate
-
-- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-    NSString *title = [actionSheet buttonTitleAtIndex:buttonIndex];
-    
-    if([title isEqualToString:NSLocalizedString(@"SHARE_BUTTON_TWITTER",nil)]) {
-        [self shareWithTwitter];
-    } else if([title isEqualToString:NSLocalizedString(@"SHARE_BUTTON_EMAIL",nil)]) {
-        [self shareWithEmail];
-    }
-}
+//#pragma mark -
+//#pragma mark UIActionSheetDelegate
+//
+//- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+//{
+//    NSString *title = [actionSheet buttonTitleAtIndex:buttonIndex];
+//    
+//    if([title isEqualToString:NSLocalizedString(@"SHARE_BUTTON_TWITTER",nil)]) {
+//        [self shareWithTwitter];
+//    } else if([title isEqualToString:NSLocalizedString(@"SHARE_BUTTON_EMAIL",nil)]) {
+//        [self shareWithEmail];
+//    }
+//}
 
 
 
@@ -454,8 +456,13 @@
 
 - (void)shareWithTwitter
 {
+    NSString *text = [NSString stringWithFormat:NSLocalizedString(@"SHARE_TWITTER_TEXT", nil), self.movie.title];
+    if([self.movie.rating intValue] > 0) {
+        text = [text stringByAppendingString:[NSString stringWithFormat:NSLocalizedString(@"SHARE_TWITTER_TEXT_RATING", nil), [self.movie.rating intValue]]];
+    }
     
-    NSString *text = [NSString stringWithFormat:NSLocalizedString(@"SHARE_TWITTER_TEXT", nil), self.movie.title, [self.movie.rating intValue]];
+     text = [text stringByAppendingString:@" #watchedforios"];
+    
     
     TWTweetComposeViewController *twitter = [[TWTweetComposeViewController alloc] init];
     [twitter addImage:self.movie.poster];
@@ -541,11 +548,17 @@
     if([[returnDict objectForKey:@"urls"] count] > 1) {
         [self performSegueWithIdentifier:@"ThumbnailPickerSegue" sender:returnDict];
     } else {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"PICKER_POP_NOPOSTER_TITLE", nil)
-                                                        message:NSLocalizedString(@"PICKER_POP_NOPOSTER_CONTENT", nil)
-                                                       delegate:nil 
-                                              cancelButtonTitle:NSLocalizedString(@"PICKER_POP_NOPOSTER_OK", nil)
-                                              otherButtonTitles:nil];
+//        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"PICKER_POP_NOPOSTER_TITLE", nil)
+//                                                        message:NSLocalizedString(@"PICKER_POP_NOPOSTER_CONTENT", nil)
+//                                                       delegate:nil 
+//                                              cancelButtonTitle:NSLocalizedString(@"PICKER_POP_NOPOSTER_OK", nil)
+//                                              otherButtonTitles:nil];
+//        [alert show];
+        
+        BlockAlertView *alert = [BlockAlertView alertWithTitle:NSLocalizedString(@"PICKER_POP_NOPOSTER_TITLE", nil)
+                                                       message:NSLocalizedString(@"PICKER_POP_NOPOSTER_CONTENT", nil)];
+        
+        [alert setCancelButtonWithTitle:NSLocalizedString(@"PICKER_POP_NOPOSTER_OK", nil) block:nil];
         [alert show];
     }
     
@@ -626,12 +639,13 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 1;
+    return 2;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 3;
+    if(section == 0) return 3;
+    return 2;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)aTableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -645,40 +659,54 @@
     MJCustomAccessoryControl *accessoryView = [MJCustomAccessoryControl accessory];
     [cell setAccessoryView:accessoryView];
     
-    if(indexPath.row == 0) {
-        // trailer
-        cell.textLabel.text = NSLocalizedString(@"BUTTON_WATCH_TRAILER", nil);
-        if(!self.movie.bestTrailer) {
-            cell.activated = NO;
-            cell.userInteractionEnabled = NO;
-            accessoryView.controlImageView.image = [UIImage imageNamed:@"g_table-accessory_disabled.png"];
-            cell.imageView.image = [UIImage imageNamed:@"dv_icon_trailer_disabled.png"];
+    if(indexPath.section == 0) {
+        if(indexPath.row == 0) {
+            // trailer
+            cell.textLabel.text = NSLocalizedString(@"BUTTON_WATCH_TRAILER", nil);
+            if(!self.movie.bestTrailer) {
+                cell.activated = NO;
+                cell.userInteractionEnabled = NO;
+                accessoryView.controlImageView.image = [UIImage imageNamed:@"g_table-accessory_disabled.png"];
+                cell.imageView.image = [UIImage imageNamed:@"dv_icon_trailer_disabled.png"];
+            } else {
+                cell.imageView.image = [UIImage imageNamed:@"dv_icon_trailer.png"];
+            }
+        } else if (indexPath.row == 1) {
+            // cast
+            cell.textLabel.text = NSLocalizedString(@"BUTTON_SHOW_CAST", nil);
+            if(self.movie.casts.count <= 0) {
+                cell.activated = NO;
+                cell.userInteractionEnabled = NO;
+                accessoryView.controlImageView.image = [UIImage imageNamed:@"g_table-accessory_disabled.png"];
+                cell.imageView.image = [UIImage imageNamed:@"dv_icon_cast_disabled.png"];
+            } else {
+                cell.imageView.image = [UIImage imageNamed:@"dv_icon_cast.png"];
+            }
         } else {
-            cell.imageView.image = [UIImage imageNamed:@"dv_icon_trailer.png"];
+            // website
+            cell.textLabel.text = NSLocalizedString(@"BUTTON_VISIT_HOMEPAGE", nil);
+            if(!self.movie.homepage) {
+                cell.activated = NO;
+                cell.userInteractionEnabled = NO;
+                accessoryView.controlImageView.image = [UIImage imageNamed:@"g_table-accessory_disabled.png"];
+                cell.imageView.image = [UIImage imageNamed:@"dv_icon_website_disabled.png"];
+            } else {
+                cell.imageView.image = [UIImage imageNamed:@"dv_icon_website.png"];
+            }
         }
-    } else if (indexPath.row == 1) {
-        // cast
-        cell.textLabel.text = NSLocalizedString(@"BUTTON_SHOW_CAST", nil);
-        if(self.movie.casts.count <= 0) {
-            cell.activated = NO;
-            cell.userInteractionEnabled = NO;
-            accessoryView.controlImageView.image = [UIImage imageNamed:@"g_table-accessory_disabled.png"];
-            cell.imageView.image = [UIImage imageNamed:@"dv_icon_cast_disabled.png"];
-        } else {
-            cell.imageView.image = [UIImage imageNamed:@"dv_icon_cast.png"];
+    } else if (indexPath.section == 1) {
+        if(indexPath.row == 0) {
+            // Similar Movies
+            cell.textLabel.text = NSLocalizedString(@"BUTTON_SIMILAR", nil);
+            cell.imageView.image = [UIImage imageNamed:@"dv_icon_similar.png"];
+        } else if (indexPath.row == 1) {
+            // cast
+            cell.textLabel.text = NSLocalizedString(@"BUTTON_ADD_NOTE", nil);
+            cell.imageView.image = [UIImage imageNamed:@"dv_icon_notes.png"];
         }
-    } else {
-        // website
-        cell.textLabel.text = NSLocalizedString(@"BUTTON_VISIT_HOMEPAGE", nil);
-        if(!self.movie.homepage) {
-            cell.activated = NO;
-            cell.userInteractionEnabled = NO;
-            accessoryView.controlImageView.image = [UIImage imageNamed:@"g_table-accessory_disabled.png"];
-            cell.imageView.image = [UIImage imageNamed:@"dv_icon_website_disabled.png"];
-        } else {
-            cell.imageView.image = [UIImage imageNamed:@"dv_icon_website.png"];
-        }
+        [cell setAccessoryView:nil];
     }
+    
     
     // Configure the cell...
     [cell configureForTableView:aTableView indexPath:indexPath];
@@ -703,16 +731,27 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if(indexPath.row == 0) {
-        // trailer
-        [self trailerRowClicked];
-    } else if (indexPath.row == 1) {
-        // cast
-        [self castsRowClicked];
-    } else {
-        // website
-        [self websiteRowClicked];
+    if(indexPath.section == 0) {
+        if(indexPath.row == 0) {
+            // trailer
+            [self trailerRowClicked];
+        } else if (indexPath.row == 1) {
+            // cast
+            [self castsRowClicked];
+        } else {
+            // website
+            [self websiteRowClicked];
+        }
+    } else if (indexPath.section == 1) {
+        if(indexPath.row == 0) {
+            // Similar Movies
+            [self similarRowClicked];
+        } else if (indexPath.row == 1) {
+            // Notes
+            [self noteRowClicked];
+        }
     }
+    
 }
 
 - (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath

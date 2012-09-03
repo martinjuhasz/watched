@@ -1,13 +1,16 @@
-platform :ios
+platform :ios, '5.0'
 
-pod 'AFNetworking'
+pod 'AFNetworking', :podspec => 'https://raw.github.com/AFNetworking/AFNetworking/730c35926ad926cab80d053c895f3444daa85f23/AFNetworking.podspec'
 pod 'MBProgressHUD'
 #pod 'DLStarRating', :podspec => 'DLStarRating.podspec'
 pod 'MJStarRating', :podspec => 'MJStarRating.podspec'
 pod 'TestFlightSDK'
 pod 'GMGridView'
-pod 'Reachability'
+#pod 'Reachability'
 pod 'OBGradientView', :podspec => 'OBGradientView.podspec'
+pod 'BlockAlertsAnd-ActionSheets', :podspec => 'BlockAlertsAnd-ActionSheets.podspec'
+#pod 'ReachabilityForIOS5', :podspec => 'ReachabilityForIOS5.podspec'
 
-#pod 'iOSHierarchyViewer', :podspec => 'iOSHierarchyViewer.podspec'
+#pod 'iOS-Hierarchy-Viewer'
 #pod 'MJYoutubePlayer', :podspec => 'MJYoutubePlayer.podspec'
+pod 'PonyDebugger'

@@ -9,14 +9,13 @@
 #import "WatchedWebBrowser.h"
 #import <MessageUI/MessageUI.h>
 #import <Twitter/Twitter.h>
-#import "Reachability.h"
 #import "BrowserBarButtonItem.h"
+#import "BlockActionSheet.h"
+#import "MJInternetConnection.h"
 
 #define kButtonViewTag 500
 
-@interface WatchedWebBrowser () <UIWebViewDelegate, UIActionSheetDelegate, MFMailComposeViewControllerDelegate> {
-    Reachability *reachability;
-}
+@interface WatchedWebBrowser () <UIWebViewDelegate, UIActionSheetDelegate, MFMailComposeViewControllerDelegate>
 @end
 
 @implementation WatchedWebBrowser
@@ -49,6 +48,11 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
+    
+    // check for webz
+    if(![[MJInternetConnection sharedInternetConnection] internetAvailable]) {
+        [[MJInternetConnection sharedInternetConnection] displayAlert];
+    }
     
     self.webView.delegate = self;
     [self.webView loadRequest:[NSURLRequest requestWithURL:self.url]];
@@ -86,32 +90,6 @@
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
     return YES;
-}
-
-- (void)viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
-    
-    // check reachability
-    reachability = [Reachability reachabilityWithHostname:@"www.google.com"];
-    reachability.unreachableBlock = ^(Reachability*reach) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"ALERT_NOINTERNET_TITLE", nil)
-                                                            message:NSLocalizedString(@"ALERT_NOINTERNET_TITLE_CONTENT", nil)
-                                                           delegate:nil 
-                                                  cancelButtonTitle:NSLocalizedString(@"ALERT_NOINTERNET_TITLE_OK", nil)
-                                                  otherButtonTitles:nil];
-            [alert show];
-        });
-    };
-    [reachability startNotifier];
-}
-
-- (void)viewDidDisappear:(BOOL)animated
-{
-    [super viewDidDisappear:animated];
-    [reachability stopNotifier];
-    reachability = nil;
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -243,28 +221,58 @@
 
 - (IBAction)actionButtonClicked:(id)sender
 {
-    UIActionSheet *shareActionSheet = [[UIActionSheet alloc] init];
-    shareActionSheet.delegate = self;
-    shareActionSheet.title = [self.webView.request.URL absoluteString];
+//    UIActionSheet *shareActionSheet = [[UIActionSheet alloc] init];
+//    shareActionSheet.delegate = self;
+//    shareActionSheet.title = [self.webView.request.URL absoluteString];
+//    
+//    // E-Mail
+//    if([MFMailComposeViewController canSendMail])
+//        [shareActionSheet addButtonWithTitle:NSLocalizedString(@"SHARE_BUTTON_EMAIL",nil)];
+//    
+//    // Twitter
+//    [shareActionSheet addButtonWithTitle:NSLocalizedString(@"SHARE_BUTTON_TWITTER",nil)];
+//    
+//    // Open in Safari
+//    [shareActionSheet addButtonWithTitle:NSLocalizedString(@"SHARE_BUTTON_OPENSAFARI",nil)];
+//    
+//    // Copy URL
+//    [shareActionSheet addButtonWithTitle:NSLocalizedString(@"SHARE_BUTTON_COPYURL",nil)];
+//    
+//    // Cancel Button
+//    [shareActionSheet addButtonWithTitle:NSLocalizedString(@"SHARE_BUTTON_CANCEL",nil)];
+//    [shareActionSheet setCancelButtonIndex:[shareActionSheet numberOfButtons]-1];
+//    
+//    [shareActionSheet showInView:[UIApplication sharedApplication].keyWindow];
+    
+    BlockActionSheet *sheet = [BlockActionSheet sheetWithTitle:[self.webView.request.URL absoluteString]];
     
     // E-Mail
-    if([MFMailComposeViewController canSendMail])
-        [shareActionSheet addButtonWithTitle:NSLocalizedString(@"SHARE_BUTTON_EMAIL",nil)];
+    if([MFMailComposeViewController canSendMail]) {
+        [sheet addButtonWithTitle:NSLocalizedString(@"SHARE_BUTTON_EMAIL",nil) block:^{
+            [self shareWithEmail];
+        }];
+    }
     
     // Twitter
-    [shareActionSheet addButtonWithTitle:NSLocalizedString(@"SHARE_BUTTON_TWITTER",nil)];
+//    [sheet addButtonWithTitle:NSLocalizedString(@"SHARE_BUTTON_TWITTER",nil) block:^{
+//        [self shareWithTwitter];
+//    }];
     
     // Open in Safari
-    [shareActionSheet addButtonWithTitle:NSLocalizedString(@"SHARE_BUTTON_OPENSAFARI",nil)];
+    [sheet addButtonWithTitle:NSLocalizedString(@"SHARE_BUTTON_OPENSAFARI",nil) block:^{
+        [[UIApplication sharedApplication] openURL:self.webView.request.URL];
+    }];
     
     // Copy URL
-    [shareActionSheet addButtonWithTitle:NSLocalizedString(@"SHARE_BUTTON_COPYURL",nil)];
+    [sheet addButtonWithTitle:NSLocalizedString(@"SHARE_BUTTON_COPYURL",nil) block:^{
+        UIPasteboard *pb = [UIPasteboard generalPasteboard];
+        pb.string = [self.webView.request.URL absoluteString];
+    }];
     
     // Cancel Button
-    [shareActionSheet addButtonWithTitle:NSLocalizedString(@"SHARE_BUTTON_CANCEL",nil)];
-    [shareActionSheet setCancelButtonIndex:[shareActionSheet numberOfButtons]-1];
+    [sheet setCancelButtonWithTitle:NSLocalizedString(@"SHARE_BUTTON_CANCEL",nil) block:nil];
     
-    [shareActionSheet showInView:[UIApplication sharedApplication].keyWindow];
+    [sheet showInView:[UIApplication sharedApplication].keyWindow];
 }
 
 - (UIBarButtonItem*)buttonItemForToolbarWithImageName:(NSString*)imageName target:(SEL)target
@@ -287,25 +295,25 @@
 
 
 
-////////////////////////////////////////////////////////////////////////////
-#pragma mark -
-#pragma mark UIActionSheetDelegate
-
-- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-    NSString *title = [actionSheet buttonTitleAtIndex:buttonIndex];
-    
-    if([title isEqualToString:NSLocalizedString(@"SHARE_BUTTON_EMAIL",nil)]) {
-        [self shareWithEmail];
-    } else if([title isEqualToString:NSLocalizedString(@"SHARE_BUTTON_TWITTER",nil)]) {
-        [self shareWithTwitter];
-    } else if ([title isEqualToString:NSLocalizedString(@"SHARE_BUTTON_OPENSAFARI",nil)]) {
-        [[UIApplication sharedApplication] openURL:self.webView.request.URL];
-    } else if ([title isEqualToString:NSLocalizedString(@"SHARE_BUTTON_COPYURL",nil)]) {
-        UIPasteboard *pb = [UIPasteboard generalPasteboard];
-        pb.string = [self.webView.request.URL absoluteString];
-    }
-}
+//////////////////////////////////////////////////////////////////////////////
+//#pragma mark -
+//#pragma mark UIActionSheetDelegate
+//
+//- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+//{
+//    NSString *title = [actionSheet buttonTitleAtIndex:buttonIndex];
+//    
+//    if([title isEqualToString:NSLocalizedString(@"SHARE_BUTTON_EMAIL",nil)]) {
+//        [self shareWithEmail];
+//    } else if([title isEqualToString:NSLocalizedString(@"SHARE_BUTTON_TWITTER",nil)]) {
+//        [self shareWithTwitter];
+//    } else if ([title isEqualToString:NSLocalizedString(@"SHARE_BUTTON_OPENSAFARI",nil)]) {
+//        [[UIApplication sharedApplication] openURL:self.webView.request.URL];
+//    } else if ([title isEqualToString:NSLocalizedString(@"SHARE_BUTTON_COPYURL",nil)]) {
+//        UIPasteboard *pb = [UIPasteboard generalPasteboard];
+//        pb.string = [self.webView.request.URL absoluteString];
+//    }
+//}
 
 
 ////////////////////////////////////////////////////////////////////////////

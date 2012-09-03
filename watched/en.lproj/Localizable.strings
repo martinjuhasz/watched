@@ -3,34 +3,39 @@
  GENERAL
  ================================================*/
 
-"de"                            = "German";
-"en"                            = "English";
-"NAVIGATION_BACK"               = "back";
-"ALERT_NOINTERNET_TITLE"  = "no connection";
-"ALERT_MOVIE_NOINTERNET_TITLE_CONTENT" = "Sorry. You need an internet connection to add movies.";
-"ALERT_NOINTERNET_TITLE_CONTENT" = "Sorry. You need an internet connection for this.";
-"ALERT_NOINTERNET_TITLE_OK"     = "Ok";
+"de"                                    = "German";
+"en"                                    = "English";
+"NAVIGATION_BACK"                       = "back";
+"ALERT_NOINTERNET_TITLE"                = "no connection";
+"ALERT_MOVIE_NOINTERNET_TITLE_CONTENT"  = "Sorry. You need an internet connection to add movies.";
+"ALERT_NOINTERNET_TITLE_CONTENT"        = "Sorry. You need an internet connection for this.";
+"ALERT_NOINTERNET_TITLE_OK"             = "Ok";
 
 
 /*================================================
  Search
  ================================================*/
 
-"POPUP_SAVEBUTTON_ADDED"        = "added";
-"POPUP_SAVEBUTTON_ADD"          = "add";
+"POPUP_SAVEBUTTON_ADDED"        = "ADDED";
+"POPUP_SAVEBUTTON_ADD"          = "ADD THIS MOVIE";
+"POPUP_SAVEBUTTON_ADDING"       = "ADDING MOVIE...";
 "POPUP_TITLE_LOADING"           = "loading...";
-"POPUP_FAILED"                  = "Sorry. Could not load Movie.";
-"POPUP_SUCCESS_ADDED"           = "Movie added successfully.";
+"POPUP_SUCCESS_ADDED"           = "MOVIE ADDED SUCCESSFULLY";
+"POPUP_TMDBERROR-INFO"          = "TMDB.COM ERROR";
+"POPUP_TMDBERROR-LOAD"          = "couldn't load movie";
+"POPUP_TMDBERROR-TRY"           = "please try again";
+"POPUP_TMDBERROR-BUTTON"        = "TRY AGAIN";
+"POPUP_DONEBUTTON"              = "Done";
 
 /*================================================
  Table View
  ================================================*/
 
-"BUTTON_ADDMOVIE_TITLE"         = "Add new Movie";
-"CONTROL_SORTMOVIES_TITLE_ALL"  = "All Movies";
-"CONTROL_SORTMOVIES_TITLE_UNWATCHED"  = "Unwatched";
-"CONTROL_SORTMOVIES_TITLE_UNRATED"    = "Unrated";
-"HEADER_TITLE_ZERORATING"       = "unrated";
+"BUTTON_ADDMOVIE_TITLE"                 = "Add new Movie";
+"CONTROL_SORTMOVIES_TITLE_ALL"          = "All Movies";
+"CONTROL_SORTMOVIES_TITLE_UNWATCHED"    = "Unwatched";
+"CONTROL_SORTMOVIES_TITLE_UNRATED"      = "Unrated";
+"HEADER_TITLE_ZERORATING"               = "unrated";
 
 /*================================================
  DETAIL VIEW
@@ -39,7 +44,7 @@
 "TITLE_WATCHEDON"               = "Watched on:";
 "BUTTON_SHOW_CAST"              = "Show Complete Cast";
 "BUTTON_VISIT_HOMEPAGE"         = "Visit Official Website";
-"BUTTON_REFRESH_MOVIE"         = "refresh Metadata";
+"BUTTON_REFRESH_MOVIE"          = "refresh Metadata";
 "BUTTON_WATCH_TRAILER"          = "Watch Trailer";
 "BUTTON_DELETE_MOVIE"           = "remove this movie";
 "BUTTON_ADD_NOTE"               = "My Notes";
@@ -63,7 +68,8 @@
 "SHARE_BUTTON_CANCEL"           = "Cancel";
 "SHARE_BUTTON_OPENSAFARI"       = "Open in Safari";
 "SHARE_BUTTON_COPYURL"          = "Copy URL";
-"SHARE_TWITTER_TEXT"            = "I watched \"%@\" and rated it with %i of 5 Stars";
+"SHARE_TWITTER_TEXT"            = "I watched \"%@\"";
+"SHARE_TWITTER_TEXT_RATING"     = " and rated it with %i of 5 Stars";
 
 "PICKER_POP_NOPOSTER_TITLE"     = "Sorry";
 "PICKER_POP_NOPOSTER_CONTENT"   = "There are no more Images available.";
@@ -74,10 +80,10 @@
 
 "NOTES_TITLE"                   = "Notes";
 
-"DETAIL_POP_DELETE_TITLE"      = "Beware";
-"DETAIL_POP_DELETE_CONTENT"    = "Are you sure you want to delete this movie?";
-"DETAIL_POP_DELETE_CANCEL"     = "cancel";
-"DETAIL_POP_DELETE_OK"         = "delete";
+"DETAIL_POP_DELETE_TITLE"       = "Beware";
+"DETAIL_POP_DELETE_CONTENT"     = "Are you sure you want to delete this movie?";
+"DETAIL_POP_DELETE_CANCEL"      = "cancel";
+"DETAIL_POP_DELETE_OK"          = "delete";
 
 
 /*================================================
@@ -119,7 +125,7 @@
 "SETTINGS_FEEDBACK_EMAILTO"     = "info@martinjuhasz.de";
 "SETTINGS_META_LOADING"         = "loading movies ...";
 "SETTINGS_META_NOMOVIES"        = "no movies found";
-"SETTINGS_META_ERROR"           = "Error. Please try again";
+"SETTINGS_META_ERROR"           = "TMDB.COM Error. Please try again";
 
 "SETTINGS_ABOUT_TITLE"          = "About";
 "SETTINGS_ABOUT_VERSION"        = "Version Number";

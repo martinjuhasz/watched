@@ -3,33 +3,38 @@
  GENERAL
  ================================================*/
 
-"de"                            = "Deutsch";
-"en"                            = "Englisch";
-"NAVIGATION_BACK"               = "zurück";
-"ALERT_NOINTERNET_TITLE"  = "keine Verbindung";
-"ALERT_MOVIE_NOINTERNET_TITLE_CONTENT" = "Entschuldigung. Sie benötigen eine Internet-Verbindung um Filme hinzufügen zu können.";
-"ALERT_NOINTERNET_TITLE_CONTENT" = "Entschuldigung. Hierfür benötigen Sie eine Internet-Verbindung.";
-"ALERT_NOINTERNET_TITLE_OK"     = "Ok";
+"de"                                    = "Deutsch";
+"en"                                    = "Englisch";
+"NAVIGATION_BACK"                       = "zurück";
+"ALERT_NOINTERNET_TITLE"                = "keine Verbindung";
+"ALERT_MOVIE_NOINTERNET_TITLE_CONTENT"  = "Entschuldigung. Sie benötigen eine Internet-Verbindung um Filme hinzufügen zu können.";
+"ALERT_NOINTERNET_TITLE_CONTENT"        = "Entschuldigung. Hierfür benötigen Sie eine Internet-Verbindung.";
+"ALERT_NOINTERNET_TITLE_OK"             = "Ok";
 
 /*================================================
  Search
  ================================================*/
 
-"POPUP_SAVEBUTTON_ADDED"        = "vorhanden";
-"POPUP_SAVEBUTTON_ADD"          = "hinzufügen";
+"POPUP_SAVEBUTTON_ADDED"        = "VORHANDEN";
+"POPUP_SAVEBUTTON_ADD"          = "HINZUFÜGEN";
+"POPUP_SAVEBUTTON_ADDING"       = "FILM HINZUFÜGEN...";
 "POPUP_TITLE_LOADING"           = "laden...";
-"POPUP_FAILED"                  = "Entschuldigung. Der Film konnte nicht geladen werden.";
-"POPUP_SUCCESS_ADDED"           = "Film hinzugefügt.";
+"POPUP_SUCCESS_ADDED"           = "FILM HINZUGEFÜGT";
+"POPUP_TMDBERROR-INFO"          = "TMDB.COM FEHLER";
+"POPUP_TMDBERROR-LOAD"          = "Film konnte nicht geladen werden";
+"POPUP_TMDBERROR-TRY"           = "bitte erneut versuchen";
+"POPUP_TMDBERROR-BUTTON"        = "VERSUCHS NOCHMAL";
+"POPUP_DONEBUTTON"              = "Fertig";
 
 /*================================================
  Table View
  ================================================*/
 
-"BUTTON_ADDMOVIE_TITLE"         = "Film hinzufügen";
-"CONTROL_SORTMOVIES_TITLE_ALL"  = "Alle Filme";
-"CONTROL_SORTMOVIES_TITLE_UNWATCHED"  = "Ungesehen";
-"CONTROL_SORTMOVIES_TITLE_UNRATED"    = "Unbewertet";
-"HEADER_TITLE_ZERORATING"       = "unrated";
+"BUTTON_ADDMOVIE_TITLE"                 = "Film hinzufügen";
+"CONTROL_SORTMOVIES_TITLE_ALL"          = "Alle Filme";
+"CONTROL_SORTMOVIES_TITLE_UNWATCHED"    = "Ungesehen";
+"CONTROL_SORTMOVIES_TITLE_UNRATED"      = "Unbewertet";
+"HEADER_TITLE_ZERORATING"               = "unrated";
 
 /*================================================
  DETAIL VIEW
@@ -62,7 +67,8 @@
 "SHARE_BUTTON_CANCEL"           = "Abbrechen";
 "SHARE_BUTTON_OPENSAFARI"       = "In Safari öffnen";
 "SHARE_BUTTON_COPYURL"          = "URL kopieren";
-"SHARE_TWITTER_TEXT"            = "Ich habe \"%@\" gesehen und mit %i of 5 Sternen bewertet";
+"SHARE_TWITTER_TEXT"            = "Ich habe \"%@\" gesehen";
+"SHARE_TWITTER_TEXT_RATING"     = " und mit %i of 5 Sternen bewertet";
 
 "PICKER_POP_NOPOSTER_TITLE"     = "Entschuldigung";
 "PICKER_POP_NOPOSTER_CONTENT"   = "Leider gibt es keine weiteren Bilder mehr.";
@@ -73,10 +79,10 @@
 
 "NOTES_TITLE"                   = "Notizen";
 
-"DETAIL_POP_DELETE_TITLE"      = "Achtung";
-"DETAIL_POP_DELETE_CONTENT"    = "Sind sie sicher, dass sie diesen Film löschen möchten?";
-"DETAIL_POP_DELETE_CANCEL"     = "abbrechen";
-"DETAIL_POP_DELETE_OK"         = "löschen";
+"DETAIL_POP_DELETE_TITLE"       = "Achtung";
+"DETAIL_POP_DELETE_CONTENT"     = "Sind sie sicher, dass sie diesen Film löschen möchten?";
+"DETAIL_POP_DELETE_CANCEL"      = "abbrechen";
+"DETAIL_POP_DELETE_OK"          = "löschen";
 
 /*================================================
  CAST
@@ -117,7 +123,7 @@
 "SETTINGS_FEEDBACK_EMAILTO"     = "info@martinjuhasz.de";
 "SETTINGS_META_LOADING"         = "lade Filme ...";
 "SETTINGS_META_NOMOVIES"        = "keine Filme gefunden";
-"SETTINGS_META_ERROR"           = "Fehler. Versuche es nochmal";
+"SETTINGS_META_ERROR"           = "TMDB.COM Fehler. Versuche es nochmal";
 
 "SETTINGS_ABOUT_TITLE"          = "Über";
 "SETTINGS_ABOUT_VERSION"        = "Versionsnummer";

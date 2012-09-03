@@ -15,7 +15,10 @@
 
 @interface AddMovieViewController : UIViewController
 
+@property (strong, nonatomic) IBOutlet UIButton *retryButton;
+@property (strong, nonatomic) IBOutlet UILabel *errorLabel;
 @property (strong, nonatomic) IBOutlet UINavigationBar *navBar;
+@property (strong, nonatomic) IBOutlet UIImageView *backgroundImageView;
 @property (strong, nonatomic) IBOutlet UIView *loadingView;
 @property (strong, nonatomic) IBOutlet UIView *displayView;
 @property (strong, nonatomic) IBOutlet UIView *infoView;
@@ -24,7 +27,7 @@
 @property (strong, nonatomic) IBOutlet UIScrollView *scrollView;
 @property (strong, nonatomic) IBOutlet UILabel *overviewLabel;
 @property (strong, nonatomic) IBOutlet UIButton *saveButton;
-@property (strong, nonatomic) IBOutlet UIBarButtonItem *cancelButton;
+@property (strong, nonatomic) UIButton *cancelButton;
 @property (strong, nonatomic) SearchResult *searchResult;
 @property (strong, nonatomic) NSNumber *resultID;
 @property (strong, nonatomic) UIImage *coverImage;

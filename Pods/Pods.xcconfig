@@ -1,5 +1,8 @@
 PODS_ROOT = ${SRCROOT}/Pods
+PODS_HEADERS_SEARCH_PATHS = ${PODS_PUBLIC_HEADERS_SEARCH_PATHS}
 ALWAYS_SEARCH_USER_PATHS = YES
-OTHER_LDFLAGS = -ObjC -lTestFlight -lz -framework CoreGraphics -framework QuartzCore -framework SystemConfiguration -framework UIKit
+OTHER_LDFLAGS = -ObjC -lTestFlight -licucore -lz -framework CFNetwork -framework CoreData -framework CoreGraphics -framework QuartzCore -framework Security -framework SystemConfiguration -framework UIKit
 LIBRARY_SEARCH_PATHS = "$(PODS_ROOT)/TestFlightSDK"
-HEADER_SEARCH_PATHS = "${PODS_ROOT}/Headers" "${PODS_ROOT}/Headers/AFNetworking" "${PODS_ROOT}/Headers/GMGridView" "${PODS_ROOT}/Headers/MBProgressHUD" "${PODS_ROOT}/Headers/MJStarRating" "${PODS_ROOT}/Headers/OBGradientView" "${PODS_ROOT}/Headers/Reachability" "${PODS_ROOT}/Headers/TestFlightSDK"
+HEADER_SEARCH_PATHS = ${PODS_HEADERS_SEARCH_PATHS}
+PODS_BUILD_HEADERS_SEARCH_PATHS = "${PODS_ROOT}/BuildHeaders" "${PODS_ROOT}/BuildHeaders/AFNetworking" "${PODS_ROOT}/BuildHeaders/BlockAlertsAnd-ActionSheets" "${PODS_ROOT}/BuildHeaders/GMGridView" "${PODS_ROOT}/BuildHeaders/MBProgressHUD" "${PODS_ROOT}/BuildHeaders/MJStarRating" "${PODS_ROOT}/BuildHeaders/OBGradientView" "${PODS_ROOT}/BuildHeaders/PonyDebugger" "${PODS_ROOT}/BuildHeaders/SocketRocket" "${PODS_ROOT}/BuildHeaders/TestFlightSDK"
+PODS_PUBLIC_HEADERS_SEARCH_PATHS = "${PODS_ROOT}/Headers" "${PODS_ROOT}/Headers/AFNetworking" "${PODS_ROOT}/Headers/BlockAlertsAnd-ActionSheets" "${PODS_ROOT}/Headers/GMGridView" "${PODS_ROOT}/Headers/MBProgressHUD" "${PODS_ROOT}/Headers/MJStarRating" "${PODS_ROOT}/Headers/OBGradientView" "${PODS_ROOT}/Headers/PonyDebugger" "${PODS_ROOT}/Headers/SocketRocket" "${PODS_ROOT}/Headers/TestFlightSDK"

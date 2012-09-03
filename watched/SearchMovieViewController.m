@@ -15,18 +15,16 @@
 #import "Movie.h"
 #import "AddMovieViewController.h"
 #import "UIViewController+MJPopupViewController.h"
-#import "Reachability.h"
 #import "AFJSONRequestOperation.h"
 #import "UILabel+Additions.h"
 #import "UIView+Additions.h"
 #import "MoviesDataModel.h"
+#import "MJInternetConnection.h"
 
 #define kSearchMovieLoadingTableViewCell @"SearchMovieLoadingTableViewCell"
 #define kSearchMovieTableViewCell @"SearchMovieTableViewCell"
 
-@interface SearchMovieViewController ()<AddMovieViewDelegate> {
-    Reachability* reachability;
-}
+@interface SearchMovieViewController ()<AddMovieViewDelegate>
 @end
 
 
@@ -105,39 +103,25 @@ const int kMovieFlagCellTag = 34773;
     // e.g. self.myOutlet = nil;
 }
 
+- (void)dealloc
+{
+    if (self.addController) {
+        self.addController.delegate = nil;
+    }
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    if (self.addController) {
+        self.addController.delegate = nil;
+    }
+}
+
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
     // Return YES for supported orientations
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
-
-- (void)viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
-    // check reachability
-    reachability = [Reachability reachabilityWithHostname:@"www.google.com"];
-    reachability.unreachableBlock = ^(Reachability*reach)
-    {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"ALERT_NOINTERNET_TITLE", nil)
-                                                            message:NSLocalizedString(@"ALERT_MOVIE_NOINTERNET_TITLE_CONTENT", nil)
-                                                           delegate:nil 
-                                                  cancelButtonTitle:NSLocalizedString(@"ALERT_NOINTERNET_TITLE_OK", nil)
-                                                  otherButtonTitles:nil];
-            [alert show];
-        });
-    };
-    [reachability startNotifier];
-}
-
-- (void)viewDidDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:animated];
-    [reachability stopNotifier];
-    reachability = nil;
-}
-
-
 
 
 ////////////////////////////////////////////////////////////////////////////
@@ -217,6 +201,12 @@ const int kMovieFlagCellTag = 34773;
     [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
     if(self.searchResults.count <= indexPath.row) return;
     
+    // interent
+    if(![[MJInternetConnection sharedInternetConnection] internetAvailable]) {
+        [[MJInternetConnection sharedInternetConnection] displayAlert];
+        return;
+    }
+    
     SearchResult *result = [self.searchResults objectAtIndex:indexPath.row];
     UITableViewCell *clickedCell = [self.tableView cellForRowAtIndexPath:indexPath];
     UIImageView *coverImageView = (UIImageView *)[clickedCell viewWithTag:kMovieSearchCellImageView];
@@ -283,8 +273,9 @@ const int kMovieFlagCellTag = 34773;
     yearLabel.frame = yearLabelRect;
     yearLabel.text = currentMovie.releaseYear;
     coverImageView.image = nil;
+    UIImage *placeholder = [UIImage imageNamed:@"g_placeholder-cover.png"];
     NSURL *imageURL = [[OnlineMovieDatabase sharedMovieDatabase] getImageURLForImagePath:currentMovie.posterPath imageType:ImageTypePoster nearWidth:70.0f*2];
-    [coverImageView setImageWithURL:imageURL];
+    [coverImageView setImageWithURL:imageURL placeholderImage:placeholder];
     
     // if added
     UIImageView *addedImageView = (UIImageView*)[cell viewWithTag:kMovieFlagCellTag];
@@ -380,6 +371,12 @@ const int kMovieFlagCellTag = 34773;
 
 - (void)searchBarSearchButtonClicked:(UISearchBar *)aSearchBar
 {
+    if(![[MJInternetConnection sharedInternetConnection] internetAvailable]) {
+        [[MJInternetConnection sharedInternetConnection] displayAlert];
+        return;
+    }
+    
+    
     self.searchQuery = aSearchBar.text;
     
     // Reset all the Values
@@ -427,6 +424,7 @@ const int kMovieFlagCellTag = 34773;
         }
         [self.tableView reloadData];
     } failure:^(NSError *error) {
+        XLog("%@", [error localizedDescription]);
         isLoading = NO;
         isError = YES;
         [self.tableView reloadData];

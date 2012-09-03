@@ -17,6 +17,5 @@
 
 @property (nonatomic, strong) Movie *movie;
 @property (nonatomic, strong) MovieDetailView *detailView;
-@property (nonatomic, assign) BOOL internetAvailable;
 
 @end
