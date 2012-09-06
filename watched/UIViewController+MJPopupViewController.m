@@ -69,11 +69,11 @@
 //    popupView.layer.borderColor = [UIColor blackColor].CGColor;
 //    popupView.layer.shadowPath = [UIBezierPath bezierPathWithRoundedRect:popupView.bounds cornerRadius:6.0f].CGPath;
 //    popupView.layer.masksToBounds = YES;
-////    popupView.layer.shadowPath = [UIBezierPath bezierPathWithRect:popupView.bounds].CGPath;
-////    popupView.layer.masksToBounds = NO;
-//    popupView.layer.shadowOffset = CGSizeMake(5, 5);
-//    popupView.layer.shadowRadius = 5;
-//    popupView.layer.shadowOpacity = 0.5;
+    popupView.layer.shadowPath = [UIBezierPath bezierPathWithRoundedRect:popupView.bounds cornerRadius:12.0f].CGPath;
+    popupView.layer.masksToBounds = NO;
+    popupView.layer.shadowOffset = CGSizeMake(0, 1);
+    popupView.layer.shadowRadius = 4;
+    popupView.layer.shadowOpacity = 0.6;
 
     
     // Add semi overlay

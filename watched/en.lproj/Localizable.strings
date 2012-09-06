@@ -122,7 +122,7 @@
 "SETTINGS_META_REFRESHED"       = "All Metadata refreshed";
 "SETTINGS_RATING_NONE"          = "none";
 "SETTINGS_FEEDBACK_EMAILTITLE"  = "Feedback for watched";
-"SETTINGS_FEEDBACK_EMAILTO"     = "info@martinjuhasz.de";
+"SETTINGS_FEEDBACK_EMAILTO"     = "support@watchedforios.com";
 "SETTINGS_META_LOADING"         = "loading movies ...";
 "SETTINGS_META_NOMOVIES"        = "no movies found";
 "SETTINGS_META_ERROR"           = "TMDB.COM Error. Please try again";

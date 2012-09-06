@@ -47,15 +47,16 @@
                        [NSDictionary dictionaryWithObject:NSLocalizedString(@"SETTINGS_TWITTER", nil) forKey:@"name"],
                       nil],
                      [NSArray arrayWithObjects:
-                      [NSDictionary dictionaryWithObject:@"Feedback" forKey:@"name"],
                       [NSDictionary dictionaryWithObject:@"Dummy Content" forKey:@"name"],
-                      [NSDictionary dictionaryWithObject:@"Toggle debugger" forKey:@"name"],
+//                      [NSDictionary dictionaryWithObject:@"Toggle debugger" forKey:@"name"],
                       nil],
                  nil];
     
     
     [self addHeaderView];
     [self addFooterView];
+    
+    [self.tableView setContentInset:UIEdgeInsetsMake(-1.0f,0,0,0)];
     
 }
 
@@ -219,11 +220,9 @@
     
     // Beta
     if(indexPath.section == 2) {
-        if(indexPath.row == 0) {
-            [TestFlight openFeedbackView];
-        } else if (indexPath.row == 1) {
+        if (indexPath.row == 0) {
             [self loadDummyContent];
-        } else if (indexPath.row == 2) {
+        } else if (indexPath.row == 1) {
             [self toggleDebugger];
         }
         [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
@@ -401,6 +400,7 @@
 
 - (void)toggleDebugger
 {
+#ifdef DEBUG
     PDDebugger *debugger = [PDDebugger defaultInstance];
     NSString *status;
     if(![debugger isConnected]) {
@@ -427,7 +427,7 @@
                                           cancelButtonTitle:@"OK"
                                           otherButtonTitles:nil];
     [alert show];
-    
+#endif
 }
 
 - (void)loadDummyContent

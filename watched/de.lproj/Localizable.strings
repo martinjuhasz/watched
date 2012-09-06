@@ -15,7 +15,7 @@
  Search
  ================================================*/
 
-"POPUP_SAVEBUTTON_ADDED"        = "VORHANDEN";
+"POPUP_SAVEBUTTON_ADDED"        = "BEREITS HINZUGEFÜGT";
 "POPUP_SAVEBUTTON_ADD"          = "HINZUFÜGEN";
 "POPUP_SAVEBUTTON_ADDING"       = "FILM HINZUFÜGEN...";
 "POPUP_TITLE_LOADING"           = "laden...";
@@ -45,9 +45,9 @@
 "BUTTON_VISIT_HOMEPAGE"         = "Webseite besuchen";
 "BUTTON_REFRESH_MOVIE"          = "Daten erneuern";
 "BUTTON_WATCH_TRAILER"          = "Trailer ansehen";
-"BUTTON_DELETE_MOVIE"           = "diesen Film entfernen";
-"BUTTON_ADD_NOTE"               = "meine Notizen";
-"BUTTON_SIMILAR"                = "ähnliche Filme";
+"BUTTON_DELETE_MOVIE"           = "Film entfernen";
+"BUTTON_ADD_NOTE"               = "Meine Notizen";
+"BUTTON_SIMILAR"                = "Ähnliche Filme";
 "DETAIL_DESCRIPTION_TITLE"      = "Zusammenfassung";
 "DETAIL_DIRECTOR_TITLE"         = "REGISSEUR";
 "DETAIL_STARRING_TITLE"         = "HAUPTROLLEN";
@@ -103,7 +103,7 @@
 "SETTINGS_AVERAGERATING"        = "DURCHSCHN. WERTUNG";
 "SETTINGS_LANGUAGE"             = "Filmsprache";
 "SETTINGS_FEEDBACK"             = "Feedback senden";
-"SETTINGS_WEBSITE"              = "Besuche unsere Webseite";
+"SETTINGS_WEBSITE"              = "Webseite";
 "SETTINGS_TWITTER"              = "@watchedapp";
 "SETTINGS_RESET"                = "Filme und Bewertungen löschen";
 "SETTINGS_POP_RESET_TITLE"      = "Achtung";
@@ -114,13 +114,13 @@
 "SETTINGS_CONTACT"              = "Kontaktiere uns";
 "SETTINGS_HEADER_STATISTICS"    = "Statistiken";
 "SETTINGS_HEADER_SETTINGS"      = "Einstellungen";
-"SETTINGS_HEADER_CONTACT"       = "nimm Kontakt auf";
+"SETTINGS_HEADER_CONTACT"       = "Kontakt";
 "SETTINGS_HEADER_BETA"          = "Beta";
 "SETTINGS_REFRESH"              = "Meta-Daten aller Filme erneuern";
 "SETTINGS_META_REFRESHED"       = "Meta-Daten erneuert";
 "SETTINGS_RATING_NONE"          = "keine";
 "SETTINGS_FEEDBACK_EMAILTITLE"  = "Feedback für watched";
-"SETTINGS_FEEDBACK_EMAILTO"     = "info@martinjuhasz.de";
+"SETTINGS_FEEDBACK_EMAILTO"     = "support@watchedforios.com";
 "SETTINGS_META_LOADING"         = "lade Filme ...";
 "SETTINGS_META_NOMOVIES"        = "keine Filme gefunden";
 "SETTINGS_META_ERROR"           = "TMDB.COM Fehler. Versuche es nochmal";

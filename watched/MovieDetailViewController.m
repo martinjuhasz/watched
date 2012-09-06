@@ -340,24 +340,6 @@
 
 - (IBAction)shareButtonClicked:(id)sender
 {
-//    UIActionSheet *shareActionSheet = [[UIActionSheet alloc] init];
-//    shareActionSheet.delegate = self;
-//    shareActionSheet.title = NSLocalizedString(@"SHARE_BUTTON_TITLE",nil);
-//    
-//    // E-Mail
-//    if([MFMailComposeViewController canSendMail])
-//        [shareActionSheet addButtonWithTitle:NSLocalizedString(@"SHARE_BUTTON_EMAIL",nil)];
-//    
-//    // Twitter
-//    [shareActionSheet addButtonWithTitle:NSLocalizedString(@"SHARE_BUTTON_TWITTER",nil)];
-//
-//    // Cancel Button
-//    [shareActionSheet addButtonWithTitle:NSLocalizedString(@"SHARE_BUTTON_CANCEL",nil)];
-//    [shareActionSheet setCancelButtonIndex:[shareActionSheet numberOfButtons]-1];
-//    
-//    [shareActionSheet showInView:[UIApplication sharedApplication].keyWindow];
-    
-    
     BlockActionSheet *sheet = [BlockActionSheet sheetWithTitle:NSLocalizedString(@"SHARE_BUTTON_TITLE",nil)];
     
     // E-Mail
@@ -381,13 +363,6 @@
 
 - (IBAction)deleteButtonClicked:(id)sender
 {
-//    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"DETAIL_POP_DELETE_TITLE", nil)
-//                                                    message:NSLocalizedString(@"DETAIL_POP_DELETE_CONTENT", nil)
-//                                                   delegate:self
-//                                          cancelButtonTitle:NSLocalizedString(@"DETAIL_POP_DELETE_CANCEL", nil)
-//                                          otherButtonTitles:NSLocalizedString(@"DETAIL_POP_DELETE_OK", nil), nil];
-//    [alert show];
-    
     BlockAlertView *alert = [BlockAlertView alertWithTitle:NSLocalizedString(@"DETAIL_POP_DELETE_TITLE", nil)
                                                    message:NSLocalizedString(@"DETAIL_POP_DELETE_CONTENT", nil)];
     
@@ -434,23 +409,6 @@
 
 
 ////////////////////////////////////////////////////////////////////////////
-//#pragma mark -
-//#pragma mark UIActionSheetDelegate
-//
-//- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
-//{
-//    NSString *title = [actionSheet buttonTitleAtIndex:buttonIndex];
-//    
-//    if([title isEqualToString:NSLocalizedString(@"SHARE_BUTTON_TWITTER",nil)]) {
-//        [self shareWithTwitter];
-//    } else if([title isEqualToString:NSLocalizedString(@"SHARE_BUTTON_EMAIL",nil)]) {
-//        [self shareWithEmail];
-//    }
-//}
-
-
-
-////////////////////////////////////////////////////////////////////////////
 #pragma mark -
 #pragma mark Sharing
 
@@ -485,14 +443,16 @@
     sharebymailString = [sharebymailString stringByReplacingOccurrencesOfString:@"###IMAGE_URL###" withString:imageURL];
     sharebymailString = [sharebymailString stringByReplacingOccurrencesOfString:@"###MOVIE_TITLE###" withString:self.movie.title];
     sharebymailString = [sharebymailString stringByReplacingOccurrencesOfString:@"###MOVIE_DESCRIPTION###" withString:self.movie.overview];
+    sharebymailString = [sharebymailString stringByReplacingOccurrencesOfString:@"###MOVIE_ID###" withString:[self.movie.movieID stringValue]];
     
     
     int rating = [self.movie.rating intValue];
     if(rating > 0) {
         
         NSString *starEntidy = @"&#9733;";
+        NSString *starEntidyUnrated = @"&#9734;";
         NSString *ratedString = [@"" stringByPaddingToLength:[starEntidy length]*rating withString:starEntidy startingAtIndex:0];
-        NSString *unratedString = [@"" stringByPaddingToLength:[starEntidy length]*(5-rating) withString:starEntidy startingAtIndex:0];;
+        NSString *unratedString = [@"" stringByPaddingToLength:[starEntidyUnrated length]*(5-rating) withString:starEntidyUnrated startingAtIndex:0];
         
         sharebymailString = [sharebymailString stringByReplacingOccurrencesOfString:@"###MOVIE_RATING_RATED###" withString:ratedString];
         sharebymailString = [sharebymailString stringByReplacingOccurrencesOfString:@"###MOVIE_RATING_UNRATED###" withString:unratedString];
@@ -659,6 +619,8 @@
     MJCustomAccessoryControl *accessoryView = [MJCustomAccessoryControl accessory];
     [cell setAccessoryView:accessoryView];
     
+    cell.userInteractionEnabled = YES;
+    
     if(indexPath.section == 0) {
         if(indexPath.row == 0) {
             // trailer
@@ -753,23 +715,6 @@
     }
     
 }
-
-- (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if(indexPath.row == 0) {
-        // trailer
-        if(!self.movie.bestTrailer) return nil;
-    } else if (indexPath.row == 1) {
-        // cast
-        if(self.movie.casts.count <= 0) return nil;
-    } else {
-        // website
-        if(!self.movie.homepage) return nil;
-    }
-    
-    return indexPath;
-}
-
 
 
 ////////////////////////////////////////////////////////////////////////////

@@ -5,6 +5,7 @@
 
 #import "BlockAlertView.h"
 #import "BlockBackground.h"
+#import <QuartzCore/QuartzCore.h>
 
 @implementation BlockAlertView
 
@@ -293,6 +294,13 @@ static UIFont *buttonFont = nil;
     _view.frame = frame;
     
     UIImageView *modalBackground = [[UIImageView alloc] initWithFrame:_view.bounds];
+    
+    // dropshadow
+    modalBackground.layer.shadowPath = [UIBezierPath bezierPathWithRoundedRect:modalBackground.bounds cornerRadius:12.0f].CGPath;
+    modalBackground.layer.masksToBounds = NO;
+    modalBackground.layer.shadowOffset = CGSizeMake(0, 1);
+    modalBackground.layer.shadowRadius = 4;
+    modalBackground.layer.shadowOpacity = 0.6;
     
     if (UIInterfaceOrientationIsLandscape([[UIApplication sharedApplication] statusBarOrientation]))
         modalBackground.image = backgroundlandscape;

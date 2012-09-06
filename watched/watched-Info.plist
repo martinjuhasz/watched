@@ -46,22 +46,22 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>0.8.0</string>
+	<string>0.8.1</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
 			<key>CFBundleURLName</key>
-			<string>de.martinjuhasz.de.watched</string>
+			<string>de.martinjuhasz.watched</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>watchedCAPS</string>
+				<string>watched</string>
 			</array>
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>0.8.0</string>
+	<string>0.8.1</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>UIMainStoryboardFile</key>

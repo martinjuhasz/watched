@@ -6,7 +6,7 @@
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 //
 
-#import "AppDelegate.h"
+#import "WatchedAppDelegate.h"
 #import "OnlineMovieDatabase.h"
 
 #import "UIViewController+MJPopupViewController.h"
@@ -15,15 +15,16 @@
 #import "WatchedWebBrowser.h"
 #import "AddMovieViewController.h"
 #import "MJInternetConnection.h"
+#import <MediaPlayer/MediaPlayer.h>
 
 
-@interface AppDelegate ()<AddMovieViewDelegate> {
+@interface WatchedAppDelegate ()<AddMovieViewDelegate> {
     AddMovieViewController *addController;
 }
 @end
 
 
-@implementation AppDelegate
+@implementation WatchedAppDelegate
 
 @synthesize window = _window;
 
@@ -34,6 +35,9 @@
     
     // Override point for customization after application launch.
     [TestFlight takeOff:@"bd44b4d15d82ebee20573cbad8c85c83_MzE1MTMyMDExLTExLTA1IDEzOjA0OjU2LjU3ODE3Mg"];
+#ifdef DEBUG
+    [TestFlight setDeviceIdentifier:[[UIDevice currentDevice] uniqueIdentifier]];
+#endif
     
     [[OnlineMovieDatabase sharedMovieDatabase] setApiKey:@"d518563ee67cb6d475d2440d3e663e93"];
     [[OnlineMovieDatabase sharedMovieDatabase] setPreferredLanguage:[self appLanguage]];
@@ -139,6 +143,30 @@
                                                  UITextAttributeFont,
                                                  nil] forState:UIControlStateNormal];
     
+    
+    
+    // Video popover
+    UIImage *barVideoButtonBgImage = [[UIImage imageNamed:@"yv_barbutton.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(15, 4, 15, 4)];
+    UIImage *barVideoButtonBgImageActive = [[UIImage imageNamed:@"yv_barbutton_active.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(15, 4, 15, 4)];
+    
+    [[UIBarButtonItem appearanceWhenContainedIn:[MPMoviePlayerViewController class], nil] setBackgroundImage:barVideoButtonBgImage forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
+    [[UIBarButtonItem appearanceWhenContainedIn:[MPMoviePlayerViewController class], nil] setBackgroundImage:barVideoButtonBgImageActive forState:UIControlStateSelected barMetrics:UIBarMetricsDefault];
+    
+    
+    [[UIBarButtonItem appearance] setBackButtonBackgroundImage:navigationBarBackBgImageLS forState:UIControlStateNormal barMetrics:UIBarMetricsLandscapePhone];
+    [[UIBarButtonItem appearance] setBackButtonBackgroundImage:navigationBarBackBgImageActiveLS forState:UIControlStateHighlighted barMetrics:UIBarMetricsLandscapePhone];
+    
+    [[UIBarButtonItem appearance] setTitleTextAttributes:
+     [NSDictionary dictionaryWithObjectsAndKeys:
+      HEXColor(0xFFFFFF),
+      UITextAttributeTextColor,
+      [UIColor colorWithRed:0.0f green:0.0f blue:0.0f alpha:0.44f],
+      UITextAttributeTextShadowColor,
+      [NSValue valueWithUIOffset:UIOffsetMake(0, 1)],
+      UITextAttributeTextShadowOffset,
+      [UIFont fontWithName:@"HelveticaNeue-Bold" size:12.0f],
+      UITextAttributeFont,
+      nil] forState:UIControlStateNormal];
     
 //    [[UILabel appearanceWhenContainedIn:[MJCustomTableViewCell class], nil] setBackgroundColor:[UIColor clearColor]];
 //    [[UILabel appearance] setBackgroundColor:[UIColor redColor]];
