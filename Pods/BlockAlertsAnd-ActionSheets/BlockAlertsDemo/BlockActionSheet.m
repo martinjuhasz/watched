@@ -201,7 +201,7 @@ static UIFont *buttonFont = nil;
     __block CGPoint center = _view.center;
     center.y -= _height + kBounce;
     
-    [UIView animateWithDuration:0.4
+    [UIView animateWithDuration:0.3
                           delay:0.0
                         options:UIViewAnimationCurveEaseOut
                      animations:^{
@@ -235,7 +235,7 @@ static UIFont *buttonFont = nil;
     {
         CGPoint center = _view.center;
         center.y += _view.bounds.size.height;
-        [UIView animateWithDuration:0.4
+        [UIView animateWithDuration:0.2
                               delay:0.0
                             options:UIViewAnimationCurveEaseIn
                          animations:^{

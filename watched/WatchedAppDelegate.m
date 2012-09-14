@@ -15,7 +15,7 @@
 #import "WatchedWebBrowser.h"
 #import "AddMovieViewController.h"
 #import "MJInternetConnection.h"
-#import <MediaPlayer/MediaPlayer.h>
+#import "WatchedWebBrowser.h"
 
 
 @interface WatchedAppDelegate ()<AddMovieViewDelegate> {
@@ -35,9 +35,7 @@
     
     // Override point for customization after application launch.
     [TestFlight takeOff:@"bd44b4d15d82ebee20573cbad8c85c83_MzE1MTMyMDExLTExLTA1IDEzOjA0OjU2LjU3ODE3Mg"];
-#ifdef DEBUG
     [TestFlight setDeviceIdentifier:[[UIDevice currentDevice] uniqueIdentifier]];
-#endif
     
     [[OnlineMovieDatabase sharedMovieDatabase] setApiKey:@"d518563ee67cb6d475d2440d3e663e93"];
     [[OnlineMovieDatabase sharedMovieDatabase] setPreferredLanguage:[self appLanguage]];
@@ -102,17 +100,23 @@
     UIImage *barButtonBgImageActive = [[UIImage imageNamed:@"g_barbutton_active.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(15, 4, 15, 4)];
     [[UIBarButtonItem appearance] setBackgroundImage:barButtonBgImage forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
     [[UIBarButtonItem appearance] setBackgroundImage:barButtonBgImageActive forState:UIControlStateSelected barMetrics:UIBarMetricsDefault];
+    
+    
     [[UIBarButtonItem appearance] setTitleTextAttributes:
      [NSDictionary dictionaryWithObjectsAndKeys:
       HEXColor(0xFFFFFF), 
       UITextAttributeTextColor, 
       [UIColor colorWithRed:0.0f green:0.0f blue:0.0f alpha:0.44f], 
       UITextAttributeTextShadowColor, 
-      [NSValue valueWithUIOffset:UIOffsetMake(0, 1)], 
+      [NSValue valueWithUIOffset:UIOffsetMake(0, 1)],
       UITextAttributeTextShadowOffset, 
       [UIFont fontWithName:@"HelveticaNeue-Bold" size:12.0f], 
       UITextAttributeFont, 
       nil] forState:UIControlStateNormal];
+    
+    // landscape
+    [[UIBarButtonItem appearance] setBackButtonBackgroundImage:navigationBarBackBgImageLS forState:UIControlStateNormal barMetrics:UIBarMetricsLandscapePhone];
+    [[UIBarButtonItem appearance] setBackButtonBackgroundImage:navigationBarBackBgImageActiveLS forState:UIControlStateHighlighted barMetrics:UIBarMetricsLandscapePhone];
     
     // UISearchBar
     [[UISearchBar appearance] setBackgroundImage:navigationBarBgImage];
@@ -146,27 +150,14 @@
     
     
     // Video popover
-    UIImage *barVideoButtonBgImage = [[UIImage imageNamed:@"yv_barbutton.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(15, 4, 15, 4)];
-    UIImage *barVideoButtonBgImageActive = [[UIImage imageNamed:@"yv_barbutton_active.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(15, 4, 15, 4)];
+//    UIImage *barVideoButtonBgImage = [[UIImage imageNamed:@"yv_barbutton.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(15, 4, 15, 4)];
+//    UIImage *barVideoButtonBgImageActive = [[UIImage imageNamed:@"yv_barbutton_active.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(15, 4, 15, 4)];
+//    
+//    [[UIBarButtonItem appearanceWhenContainedIn:[MPMoviePlayerViewController class], nil] setBackgroundImage:barVideoButtonBgImage forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
+//    [[UIBarButtonItem appearanceWhenContainedIn:[MPMoviePlayerViewController class], nil] setBackgroundImage:barVideoButtonBgImageActive forState:UIControlStateSelected barMetrics:UIBarMetricsDefault];
     
-    [[UIBarButtonItem appearanceWhenContainedIn:[MPMoviePlayerViewController class], nil] setBackgroundImage:barVideoButtonBgImage forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
-    [[UIBarButtonItem appearanceWhenContainedIn:[MPMoviePlayerViewController class], nil] setBackgroundImage:barVideoButtonBgImageActive forState:UIControlStateSelected barMetrics:UIBarMetricsDefault];
     
-    
-    [[UIBarButtonItem appearance] setBackButtonBackgroundImage:navigationBarBackBgImageLS forState:UIControlStateNormal barMetrics:UIBarMetricsLandscapePhone];
-    [[UIBarButtonItem appearance] setBackButtonBackgroundImage:navigationBarBackBgImageActiveLS forState:UIControlStateHighlighted barMetrics:UIBarMetricsLandscapePhone];
-    
-    [[UIBarButtonItem appearance] setTitleTextAttributes:
-     [NSDictionary dictionaryWithObjectsAndKeys:
-      HEXColor(0xFFFFFF),
-      UITextAttributeTextColor,
-      [UIColor colorWithRed:0.0f green:0.0f blue:0.0f alpha:0.44f],
-      UITextAttributeTextShadowColor,
-      [NSValue valueWithUIOffset:UIOffsetMake(0, 1)],
-      UITextAttributeTextShadowOffset,
-      [UIFont fontWithName:@"HelveticaNeue-Bold" size:12.0f],
-      UITextAttributeFont,
-      nil] forState:UIControlStateNormal];
+   
     
 //    [[UILabel appearanceWhenContainedIn:[MJCustomTableViewCell class], nil] setBackgroundColor:[UIColor clearColor]];
 //    [[UILabel appearance] setBackgroundColor:[UIColor redColor]];
@@ -221,19 +212,30 @@
     int serverID = [serverIDString intValue];
     if(!serverID || serverID <= 0) return NO;
     
+    if(![self.window.rootViewController.view viewWithTag:23942]) {
+        [self displayPopupViewWithMovieNumber:[NSNumber numberWithInt:serverID]];
+    } else {
+        [self.window.rootViewController dismissPopupViewControllerWithanimationType:PopupViewAnimationSlideBottomBottom completion:^{
+            [self displayPopupViewWithMovieNumber:[NSNumber numberWithInt:serverID]];
+        }];
+    }
+    
+    return YES;
+}
+
+- (void)displayPopupViewWithMovieNumber:(NSNumber*)movieNumber
+{
     UIStoryboard *storyBoard = [UIStoryboard storyboardWithName:@"MainStoryboard" bundle:nil];
     addController = nil;
     addController = (AddMovieViewController*)[storyBoard instantiateViewControllerWithIdentifier:@"AddMovieViewController"];
     addController.delegate = self;
-    addController.resultID = [NSNumber numberWithInt:serverID];
+    addController.resultID = movieNumber;
     
     if(self.window.rootViewController.modalViewController) {
         [self.window.rootViewController dismissModalViewControllerAnimated:NO];
     }
     
     [self.window.rootViewController presentPopupViewController:addController animationType:PopupViewAnimationSlideBottomBottom];
-    
-    return YES;
 }
 
 
@@ -244,7 +246,7 @@
 
 - (void)AddMovieControllerCancelButtonClicked:(AddMovieViewController *)addMovieViewController
 {
-    [self.window.rootViewController dismissPopupViewControllerWithanimationType:PopupViewAnimationSlideBottomBottom];
+    [self.window.rootViewController dismissPopupViewControllerWithanimationType:PopupViewAnimationSlideBottomBottom completion:nil];
     addController = nil;
 }
 

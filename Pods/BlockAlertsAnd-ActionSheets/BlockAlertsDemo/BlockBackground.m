@@ -143,7 +143,6 @@ static BlockBackground *_sharedInstance = nil;
         self.alpha = 0.0f;
         self.hidden = NO;
         self.userInteractionEnabled = YES;
-        [self makeKeyAndVisible];
     }
     
     if (self.subviews.count > 0)

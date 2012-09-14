@@ -79,6 +79,9 @@
     self.cancelButton.titleLabel.shadowColor = [UIColor colorWithRed:0.0f green:0.0f blue:0.0f alpha:0.44f];
     self.cancelButton.titleLabel.shadowOffset = CGSizeMake(0.0f, 1.0f);
     self.cancelButton.titleLabel.font = [UIFont boldSystemFontOfSize:12.0f];
+    [self.cancelButton setTitleColor:HEXColor(0x730000) forState:UIControlStateDisabled];
+    [self.cancelButton setTitleShadowColor:HEXColor(0xC60000) forState:UIControlStateDisabled];
+    
     
     // adding cancel button
     [self.cancelButton addTarget:self action:@selector(cancelButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
@@ -351,21 +354,21 @@
     [bridge saveSearchResultDictAsMovie:resultDict completion:^(Movie *aMovie) {
         isAdding = NO;
         self.movie = aMovie;
-        [self checkButtonStates];
         
         // show info and close window
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.saveButton setTitle:NSLocalizedString(@"POPUP_SUCCESS_ADDED", nil)];
-            [self performSelector:@selector(cancelButtonClicked:) withObject:self afterDelay:2.0f];
+            [self performSelector:@selector(cancelButtonClicked:) withObject:self afterDelay:1.5f];
         });
         
     } failure:^(NSError *error) {
         XLog(@"%@", [error localizedDescription]);
         isAdding = NO;
+        [self checkButtonStates];
         dispatch_async(dispatch_get_main_queue(), ^{
             self.retryButton.alpha = 0.0f;
             [self showInfoContentWithText:NSLocalizedString(@"POPUP_TMDBERROR-TRY", nil) titleText:NSLocalizedString(@"POPUP_TMDBERROR-INFO", nil)];
-            [self performSelector:@selector(hideInfoContent) withObject:self afterDelay:3.0f];
+            [self performSelector:@selector(hideInfoContent) withObject:self afterDelay:2.5f];
         });
     }];
     

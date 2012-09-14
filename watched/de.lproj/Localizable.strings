@@ -68,10 +68,10 @@
 "SHARE_BUTTON_OPENSAFARI"       = "In Safari öffnen";
 "SHARE_BUTTON_COPYURL"          = "URL kopieren";
 "SHARE_TWITTER_TEXT"            = "Ich habe \"%@\" gesehen";
-"SHARE_TWITTER_TEXT_RATING"     = " und mit %i of 5 Sternen bewertet";
+"SHARE_TWITTER_TEXT_RATING"     = " und mit %i von 5 Sternen bewertet";
 
 "PICKER_POP_NOPOSTER_TITLE"     = "Entschuldigung";
-"PICKER_POP_NOPOSTER_CONTENT"   = "Leider gibt es keine weiteren Bilder mehr.";
+"PICKER_POP_NOPOSTER_CONTENT"   = "Leider gibt es keine weiteren Bilder.";
 "PICKER_POP_NOPOSTER_OK"        = "Ok";
 
 "HOURS_MIN"                     = "h";

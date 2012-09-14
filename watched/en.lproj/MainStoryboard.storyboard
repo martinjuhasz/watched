@@ -236,7 +236,7 @@
                                 <inset key="contentInset" minX="0.0" minY="0.0" maxX="0.0" maxY="48"/>
                                 <inset key="scrollIndicatorInsets" minX="0.0" minY="0.0" maxX="0.0" maxY="24"/>
                                 <color key="textColor" red="0.22745098039215686" green="0.22745098039215686" blue="0.22745098039215686" alpha="1" colorSpace="calibratedRGB"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textView>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="nv_bg_title.png" id="xIR-c6-ICh">
@@ -788,7 +788,7 @@
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <subviews>
                                                 <searchBar contentMode="redraw" text="" id="Wag-Kj-taO">
-                                                    <rect key="frame" x="0.0" y="-6" width="242" height="44"/>
+                                                    <rect key="frame" x="-5" y="-6" width="250" height="44"/>
                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                                     <textInputTraits key="textInputTraits"/>
                                                     <scopeButtonTitles>

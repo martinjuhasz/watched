@@ -475,7 +475,7 @@ const int kMovieFlagCellTag = 34773;
 
 - (void)AddMovieControllerCancelButtonClicked:(AddMovieViewController *)addMovieViewController
 {
-    [self dismissPopupViewControllerWithanimationType:PopupViewAnimationSlideBottomBottom];
+    [self dismissPopupViewControllerWithanimationType:PopupViewAnimationSlideBottomBottom completion:nil];
     addController = nil;
 }
 

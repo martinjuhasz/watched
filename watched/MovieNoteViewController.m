@@ -87,5 +87,10 @@
 }
 
 
+- (void)dealloc
+{
+    XLog("");
+}
+
 
 @end

@@ -252,8 +252,14 @@
     [self.detailView toggleLoadingViewForPosterType:selectedType];
     
     AFJSONRequestOperation *operation = [[OnlineMovieDatabase sharedMovieDatabase] getImagesForMovie:self.movie.movieID completion:^(NSDictionary *imageDict) {
+        
+        // reset default state
         isLoadingImages = NO;
         [self.detailView toggleLoadingViewForPosterType:selectedType];
+        
+        // check if vc is still visible
+        if (![self.navigationController.visibleViewController isKindOfClass:[MovieDetailViewController class]]) return;
+        
         if(selectedType == ImageTypePoster) {
             [self loadPickerForImageType:ImageTypePoster withResultDict:imageDict];
         } else {
@@ -307,7 +313,6 @@
 {    
     if(self.movie.homepage) {
         NSURL *url = [NSURL URLWithString:self.movie.homepage];
-        XLog(@"%@", self.movie.homepage);
         [self performSegueWithIdentifier:@"DetailWebViewSegue" sender:url];
     }
 }
@@ -490,6 +495,8 @@
 
 - (void)loadPickerForImageType:(ImageType)aImageType withResultDict:(NSDictionary*)resultDict
 {
+    
+    
     NSString *typeString = (aImageType == ImageTypePoster) ? @"posters" : @"backdrops";
     float imageWitdh = (aImageType == ImageTypePoster) ? 178.0f : 600.0f;
     NSMutableArray *imageURLs = [NSMutableArray array];
@@ -508,12 +515,6 @@
     if([[returnDict objectForKey:@"urls"] count] > 1) {
         [self performSegueWithIdentifier:@"ThumbnailPickerSegue" sender:returnDict];
     } else {
-//        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"PICKER_POP_NOPOSTER_TITLE", nil)
-//                                                        message:NSLocalizedString(@"PICKER_POP_NOPOSTER_CONTENT", nil)
-//                                                       delegate:nil 
-//                                              cancelButtonTitle:NSLocalizedString(@"PICKER_POP_NOPOSTER_OK", nil)
-//                                              otherButtonTitles:nil];
-//        [alert show];
         
         BlockAlertView *alert = [BlockAlertView alertWithTitle:NSLocalizedString(@"PICKER_POP_NOPOSTER_TITLE", nil)
                                                        message:NSLocalizedString(@"PICKER_POP_NOPOSTER_CONTENT", nil)];
@@ -523,12 +524,6 @@
     }
     
 }
-
-
-
-////////////////////////////////////////////////////////////////////////////
-#pragma mark -
-#pragma mark Selecting Poster and Backdrop
 
 - (void) thumbnailPicker:(ThumbnailPickerViewController*)aPicker didSelectImage:(NSString*)aImage forImageType:(ImageType)aImageType
 {

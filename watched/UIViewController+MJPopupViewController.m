@@ -35,16 +35,16 @@
     [self presentPopupView:popupViewController.view animationType:animationType];
 }
 
-- (void)dismissPopupViewControllerWithanimationType:(PopupViewAnimation)animationType
+- (void)dismissPopupViewControllerWithanimationType:(PopupViewAnimation)animationType completion:(void (^)(void))complete
 {
     UIView *sourceView = [self topView];
     UIView *popupView = [sourceView viewWithTag:kMJPopupViewTag];
     UIView *overlayView = [sourceView viewWithTag:kMJOverlayViewTag];
     
     if(animationType == PopupViewAnimationSlideBottomTop || animationType == PopupViewAnimationSlideBottomBottom || animationType == PopupViewAnimationSlideRightLeft) {
-        [self slideViewOut:popupView sourceView:sourceView overlayView:overlayView withAnimationType:animationType];
+        [self slideViewOut:popupView sourceView:sourceView overlayView:overlayView withAnimationType:animationType completion:complete];
     } else {
-        [self fadeViewOut:popupView sourceView:sourceView overlayView:overlayView];
+        [self fadeViewOut:popupView sourceView:sourceView overlayView:overlayView completion:complete];
     }
 }
 
@@ -57,11 +57,12 @@
 - (void)presentPopupView:(UIView*)popupView animationType:(PopupViewAnimation)animationType
 {
     UIView *sourceView = [self topView];
-    sourceView.tag = kMJSourceViewTag;
-    popupView.tag = kMJPopupViewTag;
     
     // check if source view controller is not in destination
-    if ([sourceView.subviews containsObject:popupView]) return;
+    if ([sourceView viewWithTag:kMJPopupViewTag]) return;
+    
+    sourceView.tag = kMJSourceViewTag;
+    popupView.tag = kMJPopupViewTag;
     
     // customize popupView
 //    popupView.layer.cornerRadius = 10.0f;
@@ -125,22 +126,22 @@
 
 - (void)dismissPopupViewControllerWithanimationTypeSlideBottomTop
 {
-    [self dismissPopupViewControllerWithanimationType:PopupViewAnimationSlideBottomTop];
+    [self dismissPopupViewControllerWithanimationType:PopupViewAnimationSlideBottomTop completion:nil];
 }
 
 - (void)dismissPopupViewControllerWithanimationTypeSlideBottomBottom
 {
-    [self dismissPopupViewControllerWithanimationType:PopupViewAnimationSlideBottomBottom];
+    [self dismissPopupViewControllerWithanimationType:PopupViewAnimationSlideBottomBottom completion:nil];
 }
 
 - (void)dismissPopupViewControllerWithanimationTypeSlideRightLeft
 {
-    [self dismissPopupViewControllerWithanimationType:PopupViewAnimationSlideRightLeft];
+    [self dismissPopupViewControllerWithanimationType:PopupViewAnimationSlideRightLeft completion:nil];
 }
 
 - (void)dismissPopupViewControllerWithanimationTypeFade
 {
-    [self dismissPopupViewControllerWithanimationType:PopupViewAnimationFade];
+    [self dismissPopupViewControllerWithanimationType:PopupViewAnimationFade completion:nil];
 }
 
 - (void)notifyAppearForView:(UIView*)popupView
@@ -201,7 +202,7 @@
     }];
 }
 
-- (void)slideViewOut:(UIView*)popupView sourceView:(UIView*)sourceView overlayView:(UIView*)overlayView withAnimationType:(PopupViewAnimation)animationType
+- (void)slideViewOut:(UIView*)popupView sourceView:(UIView*)sourceView overlayView:(UIView*)overlayView withAnimationType:(PopupViewAnimation)animationType completion:(void (^)(void))complete
 {
     UIView *backgroundView = [overlayView viewWithTag:kMJBackgroundViewTag];
     // Generating Start and Stop Positions
@@ -232,6 +233,7 @@
         [popupView removeFromSuperview];
         [overlayView removeFromSuperview];
         [self notifyDisappearForView:popupView];
+        if(complete) complete();
     }];
 }
 
@@ -260,7 +262,7 @@
     }];
 }
 
-- (void)fadeViewOut:(UIView*)popupView sourceView:(UIView*)sourceView overlayView:(UIView*)overlayView
+- (void)fadeViewOut:(UIView*)popupView sourceView:(UIView*)sourceView overlayView:(UIView*)overlayView completion:(void (^)(void))complete
 {
     UIView *backgroundView = [overlayView viewWithTag:kMJBackgroundViewTag];
     [UIView animateWithDuration:kPopupModalAnimationDuration animations:^{
@@ -270,6 +272,7 @@
         [popupView removeFromSuperview];
         [overlayView removeFromSuperview];
         [self notifyDisappearForView:popupView];
+        if(complete) complete();
     }];
 }
 

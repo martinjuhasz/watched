@@ -8,11 +8,11 @@
 
 #import "MJInternetConnection.h"
 #import <SystemConfiguration/SystemConfiguration.h>
-#import "AFHTTPClient.h"
+#import "KSReachability.h"
 #import "BlockAlertView.h"
 
 @interface MJInternetConnection () {
-    AFHTTPClient *_client;
+    KSReachability *_reachability;
 }
 @end
 
@@ -28,15 +28,11 @@
     self = [super init];
     if (self) {
         _internetAvailable = NO;
-        __weak MJInternetConnection *blockSelf = self;
-        _client = [[AFHTTPClient alloc] initWithBaseURL:[NSURL URLWithString:@"http://google.de/"]];
-        [_client setReachabilityStatusChangeBlock:^(AFNetworkReachabilityStatus status) {
-            if(status == AFNetworkReachabilityStatusReachableViaWWAN || status == AFNetworkReachabilityStatusReachableViaWiFi) {
-                blockSelf.internetAvailable = YES;
-            } else {
-                blockSelf.internetAvailable = NO;
-            }
-        }];
+        _reachability = [KSReachability reachabilityToHost:@"http://google.de/"];
+        _reachability.onReachabilityChanged = ^(KSReachability* reachability)
+        {
+            self.internetAvailable = (reachability.reachable) ? YES : NO;
+        };
     }
     return self;
 }

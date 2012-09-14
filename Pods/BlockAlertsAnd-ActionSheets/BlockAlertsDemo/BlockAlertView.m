@@ -89,7 +89,7 @@ static UIFont *buttonFont = nil;
         [_view addSubview:labelView];
         [labelView release];
         
-        _height += size.height + kBorder;
+        _height += size.height + 2;
     }
     
     if (_message)
@@ -102,7 +102,7 @@ static UIFont *buttonFont = nil;
         labelView.font = messageFont;
         labelView.numberOfLines = 0;
         labelView.lineBreakMode = UILineBreakModeWordWrap;
-        labelView.textColor = [UIColor colorWithRed:204.0f green:204.0f blue:204.0f alpha:1.0f];
+        labelView.textColor = [UIColor colorWithRed:0.8 green:0.8 blue:0.8 alpha:1.0];
         labelView.backgroundColor = [UIColor clearColor];
         labelView.textAlignment = UITextAlignmentCenter;
         labelView.shadowColor = [UIColor colorWithRed:0.0f green:0.0f blue:0.0f alpha:0.66f];
@@ -111,7 +111,7 @@ static UIFont *buttonFont = nil;
         [_view addSubview:labelView];
         [labelView release];
         
-        _height += size.height + kBorder;
+        _height += size.height + kBorder + 2;
     }
 }
 
@@ -134,7 +134,7 @@ static UIFont *buttonFont = nil;
     
     _view.frame = frame;
     
-    _height = kBorder + 15;
+    _height = kBorder + 11;
     
     [self addComponents:frame];
 
