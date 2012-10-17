@@ -14,7 +14,7 @@
 
 @interface ThumbnailPickerViewController : UIViewController<GMGridViewDataSource, GMGridViewActionDelegate>
 
-@property (strong, nonatomic) GMGridView *gridView;
+@property (strong, nonatomic) IBOutlet GMGridView *gridView;
 @property (strong, nonatomic) NSArray *imageURLs;
 @property (assign, nonatomic) ImageType imageType;
 @property (assign, nonatomic) id <ThumbnailPickerDelegate>delegate;

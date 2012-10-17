@@ -10,14 +10,14 @@
 #import "MoviesDataModel.h"
 #import "Movie.h"
 #import "OnlineDatabaseBridge.h"
-#import "MBProgressHUD.h"
 #import "WatchedWebBrowser.h"
 #import <MessageUI/MessageUI.h>
 #import "AFJSONRequestOperation.h"
 #import "MJCustomTableViewCell.h"
 #import "MJCustomAccessoryControl.h"
-#import "PDDebugger.h"
 #import "BlockAlertView.h"
+#import "UIViewController+MJPopupViewController.h"
+#import "LoadingPopupViewController.h"
 
 @interface SettingsTableViewController () <MFMailComposeViewControllerDelegate>
 
@@ -33,6 +33,11 @@
 {
     [super viewDidLoad];
     self.title = NSLocalizedString(@"TITLE_SETTINGS", nil);
+    
+    UIView *backgroundView = [[UIView alloc] init];
+    backgroundView.backgroundColor = HEXColor(DEFAULT_COLOR_BG);
+    self.tableView.backgroundView = backgroundView;
+    
     
     [self loadStatistics];
     
@@ -280,21 +285,6 @@
 
 
 
-//////////////////////////////////////////////////////////////////////////////
-//#pragma mark -
-//#pragma mark UIAlertViewDelegate
-//
-//- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
-//{
-//    if([alertView.title isEqualToString:NSLocalizedString(@"SETTINGS_POP_RESET_TITLE", nil)]) {
-//        if(buttonIndex == 1) {
-//            [self removeAllMovies];
-//        }
-//    }
-//}
-
-
-
 ////////////////////////////////////////////////////////////////////////////
 #pragma mark -
 #pragma mark Settings Actions
@@ -322,9 +312,15 @@
 
 - (void)refreshAllMovies
 {
-    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
-    hud.mode = MBProgressHUDModeDeterminate;
-    hud.progress = 0.0f;
+//    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
+//    hud.mode = MBProgressHUDModeDeterminate;
+//    hud.progress = 0.0f;
+
+    UIStoryboard *storyBoard = [UIStoryboard storyboardWithName:@"MainStoryboard" bundle:nil];
+    _loadingController = nil;
+    _loadingController = (LoadingPopupViewController*)[storyBoard instantiateViewControllerWithIdentifier:@"LoadingMovieViewController"];
+    [self presentPopupViewController:_loadingController animationType:PopupViewAnimationSlideBottomBottom];
+    _loadingController.titleLabel.text = @"loading...";
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
         
@@ -355,13 +351,17 @@
             AFJSONRequestOperation *operation = [bridge updateMovieMetadata:currentMovie inContext:context completion:^(Movie *returnedMovie) {
                 current++;
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    hud.progress = current / total;
+                    NSString *progress = [NSString stringWithFormat:@"%d / %.0f", current, total];
+                    _loadingController.titleLabel.text = progress;
+//                    hud.progress = current / total;
                 });
                 dispatch_group_leave(group);
             } failure:^(NSError *anError) {
                 current++;
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    hud.progress = current / total;
+                    NSString *progress = [NSString stringWithFormat:@"%d / %.0f", current, total];
+                    _loadingController.titleLabel.text = progress;
+//                    hud.progress = current / total;
                 });
                 error = anError;
                 dispatch_group_leave(group);
@@ -377,16 +377,18 @@
         if(!error) {
             [context save:nil];
             dispatch_async(dispatch_get_main_queue(), ^{
-                hud.labelText = NSLocalizedString(@"SETTINGS_META_REFRESHED", nil);
-                hud.mode = MBProgressHUDModeText;
-                [hud hide:YES afterDelay:2.0];
+//                hud.labelText = NSLocalizedString(@"SETTINGS_META_REFRESHED", nil);
+//                hud.mode = MBProgressHUDModeText;
+//                [hud hide:YES afterDelay:2.0];
+                [self closeLoadingController];
             });
         } else {
             XLog("%@", [error localizedDescription]);
             dispatch_async(dispatch_get_main_queue(), ^{
-                hud.labelText = [error localizedDescription];
-                hud.mode = MBProgressHUDModeText;
-                [hud hide:YES afterDelay:2.0];
+//                hud.labelText = [error localizedDescription];
+//                hud.mode = MBProgressHUDModeText;
+//                [hud hide:YES afterDelay:2.0];
+                [self closeLoadingController];
             });
         }
     });
@@ -401,40 +403,45 @@
 - (void)toggleDebugger
 {
 #ifdef DEBUG
-    PDDebugger *debugger = [PDDebugger defaultInstance];
-    NSString *status;
-    if(![debugger isConnected]) {
-        // http debug
-        [debugger connectToURL:[NSURL URLWithString:@"ws://10.0.1.11:9000/device"]];
-        [debugger enableNetworkTrafficDebugging];
-        // TODO: Private API Call!
-        [debugger forwardAllNetworkTraffic];
-        
-        status = @"activated";
-        
-        // core data
-        [debugger enableCoreDataDebugging];
-        [debugger addManagedObjectContext:[[MoviesDataModel sharedDataModel] mainContext] withName:@"Main Context"];
-    } else {
-        [debugger removeManagedObjectContext:[[MoviesDataModel sharedDataModel] mainContext]];
-        [debugger disconnect];
-        status = @"disabled";
-    }
-    
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Debugger"
-                                                    message:[NSString stringWithFormat:@"Debugger %@", status]
-                                                   delegate:nil
-                                          cancelButtonTitle:@"OK"
-                                          otherButtonTitles:nil];
-    [alert show];
+//    PDDebugger *debugger = [PDDebugger defaultInstance];
+//    NSString *status;
+//    if(![debugger isConnected]) {
+//        // http debug
+//        [debugger connectToURL:[NSURL URLWithString:@"ws://10.0.1.11:9000/device"]];
+//        [debugger enableNetworkTrafficDebugging];
+//        // TODO: Private API Call!
+//        [debugger forwardAllNetworkTraffic];
+//        
+//        status = @"activated";
+//        
+//        // core data
+//        [debugger enableCoreDataDebugging];
+//        [debugger addManagedObjectContext:[[MoviesDataModel sharedDataModel] mainContext] withName:@"Main Context"];
+//    } else {
+//        [debugger removeManagedObjectContext:[[MoviesDataModel sharedDataModel] mainContext]];
+//        [debugger disconnect];
+//        status = @"disabled";
+//    }
+//    
+//    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Debugger"
+//                                                    message:[NSString stringWithFormat:@"Debugger %@", status]
+//                                                   delegate:nil
+//                                          cancelButtonTitle:@"OK"
+//                                          otherButtonTitles:nil];
+//    [alert show];
 #endif
 }
 
 - (void)loadDummyContent
 {
-    __block MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
-    hud.mode = MBProgressHUDModeDeterminate;
-    hud.progress = 0.0f;
+//    __block MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
+//    hud.mode = MBProgressHUDModeDeterminate;
+//    hud.progress = 0.0f;
+    UIStoryboard *storyBoard = [UIStoryboard storyboardWithName:@"MainStoryboard" bundle:nil];
+    _loadingController = nil;
+    _loadingController = (LoadingPopupViewController*)[storyBoard instantiateViewControllerWithIdentifier:@"LoadingMovieViewController"];
+    [self presentPopupViewController:_loadingController animationType:PopupViewAnimationSlideBottomBottom];
+    _loadingController.titleLabel.text = @"loading...";
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
         OnlineDatabaseBridge *bridge = [[OnlineDatabaseBridge alloc] init];
@@ -497,13 +504,17 @@
             AFJSONRequestOperation *operation = [bridge saveMovieForID:currentMovie completion:^(Movie *returnedMovie) {
                 current++;
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    hud.progress = current / total;
+//                    hud.progress = current / total;
+                    NSString *progress = [NSString stringWithFormat:@"%d / %.0f", current, total];
+                    _loadingController.titleLabel.text = progress;
                 });
                 dispatch_group_leave(group);
             } failure:^(NSError *anError) {
                 current++;
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    hud.progress = current / total;
+//                    hud.progress = current / total;
+                    NSString *progress = [NSString stringWithFormat:@"%d / %.0f", current, total];
+                    _loadingController.titleLabel.text = progress;
                 });
                 XLog("%@",[anError localizedDescription]);
                 dispatch_group_leave(group);
@@ -517,7 +528,8 @@
         dispatch_group_wait(group, DISPATCH_TIME_FOREVER);
         dispatch_release(group);
         dispatch_async(dispatch_get_main_queue(), ^{
-            [hud hide:YES];
+//            [hud hide:YES];
+            [self closeLoadingController];
             [self loadStatistics];
             [self reloadStatisticCells];
         });
@@ -647,5 +659,16 @@
     [self performSegueWithIdentifier:@"SettingsAboutSegue" sender:nil];
 }
 
+
+- (void)AddMovieControllerCancelButtonClicked:(LoadingPopupViewController *)loadingPopupViewController
+{
+    [self closeLoadingController];
+}
+
+- (void)closeLoadingController
+{
+    [self dismissPopupViewControllerWithanimationType:PopupViewAnimationSlideBottomBottom completion:nil];
+    _loadingController = nil;
+}
 
 @end

@@ -429,13 +429,6 @@ const int kMovieFlagCellTag = 34773;
         isError = YES;
         [self.tableView reloadData];
         
-//        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-//        hud.dimBackground = YES;
-//        hud.mode = MBProgressHUDModeText;
-//        hud.labelText = [error localizedDescription];
-//        hud.removeFromSuperViewOnHide = YES;
-//        [hud hide:YES afterDelay:1.0f];
-        
     }];
     [operation start];
 }

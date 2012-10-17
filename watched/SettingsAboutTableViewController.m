@@ -36,6 +36,10 @@
     
     self.title = NSLocalizedString(@"SETTINGS_ABOUT_TITLE", nil);
     
+    UIView *backgroundView = [[UIView alloc] init];
+    backgroundView.backgroundColor = HEXColor(DEFAULT_COLOR_BG);
+    self.tableView.backgroundView = backgroundView;
+    
     self.settings = [NSArray arrayWithObjects:
                      [NSArray arrayWithObjects:
                       [NSDictionary dictionaryWithObject:@"Martin Juhasz" forKey:@"name"],
@@ -47,7 +51,10 @@
                       [NSDictionary dictionaryWithObject:NSLocalizedString(@"GMGridView", nil) forKey:@"name"],
                       [NSDictionary dictionaryWithObject:NSLocalizedString(@"TestFlight", nil) forKey:@"name"],
                       [NSDictionary dictionaryWithObject:NSLocalizedString(@"DLStarRating", nil) forKey:@"name"],
-                      [NSDictionary dictionaryWithObject:NSLocalizedString(@"Reachability", nil) forKey:@"name"],
+                      [NSDictionary dictionaryWithObject:NSLocalizedString(@"KSReachability", nil) forKey:@"name"],
+                      [NSDictionary dictionaryWithObject:NSLocalizedString(@"OBGradientView", nil) forKey:@"name"],
+                      [NSDictionary dictionaryWithObject:NSLocalizedString(@"BlockAlerts and ActionSheets", nil) forKey:@"name"],
+                      [NSDictionary dictionaryWithObject:NSLocalizedString(@"Crashlytics", nil) forKey:@"name"],
                       nil],
                      nil];
 
@@ -217,6 +224,15 @@
                 break;
             case 5:
                 fileName = @"settings_reachability";
+                break;
+            case 6:
+                fileName = @"settings_obgradientview";
+                break;
+            case 7:
+                fileName = @"settings_blockalerts";
+                break;
+            case 8:
+                fileName = @"settings_crashlytics";
                 break;
         }
         url = [NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:fileName ofType:@"html"]];

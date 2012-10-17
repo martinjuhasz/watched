@@ -8,10 +8,10 @@
 
 #import "WatchedWebBrowser.h"
 #import <MessageUI/MessageUI.h>
-#import <Twitter/Twitter.h>
 #import "BrowserBarButtonItem.h"
 #import "BlockActionSheet.h"
 #import "MJInternetConnection.h"
+#import "MJWatchedNavigationController.h"
 
 #define kButtonViewTag 500
 
@@ -54,6 +54,10 @@
         [[MJInternetConnection sharedInternetConnection] displayAlert];
     }
     
+    // Enable Rotation
+    _navController = (MJWatchedNavigationController*)self.navigationController;
+//    _navController.shouldRotate = YES;
+    
     self.webView.delegate = self;
     [self.webView loadRequest:[NSURLRequest requestWithURL:self.url]];
     
@@ -74,19 +78,6 @@
     
 }
 
-- (void)viewDidUnload
-{
-    [self setActivityIndicator:nil];
-    [self setWebView:nil];
-    [self setReloadButton:nil];
-    [self setForwardButton:nil];
-    [self setBackButton:nil];
-    [self setActionButton:nil];
-    [self setToolbar:nil];
-    [super viewDidUnload];
-    // Release any retained subviews of the main view.
-}
-
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
     return YES;
@@ -104,6 +95,7 @@
 - (void)dealloc
 {
     [self.webView setDelegate:nil];
+//    _navController.shouldRotate = NO;
 }
 
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
@@ -221,29 +213,6 @@
 
 - (IBAction)actionButtonClicked:(id)sender
 {
-//    UIActionSheet *shareActionSheet = [[UIActionSheet alloc] init];
-//    shareActionSheet.delegate = self;
-//    shareActionSheet.title = [self.webView.request.URL absoluteString];
-//    
-//    // E-Mail
-//    if([MFMailComposeViewController canSendMail])
-//        [shareActionSheet addButtonWithTitle:NSLocalizedString(@"SHARE_BUTTON_EMAIL",nil)];
-//    
-//    // Twitter
-//    [shareActionSheet addButtonWithTitle:NSLocalizedString(@"SHARE_BUTTON_TWITTER",nil)];
-//    
-//    // Open in Safari
-//    [shareActionSheet addButtonWithTitle:NSLocalizedString(@"SHARE_BUTTON_OPENSAFARI",nil)];
-//    
-//    // Copy URL
-//    [shareActionSheet addButtonWithTitle:NSLocalizedString(@"SHARE_BUTTON_COPYURL",nil)];
-//    
-//    // Cancel Button
-//    [shareActionSheet addButtonWithTitle:NSLocalizedString(@"SHARE_BUTTON_CANCEL",nil)];
-//    [shareActionSheet setCancelButtonIndex:[shareActionSheet numberOfButtons]-1];
-//    
-//    [shareActionSheet showInView:[UIApplication sharedApplication].keyWindow];
-    
     BlockActionSheet *sheet = [BlockActionSheet sheetWithTitle:[self.webView.request.URL absoluteString]];
     
     // E-Mail
@@ -252,12 +221,7 @@
             [self shareWithEmail];
         }];
     }
-    
-    // Twitter
-//    [sheet addButtonWithTitle:NSLocalizedString(@"SHARE_BUTTON_TWITTER",nil) block:^{
-//        [self shareWithTwitter];
-//    }];
-    
+
     // Open in Safari
     [sheet addButtonWithTitle:NSLocalizedString(@"SHARE_BUTTON_OPENSAFARI",nil) block:^{
         [[UIApplication sharedApplication] openURL:self.webView.request.URL];
@@ -295,38 +259,9 @@
 
 
 
-//////////////////////////////////////////////////////////////////////////////
-//#pragma mark -
-//#pragma mark UIActionSheetDelegate
-//
-//- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
-//{
-//    NSString *title = [actionSheet buttonTitleAtIndex:buttonIndex];
-//    
-//    if([title isEqualToString:NSLocalizedString(@"SHARE_BUTTON_EMAIL",nil)]) {
-//        [self shareWithEmail];
-//    } else if([title isEqualToString:NSLocalizedString(@"SHARE_BUTTON_TWITTER",nil)]) {
-//        [self shareWithTwitter];
-//    } else if ([title isEqualToString:NSLocalizedString(@"SHARE_BUTTON_OPENSAFARI",nil)]) {
-//        [[UIApplication sharedApplication] openURL:self.webView.request.URL];
-//    } else if ([title isEqualToString:NSLocalizedString(@"SHARE_BUTTON_COPYURL",nil)]) {
-//        UIPasteboard *pb = [UIPasteboard generalPasteboard];
-//        pb.string = [self.webView.request.URL absoluteString];
-//    }
-//}
-
-
 ////////////////////////////////////////////////////////////////////////////
 #pragma mark -
 #pragma mark Sharing
-
-- (void)shareWithTwitter
-{
-    TWTweetComposeViewController *twitter = [[TWTweetComposeViewController alloc] init];
-    [twitter addURL:self.webView.request.URL];
-    
-    [self presentModalViewController:twitter animated:YES];
-}
 
 - (void)shareWithEmail
 {

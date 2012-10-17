@@ -1,7 +1,6 @@
 platform :ios, '5.0'
 
 pod 'AFNetworking', :podspec => 'https://raw.github.com/AFNetworking/AFNetworking/730c35926ad926cab80d053c895f3444daa85f23/AFNetworking.podspec'
-pod 'MBProgressHUD'
 pod 'MJStarRating', :podspec => 'MJStarRating.podspec'
 pod 'TestFlightSDK'
 pod 'GMGridView'
@@ -11,4 +10,5 @@ pod 'KSReachability', :podspec => 'KSReachability.podspec'
 
 
 #pod 'iOS-Hierarchy-Viewer'
-pod 'PonyDebugger'
+#pod 'PonyDebugger'
+#pod 'MBProgressHUD'

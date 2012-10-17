@@ -19,6 +19,9 @@
 #define kMBackdropHeight 190.0f
 #define kMBackdropScrollStop 50.0f
 
+//#define kContentFont @"HelveticaNeue-Bold"
+#define kContentFont @"HelveticaNeue"
+
 ////////////////////////////////////////////////////////////////////////////
 #pragma mark -
 #pragma mark UIView
@@ -109,6 +112,7 @@
     self.backgroundColor = HEXColor(0x333433);
     
     self.mainScrollView = [[UIScrollView alloc] initWithFrame:self.frame];
+    self.mainScrollView.autoresizingMask = UIViewAutoresizingFlexibleHeight;
     self.mainScrollView.delegate = self;
     [self addSubview:self.mainScrollView];
     
@@ -230,6 +234,9 @@
     
     
     self.metaTableView = [[UITableView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, 287.0f) style:UITableViewStyleGrouped];
+    UIView *backgroundView = [[UIView alloc] init];
+    backgroundView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"g_bg-grp_table.png"]];
+    self.metaTableView.backgroundView = backgroundView;
     self.metaTableView.scrollEnabled = NO;
     self.metaTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.metaTableView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"g_bg-grp_table.png"]];
@@ -249,7 +256,7 @@
      
     self.directorLabel = [[UILabel alloc] init];
     [self setDefaultStylesForLabels:self.directorLabel];
-    self.directorLabel.font = [UIFont fontWithName:@"HelveticaNeue-Bold" size:12.0f];
+    self.directorLabel.font = [UIFont fontWithName:kContentFont size:12.0f];
     self.directorLabel.adjustsFontSizeToFitWidth = NO;
     self.directorLabel.textColor = HEXColor(0xD1D1D1);
     self.directorLabel.shadowColor = [UIColor colorWithRed:0.0f green:0.0f blue:0.0f alpha:0.8f];
@@ -268,7 +275,7 @@
     [self.mainScrollView addSubview:self.releaseDateButton];
     
     self.runtimeButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    self.runtimeButton.titleLabel.font = [UIFont fontWithName:@"HelveticaNeue-Bold" size:10.0f];
+    self.runtimeButton.titleLabel.font = [UIFont fontWithName:kContentFont size:10.0f];
     self.runtimeButton.titleLabel.adjustsFontSizeToFitWidth = NO;
     [self.runtimeButton setTitleColor:HEXColor(0xD1D1D1)];
     self.runtimeButton.contentHorizontalAlignment = UITextAlignmentRight;
@@ -278,7 +285,7 @@
 
     self.releaseDateTitleLabel = [[UILabel alloc] init];
     [self setDefaultStylesForLabels:self.releaseDateTitleLabel];
-    self.releaseDateTitleLabel.font = [UIFont fontWithName:@"HelveticaNeue-Bold" size:10.0f];
+    self.releaseDateTitleLabel.font = [UIFont fontWithName:kContentFont size:10.0f];
     self.releaseDateTitleLabel.adjustsFontSizeToFitWidth = NO;
     self.releaseDateTitleLabel.textColor = HEXColor(0xFFFFFF);
     self.releaseDateTitleLabel.shadowColor = [UIColor colorWithRed:0.0f green:0.0f blue:0.0f alpha:0.8f];
@@ -302,7 +309,7 @@
     
     self.actor1Label = [[UILabel alloc] init];
     self.actor1Label.backgroundColor = [UIColor clearColor];
-    self.actor1Label.font = [UIFont fontWithName:@"HelveticaNeue-Bold" size:12.0f];
+    self.actor1Label.font = [UIFont fontWithName:kContentFont size:12.0f];
     self.actor1Label.adjustsFontSizeToFitWidth = NO;
     self.actor1Label.textColor = HEXColor(0xD1D1D1);
     self.actor1Label.shadowColor = [UIColor colorWithRed:0.0f green:0.0f blue:0.0f alpha:0.8f];
@@ -311,7 +318,7 @@
     
     self.actor2Label = [[UILabel alloc] init];
     self.actor2Label.backgroundColor = [UIColor clearColor];
-    self.actor2Label.font = [UIFont fontWithName:@"HelveticaNeue-Bold" size:12.0f];
+    self.actor2Label.font = [UIFont fontWithName:kContentFont size:12.0f];
     self.actor2Label.adjustsFontSizeToFitWidth = NO;
     self.actor2Label.textColor = HEXColor(0xD1D1D1);
     self.actor2Label.shadowColor = [UIColor colorWithRed:0.0f green:0.0f blue:0.0f alpha:0.8f];
@@ -320,7 +327,7 @@
     
     self.actor3Label = [[UILabel alloc] init];
     self.actor3Label.backgroundColor = [UIColor clearColor];
-    self.actor3Label.font = [UIFont fontWithName:@"HelveticaNeue-Bold" size:12.0f];
+    self.actor3Label.font = [UIFont fontWithName:kContentFont size:12.0f];
     self.actor3Label.adjustsFontSizeToFitWidth = NO;
     self.actor3Label.textColor = HEXColor(0xD1D1D1);
     self.actor3Label.shadowColor = [UIColor colorWithRed:0.0f green:0.0f blue:0.0f alpha:0.8f];
@@ -329,7 +336,7 @@
     
     self.actor4Label = [[UILabel alloc] init];
     self.actor4Label.backgroundColor = [UIColor clearColor];
-    self.actor4Label.font = [UIFont fontWithName:@"HelveticaNeue-Bold" size:12.0f];
+    self.actor4Label.font = [UIFont fontWithName:kContentFont size:12.0f];
     self.actor4Label.adjustsFontSizeToFitWidth = NO;
     self.actor4Label.textColor = HEXColor(0xD1D1D1);
     self.actor4Label.shadowColor = [UIColor colorWithRed:0.0f green:0.0f blue:0.0f alpha:0.8f];
@@ -359,7 +366,7 @@
     
     self.overviewLabel = [[UILabel alloc] init];
     [self setDefaultStylesForLabels:self.overviewLabel];
-    self.overviewLabel.font = [UIFont boldSystemFontOfSize:12.0f];
+    self.overviewLabel.font = [UIFont fontWithName:kContentFont size:12.0f];
     self.overviewLabel.adjustsFontSizeToFitWidth = NO;
     self.overviewLabel.textColor = HEXColor(0x666666);
     self.overviewLabel.shadowColor = [UIColor colorWithRed:255.0f green:255.0f blue:255.0f alpha:0.33f];

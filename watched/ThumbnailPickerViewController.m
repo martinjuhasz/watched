@@ -41,7 +41,8 @@
 {
     [super viewDidLoad];
     
-    self.gridView = [[GMGridView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, 416.0f)];
+//    self.gridView = [[GMGridView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, 416.0f)];
+//    self.gridView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
     self.gridView.backgroundColor = HEXColor(0xe6e6e6);
     self.gridView.style = GMGridViewStylePush;
     self.gridView.itemSpacing = 3.0f;

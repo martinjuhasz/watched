@@ -31,10 +31,10 @@
  ================================================*/
 
 "BUTTON_ADDMOVIE_TITLE"                 = "Film hinzufügen";
-"CONTROL_SORTMOVIES_TITLE_ALL"          = "Alle Filme";
+"CONTROL_SORTMOVIES_TITLE_ALL"          = " Alle Filme";
 "CONTROL_SORTMOVIES_TITLE_UNWATCHED"    = "Ungesehen";
-"CONTROL_SORTMOVIES_TITLE_UNRATED"      = "Unbewertet";
-"HEADER_TITLE_ZERORATING"               = "unrated";
+"CONTROL_SORTMOVIES_TITLE_UNRATED"      = "Unbewertet ";
+"HEADER_TITLE_ZERORATING"               = "unbewertet";
 
 /*================================================
  DETAIL VIEW
@@ -81,8 +81,12 @@
 
 "DETAIL_POP_DELETE_TITLE"       = "Achtung";
 "DETAIL_POP_DELETE_CONTENT"     = "Sind sie sicher, dass sie diesen Film löschen möchten?";
-"DETAIL_POP_DELETE_CANCEL"      = "abbrechen";
-"DETAIL_POP_DELETE_OK"          = "löschen";
+"DETAIL_POP_DELETE_CANCEL"      = "Abbrechen";
+"DETAIL_POP_DELETE_OK"          = "Löschen";
+
+"DETAIL_POP_NOACCOUNT_TITLE"    = "kein %@ Account";
+"DETAIL_POP_NOACCOUNT_CONTENT"  = "Du hast noch keinen %@ Account konfiguriert. In den Einstellungen deines iPhone's kannst du einen %@ Account erstellen und hinzufügen.";
+"DETAIL_POP_NOACCOUNT_OK"       = "Ok";
 
 /*================================================
  CAST
@@ -108,8 +112,8 @@
 "SETTINGS_RESET"                = "Filme und Bewertungen löschen";
 "SETTINGS_POP_RESET_TITLE"      = "Achtung";
 "SETTINGS_POP_RESET_CONTENT"    = "Sind sie sicher, dass sie alle Filme und Bewertungen löschen möchten?";
-"SETTINGS_POP_RESET_CANCEL"     = "abbrechen";
-"SETTINGS_POP_RESET_OK"         = "löschen";
+"SETTINGS_POP_RESET_CANCEL"     = "Abbrechen";
+"SETTINGS_POP_RESET_OK"         = "Löschen";
 "SETTINGS_ABOUT"                = "Über uns";
 "SETTINGS_CONTACT"              = "Kontaktiere uns";
 "SETTINGS_HEADER_STATISTICS"    = "Statistiken";

@@ -16,6 +16,10 @@
 #import "AddMovieViewController.h"
 #import "MJInternetConnection.h"
 #import "WatchedWebBrowser.h"
+#import "MJWatchedNavigationBar.h"
+#import <MessageUI/MessageUI.h>
+#import "TestFlight.h"
+#import <Crashlytics/Crashlytics.h>
 
 
 @interface WatchedAppDelegate ()<AddMovieViewDelegate> {
@@ -35,10 +39,11 @@
     
     // Override point for customization after application launch.
     [TestFlight takeOff:@"bd44b4d15d82ebee20573cbad8c85c83_MzE1MTMyMDExLTExLTA1IDEzOjA0OjU2LjU3ODE3Mg"];
-    [TestFlight setDeviceIdentifier:[[UIDevice currentDevice] uniqueIdentifier]];
+    [Crashlytics startWithAPIKey:@"145e624fa03124a3e4abe820c9bf1a8a9fe96274"];
     
     [[OnlineMovieDatabase sharedMovieDatabase] setApiKey:@"d518563ee67cb6d475d2440d3e663e93"];
     [[OnlineMovieDatabase sharedMovieDatabase] setPreferredLanguage:[self appLanguage]];
+    
     
     return YES;
 }
@@ -58,18 +63,27 @@
     // UINavigationBar
     UIImage *navigationBarBgImage = [[UIImage imageNamed:@"g_bg_navbar.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
     UIImage *navigationBarBgImageLS = [[UIImage imageNamed:@"g_bg_navbar_landscape.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
-    UIImage *navigationBarBackBgImage = [[UIImage imageNamed:@"g_backbutton.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 13, 0, 4)];
-    UIImage *navigationBarBackBgImageLS = [[UIImage imageNamed:@"g_backbutton_landscape.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 13, 0, 4)];
-    UIImage *navigationBarBackBgImageActive = [[UIImage imageNamed:@"g_backbutton_active.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 13, 0, 4)];
-    UIImage *navigationBarBackBgImageActiveLS = [[UIImage imageNamed:@"g_backbutton_landscape_active.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 13, 0, 4)];
+
+    
+    // testing with customs
+//    [[MJWatchedNavigationBar appearance] setBackgroundImage:navigationBarBgImage forBarMetrics:UIBarMetricsDefault];
+//    [[UINavigationBar appearanceWhenContainedIn:[MFMailComposeViewController class], nil] setBackgroundImage:navigationBarBgImage forBarMetrics:UIBarMetricsDefault];
+//    
+//    // Bar Button Items
+//    id navBarButtonAppearance = [UIBarButtonItem appearanceWhenContainedIn:[MJWatchedNavigationBar class], nil];
+//    id navBarButtonAppearanceMail = [UIBarButtonItem appearanceWhenContainedIn:[MFMailComposeViewController class], nil];
+//    [self setStylesForBarButtonItem:navBarButtonAppearance];
+//    [self setStylesForBarButtonItem:navBarButtonAppearanceMail];
+    
     
     [[UINavigationBar appearance] setBackgroundImage:navigationBarBgImage forBarMetrics:UIBarMetricsDefault];
-    [[UIBarButtonItem appearance] setBackButtonBackgroundImage:navigationBarBackBgImage forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
-    [[UIBarButtonItem appearance] setBackButtonBackgroundImage:navigationBarBackBgImageActive forState:UIControlStateHighlighted barMetrics:UIBarMetricsDefault];
+    
+    // Bar Button Items
+    id navBarButtonAppearance = [UIBarButtonItem appearanceWhenContainedIn:[UINavigationBar class], nil];
+    [self setStylesForBarButtonItem:navBarButtonAppearance];
     
     [[UINavigationBar appearance] setBackgroundImage:navigationBarBgImageLS forBarMetrics:UIBarMetricsLandscapePhone];
-    [[UIBarButtonItem appearance] setBackButtonBackgroundImage:navigationBarBackBgImageLS forState:UIControlStateNormal barMetrics:UIBarMetricsLandscapePhone];
-    [[UIBarButtonItem appearance] setBackButtonBackgroundImage:navigationBarBackBgImageActiveLS forState:UIControlStateHighlighted barMetrics:UIBarMetricsLandscapePhone];
+    
     
     // UINavigationBar Popover
     UIImage *navigationPopoverBarBgImage = [[UIImage imageNamed:@"pv_bg_navbar.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(16.0f, 12.0f, 7.0f, 12.0f)];
@@ -95,35 +109,12 @@
     [[UIToolbar appearance] setBackgroundImage:navigationBarBgImage forToolbarPosition:UIToolbarPositionAny barMetrics:UIBarMetricsDefault];
     [[UIToolbar appearanceWhenContainedIn:[WatchedWebBrowser class], nil] setBackgroundImage:browserBarBgImage forToolbarPosition:UIToolbarPositionAny barMetrics:UIBarMetricsDefault];
     
-    // UIBarButtonItem
-    UIImage *barButtonBgImage = [[UIImage imageNamed:@"g_barbutton.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(15, 4, 15, 4)];
-    UIImage *barButtonBgImageActive = [[UIImage imageNamed:@"g_barbutton_active.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(15, 4, 15, 4)];
-    [[UIBarButtonItem appearance] setBackgroundImage:barButtonBgImage forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
-    [[UIBarButtonItem appearance] setBackgroundImage:barButtonBgImageActive forState:UIControlStateSelected barMetrics:UIBarMetricsDefault];
-    
-    
-    [[UIBarButtonItem appearance] setTitleTextAttributes:
-     [NSDictionary dictionaryWithObjectsAndKeys:
-      HEXColor(0xFFFFFF), 
-      UITextAttributeTextColor, 
-      [UIColor colorWithRed:0.0f green:0.0f blue:0.0f alpha:0.44f], 
-      UITextAttributeTextShadowColor, 
-      [NSValue valueWithUIOffset:UIOffsetMake(0, 1)],
-      UITextAttributeTextShadowOffset, 
-      [UIFont fontWithName:@"HelveticaNeue-Bold" size:12.0f], 
-      UITextAttributeFont, 
-      nil] forState:UIControlStateNormal];
-    
-    // landscape
-    [[UIBarButtonItem appearance] setBackButtonBackgroundImage:navigationBarBackBgImageLS forState:UIControlStateNormal barMetrics:UIBarMetricsLandscapePhone];
-    [[UIBarButtonItem appearance] setBackButtonBackgroundImage:navigationBarBackBgImageActiveLS forState:UIControlStateHighlighted barMetrics:UIBarMetricsLandscapePhone];
-    
     // UISearchBar
     [[UISearchBar appearance] setBackgroundImage:navigationBarBgImage];
     
     // TableView
     [[UITableView appearance] setBackgroundColor:HEXColor(DEFAULT_COLOR_BG)];
-    [[UITableView appearance] setSeparatorColor:HEXColor(0x595959)];
+    [[UITableView appearance] setSeparatorColor:HEXColor(0x737373)];
     
     // UISegmentedControl
     UIImage *segmentedControlBgImage = [[UIImage imageNamed:@"mv_segmented.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 4, 0, 4)];
@@ -146,25 +137,48 @@
                                                  [UIFont fontWithName:@"HelveticaNeue-Bold" size:12.0f],
                                                  UITextAttributeFont,
                                                  nil] forState:UIControlStateNormal];
-    
-    
-    
-    // Video popover
-//    UIImage *barVideoButtonBgImage = [[UIImage imageNamed:@"yv_barbutton.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(15, 4, 15, 4)];
-//    UIImage *barVideoButtonBgImageActive = [[UIImage imageNamed:@"yv_barbutton_active.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(15, 4, 15, 4)];
-//    
-//    [[UIBarButtonItem appearanceWhenContainedIn:[MPMoviePlayerViewController class], nil] setBackgroundImage:barVideoButtonBgImage forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
-//    [[UIBarButtonItem appearanceWhenContainedIn:[MPMoviePlayerViewController class], nil] setBackgroundImage:barVideoButtonBgImageActive forState:UIControlStateSelected barMetrics:UIBarMetricsDefault];
-    
-    
-   
-    
-//    [[UILabel appearanceWhenContainedIn:[MJCustomTableViewCell class], nil] setBackgroundColor:[UIColor clearColor]];
-//    [[UILabel appearance] setBackgroundColor:[UIColor redColor]];
-//    [[UILabel appearance] setBackgroundImage:[UIImage imageNamed:@"mv_segmented-dv-na.png"] forState:UIControlStateNormal];
-    
 }
-							
+
+- (void)setStylesForBarButtonItem:(id)itemAppearance
+{
+    
+    UIImage *navigationBarBackBgImage = [[UIImage imageNamed:@"g_backbutton.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 13, 0, 4)];
+    UIImage *navigationBarBackBgImageLS = [[UIImage imageNamed:@"g_backbutton_landscape.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 13, 0, 4)];
+    UIImage *navigationBarBackBgImageActive = [[UIImage imageNamed:@"g_backbutton_active.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 13, 0, 4)];
+    UIImage *navigationBarBackBgImageActiveLS = [[UIImage imageNamed:@"g_backbutton_landscape_active.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 13, 0, 4)];
+    
+    [itemAppearance setBackButtonBackgroundImage:navigationBarBackBgImage
+                                                forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
+    [itemAppearance setBackButtonBackgroundImage:navigationBarBackBgImageActive
+                                                forState:UIControlStateHighlighted barMetrics:UIBarMetricsDefault];
+    [itemAppearance setBackButtonBackgroundImage:navigationBarBackBgImageLS
+                                                forState:UIControlStateNormal barMetrics:UIBarMetricsLandscapePhone];
+    [itemAppearance setBackButtonBackgroundImage:navigationBarBackBgImageActiveLS
+                                                forState:UIControlStateHighlighted barMetrics:UIBarMetricsLandscapePhone];
+    
+    // UIBarButtonItem
+    UIImage *barButtonBgImage = [[UIImage imageNamed:@"g_barbutton.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(15, 4, 15, 4)];
+    UIImage *barButtonBgImageActive = [[UIImage imageNamed:@"g_barbutton_active.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(15, 4, 15, 4)];
+    [itemAppearance setBackgroundImage:barButtonBgImage forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
+    [itemAppearance setBackgroundImage:barButtonBgImageActive forState:UIControlStateSelected barMetrics:UIBarMetricsDefault];
+    
+    [itemAppearance setTitleTextAttributes:
+     [NSDictionary dictionaryWithObjectsAndKeys:
+      HEXColor(0xFFFFFF),
+      UITextAttributeTextColor,
+      [UIColor colorWithRed:0.0f green:0.0f blue:0.0f alpha:0.44f],
+      UITextAttributeTextShadowColor,
+      [NSValue valueWithUIOffset:UIOffsetMake(0, 1)],
+      UITextAttributeTextShadowOffset,
+      [UIFont fontWithName:@"HelveticaNeue-Bold" size:12.0f],
+      UITextAttributeFont,
+      nil] forState:UIControlStateNormal];
+    
+    // landscape
+    [itemAppearance setBackButtonBackgroundImage:navigationBarBackBgImageLS forState:UIControlStateNormal barMetrics:UIBarMetricsLandscapePhone];
+    [itemAppearance setBackButtonBackgroundImage:navigationBarBackBgImageActiveLS forState:UIControlStateHighlighted barMetrics:UIBarMetricsLandscapePhone];
+}
+
 - (void)applicationWillResignActive:(UIApplication *)application
 {
     /*
@@ -248,6 +262,8 @@
 {
     [self.window.rootViewController dismissPopupViewControllerWithanimationType:PopupViewAnimationSlideBottomBottom completion:nil];
     addController = nil;
+//    [self.window.rootViewController.navigationController popToRootViewControllerAnimated:YES];
+    
 }
 
 @end

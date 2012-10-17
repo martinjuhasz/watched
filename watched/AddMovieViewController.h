@@ -27,6 +27,11 @@
 @property (strong, nonatomic) IBOutlet UIScrollView *scrollView;
 @property (strong, nonatomic) IBOutlet UILabel *overviewLabel;
 @property (strong, nonatomic) IBOutlet UIButton *saveButton;
+@property (strong, nonatomic) IBOutlet UILabel *nameLabel;
+@property (strong, nonatomic) IBOutlet UILabel *yearLabel;
+@property (strong, nonatomic) IBOutlet UILabel *overviewTitleLabel;
+@property (strong, nonatomic) IBOutlet UIImageView *scrollTopFadeView;
+@property (strong, nonatomic) IBOutlet UIImageView *scrollBottomFadeView;
 @property (strong, nonatomic) UIButton *cancelButton;
 @property (strong, nonatomic) SearchResult *searchResult;
 @property (strong, nonatomic) NSNumber *resultID;

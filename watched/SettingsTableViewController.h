@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+@class LoadingPopupViewController;
+
 @interface SettingsTableViewController : UITableViewController<UIAlertViewDelegate>
 
 @property (nonatomic, strong) NSArray *settings;
@@ -16,6 +18,7 @@
 @property (nonatomic, strong) NSNumber *averageRating;
 @property (nonatomic, strong) UILabel *movieCountLabel;
 @property (nonatomic, strong) UILabel *averageRatingLabel;
+@property (nonatomic, strong) LoadingPopupViewController *loadingController;
 
 - (IBAction)doneButtonClicked:(id)sender;
 

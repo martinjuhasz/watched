@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 
 @class BrowserBarButtonItem;
+@class MJWatchedNavigationController;
 
 @interface WatchedWebBrowser : UIViewController
 
@@ -19,6 +20,8 @@
 @property (strong, nonatomic) BrowserBarButtonItem *backButton;
 @property (strong, nonatomic) BrowserBarButtonItem *actionButton;
 @property (strong, nonatomic) IBOutlet UIToolbar *toolbar;
+
+@property (assign, nonatomic) MJWatchedNavigationController *navController;
 
 @property (strong, nonatomic) NSURL *url;
 

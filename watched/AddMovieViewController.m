@@ -18,6 +18,8 @@
 #import "AFJSONRequestOperation.h"
 #import "UIButton+Additions.h"
 #import "MJInternetConnection.h"
+#import "UIView+Additions.h"
+#import "UILabel+Additions.h"
 
 
 @interface AddMovieViewController () <MJPopupViewControllerDelegate> {
@@ -57,9 +59,11 @@
 {
     [super viewDidLoad];
     
+    [self hideOverviewContent];
+    
     // Appearance
     self.view.backgroundColor = [UIColor clearColor];
-    UIImage *popoverBgImage = [[UIImage imageNamed:@"pv_bg_content.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(2.0f, 17.0f, 15.0f, 17.0f)];
+    UIImage *popoverBgImage = [[UIImage imageNamed:@"pv_bg_content.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(119.0f, 18.0f, 17.0f, 18.0f)];
     self.backgroundImageView.image = popoverBgImage;
     self.loadingView.backgroundColor = HEXColor(0xd9d9d9);
     self.displayView.backgroundColor = [UIColor clearColor];
@@ -140,6 +144,11 @@
     [self setBackgroundImageView:nil];
     [self setRetryButton:nil];
     [self setErrorLabel:nil];
+    [self setNameLabel:nil];
+    [self setYearLabel:nil];
+    [self setOverviewTitleLabel:nil];
+    [self setScrollTopFadeView:nil];
+    [self setScrollBottomFadeView:nil];
     [super viewDidUnload];
     // Release any retained subviews of the main view.
 }
@@ -202,6 +211,10 @@
 - (void)loadContentWithExistingSearchResult
 {
     self.navBar.topItem.title = self.searchResult.title;
+    self.nameLabel.text = self.movie.title;
+    [self.nameLabel sizeToFitWithWith:190.0f andMaximumNumberOfLines:3];
+    [self setYearLabelWithDate:self.searchResult.releaseDate];
+    
     NSURL *imageURL = [[OnlineMovieDatabase sharedMovieDatabase] getImageURLForImagePath:self.searchResult.posterPath imageType:ImageTypePoster nearWidth:80.0f*2];
     [self.imageView setImageWithURL:imageURL];
     if(self.coverImage) self.imageView.image = self.coverImage;
@@ -218,6 +231,10 @@
 {
     self.imageView.image = self.movie.poster;
     self.navBar.topItem.title = self.movie.title;
+    self.nameLabel.text = self.movie.title;
+    [self.nameLabel sizeToFitWithWith:190.0f andMaximumNumberOfLines:3];
+    [self setYearLabelWithDate:self.movie.releaseDate];
+    
     [self setOverviewContent:self.movie.overview];
     [self checkButtonStates];
     [self showContent];
@@ -230,6 +247,15 @@
         
         [self setOverviewContent:[resultDict objectForKeyOrNil:@"overview"]];
         self.navBar.topItem.title = [resultDict objectForKeyOrNil:@"title"];
+        self.nameLabel.text = [resultDict objectForKeyOrNil:@"title"];
+        [self.nameLabel sizeToFitWithWith:190.0f andMaximumNumberOfLines:3];
+        
+        if([resultDict objectForKeyOrNil:@"release_date"]) {
+            NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+            [dateFormatter setDateFormat:@"YYYY-MM-DD"];
+            NSDate *releaseDate = [dateFormatter dateFromString:[resultDict objectForKeyOrNil:@"release_date"]];
+            [self setYearLabelWithDate:releaseDate];
+        }
         
         if(!self.imageView.image) {
             NSString *imagePath = [resultDict objectForKeyOrNil:@"poster_path"];
@@ -248,6 +274,22 @@
         [self showInfoContentWithText:NSLocalizedString(@"POPUP_TMDBERROR-LOAD", nil) titleText:NSLocalizedString(@"POPUP_TMDBERROR-INFO", nil)];
     }];
     [operation start];
+}
+
+- (void)setYearLabelWithDate:(NSDate*)aDate
+{
+    // get year
+    if(self.searchResult.releaseDate) {
+        NSUInteger componentFlags = NSYearCalendarUnit;
+        NSDateComponents *components = [[NSCalendar currentCalendar] components:componentFlags fromDate:aDate];
+        NSInteger year = [components year];
+        CGRect yearLabelRect = self.yearLabel.frame;
+        yearLabelRect.origin.y = self.nameLabel.bottom;
+        self.yearLabel.frame = yearLabelRect;
+        self.yearLabel.text = [NSString stringWithFormat:@"%d", year];
+    } else {
+        self.yearLabel.text = @"";
+    }
 }
 
 - (void)checkButtonStates
@@ -286,8 +328,15 @@
 
 - (void)setOverviewContent:(NSString*)content
 {
+    if(!content || [content isEqualToString:@""]) {
+        [self hideOverviewContent];
+        return;
+    } else {
+        [self fadeOverviewContentIn];
+    }
+    
     self.overviewLabel.text = content;
-    [self.overviewLabel setFont:[UIFont boldSystemFontOfSize:12.0f]];
+    [self.overviewLabel setFont:[UIFont systemFontOfSize:12.0f]];
     
     [self.overviewLabel sizeToFit];
     
@@ -339,6 +388,38 @@
     }];
 }
 
+- (void)hideOverviewContent
+{
+    CGRect aFrame = self.displayView.frame;
+    aFrame.size.height = 165.0f;
+    self.displayView.frame = aFrame;
+    self.backgroundImageView.frame = aFrame;
+    
+    self.overviewLabel.alpha = 0.0f;
+    self.scrollBottomFadeView.alpha = 0.0f;
+    self.scrollTopFadeView.alpha = 0.0f;
+    self.scrollView.alpha = 0.0f;
+    self.overviewTitleLabel.alpha = 0.0f;
+}
+
+- (void)fadeOverviewContentIn
+{
+    [UIView animateWithDuration:0.8f animations:^{
+        CGRect aFrame = self.displayView.frame;
+        aFrame.size.height = 261.0f;
+        self.displayView.frame = aFrame;
+        self.backgroundImageView.frame = aFrame;
+    } completion:^(BOOL finished) {
+        [UIView animateWithDuration:0.3f animations:^{
+            self.overviewLabel.alpha = 1.0f;
+            self.scrollBottomFadeView.alpha = 1.0f;
+            self.scrollTopFadeView.alpha = 1.0f;
+            self.scrollView.alpha = 1.0f;
+            self.overviewTitleLabel.alpha = 1.0f;
+        }];
+    }];
+}
+
 
 ////////////////////////////////////////////////////////////////////////////
 #pragma mark -
@@ -358,7 +439,7 @@
         // show info and close window
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.saveButton setTitle:NSLocalizedString(@"POPUP_SUCCESS_ADDED", nil)];
-            [self performSelector:@selector(cancelButtonClicked:) withObject:self afterDelay:1.5f];
+            [self performSelector:@selector(cancelButtonClicked:) withObject:self afterDelay:0.75f];
         });
         
     } failure:^(NSError *error) {
@@ -368,7 +449,7 @@
         dispatch_async(dispatch_get_main_queue(), ^{
             self.retryButton.alpha = 0.0f;
             [self showInfoContentWithText:NSLocalizedString(@"POPUP_TMDBERROR-TRY", nil) titleText:NSLocalizedString(@"POPUP_TMDBERROR-INFO", nil)];
-            [self performSelector:@selector(hideInfoContent) withObject:self afterDelay:2.5f];
+            [self performSelector:@selector(hideInfoContent) withObject:self afterDelay:1.5f];
         });
     }];
     
@@ -382,7 +463,7 @@
 
 - (void)MJPopViewControllerDidAppearCompletely
 {
-    appeard = YES;    
+    appeard = YES;
 }
 
 

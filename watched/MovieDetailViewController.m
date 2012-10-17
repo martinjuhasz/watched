@@ -14,11 +14,11 @@
 #import <CoreData/CoreData.h>
 #import "MoviesDataModel.h"
 #import "MovieDetailView.h"
+#import <Social/Social.h>
 #import "OnlineMovieDatabase.h"
 #import <MediaPlayer/MediaPlayer.h>
 #import "MovieCastsTableViewController.h"
 #import "MovieNoteViewController.h"
-#import <Twitter/Twitter.h>
 #import "ThumbnailPickerViewController.h"
 #import "OnlineDatabaseBridge.h"
 #import <QuartzCore/QuartzCore.h>
@@ -67,12 +67,13 @@
 	// Do any additional setup after loading the view.
     
     // add detail view
-    self.detailView = [[MovieDetailView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, 416.0f)];
+    CGRect detailRect = self.view.bounds;
+    detailRect.size.height = detailRect.size.height - 44.0f;
+    self.detailView = [[MovieDetailView alloc] initWithFrame:detailRect];
     [self.view addSubview:self.detailView];
     
     self.detailView.ratingView.delegate = self;
     isLoadingImages = NO;
-    
     
     // set contents and enable buttone
     [self setContent];
@@ -161,10 +162,12 @@
     self.detailView.watchedControl.selectedSegmentIndex = (self.movie.watchedOn) ? 0 : 1;
     
     // year
-    NSUInteger componentFlags = NSYearCalendarUnit;
-    NSDateComponents *components = [[NSCalendar currentCalendar] components:componentFlags fromDate:self.movie.releaseDate];
-    NSInteger year = [components year];
-    self.detailView.yearLabel.text = [NSString stringWithFormat:@"%d", year];
+    if(self.movie.releaseDate) {
+        NSUInteger componentFlags = NSYearCalendarUnit;
+        NSDateComponents *components = [[NSCalendar currentCalendar] components:componentFlags fromDate:self.movie.releaseDate];
+        NSInteger year = [components year];
+        self.detailView.yearLabel.text = [NSString stringWithFormat:@"%d", year];
+    }
     
     // actors
     NSSortDescriptor *actorSort = [[NSSortDescriptor alloc] initWithKey:@"order" ascending:YES];
@@ -291,17 +294,30 @@
 
 - (void)trailerRowClicked
 {
+    // default code
+//    if(!self.movie.bestTrailer) return;
+//    NSURL *videoURL = nil;
+//    
+//    if([self.movie.bestTrailer.source isEqualToString:@"quicktime"]) {
+//        videoURL = [NSURL URLWithString:self.movie.bestTrailer.url];
+//        MPMoviePlayerViewController *moviePlayer = [[MPMoviePlayerViewController alloc] initWithContentURL:videoURL];
+//        [self.navigationController presentMoviePlayerViewControllerAnimated:moviePlayer];
+//    } else {
+//         videoURL = [NSURL URLWithString:[NSString stringWithFormat:@"http://m.youtube.com/watch?v=%@",self.movie.bestTrailer.url]];
+//        [self performSegueWithIdentifier:@"DetailWebViewSegue" sender:videoURL];
+//    }
+    
+    // opening web view
+    
     if(!self.movie.bestTrailer) return;
     NSURL *videoURL = nil;
     
     if([self.movie.bestTrailer.source isEqualToString:@"quicktime"]) {
         videoURL = [NSURL URLWithString:self.movie.bestTrailer.url];
-        MPMoviePlayerViewController *moviePlayer = [[MPMoviePlayerViewController alloc] initWithContentURL:videoURL];
-        [self.navigationController presentMoviePlayerViewControllerAnimated:moviePlayer];
     } else {
-         NSURL *videoURL = [NSURL URLWithString:[NSString stringWithFormat:@"http://m.youtube.com/watch?v=%@",self.movie.bestTrailer.url]];
-        [self performSegueWithIdentifier:@"DetailWebViewSegue" sender:videoURL];
+        videoURL = [NSURL URLWithString:[NSString stringWithFormat:@"http://m.youtube.com/watch?v=%@",self.movie.bestTrailer.url]];
     }
+    [[UIApplication sharedApplication] openURL:videoURL];
 }
 
 - (void)castsRowClicked
@@ -356,7 +372,12 @@
     
     // Twitter
     [sheet addButtonWithTitle:NSLocalizedString(@"SHARE_BUTTON_TWITTER",nil) block:^{
-        [self shareWithTwitter];
+        [self shareWithService:SLServiceTypeTwitter];
+    }];
+    
+    // Facebook
+    [sheet addButtonWithTitle:NSLocalizedString(@"SHARE_BUTTON_FACEBOOK",nil) block:^{
+        [self shareWithService:SLServiceTypeFacebook];
     }];
     
     // Cancel Button
@@ -417,22 +438,68 @@
 #pragma mark -
 #pragma mark Sharing
 
-- (void)shareWithTwitter
+- (void)shareWithService:(NSString*)serviceType
 {
-    NSString *text = [NSString stringWithFormat:NSLocalizedString(@"SHARE_TWITTER_TEXT", nil), self.movie.title];
-    if([self.movie.rating intValue] > 0) {
-        text = [text stringByAppendingString:[NSString stringWithFormat:NSLocalizedString(@"SHARE_TWITTER_TEXT_RATING", nil), [self.movie.rating intValue]]];
+    // check if accounts added
+    if((serviceType == SLServiceTypeTwitter && ![SLComposeViewController isAvailableForServiceType:SLServiceTypeTwitter]) ||
+       (serviceType == SLServiceTypeFacebook && ![SLComposeViewController isAvailableForServiceType:SLServiceTypeFacebook])) {
+        
+        // Generate Texts
+        NSString *accountName;
+        if(serviceType == SLServiceTypeFacebook) {
+            accountName = NSLocalizedString(@"SHARE_BUTTON_FACEBOOK", nil);
+        } else {
+            accountName = NSLocalizedString(@"SHARE_BUTTON_TWITTER", nil);
+        }
+        
+        NSString *title = [NSString stringWithFormat:NSLocalizedString(@"DETAIL_POP_NOACCOUNT_TITLE", nil), accountName];
+        NSString *message = [NSString stringWithFormat:NSLocalizedString(@"DETAIL_POP_NOACCOUNT_CONTENT", nil), accountName, accountName];
+        
+        BlockAlertView *alert = [BlockAlertView alertWithTitle:title message:message];
+        [alert setCancelButtonWithTitle:NSLocalizedString(@"DETAIL_POP_NOACCOUNT_OK", nil) block:nil];
+        [alert show];
+        
+        return;
     }
     
-     text = [text stringByAppendingString:@" #watchedforios"];
-    
-    
-    TWTweetComposeViewController *twitter = [[TWTweetComposeViewController alloc] init];
-    [twitter addImage:self.movie.poster];
-    [twitter setInitialText:text];
-    [twitter addURL:[NSURL URLWithString:@"http://watchedforios.com"]];
-    
-    [self presentModalViewController:twitter animated:YES];
+    if([SLComposeViewController isAvailableForServiceType:serviceType]) {
+        SLComposeViewController *composeViewController = [SLComposeViewController composeViewControllerForServiceType:serviceType];
+        
+        SLComposeViewControllerCompletionHandler completeBlock = ^(SLComposeViewControllerResult result){
+            [composeViewController dismissViewControllerAnimated:YES completion:nil];
+        };
+        [composeViewController setCompletionHandler:completeBlock];
+        
+        NSString *text = [NSString string];
+        if([self.movie.rating intValue] > 0) {
+            text = [text stringByAppendingString:[NSString stringWithFormat:NSLocalizedString(@"SHARE_TWITTER_TEXT_RATING", nil), [self.movie.rating intValue]]];
+        }
+        
+        if(serviceType == SLServiceTypeTwitter) 
+            text = [text stringByAppendingString:@" #watchedforios"];
+        
+        NSMutableString *titleText = [NSMutableString stringWithFormat:NSLocalizedString(@"SHARE_TWITTER_TEXT", nil), self.movie.title];
+        NSString *completeText = [titleText stringByAppendingString:text];
+        
+        [composeViewController addImage:self.movie.poster];
+        [composeViewController addURL:[NSURL URLWithString:@"http://watchedforios.com"]];
+        
+        BOOL textShortEnough = [composeViewController setInitialText:completeText];
+        
+        if(serviceType == SLServiceTypeTwitter) {
+            if(!textShortEnough) {
+                [titleText replaceOccurrencesOfString:@"\"" withString:@"...\"" options:NSCaseInsensitiveSearch range:NSMakeRange(titleText.length - 1, 1)];
+            }
+            
+            while (!textShortEnough) {
+                [titleText replaceCharactersInRange:NSMakeRange(titleText.length -5, 5) withString:@"...\""];
+                completeText = [titleText stringByAppendingString:text];
+                textShortEnough = [composeViewController setInitialText:completeText];
+            }
+        }
+        
+        [self presentViewController:composeViewController animated:YES completion:nil];
+    }
 }
 
 - (void)shareWithEmail
@@ -539,7 +606,7 @@
                     UIImage *oldImage = self.detailView.backdropImageView.image;
                     UIImage *newImage = self.movie.backdrop;
                     CABasicAnimation *crossFade = [CABasicAnimation animationWithKeyPath:@"contents"];
-                    crossFade.duration = 2.0;
+                    crossFade.duration = 1.0;
                     crossFade.fromValue = (id)[oldImage CGImage];
                     crossFade.toValue = (id)[newImage CGImage];
                     [self.detailView.backdropImageView.layer addAnimation:crossFade forKey:@"animateContents"];

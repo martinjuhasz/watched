@@ -152,17 +152,22 @@ const int kMovieDisplayCellImageView = 200;
     
     Movie *movie = [fetchedResultsController objectAtIndexPath:indexPath];
     
-    // get year
-    NSUInteger componentFlags = NSYearCalendarUnit;
-    NSDateComponents *components = [[NSCalendar currentCalendar] components:componentFlags fromDate:movie.releaseDate];
-    NSInteger year = [components year];
-    
     titleLabel.text = movie.title;
     [titleLabel sizeToFitWithWith:200.0f andMaximumNumberOfLines:2];
-    CGRect yearLabelRect = yearLabel.frame;
-    yearLabelRect.origin.y = titleLabel.bottom;
-    yearLabel.frame = yearLabelRect;
-    yearLabel.text = [NSString stringWithFormat:@"%d", year];
+    
+    // get year
+    if(movie.releaseDate) {
+        NSUInteger componentFlags = NSYearCalendarUnit;
+        NSDateComponents *components = [[NSCalendar currentCalendar] components:componentFlags fromDate:movie.releaseDate];
+        NSInteger year = [components year];
+        CGRect yearLabelRect = yearLabel.frame;
+        yearLabelRect.origin.y = titleLabel.bottom;
+        yearLabel.frame = yearLabelRect;
+        yearLabel.text = [NSString stringWithFormat:@"%d", year];
+    } else {
+        yearLabel.text = @"";
+    }
+    
     coverImageView.image = movie.posterThumbnail;
     
     return cell;

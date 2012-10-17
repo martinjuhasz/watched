@@ -46,6 +46,11 @@ const int kMovieCastCellProfileImageView = 200;
     [super viewDidLoad];
     
     self.title = NSLocalizedString(@"CAST_TITLE", nil);
+    
+    UIView *backgroundView = [[UIView alloc] init];
+    backgroundView.backgroundColor = HEXColor(DEFAULT_COLOR_BG);
+    self.tableView.backgroundView = backgroundView;
+    
 }
 
 - (void)viewDidUnload
