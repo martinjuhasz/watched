@@ -36,6 +36,7 @@
 "CONTROL_SORTMOVIES_TITLE_UNWATCHED"    = "Unwatched";
 "CONTROL_SORTMOVIES_TITLE_UNRATED"      = "Unrated ";
 "HEADER_TITLE_ZERORATING"               = "unrated";
+"OVERVIEW_TITLE"                        = "My Movies";
 
 /*================================================
  DETAIL VIEW
@@ -68,6 +69,7 @@
 "SHARE_BUTTON_CANCEL"           = "Cancel";
 "SHARE_BUTTON_OPENSAFARI"       = "Open in Safari";
 "SHARE_BUTTON_COPYURL"          = "Copy URL";
+"SHARE_BUTTON_TEXT"             = "iMessage";
 "SHARE_TWITTER_TEXT"            = "I watched \"%@\"";
 "SHARE_TWITTER_TEXT_RATING"     = " and rated it with %i of 5 Stars";
 
@@ -136,6 +138,7 @@
 "SETTINGS_ABOUT_RELEASENOTES"   = "Release Notes";
 "SETTINGS_ABOUT_TITLE_DES-DEV"  = "Design & Developement";
 "SETTINGS_ABOUT_VENDOR"         = "Resources & 3rd-Party-Libraries";
+"SETTINGS_POP_REFRESHING"       = "Refreshing ...";
 
 /*================================================
  OTHER

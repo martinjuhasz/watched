@@ -13,7 +13,7 @@
 @class Movie;
 @class MovieDetailView;
 
-@interface MovieDetailViewController : UIViewController<DLStarRatingDelegate, UIActionSheetDelegate, MFMailComposeViewControllerDelegate, UITableViewDataSource, UITableViewDelegate, UIAlertViewDelegate>
+@interface MovieDetailViewController : UIViewController<DLStarRatingDelegate, UIActionSheetDelegate, MFMailComposeViewControllerDelegate, UITableViewDataSource, UITableViewDelegate, UIAlertViewDelegate, MFMessageComposeViewControllerDelegate>
 
 @property (nonatomic, strong) Movie *movie;
 @property (nonatomic, strong) MovieDetailView *detailView;

@@ -13,18 +13,18 @@
 #import "UISearchBar+Additions.h"
 #import "OnlineDatabaseBridge.h"
 #import "Movie.h"
-#import "AddMovieViewController.h"
 #import "UIViewController+MJPopupViewController.h"
 #import "AFJSONRequestOperation.h"
 #import "UILabel+Additions.h"
 #import "UIView+Additions.h"
 #import "MoviesDataModel.h"
 #import "MJInternetConnection.h"
+#import "MoviePopupViewController.h"
 
 #define kSearchMovieLoadingTableViewCell @"SearchMovieLoadingTableViewCell"
 #define kSearchMovieTableViewCell @"SearchMovieTableViewCell"
 
-@interface SearchMovieViewController ()<AddMovieViewDelegate>
+@interface SearchMovieViewController ()<MoviePopupViewControllerDelegate>
 @end
 
 
@@ -36,7 +36,6 @@
 @synthesize tableView;
 @synthesize searchBar;
 @synthesize searchResults;
-@synthesize addController;
 
 const int kMovieSearchLoadingCellTag = 2000;
 const int kMovieSearchInfoCellTag = 2001;
@@ -68,10 +67,12 @@ const int kMovieFlagCellTag = 34773;
         navigationBar.topItem.title = NSLocalizedString(@"BUTTON_SIMILAR", nil);
     }
     
+    
     // make sure the tableview is empty
-    UIView *emptyTable = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 1, 1)];
+    UIView *emptyTable = [[UIView alloc] initWithFrame:CGRectZero];
     [emptyTable setBackgroundColor:[UIColor clearColor]];
     self.tableView.tableFooterView = emptyTable;
+    
     
     currentPage = 0;
     isError = NO;
@@ -103,19 +104,19 @@ const int kMovieFlagCellTag = 34773;
     // e.g. self.myOutlet = nil;
 }
 
-- (void)dealloc
-{
-    if (self.addController) {
-        self.addController.delegate = nil;
-    }
-}
-
-- (void)viewWillDisappear:(BOOL)animated
-{
-    if (self.addController) {
-        self.addController.delegate = nil;
-    }
-}
+//- (void)dealloc
+//{
+//    if (self.addController) {
+//        self.addController.delegate = nil;
+//    }
+//}
+//
+//- (void)viewWillDisappear:(BOOL)animated
+//{
+//    if (self.addController) {
+//        self.addController.delegate = nil;
+//    }
+//}
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
@@ -208,23 +209,30 @@ const int kMovieFlagCellTag = 34773;
     }
     
     SearchResult *result = [self.searchResults objectAtIndex:indexPath.row];
-    UITableViewCell *clickedCell = [self.tableView cellForRowAtIndexPath:indexPath];
-    UIImageView *coverImageView = (UIImageView *)[clickedCell viewWithTag:kMovieSearchCellImageView];
     
-    UIStoryboard *storyBoard = [UIStoryboard storyboardWithName:@"MainStoryboard" bundle:nil];
-    self.addController = nil;
-    self.addController = (AddMovieViewController*)[storyBoard instantiateViewControllerWithIdentifier:@"AddMovieViewController"];
-    self.addController.searchResult = result;
-    self.addController.coverImage = coverImageView.image;
-    self.addController.delegate = self;
+//    UITableViewCell *clickedCell = [self.tableView cellForRowAtIndexPath:indexPath];
+//    UIImageView *coverImageView = (UIImageView *)[clickedCell viewWithTag:kMovieSearchCellImageView];
     
-    [self presentPopupViewController:self.addController animationType:PopupViewAnimationSlideBottomBottom];
+//    UIStoryboard *storyBoard = [UIStoryboard storyboardWithName:@"MainStoryboard" bundle:nil];
+//    self.addController = nil;
+//    self.addController = (AddMovieViewController*)[storyBoard instantiateViewControllerWithIdentifier:@"AddMovieViewController"];
+//    self.addController.searchResult = result;
+//    self.addController.coverImage = coverImageView.image;
+//    self.addController.delegate = self;
+    
+//    [self presentPopupViewController:self.addController animationType:PopupViewAnimationSlideBottomBottom];
+
+    MoviePopupViewController *popupViewController = [[MoviePopupViewController alloc ] init];
+    popupViewController.searchResult = result;
+    popupViewController.delegate = self;
+    [self presentPopupViewController:popupViewController animationType:PopupViewAnimationSlideBottomBottom];
+    
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.row >= self.searchResults.count) {
-        return 44.0f;
+        return 42.0f;
     }
     return 79.0f;
 }
@@ -310,7 +318,6 @@ const int kMovieFlagCellTag = 34773;
                                    [UIImage imageNamed:@"sv_spinner9.png"],
                                          nil];
     
-    
     loadingView.animationDuration = 0.8;
     [loadingView startAnimating];
     
@@ -339,6 +346,7 @@ const int kMovieFlagCellTag = 34773;
     [self.searchBar becomeFirstResponder];
     
     cell.tag = kMovieSearchInfoCellTag;
+    
     return cell;
 }
 
@@ -466,10 +474,15 @@ const int kMovieFlagCellTag = 34773;
 #pragma mark -
 #pragma mark AddMovieViewDelegate
 
-- (void)AddMovieControllerCancelButtonClicked:(AddMovieViewController *)addMovieViewController
+//- (void)AddMovieControllerCancelButtonClicked:(AddMovieViewController *)addMovieViewController
+//{
+//    [self dismissPopupViewControllerWithanimationType:PopupViewAnimationSlideBottomBottom completion:nil];
+//    addController = nil;
+//}
+
+- (void)moviePopupCancelButtonClicked:(MoviePopupViewController*)moviePopupViewController
 {
     [self dismissPopupViewControllerWithanimationType:PopupViewAnimationSlideBottomBottom completion:nil];
-    addController = nil;
 }
 
 

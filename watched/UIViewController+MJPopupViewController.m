@@ -10,6 +10,7 @@
 #import <QuartzCore/QuartzCore.h>
 #import "UIView+FindUIViewController.h"
 #import "MJPopupBackgroundView.h"
+#import <objc/runtime.h>
 
 #define kPopupModalAnimationDuration 0.35
 #define kMJSourceViewTag 23941
@@ -30,8 +31,23 @@
 
 @implementation UIViewController (MJPopupViewController)
 
+static void * const keypath = (void*)&keypath;
+
+-(UIViewController *) popupViewController
+{
+    UIViewController *controller =  objc_getAssociatedObject(self, keypath);
+    return controller;
+}
+
+-(void)setPopupViewController:(UIViewController *)popupViewController
+{
+    objc_setAssociatedObject(self, keypath, popupViewController, OBJC_ASSOCIATION_RETAIN);
+    
+}
+
 - (void)presentPopupViewController:(UIViewController*)popupViewController animationType:(PopupViewAnimation)animationType
 {
+    self.popupViewController = popupViewController;
     [self presentPopupView:popupViewController.view animationType:animationType];
 }
 
@@ -46,6 +62,7 @@
     } else {
         [self fadeViewOut:popupView sourceView:sourceView overlayView:overlayView completion:complete];
     }
+    self.popupViewController = nil;
 }
 
 

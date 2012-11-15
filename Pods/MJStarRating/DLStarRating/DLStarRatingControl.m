@@ -26,7 +26,7 @@
 	self.clipsToBounds = YES;
 	currentIdx = -1;
 	star = [[UIImage imageNamed:@"dv_star.png"] retain];
-	highlightedStar = [[UIImage imageNamed:@"dv_star-highlighted.png"] retain];    
+	highlightedStar = [[UIImage imageNamed:@"dv_star-highlighted.png"] retain];   
 
 	for (int i=0; i<numberOfStars; i++) {
 		DLStarView *v = [[DLStarView alloc] initWithDefault:self.star highlighted:self.highlightedStar position:i allowFractions:isFractionalRatingEnabled];

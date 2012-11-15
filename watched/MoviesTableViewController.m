@@ -57,6 +57,13 @@ const int kMovieDisplayCellImageView = 200;
 {
     [super viewDidLoad];
     
+    self.title = NSLocalizedString(@"OVERVIEW_TITLE", nil);
+    
+    // make sure the tableview is empty
+    UIView *emptyTable = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, 1.0f)];
+    [emptyTable setBackgroundColor:[UIColor clearColor]];
+    self.tableView.tableFooterView = emptyTable;
+    
     // Add Button
     UIImage *addButtonBgImage = [[UIImage imageNamed:@"mv_addbutton.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(26, 8, 26, 8)];
     UIImage *addButtonBgImageActive = [[UIImage imageNamed:@"mv_addbutton_active.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(26, 8, 26, 8)];
@@ -128,7 +135,9 @@ const int kMovieDisplayCellImageView = 200;
 - (UITableViewCell *)tableView:(UITableView *)aTableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *CellIdentifier = @"MoviesTableCell";
-    UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    UITableViewCell *cell;
+    
+    cell = [self.tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     }
@@ -138,7 +147,6 @@ const int kMovieDisplayCellImageView = 200;
     tableCellBackgroundView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"g_bg-table.png"]];
     UIView *tableCellBackgroundViewSelected = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, 79.0f)];
     tableCellBackgroundViewSelected.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"g_bg-table_active.png"]];
-//    UIImageView *accessoryView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"g_table-accessory.png"]];
     MJCustomAccessoryControl *accessoryView = [MJCustomAccessoryControl accessory];
     
     [cell setBackgroundView:tableCellBackgroundView];
@@ -168,7 +176,11 @@ const int kMovieDisplayCellImageView = 200;
         yearLabel.text = @"";
     }
     
-    coverImageView.image = movie.posterThumbnail;
+    if(movie.posterThumbnail) {
+        coverImageView.image = movie.posterThumbnail;
+    } else {
+        coverImageView.image = [UIImage imageNamed:@"g_placeholder-cover.png"];
+    }
     
     return cell;
 }
@@ -186,6 +198,7 @@ const int kMovieDisplayCellImageView = 200;
     if ([self tableView:aTableView titleForHeaderInSection:section] != nil) {
         return kSectionHeaderHeight-1;
     }
+    
    return 0;
 }
 
@@ -240,6 +253,7 @@ const int kMovieDisplayCellImageView = 200;
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     
     if (editingStyle == UITableViewCellEditingStyleDelete) {
+        
         // Delete the row from the data source
 		Movie *aMovie = nil;
         NSManagedObjectContext *mainContext = [[MoviesDataModel sharedDataModel] mainContext];
@@ -356,7 +370,6 @@ const int kMovieDisplayCellImageView = 200;
     }
     
 }
-
 
 
 

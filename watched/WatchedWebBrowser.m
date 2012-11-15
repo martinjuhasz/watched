@@ -72,9 +72,11 @@
     
     UIBarButtonItem *fixed = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
     fixed.width = 35.0f;
+    UIBarButtonItem *smallFixed = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
+    smallFixed.width = 15.0f;
     UIBarButtonItem *flexible = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
 
-    self.toolbar.items = [NSArray arrayWithObjects:self.backButton,fixed,self.forwardButton,fixed,self.reloadButton,flexible,self.actionButton, nil];
+    self.toolbar.items = [NSArray arrayWithObjects:smallFixed, self.backButton,fixed,self.forwardButton,fixed,self.reloadButton,flexible,self.actionButton, nil];
     
 }
 

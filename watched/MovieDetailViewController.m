@@ -278,6 +278,12 @@
 
 - (void)newRating:(DLStarRatingControl *)control :(float)newRating
 {
+    // toggle to seen
+    if([self.movie.rating intValue] == 0 && newRating > 0 && self.detailView.watchedControl.selectedSegmentIndex != 0) {
+        [self setWatchedStateToSeen:YES];
+        self.detailView.watchedControl.selectedSegmentIndex = 0;
+    }
+    
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
         
         NSManagedObjectContext *context = [[MoviesDataModel sharedDataModel] mainContext];
@@ -338,17 +344,28 @@
     [self performSegueWithIdentifier:@"MovieNoteSegue" sender:self];
 }
 
-- (IBAction)watchedControlChanged:(id)sender {
-    NSDate *watchedDate = nil;
+- (IBAction)watchedControlChanged:(id)sender
+{
     NSInteger selectedIndex = self.detailView.watchedControl.selectedSegmentIndex;
-    
     if(selectedIndex == 0) {
+        [self setWatchedStateToSeen:YES];
+    } else {
+        [self setWatchedStateToSeen:NO];
+    }
+}
+
+- (void)setWatchedStateToSeen:(BOOL)seen
+{
+    NSDate *watchedDate = nil;
+    if(seen) {
         watchedDate = [NSDate date];
     }
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
         
-        NSManagedObjectContext *context = [[MoviesDataModel sharedDataModel] mainContext];
+        // Setup Core Data with extra Context for Background Process
+        NSManagedObjectContext *context = [[NSManagedObjectContext alloc] init];
+        [context setPersistentStoreCoordinator:[[MoviesDataModel sharedDataModel] persistentStoreCoordinator]];
         
         self.movie.watchedOn = watchedDate;
         NSError *error;
@@ -356,7 +373,8 @@
         if(error) {
             XLog("%@", [error localizedDescription]);
         }
-    }); 
+        
+    });
 }
 
 - (IBAction)shareButtonClicked:(id)sender
@@ -367,6 +385,13 @@
     if([MFMailComposeViewController canSendMail]) {
         [sheet addButtonWithTitle:NSLocalizedString(@"SHARE_BUTTON_EMAIL",nil) block:^{
             [self shareWithEmail];
+        }];
+    }
+    
+    // iMessage
+    if([MFMessageComposeViewController canSendText]) {
+        [sheet addButtonWithTitle:NSLocalizedString(@"SHARE_BUTTON_TEXT",nil) block:^{
+            [self shareWithMessage];
         }];
     }
     
@@ -543,6 +568,28 @@
     [self presentModalViewController:mailViewController animated:YES];
 }
 
+- (void)shareWithMessage
+{
+    // check if can send mail
+    if(![MFMessageComposeViewController canSendText]) return;
+    
+    NSString *text = [NSString string];
+    if([self.movie.rating intValue] > 0) {
+        text = [text stringByAppendingString:[NSString stringWithFormat:NSLocalizedString(@"SHARE_TWITTER_TEXT_RATING", nil), [self.movie.rating intValue]]];
+    }
+    
+    NSMutableString *titleText = [NSMutableString stringWithFormat:NSLocalizedString(@"SHARE_TWITTER_TEXT", nil), self.movie.title];
+    NSString *completeText = [titleText stringByAppendingString:text];
+    completeText = [completeText stringByAppendingString:[NSString stringWithFormat:@" watched://%@", [self.movie.movieID stringValue]]];
+    
+    // Generate Message Composer and View it
+    MFMessageComposeViewController *messageViewController = [[MFMessageComposeViewController alloc] init];
+    messageViewController.messageComposeDelegate = self;
+    messageViewController.body = completeText;
+    
+    [self presentModalViewController:messageViewController animated:YES];
+}
+
 
 
 ////////////////////////////////////////////////////////////////////////////
@@ -554,6 +601,15 @@
     [self dismissModalViewControllerAnimated:YES];
 }
 
+
+////////////////////////////////////////////////////////////////////////////
+#pragma mark -
+#pragma mark MFMessageComposeViewControllerDelegate
+
+- (void)messageComposeViewController:(MFMessageComposeViewController *)controller didFinishWithResult:(MessageComposeResult)result
+{
+    [self dismissModalViewControllerAnimated:YES];
+}
 
 
 ////////////////////////////////////////////////////////////////////////////

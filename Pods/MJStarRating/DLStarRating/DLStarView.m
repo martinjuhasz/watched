@@ -65,7 +65,7 @@
 #pragma mark Layouting
 
 - (void)centerIn:(CGRect)_frame with:(int)numberOfStars {
-    CGSize starSize = self.frame.size;
+	CGSize starSize = self.frame.size;
     CGSize frameSize = _frame.size;
     float gap = floorf(frameSize.width - (starSize.width * numberOfStars)) / (numberOfStars*2);
     float currentStarX = floorf((starSize.width * self.tag) + (((2*(self.tag+1))-1) * gap));

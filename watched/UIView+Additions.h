@@ -109,5 +109,9 @@
  * Shortcut for frame.size
  */
 @property (nonatomic) CGSize size;
+/**
+ * Centers the view in its parentView
+ */
+- (void)centerInView:(UIView*)parentView;
 
 @end

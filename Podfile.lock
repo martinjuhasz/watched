@@ -1,17 +1,44 @@
-PODS:
-  - AFNetworking (0.10.0)
-  - BlockAlertsAnd-ActionSheets (1.0.0)
-  - GMGridView (1.1.1)
-  - KSReachability (0.0.2)
-  - MJStarRating (1.0)
-  - OBGradientView (1.0)
-  - TestFlightSDK (1.1)
 
-DEPENDENCIES:
-  - AFNetworking (from `https://raw.github.com/AFNetworking/AFNetworking/730c35926ad926cab80d053c895f3444daa85f23/AFNetworking.podspec')
-  - BlockAlertsAnd-ActionSheets (from `BlockAlertsAnd-ActionSheets.podspec')
-  - GMGridView
-  - KSReachability (from `KSReachability.podspec')
-  - MJStarRating (from `MJStarRating.podspec')
-  - OBGradientView (from `OBGradientView.podspec')
-  - TestFlightSDK
+PODS: 
+- AFNetworking (0.10.0)
+- BlockAlertsAnd-ActionSheets (1.0.0)
+- GMGridView (1.1.1)
+- KSReachability (0.0.2)
+- MJStarRating (1.0)
+- OBGradientView (1.0)
+- TestFlightSDK (1.1)
+- UIResponder+KeyboardCache (0.1)
+
+DEPENDENCIES: 
+- AFNetworking (from `https://raw.github.com/AFNetworking/AFNetworking/730c35926ad926cab80d053c895f3444daa85f23/AFNetworking.podspec')
+- BlockAlertsAnd-ActionSheets (from `BlockAlertsAnd-ActionSheets.podspec')
+- GMGridView
+- KSReachability (from `KSReachability.podspec')
+- MJStarRating (from `MJStarRating.podspec')
+- OBGradientView (from `OBGradientView.podspec')
+- TestFlightSDK
+- UIResponder+KeyboardCache
+
+EXTERNAL SOURCES: 
+  AFNetworking: 
+    :podspec: https://raw.github.com/AFNetworking/AFNetworking/730c35926ad926cab80d053c895f3444daa85f23/AFNetworking.podspec
+  BlockAlertsAnd-ActionSheets: 
+    :podspec: BlockAlertsAnd-ActionSheets.podspec
+  KSReachability: 
+    :podspec: KSReachability.podspec
+  MJStarRating: 
+    :podspec: MJStarRating.podspec
+  OBGradientView: 
+    :podspec: OBGradientView.podspec
+
+SPEC CHECKSUMS: 
+  AFNetworking: 1a49460856f478b7c78b211db6b969dfa4007e00
+  BlockAlertsAnd-ActionSheets: c225612e8772dfc8099771300ad5d2616012e793
+  GMGridView: a17a31f010990eb8f802abb4cab50e6e03e993ea
+  KSReachability: 1571cf577fa73bd34ececf6383b617254eb9961c
+  MJStarRating: 4bb9664d7ad1497253c015e27068db51bd36cd45
+  OBGradientView: 262d7b1f392378f0072876e23fd16dee0cc45dce
+  TestFlightSDK: a62347405c04307e2953eda4b8cc465ee51a6c90
+  UIResponder+KeyboardCache: 4e646d140212f8ee43f1560c11614634ad6dd063
+
+COCOAPODS: 0.15.2

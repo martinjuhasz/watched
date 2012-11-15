@@ -10,7 +10,6 @@
 #import "OnlineMovieDatabase.h"
 
 #import "UIViewController+MJPopupViewController.h"
-#import "AddMovieViewController.h"
 #import "MJCustomTableViewCell.h"
 #import "WatchedWebBrowser.h"
 #import "AddMovieViewController.h"
@@ -20,10 +19,11 @@
 #import <MessageUI/MessageUI.h>
 #import "TestFlight.h"
 #import <Crashlytics/Crashlytics.h>
+#import "MoviePopupViewController.h"
+#import "UIResponder+KeyboardCache.h"
+#import <Social/Social.h>
 
-
-@interface WatchedAppDelegate ()<AddMovieViewDelegate> {
-    AddMovieViewController *addController;
+@interface WatchedAppDelegate ()<AddMovieViewDelegate, MoviePopupViewControllerDelegate> {
 }
 @end
 
@@ -36,6 +36,7 @@
 {
     [self setStyles];
     [MJInternetConnection sharedInternetConnection];
+    [UIResponder cacheKeyboard:YES];
     
     // Override point for customization after application launch.
     [TestFlight takeOff:@"bd44b4d15d82ebee20573cbad8c85c83_MzE1MTMyMDExLTExLTA1IDEzOjA0OjU2LjU3ODE3Mg"];
@@ -43,7 +44,6 @@
     
     [[OnlineMovieDatabase sharedMovieDatabase] setApiKey:@"d518563ee67cb6d475d2440d3e663e93"];
     [[OnlineMovieDatabase sharedMovieDatabase] setPreferredLanguage:[self appLanguage]];
-    
     
     return YES;
 }
@@ -77,7 +77,7 @@
     
     
     [[UINavigationBar appearance] setBackgroundImage:navigationBarBgImage forBarMetrics:UIBarMetricsDefault];
-    
+//    [[UINavigationBar appearanceWhenContainedIn:[SLComposeViewController class], nil] setBackgroundImage:navigationBarBgImage forBarMetrics:UIBarMetricsDefault];
     // Bar Button Items
     id navBarButtonAppearance = [UIBarButtonItem appearanceWhenContainedIn:[UINavigationBar class], nil];
     [self setStylesForBarButtonItem:navBarButtonAppearance];
@@ -115,6 +115,7 @@
     // TableView
     [[UITableView appearance] setBackgroundColor:HEXColor(DEFAULT_COLOR_BG)];
     [[UITableView appearance] setSeparatorColor:HEXColor(0x737373)];
+    [[UITableView appearance] setSeparatorColor:HEXColor(0x1C1C1C)];
     
     // UISegmentedControl
     UIImage *segmentedControlBgImage = [[UIImage imageNamed:@"mv_segmented.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 4, 0, 4)];
@@ -239,17 +240,28 @@
 
 - (void)displayPopupViewWithMovieNumber:(NSNumber*)movieNumber
 {
-    UIStoryboard *storyBoard = [UIStoryboard storyboardWithName:@"MainStoryboard" bundle:nil];
-    addController = nil;
-    addController = (AddMovieViewController*)[storyBoard instantiateViewControllerWithIdentifier:@"AddMovieViewController"];
-    addController.delegate = self;
-    addController.resultID = movieNumber;
+//    UIStoryboard *storyBoard = [UIStoryboard storyboardWithName:@"MainStoryboard" bundle:nil];
+//    addController = nil;
+//    addController = (AddMovieViewController*)[storyBoard instantiateViewControllerWithIdentifier:@"AddMovieViewController"];
+//    addController.delegate = self;
+//    addController.resultID = movieNumber;
+//    
+//    if(self.window.rootViewController.modalViewController) {
+//        [self.window.rootViewController dismissModalViewControllerAnimated:NO];
+//    }
+//    
+//    [self.window.rootViewController presentPopupViewController:addController animationType:PopupViewAnimationSlideBottomBottom];
+    
+    MoviePopupViewController *popupViewController = [[MoviePopupViewController alloc ] init];
+    popupViewController.resultID = movieNumber;
+    popupViewController.delegate = self;
     
     if(self.window.rootViewController.modalViewController) {
         [self.window.rootViewController dismissModalViewControllerAnimated:NO];
     }
     
-    [self.window.rootViewController presentPopupViewController:addController animationType:PopupViewAnimationSlideBottomBottom];
+    [self.window.rootViewController presentPopupViewController:popupViewController animationType:PopupViewAnimationSlideBottomBottom];
+    
 }
 
 
@@ -258,12 +270,17 @@
 #pragma mark -
 #pragma mark AddMovieViewDelegate
 
-- (void)AddMovieControllerCancelButtonClicked:(AddMovieViewController *)addMovieViewController
+//- (void)AddMovieControllerCancelButtonClicked:(AddMovieViewController *)addMovieViewController
+//{
+//    [self.window.rootViewController dismissPopupViewControllerWithanimationType:PopupViewAnimationSlideBottomBottom completion:nil];
+//    addController = nil;
+////    [self.window.rootViewController.navigationController popToRootViewControllerAnimated:YES];
+//    
+//}
+
+- (void)moviePopupCancelButtonClicked:(MoviePopupViewController *)moviePopupViewController
 {
     [self.window.rootViewController dismissPopupViewControllerWithanimationType:PopupViewAnimationSlideBottomBottom completion:nil];
-    addController = nil;
-//    [self.window.rootViewController.navigationController popToRootViewControllerAnimated:YES];
-    
 }
 
 @end

@@ -215,4 +215,13 @@
 }
 
 
+///////////////////////////////////////////////////////////////////////////////////////////////////
+- (void)centerInView:(UIView*)parentView {
+    [self setFrame:CGRectMake(
+        floorf((parentView.frame.size.width - self.frame.size.width) / 2.0),
+        floorf((parentView.frame.size.height - self.frame.size.height) / 2.0),
+        self.frame.size.width,
+        self.frame.size.height)];
+}
+
 @end

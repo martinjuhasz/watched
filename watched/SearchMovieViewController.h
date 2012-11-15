@@ -9,7 +9,6 @@
 #import <UIKit/UIKit.h>
 
 @class SearchResult;
-@class AddMovieViewController;
 
 @interface SearchMovieViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate> {
     NSInteger currentPage;
@@ -24,7 +23,6 @@
 @property (strong, nonatomic) IBOutlet UITableView *tableView;
 @property (strong, nonatomic) IBOutlet UISearchBar *searchBar;
 @property (strong, nonatomic) NSMutableArray *searchResults;
-@property (strong, nonatomic) AddMovieViewController *addController;
 
 - (UITableViewCell *)resultCellAtIndexPath:(NSIndexPath *)indexPath;
 - (UITableViewCell *)loadingCell;

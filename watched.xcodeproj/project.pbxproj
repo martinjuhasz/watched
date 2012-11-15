@@ -76,6 +76,9 @@
 		7A2F43EB1584D93A00667E76 /* UIViewController+MJPopupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A2F43EA1584D93A00667E76 /* UIViewController+MJPopupViewController.m */; };
 		7A2F43EF1584DBBA00667E76 /* AddMovieViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A2F43EE1584DBBA00667E76 /* AddMovieViewController.m */; };
 		7A353256157953DB008F4F58 /* MovieNoteViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A353255157953DB008F4F58 /* MovieNoteViewController.m */; };
+		7A3F80CB1635F0FF00FF8349 /* sv_bg_meta_small.png in Resources */ = {isa = PBXBuildFile; fileRef = 7A3F80C91635F0FF00FF8349 /* sv_bg_meta_small.png */; };
+		7A3F80CC1635F0FF00FF8349 /* sv_bg_meta_small@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7A3F80CA1635F0FF00FF8349 /* sv_bg_meta_small@2x.png */; };
+		7A3F80D01635F5F700FF8349 /* PopupLoadingView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A3F80CF1635F5F700FF8349 /* PopupLoadingView.m */; };
 		7A4162BD15EF60AA00AA5D0F /* nv_bg_text.png in Resources */ = {isa = PBXBuildFile; fileRef = 7A4162B915EF60AA00AA5D0F /* nv_bg_text.png */; };
 		7A4162BE15EF60AA00AA5D0F /* nv_bg_text@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7A4162BA15EF60AA00AA5D0F /* nv_bg_text@2x.png */; };
 		7A4162BF15EF60AA00AA5D0F /* nv_bg_title.png in Resources */ = {isa = PBXBuildFile; fileRef = 7A4162BB15EF60AA00AA5D0F /* nv_bg_title.png */; };
@@ -190,6 +193,8 @@
 		7A5FAE9215BF4296008558A7 /* dv_cover-overlay.png in Resources */ = {isa = PBXBuildFile; fileRef = 7A5FAE9015BF4296008558A7 /* dv_cover-overlay.png */; };
 		7A5FAE9315BF4296008558A7 /* dv_cover-overlay@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7A5FAE9115BF4296008558A7 /* dv_cover-overlay@2x.png */; };
 		7A6478BC1549963F00C95237 /* SearchResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A6478BA1549963F00C95237 /* SearchResult.m */; };
+		7A6756BC162EF0C2007FD710 /* MoviePopupView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A6756BB162EF0C2007FD710 /* MoviePopupView.m */; };
+		7A6756C0162EF104007FD710 /* MoviePopupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A6756BF162EF104007FD710 /* MoviePopupViewController.m */; };
 		7A7373D9158FBEBD00A501AF /* MJPopupBackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A7373D8158FBEBD00A501AF /* MJPopupBackgroundView.m */; };
 		7A771C9115EE20A0009A23FA /* g_bg-grp_table_bottom_highlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 7A771C7B15EE20A0009A23FA /* g_bg-grp_table_bottom_highlighted.png */; };
 		7A771C9215EE20A0009A23FA /* g_bg-grp_table_bottom_highlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7A771C7C15EE20A0009A23FA /* g_bg-grp_table_bottom_highlighted@2x.png */; };
@@ -240,6 +245,8 @@
 		7A771CDD15EE5877009A23FA /* dv_placeholder-backdrop.png in Resources */ = {isa = PBXBuildFile; fileRef = 7A771CDB15EE5872009A23FA /* dv_placeholder-backdrop.png */; };
 		7A771CDE15EE5877009A23FA /* dv_placeholder-backdrop@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7A771CDC15EE5874009A23FA /* dv_placeholder-backdrop@2x.png */; };
 		7A7EEF85157D56F300EAEE01 /* ThumbnailPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A7EEF84157D56F300EAEE01 /* ThumbnailPickerViewController.m */; };
+		7A7FEA38162F53D1005078DC /* pv_bg_content_bottom.png in Resources */ = {isa = PBXBuildFile; fileRef = 7A7FEA36162F53D1005078DC /* pv_bg_content_bottom.png */; };
+		7A7FEA39162F53D1005078DC /* pv_bg_content_bottom@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7A7FEA37162F53D1005078DC /* pv_bg_content_bottom@2x.png */; };
 		7A83463315F29CE800F652BC /* pv_error.png in Resources */ = {isa = PBXBuildFile; fileRef = 7A83463115F29CE800F652BC /* pv_error.png */; };
 		7A83463415F29CE800F652BC /* pv_error@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7A83463215F29CE800F652BC /* pv_error@2x.png */; };
 		7A83463815F2A31600F652BC /* pv_error-button.png in Resources */ = {isa = PBXBuildFile; fileRef = 7A83463615F2A31600F652BC /* pv_error-button.png */; };
@@ -426,6 +433,10 @@
 		7A2F43EE1584DBBA00667E76 /* AddMovieViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddMovieViewController.m; sourceTree = "<group>"; };
 		7A353254157953DB008F4F58 /* MovieNoteViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MovieNoteViewController.h; sourceTree = "<group>"; };
 		7A353255157953DB008F4F58 /* MovieNoteViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MovieNoteViewController.m; sourceTree = "<group>"; };
+		7A3F80C91635F0FF00FF8349 /* sv_bg_meta_small.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sv_bg_meta_small.png; sourceTree = "<group>"; };
+		7A3F80CA1635F0FF00FF8349 /* sv_bg_meta_small@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "sv_bg_meta_small@2x.png"; sourceTree = "<group>"; };
+		7A3F80CE1635F5F700FF8349 /* PopupLoadingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PopupLoadingView.h; sourceTree = "<group>"; };
+		7A3F80CF1635F5F700FF8349 /* PopupLoadingView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PopupLoadingView.m; sourceTree = "<group>"; };
 		7A4162B915EF60AA00AA5D0F /* nv_bg_text.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = nv_bg_text.png; sourceTree = "<group>"; };
 		7A4162BA15EF60AA00AA5D0F /* nv_bg_text@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "nv_bg_text@2x.png"; sourceTree = "<group>"; };
 		7A4162BB15EF60AA00AA5D0F /* nv_bg_title.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = nv_bg_title.png; sourceTree = "<group>"; };
@@ -549,6 +560,10 @@
 		7A5FAE9115BF4296008558A7 /* dv_cover-overlay@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dv_cover-overlay@2x.png"; sourceTree = "<group>"; };
 		7A6478BA1549963F00C95237 /* SearchResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchResult.m; sourceTree = "<group>"; };
 		7A6478BB1549963F00C95237 /* SearchResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchResult.h; sourceTree = "<group>"; };
+		7A6756BA162EF0C2007FD710 /* MoviePopupView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MoviePopupView.h; sourceTree = "<group>"; };
+		7A6756BB162EF0C2007FD710 /* MoviePopupView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MoviePopupView.m; sourceTree = "<group>"; };
+		7A6756BE162EF104007FD710 /* MoviePopupViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MoviePopupViewController.h; sourceTree = "<group>"; };
+		7A6756BF162EF104007FD710 /* MoviePopupViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MoviePopupViewController.m; sourceTree = "<group>"; };
 		7A7373D7158FBEBD00A501AF /* MJPopupBackgroundView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MJPopupBackgroundView.h; sourceTree = "<group>"; };
 		7A7373D8158FBEBD00A501AF /* MJPopupBackgroundView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MJPopupBackgroundView.m; sourceTree = "<group>"; };
 		7A771C7B15EE20A0009A23FA /* g_bg-grp_table_bottom_highlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "g_bg-grp_table_bottom_highlighted.png"; sourceTree = "<group>"; };
@@ -603,6 +618,8 @@
 		7A771CDC15EE5874009A23FA /* dv_placeholder-backdrop@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dv_placeholder-backdrop@2x.png"; sourceTree = "<group>"; };
 		7A7EEF83157D56F300EAEE01 /* ThumbnailPickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ThumbnailPickerViewController.h; sourceTree = "<group>"; };
 		7A7EEF84157D56F300EAEE01 /* ThumbnailPickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ThumbnailPickerViewController.m; sourceTree = "<group>"; };
+		7A7FEA36162F53D1005078DC /* pv_bg_content_bottom.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pv_bg_content_bottom.png; sourceTree = "<group>"; };
+		7A7FEA37162F53D1005078DC /* pv_bg_content_bottom@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "pv_bg_content_bottom@2x.png"; sourceTree = "<group>"; };
 		7A83463115F29CE800F652BC /* pv_error.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pv_error.png; sourceTree = "<group>"; };
 		7A83463215F29CE800F652BC /* pv_error@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "pv_error@2x.png"; sourceTree = "<group>"; };
 		7A83463615F2A31600F652BC /* pv_error-button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "pv_error-button.png"; sourceTree = "<group>"; };
@@ -928,6 +945,8 @@
 				7A41633515EFBF3800AA5D0F /* sv_spinner8@2x.png */,
 				7A41635215EFDF7D00AA5D0F /* sv_bg_footerview.png */,
 				7A41635315EFDF7D00AA5D0F /* sv_bg_footerview@2x.png */,
+				7A3F80C91635F0FF00FF8349 /* sv_bg_meta_small.png */,
+				7A3F80CA1635F0FF00FF8349 /* sv_bg_meta_small@2x.png */,
 				7A41635C15EFFD2A00AA5D0F /* cv_actor-placeholder.png */,
 				7A41635D15EFFD2B00AA5D0F /* cv_actor-placeholder@2x.png */,
 				7A41635E15EFFD2C00AA5D0F /* cv_bg-grp_table_bottom_highlighted.png */,
@@ -952,6 +971,8 @@
 				7A05FA7A15F22CAB00DB7C26 /* pv_bg_navbar@2x.png */,
 				7A05FA7D15F22F0E00DB7C26 /* pv_bg_content.png */,
 				7A05FA7E15F22F0E00DB7C26 /* pv_bg_content@2x.png */,
+				7A7FEA36162F53D1005078DC /* pv_bg_content_bottom.png */,
+				7A7FEA37162F53D1005078DC /* pv_bg_content_bottom@2x.png */,
 				7AFEDD4315F24D3F00ACC024 /* g_button_popover_add_disabled.png */,
 				7AFEDD4415F24D3F00ACC024 /* g_button_popover_add_disabled@2x.png */,
 				7AFEDD4515F24D3F00ACC024 /* g_button_popover_add_highlighted.png */,
@@ -1026,6 +1047,10 @@
 				7AED8E721582800F009F0416 /* OnlineDatabaseBridge.m */,
 				7A2F43ED1584DBBA00667E76 /* AddMovieViewController.h */,
 				7A2F43EE1584DBBA00667E76 /* AddMovieViewController.m */,
+				7A6756BA162EF0C2007FD710 /* MoviePopupView.h */,
+				7A6756BB162EF0C2007FD710 /* MoviePopupView.m */,
+				7A6756BE162EF104007FD710 /* MoviePopupViewController.h */,
+				7A6756BF162EF104007FD710 /* MoviePopupViewController.m */,
 			);
 			name = Search;
 			sourceTree = "<group>";
@@ -1219,6 +1244,8 @@
 				7A8DC677157CFDDD00F6EACA /* SettingsTableViewController.m */,
 				7AF9A72B1587EDE00016EC63 /* SettingsAboutTableViewController.h */,
 				7AF9A72C1587EDE00016EC63 /* SettingsAboutTableViewController.m */,
+				7A3F80CE1635F5F700FF8349 /* PopupLoadingView.h */,
+				7A3F80CF1635F5F700FF8349 /* PopupLoadingView.m */,
 			);
 			name = Settings;
 			sourceTree = "<group>";
@@ -1620,6 +1647,10 @@
 				7A09A42716160AC700F3E696 /* settings_obgradientview.html in Resources */,
 				7A09A42916160B7000F3E696 /* settings_blockalerts.html in Resources */,
 				7A09A435161624FF00F3E696 /* settings_crashlytics.html in Resources */,
+				7A7FEA38162F53D1005078DC /* pv_bg_content_bottom.png in Resources */,
+				7A7FEA39162F53D1005078DC /* pv_bg_content_bottom@2x.png in Resources */,
+				7A3F80CB1635F0FF00FF8349 /* sv_bg_meta_small.png in Resources */,
+				7A3F80CC1635F0FF00FF8349 /* sv_bg_meta_small@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1724,6 +1755,9 @@
 				7A1B690A1607AAC400507ADA /* MJWatchedNavigationController.m in Sources */,
 				7AC4A8351609150200349BF0 /* MJWatchedNavigationBar.m in Sources */,
 				7A09A42C1616127D00F3E696 /* LoadingPopupViewController.m in Sources */,
+				7A6756BC162EF0C2007FD710 /* MoviePopupView.m in Sources */,
+				7A6756C0162EF104007FD710 /* MoviePopupViewController.m in Sources */,
+				7A3F80D01635F5F700FF8349 /* PopupLoadingView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

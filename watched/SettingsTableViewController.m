@@ -18,6 +18,7 @@
 #import "BlockAlertView.h"
 #import "UIViewController+MJPopupViewController.h"
 #import "LoadingPopupViewController.h"
+#import "PopupLoadingView.h"
 
 @interface SettingsTableViewController () <MFMailComposeViewControllerDelegate>
 
@@ -312,15 +313,13 @@
 
 - (void)refreshAllMovies
 {
-//    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
-//    hud.mode = MBProgressHUDModeDeterminate;
-//    hud.progress = 0.0f;
 
     UIStoryboard *storyBoard = [UIStoryboard storyboardWithName:@"MainStoryboard" bundle:nil];
     _loadingController = nil;
     _loadingController = (LoadingPopupViewController*)[storyBoard instantiateViewControllerWithIdentifier:@"LoadingMovieViewController"];
     [self presentPopupViewController:_loadingController animationType:PopupViewAnimationSlideBottomBottom];
-    _loadingController.titleLabel.text = @"loading...";
+    PopupLoadingView *loadingView = (PopupLoadingView*)_loadingController.view;
+    loadingView.titleLabel.text = NSLocalizedString(@"SETTINGS_POP_REFRESHING", nil);
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
         
@@ -352,16 +351,14 @@
                 current++;
                 dispatch_async(dispatch_get_main_queue(), ^{
                     NSString *progress = [NSString stringWithFormat:@"%d / %.0f", current, total];
-                    _loadingController.titleLabel.text = progress;
-//                    hud.progress = current / total;
+                    loadingView.detailLabel.text = progress;
                 });
                 dispatch_group_leave(group);
             } failure:^(NSError *anError) {
                 current++;
                 dispatch_async(dispatch_get_main_queue(), ^{
                     NSString *progress = [NSString stringWithFormat:@"%d / %.0f", current, total];
-                    _loadingController.titleLabel.text = progress;
-//                    hud.progress = current / total;
+                    loadingView.detailLabel.text = progress;
                 });
                 error = anError;
                 dispatch_group_leave(group);
@@ -377,17 +374,11 @@
         if(!error) {
             [context save:nil];
             dispatch_async(dispatch_get_main_queue(), ^{
-//                hud.labelText = NSLocalizedString(@"SETTINGS_META_REFRESHED", nil);
-//                hud.mode = MBProgressHUDModeText;
-//                [hud hide:YES afterDelay:2.0];
                 [self closeLoadingController];
             });
         } else {
             XLog("%@", [error localizedDescription]);
             dispatch_async(dispatch_get_main_queue(), ^{
-//                hud.labelText = [error localizedDescription];
-//                hud.mode = MBProgressHUDModeText;
-//                [hud hide:YES afterDelay:2.0];
                 [self closeLoadingController];
             });
         }
