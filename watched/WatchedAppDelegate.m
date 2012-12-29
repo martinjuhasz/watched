@@ -58,11 +58,17 @@
 
 - (void)startTestFlight
 {
+    NSString *token = @"b4bbe6c9-dd95-4a5b-98b9-1c24baf90bae";
+#ifdef DEBUG_MODE
+    [TestFlight setDeviceIdentifier:[[UIDevice currentDevice] uniqueIdentifier]];
+    [TestFlight takeOff:token];
+#else
     NSUserDefaults *standardUserDefaults = [NSUserDefaults standardUserDefaults];
     BOOL isDisabled = [standardUserDefaults boolForKey:OPTOUT_SETTINGS];
     if(!isDisabled) {
-        [TestFlight takeOff:@"bd44b4d15d82ebee20573cbad8c85c83_MzE1MTMyMDExLTExLTA1IDEzOjA0OjU2LjU3ODE3Mg"];
+        [TestFlight takeOff:token];
     }
+#endif
 }
 
 - (void)setStyles
@@ -115,7 +121,6 @@
     
     // TableView
     [[UITableView appearance] setBackgroundColor:HEXColor(DEFAULT_COLOR_BG)];
-    [[UITableView appearance] setSeparatorColor:HEXColor(0x737373)];
     [[UITableView appearance] setSeparatorColor:HEXColor(0x1C1C1C)];
     
     // UISegmentedControl

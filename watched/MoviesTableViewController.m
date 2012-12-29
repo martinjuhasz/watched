@@ -23,7 +23,6 @@ const int kMovieDisplayCellImageView = 200;
 #define kSectionHeaderHeight 24.0f
 
 @interface MoviesTableViewController ()
-@property(nonatomic, strong) NSFetchedResultsController *fetchedResultsController;
 - (void)loadMoviesWithSortType:(MovieSortType)sortType;
 @end
 
@@ -33,7 +32,6 @@ const int kMovieDisplayCellImageView = 200;
 @implementation MoviesTableViewController
 
 @synthesize tableView;
-@synthesize fetchedResultsController;
 @synthesize currentSortType;
 @synthesize addButton;
 @synthesize addButtonBackgroundView;
@@ -64,6 +62,15 @@ const int kMovieDisplayCellImageView = 200;
     [emptyTable setBackgroundColor:[UIColor clearColor]];
     self.tableView.tableFooterView = emptyTable;
     
+    // Search View
+    _searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, 40.0f)];
+    self.tableView.tableHeaderView = _searchBar;
+    _searchController = [[UISearchDisplayController alloc] initWithSearchBar:_searchBar contentsController:self];
+    _searchController.delegate = self;
+    _searchController.searchResultsDelegate = self;
+    _searchController.searchResultsDataSource = self;
+    _searchController.searchResultsTableView.delegate = self;
+    
     // Add Button
     UIImage *addButtonBgImage = [[UIImage imageNamed:@"mv_addbutton.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(26, 8, 26, 8)];
     UIImage *addButtonBgImageActive = [[UIImage imageNamed:@"mv_addbutton_active.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(26, 8, 26, 8)];
@@ -80,8 +87,7 @@ const int kMovieDisplayCellImageView = 200;
     [self.sortControl setTitle:NSLocalizedString(@"CONTROL_SORTMOVIES_TITLE_UNWATCHED", nil) forSegmentAtIndex:1];
     [self.sortControl setTitle:NSLocalizedString(@"CONTROL_SORTMOVIES_TITLE_UNRATED", nil) forSegmentAtIndex:2];
     
-    // load Data
-    [self loadMoviesWithSortType:MovieSortTypeAll];
+    
     [[NSNotificationCenter defaultCenter] addObserver:self 
                                              selector:@selector(contextDidSave:) 
                                                  name:NSManagedObjectContextDidSaveNotification 
@@ -121,14 +127,14 @@ const int kMovieDisplayCellImageView = 200;
 #pragma mark -
 #pragma mark UITableViewDataSource
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)aTableView
 {
-    return [[fetchedResultsController sections] count];
+    return [[[self fetchedResultsControllerForTableView:aTableView] sections] count];
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+- (NSInteger)tableView:(UITableView *)aTableView numberOfRowsInSection:(NSInteger)section
 {
-    id<NSFetchedResultsSectionInfo> sectionInfo = [[fetchedResultsController sections] objectAtIndex:section];
+    id<NSFetchedResultsSectionInfo> sectionInfo = [[[self fetchedResultsControllerForTableView:aTableView] sections] objectAtIndex:section];
     return [sectionInfo numberOfObjects];
 }
 
@@ -142,6 +148,14 @@ const int kMovieDisplayCellImageView = 200;
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     }
     
+    [self fetchedResultsController:[self fetchedResultsControllerForTableView:aTableView] configureCell:cell atIndexPath:indexPath];
+        
+    return cell;
+}
+
+- (void)fetchedResultsController:(NSFetchedResultsController *)aFetchedResultsController configureCell:(UITableViewCell *)aCell atIndexPath:(NSIndexPath *)indexPath
+{
+    
     // appearance
     UIView *tableCellBackgroundView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, 79.0f)];
     tableCellBackgroundView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"g_bg-table.png"]];
@@ -149,16 +163,16 @@ const int kMovieDisplayCellImageView = 200;
     tableCellBackgroundViewSelected.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"g_bg-table_active.png"]];
     MJCustomAccessoryControl *accessoryView = [MJCustomAccessoryControl accessory];
     
-    [cell setBackgroundView:tableCellBackgroundView];
-    [cell setSelectedBackgroundView:tableCellBackgroundViewSelected];
-    [cell setAccessoryView:accessoryView];
+    [aCell setBackgroundView:tableCellBackgroundView];
+    [aCell setSelectedBackgroundView:tableCellBackgroundViewSelected];
+    [aCell setAccessoryView:accessoryView];
     
-    UILabel *titleLabel = (UILabel *)[cell viewWithTag:kMovieDisplayCellTitleLabel];
-    UILabel *yearLabel = (UILabel *)[cell viewWithTag:kMovieDisplayCellYearLabel];
-    UIImageView *coverImageView = (UIImageView *)[cell viewWithTag:kMovieDisplayCellImageView];
+    UILabel *titleLabel = (UILabel *)[aCell viewWithTag:kMovieDisplayCellTitleLabel];
+    UILabel *yearLabel = (UILabel *)[aCell viewWithTag:kMovieDisplayCellYearLabel];
+    UIImageView *coverImageView = (UIImageView *)[aCell viewWithTag:kMovieDisplayCellImageView];
     
     
-    Movie *movie = [fetchedResultsController objectAtIndexPath:indexPath];
+    Movie *movie = [aFetchedResultsController objectAtIndexPath:indexPath];
     
     titleLabel.text = movie.title;
     [titleLabel sizeToFitWithWith:200.0f andMaximumNumberOfLines:2];
@@ -181,14 +195,14 @@ const int kMovieDisplayCellImageView = 200;
     } else {
         coverImageView.image = [UIImage imageNamed:@"g_placeholder-cover.png"];
     }
-    
-    return cell;
 }
 
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+
+
+- (NSString *)tableView:(UITableView *)aTableView titleForHeaderInSection:(NSInteger)section
 {
     if(currentSortType != MovieSortTypeAll) return nil;
-    NSString *star = [[[fetchedResultsController sections] objectAtIndex:section] name];
+    NSString *star = [[[[self fetchedResultsControllerForTableView:aTableView] sections] objectAtIndex:section] name];
     if([star isEqualToString:@"0"]) star = NSLocalizedString(@"HEADER_TITLE_ZERORATING", nil);
     return star;
 }
@@ -279,7 +293,7 @@ const int kMovieDisplayCellImageView = 200;
 {
     if([segue.identifier isEqualToString:@"MovieDetailSegue"]) {
         MovieDetailViewController *detailViewController = (MovieDetailViewController*)segue.destinationViewController;
-        detailViewController.movie = [fetchedResultsController objectAtIndexPath:[self.tableView indexPathForSelectedRow]];
+        detailViewController.movie = [[self activeFetchedResultsController] objectAtIndexPath:[[self activeTableView] indexPathForSelectedRow]];
     }
 }
 
@@ -289,10 +303,8 @@ const int kMovieDisplayCellImageView = 200;
 #pragma mark -
 #pragma mark CoreData Handling
 
-- (void)loadMoviesWithSortType:(MovieSortType)sortType
+- (NSFetchedResultsController *)newFetchedResultsControllerWithSearch:(NSString *)searchString
 {
-    self.currentSortType = sortType;
-
     NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:[Movie entityName]];
     [fetchRequest setPropertiesToFetch:[NSArray arrayWithObjects:@"title", nil]];
     [fetchRequest setFetchBatchSize:40];
@@ -302,21 +314,35 @@ const int kMovieDisplayCellImageView = 200;
     // Filter by SortType
     NSPredicate *sortPredicate = nil;
     NSString *sectionKeyPath = nil;
-    if(sortType == MovieSortTypeUnwatched) {
+    if(!self.currentSortType) {
+        self.currentSortType = MovieSortTypeAll;
+    }
+    if(self.currentSortType == MovieSortTypeUnwatched) {
         sortPredicate = [NSPredicate predicateWithFormat:@"watchedOn == nil"];
-    } else if(sortType == MovieSortTypeUnrated) {
+    } else if(self.currentSortType == MovieSortTypeUnrated) {
         sortPredicate = [NSPredicate predicateWithFormat:@"rating == 0"];
-    } else if (sortType == MovieSortTypeAll) {
+    } else if (self.currentSortType == MovieSortTypeAll) {
         sectionKeyPath = @"rating";
     }
     
+    // Search String
+    NSMutableArray *predicateArray = [NSMutableArray array];
+    if(searchString.length) {
+        [predicateArray addObject:[NSPredicate predicateWithFormat:@"title CONTAINS[cd] %@", searchString]];
+        if(sortPredicate) {
+            sortPredicate = [NSCompoundPredicate andPredicateWithSubpredicates:[NSArray arrayWithObjects:sortPredicate, [NSCompoundPredicate orPredicateWithSubpredicates:predicateArray], nil]];
+        } else {
+            sortPredicate = [NSCompoundPredicate orPredicateWithSubpredicates:predicateArray];
+        }
+    }
+
     if(sortPredicate) {
         [fetchRequest setPredicate:sortPredicate];
     }
     
     // Sorting
     NSMutableArray *sortDescriptors = [NSMutableArray array];
-    if(sortType == MovieSortTypeAll) {
+    if(self.currentSortType == MovieSortTypeAll) {
         [sortDescriptors addObject:[NSSortDescriptor sortDescriptorWithKey:@"rating" ascending:NO]];
     }
     [sortDescriptors addObject:[NSSortDescriptor sortDescriptorWithKey:@"title" ascending:YES]];
@@ -331,13 +357,68 @@ const int kMovieDisplayCellImageView = 200;
                                         [entityProperties objectForKey:@"releaseDate"],
                                         nil]];
     
-    fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest 
-                                                                   managedObjectContext:[[MoviesDataModel sharedDataModel] mainContext] 
-                                                                     sectionNameKeyPath:sectionKeyPath 
+    NSFetchedResultsController *aFetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest
+                                                                   managedObjectContext:[[MoviesDataModel sharedDataModel] mainContext]
+                                                                     sectionNameKeyPath:sectionKeyPath
                                                                               cacheName:nil];
     
-    [fetchedResultsController performFetch:nil];
+    NSError *error = nil;
+    if (![aFetchedResultsController performFetch:&error]) {
+        ErrorLog(@"Unresolved error %@, %@", error, [error userInfo]);
+        //abort();
+    }
+    
+    return aFetchedResultsController;
+}
+
+- (NSFetchedResultsController *)fetchedResultsController
+{
+    if (_fetchedResultsController != nil)
+    {
+        return _fetchedResultsController;
+    }
+    _fetchedResultsController = [self newFetchedResultsControllerWithSearch:nil];
+    return _fetchedResultsController;
+}
+
+- (NSFetchedResultsController *)searchFetchedResultsController
+{
+    if (_searchFetchedResultsController != nil)
+    {
+        return _searchFetchedResultsController;
+    }
+    _searchFetchedResultsController = [self newFetchedResultsControllerWithSearch:self.searchDisplayController.searchBar.text];
+    return _searchFetchedResultsController;
+}
+
+
+- (void)loadMoviesWithSortType:(MovieSortType)sortType
+{
+    self.currentSortType = sortType;
+
+    self.fetchedResultsController = nil;
     [self.tableView reloadData];
+}
+
+- (NSFetchedResultsController *)fetchedResultsControllerForTableView:(UITableView *)aTableView
+{
+    return aTableView == self.tableView ? self.fetchedResultsController : self.searchFetchedResultsController;
+}
+
+- (NSFetchedResultsController *)activeFetchedResultsController
+{
+    if(_searchController.active) {
+        return self.searchFetchedResultsController;
+    }
+    return self.fetchedResultsController;
+}
+
+- (UITableView *)activeTableView
+{
+    if(_searchController.active) {
+        return _searchController.searchResultsTableView;
+    }
+    return self.tableView;
 }
 
 - (void)contextDidSave:(NSNotification *)notification
@@ -371,6 +452,28 @@ const int kMovieDisplayCellImageView = 200;
     
 }
 
+
+
+////////////////////////////////////////////////////////////////////////////
+#pragma mark -
+#pragma mark UISearchDisplayDelegate
+
+- (BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchString:(NSString *)searchString {
+    self.searchFetchedResultsController = nil;
+    return YES;
+}
+
+- (void)searchDisplayControllerDidBeginSearch:(UISearchDisplayController *)controller {
+
+    // TableView Styles
+    _searchController.searchResultsTableView.backgroundColor = HEXColor(DEFAULT_COLOR_BG);
+    _searchController.searchResultsTableView.separatorColor = HEXColor(0x1C1C1C);
+    
+    // make sure the tableview is empty
+    UIView *emptyTable = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, 1.0f)];
+    [emptyTable setBackgroundColor:[UIColor clearColor]];
+    _searchController.searchResultsTableView.tableFooterView = emptyTable;
+}
 
 
 @end

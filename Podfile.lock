@@ -6,7 +6,7 @@ PODS:
 - KSReachability (0.0.2)
 - MJStarRating (1.0)
 - OBGradientView (1.0)
-- TestFlightSDK (1.1)
+- TestFlightSDK (1.2)
 - UIResponder+KeyboardCache (0.1)
 
 DEPENDENCIES: 
@@ -38,7 +38,7 @@ SPEC CHECKSUMS:
   KSReachability: 1571cf577fa73bd34ececf6383b617254eb9961c
   MJStarRating: 4bb9664d7ad1497253c015e27068db51bd36cd45
   OBGradientView: 262d7b1f392378f0072876e23fd16dee0cc45dce
-  TestFlightSDK: a62347405c04307e2953eda4b8cc465ee51a6c90
+  TestFlightSDK: 29e194fb148e4861f92e4c1195b9697e1f3ad19a
   UIResponder+KeyboardCache: 4e646d140212f8ee43f1560c11614634ad6dd063
 
 COCOAPODS: 0.15.2
