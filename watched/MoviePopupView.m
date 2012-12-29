@@ -236,7 +236,7 @@
 - (void)slideContentViewForState:(PopupViewDisplayState)state completion:(void (^)(void))completionBlock
 {
     CGRect endFrame;
-    CGFloat popupHeight;
+    CGFloat popupHeight = 0;
     
     if(state == PopupViewDisplayStateLoading) {
         endFrame = CGRectMake(0.0f, _coverContainerView.bottom - _contentContainerView.height, _contentContainerView.width, _contentContainerView.height);
@@ -337,7 +337,7 @@
     _isAnimating = YES;
     void(^endBlock)(void);
     CGRect endFrame;
-    CGFloat popupHeight;
+    CGFloat popupHeight = 0;
     BOOL animated = [[animationDict objectForKey:@"animated"] boolValue];
     PopupViewDisplayState displayState = [[animationDict objectForKey:@"state"] intValue];
     

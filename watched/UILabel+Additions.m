@@ -14,8 +14,8 @@
 {
     self.numberOfLines = lines;
     CGSize maxSize = CGSizeMake(self.frame.size.width, lines * self.font.lineHeight);
-    CGSize size = [self.text sizeWithFont:self.font constrainedToSize:maxSize lineBreakMode:UILineBreakModeTailTruncation];
-    self.lineBreakMode = UILineBreakModeTailTruncation;
+    CGSize size = [self.text sizeWithFont:self.font constrainedToSize:maxSize lineBreakMode:NSLineBreakByTruncatingTail];
+    self.lineBreakMode = NSLineBreakByTruncatingTail;
     self.frame = CGRectMake(self.frame.origin.x, self.frame.origin.y, size.width, size.height);
 }
 

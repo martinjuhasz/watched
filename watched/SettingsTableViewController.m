@@ -19,6 +19,9 @@
 #import "UIViewController+MJPopupViewController.h"
 #import "LoadingPopupViewController.h"
 #import "PopupLoadingView.h"
+#import "UILabel+Additions.h"
+
+#define kOptOutSwitchTag 4853
 
 @interface SettingsTableViewController () <MFMailComposeViewControllerDelegate>
 
@@ -53,9 +56,13 @@
                        [NSDictionary dictionaryWithObject:NSLocalizedString(@"SETTINGS_TWITTER", nil) forKey:@"name"],
                       nil],
                      [NSArray arrayWithObjects:
-                      [NSDictionary dictionaryWithObject:@"Dummy Content" forKey:@"name"],
-//                      [NSDictionary dictionaryWithObject:@"Toggle debugger" forKey:@"name"],
+                      [NSDictionary dictionaryWithObject:NSLocalizedString(@"SETTINGS_OPTOUT", nil) forKey:@"name"],
                       nil],
+#ifdef DEBUG_MODE
+                     [NSArray arrayWithObjects:
+                      [NSDictionary dictionaryWithObject:@"Dummy Content" forKey:@"name"],
+                      nil],
+#endif
                  nil];
     
     
@@ -94,12 +101,25 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *CellIdentifier = @"SettingsTableViewCellCustom";
-    MJCustomTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    if (cell == nil) {
-        cell = [[MJCustomTableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier];
+    MJCustomTableViewCell *cell;
+    
+    if(indexPath.section != 2) {
+        static NSString *CellIdentifier = @"SettingsTableViewCellCustom";
+        cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+        if (cell == nil) {
+            cell = [[MJCustomTableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier];
+        }
+    } else if(indexPath.section == 2) {
+        static NSString *CellIdentifier = @"SettingsTableViewCellSwitch";
+        cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+        if (cell == nil) {
+            cell = [[MJCustomTableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier];
+        }
     }
+    cell.activated = YES;
+    
     [cell configureForTableView:tableView indexPath:indexPath];
+    
     
     // Configure the cell...
     cell.textLabel.text = [[[_settings objectAtIndex:indexPath.section] objectAtIndex:indexPath.row] objectForKey:@"name"];
@@ -109,10 +129,19 @@
 
 - (void)configureCellForRowAtIndexPath:(NSIndexPath*)indexPath cell:(UITableViewCell*)aCell
 {
-    aCell.selectionStyle = UITableViewCellSelectionStyleBlue;
+    if(indexPath.section == 2) {
+        aCell.selectionStyle = UITableViewCellSelectionStyleNone;
+        
+        NSUserDefaults *standardUserDefaults = [NSUserDefaults standardUserDefaults];
+        BOOL isDisabled = [standardUserDefaults boolForKey:OPTOUT_SETTINGS];
+        UISwitch *optSwitch = (UISwitch*)[aCell viewWithTag:kOptOutSwitchTag];
+        [optSwitch setOn:!isDisabled animated:NO];
+    } else {
+        aCell.selectionStyle = UITableViewCellSelectionStyleBlue;
+    }
     
     // Accecory Type
-    if(indexPath.section == 0) {
+    if(indexPath.section == 0 || indexPath.section == 2) {
         aCell.accessoryType = UITableViewCellAccessoryNone;
     } else {
         MJCustomAccessoryControl *accessoryView = [MJCustomAccessoryControl accessory];
@@ -136,7 +165,14 @@
 {
     if(section == 0) return NSLocalizedString(@"SETTINGS_HEADER_SETTINGS", nil);
     if(section == 1) return NSLocalizedString(@"SETTINGS_HEADER_CONTACT", nil);
-    if(section == 2) return NSLocalizedString(@"SETTINGS_HEADER_BETA", nil);
+    if(section == 2) return NSLocalizedString(@"SETTINGS_HEADER_OPTOUT", nil);
+    if(section == 3) return NSLocalizedString(@"SETTINGS_HEADER_BETA", nil);
+    return nil;
+}
+
+- (NSString*)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section
+{
+    if(section == 2) return NSLocalizedString(@"SETTINGS_FOOTER_OPTOUT", nil);
     return nil;
 }
 
@@ -151,6 +187,29 @@
     label.textColor = [UIColor whiteColor];
 	label.shadowColor = [UIColor colorWithRed:0.0f green:0.0f blue:0.0f alpha:0.44f];
 	label.backgroundColor = [UIColor clearColor];
+    
+	[headerView addSubview:label];
+	return headerView;
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
+{
+    UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, tableView.bounds.size.width, 100.0f)];
+	tableView.sectionHeaderHeight = headerView.frame.size.height;
+	UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(20.0f, 10.0f, headerView.frame.size.width - 40.0f, 100.0f)];
+	label.text = [self tableView:tableView titleForFooterInSection:section];
+    label.numberOfLines = 3;
+    label.textAlignment = NSTextAlignmentCenter;
+	label.font = [UIFont systemFontOfSize:13.0f];
+	label.shadowOffset = CGSizeMake(0.0f, 1.0f);
+    label.textColor = [UIColor whiteColor];
+	label.shadowColor = [UIColor colorWithRed:0.0f green:0.0f blue:0.0f alpha:0.44f];
+	label.backgroundColor = [UIColor clearColor];
+    
+    [label sizeToFitWithWith:headerView.frame.size.width - 40.0f andMaximumNumberOfLines:3];
+    CGRect viewRect = headerView.frame;
+    viewRect.size.height = label.frame.size.height;
+    headerView.frame = viewRect;
     
 	[headerView addSubview:label];
 	return headerView;
@@ -206,8 +265,7 @@
             title = [NSString stringWithFormat:@"%@ %@", title, [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"]];
             [mailViewController setSubject:title];
             [mailViewController setToRecipients:[NSArray arrayWithObject:NSLocalizedString(@"SETTINGS_FEEDBACK_EMAILTO", nil)]];
-            [self.navigationController presentModalViewController:mailViewController animated:YES];
-
+            [self.navigationController presentViewController:mailViewController animated:YES completion:nil];
         }
         if(indexPath.row == 1) {
             NSURL *url = [NSURL URLWithString:@"http://watchedforios.com"];
@@ -225,14 +283,14 @@
     }
     
     // Beta
-    if(indexPath.section == 2) {
+#ifdef DEBUG_MODE
+    if(indexPath.section == 3) {
         if (indexPath.row == 0) {
             [self loadDummyContent];
-        } else if (indexPath.row == 1) {
-            [self toggleDebugger];
         }
         [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
     }
+#endif
 }
 
 
@@ -243,7 +301,7 @@
 
 - (IBAction)doneButtonClicked:(id)sender
 {
-    [self dismissModalViewControllerAnimated:YES];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 
@@ -285,6 +343,28 @@
 }
 
 
+
+////////////////////////////////////////////////////////////////////////////
+#pragma mark -
+#pragma mark Statistics
+
+- (IBAction)optOutSwitchToggled:(id)sender
+{
+    UISwitch *aSwitch = (UISwitch*)sender;
+    NSUserDefaults * standardUserDefaults = [NSUserDefaults standardUserDefaults];
+    [standardUserDefaults setBool:!aSwitch.on forKey:OPTOUT_SETTINGS];
+    [standardUserDefaults synchronize];
+
+    if(!aSwitch.on) {
+        BlockAlertView *alert = [BlockAlertView alertWithTitle:NSLocalizedString(@"SETTINGS_POP_OPTOUT_TITLE", nil)
+                                                       message:NSLocalizedString(@"SETTINGS_POP_OPTOUT_CONTENT", nil)];
+        
+        [alert setCancelButtonWithTitle:NSLocalizedString(@"SETTINGS_POP_OPTOUT_CANCEL", nil) block:nil];
+        [alert show];
+    }
+    
+    
+}
 
 ////////////////////////////////////////////////////////////////////////////
 #pragma mark -
@@ -369,15 +449,18 @@
         
         // wait until everything is finished
         dispatch_group_wait(group, DISPATCH_TIME_FOREVER);
-        dispatch_release(group);
         
         if(!error) {
-            [context save:nil];
+            NSError *saveError;
+            [context save:&saveError];
+            if(saveError) {
+                ErrorLog("%@", [error localizedDescription]);
+            }
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self closeLoadingController];
             });
         } else {
-            XLog("%@", [error localizedDescription]);
+            DebugLog("%@", [error localizedDescription]);
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self closeLoadingController];
             });
@@ -391,43 +474,9 @@
 #pragma mark -
 #pragma mark BETA
 
-- (void)toggleDebugger
-{
-#ifdef DEBUG
-//    PDDebugger *debugger = [PDDebugger defaultInstance];
-//    NSString *status;
-//    if(![debugger isConnected]) {
-//        // http debug
-//        [debugger connectToURL:[NSURL URLWithString:@"ws://10.0.1.11:9000/device"]];
-//        [debugger enableNetworkTrafficDebugging];
-//        // TODO: Private API Call!
-//        [debugger forwardAllNetworkTraffic];
-//        
-//        status = @"activated";
-//        
-//        // core data
-//        [debugger enableCoreDataDebugging];
-//        [debugger addManagedObjectContext:[[MoviesDataModel sharedDataModel] mainContext] withName:@"Main Context"];
-//    } else {
-//        [debugger removeManagedObjectContext:[[MoviesDataModel sharedDataModel] mainContext]];
-//        [debugger disconnect];
-//        status = @"disabled";
-//    }
-//    
-//    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Debugger"
-//                                                    message:[NSString stringWithFormat:@"Debugger %@", status]
-//                                                   delegate:nil
-//                                          cancelButtonTitle:@"OK"
-//                                          otherButtonTitles:nil];
-//    [alert show];
-#endif
-}
-
 - (void)loadDummyContent
 {
-//    __block MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
-//    hud.mode = MBProgressHUDModeDeterminate;
-//    hud.progress = 0.0f;
+#ifdef DEBUG_MODE
     UIStoryboard *storyBoard = [UIStoryboard storyboardWithName:@"MainStoryboard" bundle:nil];
     _loadingController = nil;
     _loadingController = (LoadingPopupViewController*)[storyBoard instantiateViewControllerWithIdentifier:@"LoadingMovieViewController"];
@@ -495,7 +544,6 @@
             AFJSONRequestOperation *operation = [bridge saveMovieForID:currentMovie completion:^(Movie *returnedMovie) {
                 current++;
                 dispatch_async(dispatch_get_main_queue(), ^{
-//                    hud.progress = current / total;
                     NSString *progress = [NSString stringWithFormat:@"%d / %.0f", current, total];
                     _loadingController.titleLabel.text = progress;
                 });
@@ -503,11 +551,10 @@
             } failure:^(NSError *anError) {
                 current++;
                 dispatch_async(dispatch_get_main_queue(), ^{
-//                    hud.progress = current / total;
                     NSString *progress = [NSString stringWithFormat:@"%d / %.0f", current, total];
                     _loadingController.titleLabel.text = progress;
                 });
-                XLog("%@",[anError localizedDescription]);
+                DebugLog("%@",[anError localizedDescription]);
                 dispatch_group_leave(group);
             }];
             [queue addOperation:operation];
@@ -517,14 +564,14 @@
         
         // wait until everything is finished
         dispatch_group_wait(group, DISPATCH_TIME_FOREVER);
-        dispatch_release(group);
+        //dispatch_release(group);
         dispatch_async(dispatch_get_main_queue(), ^{
-//            [hud hide:YES];
             [self closeLoadingController];
             [self loadStatistics];
             [self reloadStatisticCells];
         });
     });
+#endif
 }
 
 
@@ -551,7 +598,7 @@
 
 - (void)mailComposeController:(MFMailComposeViewController*)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError*)error
 {
-    [self dismissModalViewControllerAnimated:YES];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 
@@ -573,14 +620,14 @@
     ratedLabel.shadowColor = [UIColor colorWithRed:255.0f green:255.0f blue:255.0f alpha:0.2f];
     ratedLabel.shadowOffset = CGSizeMake(0.0f, 1.0f);
     ratedLabel.textColor = HEXColor(0x666666);
-    ratedLabel.textAlignment = UITextAlignmentCenter;
+    ratedLabel.textAlignment = NSTextAlignmentCenter;
     ratedLabel.backgroundColor = [UIColor clearColor];
     averageLabel.text = NSLocalizedString(@"SETTINGS_AVERAGERATING", nil);
     averageLabel.font = [UIFont boldSystemFontOfSize:10.0f];
     averageLabel.shadowColor = [UIColor colorWithRed:255.0f green:255.0f blue:255.0f alpha:0.2f];
     averageLabel.shadowOffset = CGSizeMake(0.0f, 1.0f);
     averageLabel.textColor = HEXColor(0x666666);
-    averageLabel.textAlignment = UITextAlignmentCenter;
+    averageLabel.textAlignment = NSTextAlignmentCenter;
     averageLabel.backgroundColor = [UIColor clearColor];
     [headerView addSubview:ratedLabel];
     [headerView addSubview:averageLabel];
@@ -590,7 +637,7 @@
     self.movieCountLabel.shadowColor = [UIColor colorWithRed:255.0f green:255.0f blue:255.0f alpha:0.2f];
     self.movieCountLabel.shadowOffset = CGSizeMake(0.0f, 1.0f);
     self.movieCountLabel.textColor = HEXColor(0x4C4C4C);
-    self.movieCountLabel.textAlignment = UITextAlignmentCenter;
+    self.movieCountLabel.textAlignment = NSTextAlignmentCenter;
     self.movieCountLabel.backgroundColor = [UIColor clearColor];
     
     self.averageRatingLabel = [[UILabel alloc] initWithFrame:CGRectMake(169.0f, 18.0f, 137.0f, 46.0f)];
@@ -598,7 +645,7 @@
     self.averageRatingLabel.shadowColor = [UIColor colorWithRed:255.0f green:255.0f blue:255.0f alpha:0.2f];
     self.averageRatingLabel.shadowOffset = CGSizeMake(0.0f, 1.0f);
     self.averageRatingLabel.textColor = HEXColor(0x4C4C4C);
-    self.averageRatingLabel.textAlignment = UITextAlignmentCenter;
+    self.averageRatingLabel.textAlignment = NSTextAlignmentCenter;
     self.averageRatingLabel.backgroundColor = [UIColor clearColor];
     
     [self reloadStatisticCells];

@@ -269,7 +269,7 @@
         [self showContent];
         
     } failure:^(NSError *error) {
-        XLog(@"%@", [error localizedDescription]);
+        DebugLog(@"%@", [error localizedDescription]);
         self.retryButton.alpha = 1.0f;
         [self showInfoContentWithText:NSLocalizedString(@"POPUP_TMDBERROR-LOAD", nil) titleText:NSLocalizedString(@"POPUP_TMDBERROR-INFO", nil)];
     }];
@@ -443,7 +443,7 @@
         });
         
     } failure:^(NSError *error) {
-        XLog(@"%@", [error localizedDescription]);
+        DebugLog(@"%@", [error localizedDescription]);
         isAdding = NO;
         [self checkButtonStates];
         dispatch_async(dispatch_get_main_queue(), ^{

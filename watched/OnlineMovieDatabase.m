@@ -59,7 +59,7 @@ static NSString *databaseURL = @"http://api.themoviedb.org/3";
 {
     apiKey = aApiKey;
     [self loadConfigurationWithFailure:^(NSError *error) {
-        XLog("%@", [error localizedDescription]);
+        DebugLog("%@", [error localizedDescription]);
     }];
 }
 
@@ -142,7 +142,7 @@ static NSString *databaseURL = @"http://api.themoviedb.org/3";
 {
     value = [value stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/search/movie?%@&query=%@&page=%d",databaseURL, [self additionalURLParams], value, page]];
-    XLog(@"Searching at URL: %@", url);
+    DebugLog(@"Searching at URL: %@", url);
     NSURLRequest *request = [NSURLRequest requestWithURL:url];
     
     AFJSONRequestOperation *operation;
@@ -158,7 +158,7 @@ static NSString *databaseURL = @"http://api.themoviedb.org/3";
 - (AFJSONRequestOperation*)getSimilarMoviesWithMovieID:(NSNumber*)anID atPage:(NSInteger)page completion:(MovieSearchCompletionBlock)callback failure:(OnlineMovieDatabaseErrorBlock)failure
 {
     NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/movie/%@/similar_movies?%@&page=%d",databaseURL, anID,[self additionalURLParams] ,page]];
-    XLog(@"Searching Similar Movies at URL: %@", url);
+    DebugLog(@"Searching Similar Movies at URL: %@", url);
     NSURLRequest *request = [NSURLRequest requestWithURL:url];
     
     AFJSONRequestOperation *operation;
@@ -224,7 +224,7 @@ static NSString *databaseURL = @"http://api.themoviedb.org/3";
 - (AFJSONRequestOperation*)getImagesForMovie:(NSNumber *)movieID completion:(MovieImagesCompletionBlock)callback failure:(OnlineMovieDatabaseErrorBlock)failure
 {
     NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/movie/%d/images?api_key=%@",databaseURL, [movieID intValue], apiKey]];
-    XLog("Getting Movie Images at URL: %@", url);
+    DebugLog("Getting Movie Images at URL: %@", url);
     NSURLRequest *request = [NSURLRequest requestWithURL:url];
     
     AFJSONRequestOperation *operation;
@@ -245,7 +245,7 @@ static NSString *databaseURL = @"http://api.themoviedb.org/3";
 - (AFJSONRequestOperation*)getMovieDetailsForMovieID:(NSNumber *)movieID completion:(MovieDetailCompletionBlock)callback failure:(OnlineMovieDatabaseErrorBlock)failure
 {
     NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/movie/%d?%@",databaseURL, [movieID intValue], [self additionalURLParams]]];
-    XLog("Getting Movie Details at URL: %@", url);
+    DebugLog("Getting Movie Details at URL: %@", url);
     NSURLRequest *request = [NSURLRequest requestWithURL:url];
     
     AFJSONRequestOperation *operation;
@@ -262,7 +262,7 @@ static NSString *databaseURL = @"http://api.themoviedb.org/3";
 {
     // http://api.themoviedb.org/3/movie/11/casts
     NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/movie/%d/casts?api_key=%@",databaseURL, [movieID intValue], apiKey]];
-    XLog("Getting Movie Casts at URL: %@", url);
+    DebugLog("Getting Movie Casts at URL: %@", url);
     NSURLRequest *request = [NSURLRequest requestWithURL:url];
     
     AFJSONRequestOperation *operation;
@@ -279,7 +279,7 @@ static NSString *databaseURL = @"http://api.themoviedb.org/3";
 {
     // http://api.themoviedb.org/3/movie/11/casts
     NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/movie/%d/trailers?%@",databaseURL, [movieID intValue], [self additionalURLParams]]];
-    XLog(@"Getting Movie Trailers at URL: %@", url);
+    DebugLog(@"Getting Movie Trailers at URL: %@", url);
     NSURLRequest *request = [NSURLRequest requestWithURL:url];
     
     AFJSONRequestOperation *operation;
@@ -293,13 +293,13 @@ static NSString *databaseURL = @"http://api.themoviedb.org/3";
                 // Second Try
                 firstTry = NO;
                 NSURL *secondUrl = [NSURL URLWithString:[NSString stringWithFormat:@"%@/movie/%d/trailers?api_key=%@",databaseURL, [movieID intValue], apiKey]];
-                XLog(@"Getting Movie Trailers at URL: %@", secondUrl);
+                DebugLog(@"Getting Movie Trailers at URL: %@", secondUrl);
                 NSURLRequest *secondRequest = [NSURLRequest requestWithURL:secondUrl];
                 AFJSONRequestOperation *secondOperation;
                 secondOperation = [AFJSONRequestOperation JSONRequestOperationWithRequest:secondRequest success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
                     callback(JSON);
                 } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
-                    XLog("%@", [error localizedDescription]);
+                    DebugLog("%@", [error localizedDescription]);
                     failure(error);
                 }];
                 [secondOperation start];

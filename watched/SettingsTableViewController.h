@@ -21,5 +21,5 @@
 @property (nonatomic, strong) LoadingPopupViewController *loadingController;
 
 - (IBAction)doneButtonClicked:(id)sender;
-
+- (IBAction)optOutSwitchToggled:(id)sender;
 @end

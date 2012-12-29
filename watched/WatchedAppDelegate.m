@@ -18,10 +18,11 @@
 #import "MJWatchedNavigationBar.h"
 #import <MessageUI/MessageUI.h>
 #import "TestFlight.h"
-#import <Crashlytics/Crashlytics.h>
 #import "MoviePopupViewController.h"
 #import "UIResponder+KeyboardCache.h"
 #import <Social/Social.h>
+#import "MJWatchedNavigationController.h"
+#import "WatchedStyledViewController.h"
 
 @interface WatchedAppDelegate ()<AddMovieViewDelegate, MoviePopupViewControllerDelegate> {
 }
@@ -38,9 +39,7 @@
     [MJInternetConnection sharedInternetConnection];
     [UIResponder cacheKeyboard:YES];
     
-    // Override point for customization after application launch.
-    [TestFlight takeOff:@"bd44b4d15d82ebee20573cbad8c85c83_MzE1MTMyMDExLTExLTA1IDEzOjA0OjU2LjU3ODE3Mg"];
-    [Crashlytics startWithAPIKey:@"145e624fa03124a3e4abe820c9bf1a8a9fe96274"];
+    [self startTestFlight];
     
     [[OnlineMovieDatabase sharedMovieDatabase] setApiKey:@"d518563ee67cb6d475d2440d3e663e93"];
     [[OnlineMovieDatabase sharedMovieDatabase] setPreferredLanguage:[self appLanguage]];
@@ -57,30 +56,30 @@
     return @"en";
 }
 
+- (void)startTestFlight
+{
+    NSUserDefaults *standardUserDefaults = [NSUserDefaults standardUserDefaults];
+    BOOL isDisabled = [standardUserDefaults boolForKey:OPTOUT_SETTINGS];
+    if(!isDisabled) {
+        [TestFlight takeOff:@"bd44b4d15d82ebee20573cbad8c85c83_MzE1MTMyMDExLTExLTA1IDEzOjA0OjU2LjU3ODE3Mg"];
+    }
+}
+
 - (void)setStyles
 {
     
     // UINavigationBar
     UIImage *navigationBarBgImage = [[UIImage imageNamed:@"g_bg_navbar.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
     UIImage *navigationBarBgImageLS = [[UIImage imageNamed:@"g_bg_navbar_landscape.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
+    
+    [[UINavigationBar appearanceWhenContainedIn:[MJWatchedNavigationController class] , nil] setBackgroundImage:navigationBarBgImage forBarMetrics:UIBarMetricsDefault];
+    [[UINavigationBar appearanceWhenContainedIn:[WatchedStyledViewController class] , nil] setBackgroundImage:navigationBarBgImage forBarMetrics:UIBarMetricsDefault];
 
-    
-    // testing with customs
-//    [[MJWatchedNavigationBar appearance] setBackgroundImage:navigationBarBgImage forBarMetrics:UIBarMetricsDefault];
-//    [[UINavigationBar appearanceWhenContainedIn:[MFMailComposeViewController class], nil] setBackgroundImage:navigationBarBgImage forBarMetrics:UIBarMetricsDefault];
-//    
-//    // Bar Button Items
-//    id navBarButtonAppearance = [UIBarButtonItem appearanceWhenContainedIn:[MJWatchedNavigationBar class], nil];
-//    id navBarButtonAppearanceMail = [UIBarButtonItem appearanceWhenContainedIn:[MFMailComposeViewController class], nil];
-//    [self setStylesForBarButtonItem:navBarButtonAppearance];
-//    [self setStylesForBarButtonItem:navBarButtonAppearanceMail];
-    
-    
-    [[UINavigationBar appearance] setBackgroundImage:navigationBarBgImage forBarMetrics:UIBarMetricsDefault];
-//    [[UINavigationBar appearanceWhenContainedIn:[SLComposeViewController class], nil] setBackgroundImage:navigationBarBgImage forBarMetrics:UIBarMetricsDefault];
     // Bar Button Items
-    id navBarButtonAppearance = [UIBarButtonItem appearanceWhenContainedIn:[UINavigationBar class], nil];
-    [self setStylesForBarButtonItem:navBarButtonAppearance];
+    id navBarButtonAppearance1 = [UIBarButtonItem appearanceWhenContainedIn:[MJWatchedNavigationController class], nil];
+    id navBarButtonAppearance2 = [UIBarButtonItem appearanceWhenContainedIn:[WatchedStyledViewController class], nil];
+    [self setStylesForBarButtonItem:navBarButtonAppearance1];
+    [self setStylesForBarButtonItem:navBarButtonAppearance2];
     
     [[UINavigationBar appearance] setBackgroundImage:navigationBarBgImageLS forBarMetrics:UIBarMetricsLandscapePhone];
     
@@ -91,18 +90,19 @@
     [[UIToolbar appearanceWhenContainedIn:[AddMovieViewController class], nil] setBackgroundImage:navigationPopoverBarBgImage forToolbarPosition:UIToolbarPositionAny barMetrics:UIBarMetricsDefault];
     
     
+    NSDictionary *navBarTitleStyles = [NSDictionary dictionaryWithObjectsAndKeys:
+                                       HEXColor(0xFFFFFF),
+                                       UITextAttributeTextColor,
+                                       [UIColor colorWithRed:0.0f green:0.0f blue:0.0f alpha:0.44f],
+                                       UITextAttributeTextShadowColor,
+                                       [NSValue valueWithUIOffset:UIOffsetMake(0, 1)],
+                                       UITextAttributeTextShadowOffset, 
+                                       [UIFont fontWithName:@"HelveticaNeue-Bold" size:18.0f],
+                                       UITextAttributeFont, 
+                                       nil];
     
-    [[UINavigationBar appearance] setTitleTextAttributes:
-     [NSDictionary dictionaryWithObjectsAndKeys:
-      HEXColor(0xFFFFFF), 
-      UITextAttributeTextColor, 
-      [UIColor colorWithRed:0.0f green:0.0f blue:0.0f alpha:0.44f], 
-      UITextAttributeTextShadowColor, 
-      [NSValue valueWithUIOffset:UIOffsetMake(0, 1)], 
-      UITextAttributeTextShadowOffset, 
-      [UIFont fontWithName:@"HelveticaNeue-Bold" size:18.0f],
-      UITextAttributeFont, 
-      nil]];
+    [[UINavigationBar appearanceWhenContainedIn:[MJWatchedNavigationController class], nil] setTitleTextAttributes:navBarTitleStyles];
+    [[UINavigationBar appearanceWhenContainedIn:[WatchedStyledViewController class], nil] setTitleTextAttributes:navBarTitleStyles];
     
     // UIToolbar
     UIImage *browserBarBgImage = [[UIImage imageNamed:@"g_browser.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
@@ -110,7 +110,8 @@
     [[UIToolbar appearanceWhenContainedIn:[WatchedWebBrowser class], nil] setBackgroundImage:browserBarBgImage forToolbarPosition:UIToolbarPositionAny barMetrics:UIBarMetricsDefault];
     
     // UISearchBar
-    [[UISearchBar appearance] setBackgroundImage:navigationBarBgImage];
+    [[UISearchBar appearanceWhenContainedIn:[MJWatchedNavigationController class], nil] setBackgroundImage:navigationBarBgImage];
+    [[UISearchBar appearanceWhenContainedIn:[WatchedStyledViewController class], nil] setBackgroundImage:navigationBarBgImage];
     
     // TableView
     [[UITableView appearance] setBackgroundColor:HEXColor(DEFAULT_COLOR_BG)];
@@ -138,6 +139,9 @@
                                                  [UIFont fontWithName:@"HelveticaNeue-Bold" size:12.0f],
                                                  UITextAttributeFont,
                                                  nil] forState:UIControlStateNormal];
+    
+    // UISwitch
+    [[UISwitch appearance] setOnImage:[UIImage imageNamed:@"g_uiswitch_bg_on.png"]];
 }
 
 - (void)setStylesForBarButtonItem:(id)itemAppearance
@@ -256,8 +260,8 @@
     popupViewController.resultID = movieNumber;
     popupViewController.delegate = self;
     
-    if(self.window.rootViewController.modalViewController) {
-        [self.window.rootViewController dismissModalViewControllerAnimated:NO];
+    if([self.window.rootViewController.presentedViewController isKindOfClass:[MoviePopupViewController class]]) {
+        [self.window.rootViewController dismissViewControllerAnimated:NO completion:nil];
     }
     
     [self.window.rootViewController presentPopupViewController:popupViewController animationType:PopupViewAnimationSlideBottomBottom];

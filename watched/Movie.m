@@ -82,11 +82,11 @@
     
     NSError *error;
     if (![fileMgr removeItemAtPath:backdropPath error:&error])
-        XLog("Unable to delete file: %@", [error localizedDescription]);
+        DebugLog("Unable to delete file: %@", [error localizedDescription]);
     if (![fileMgr removeItemAtPath:posterPath error:&error])
-        XLog("Unable to delete file: %@", [error localizedDescription]);
+        DebugLog("Unable to delete file: %@", [error localizedDescription]);
     if (![fileMgr removeItemAtPath:posterThumbnailPath error:&error])
-        XLog("Unable to delete file: %@", [error localizedDescription]);
+        DebugLog("Unable to delete file: %@", [error localizedDescription]);
 }
 
 

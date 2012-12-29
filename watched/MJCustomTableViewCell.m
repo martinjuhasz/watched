@@ -16,18 +16,20 @@
     if (self) {
         // Initialization code
         self.activated = YES;
-        
-        self.backgroundColor = [UIColor clearColor];
-        
-        self.textLabel.textColor = HEXColor(0x333333);
-        self.textLabel.highlightedTextColor = HEXColor(0x333333);
-        self.textLabel.shadowColor = [UIColor colorWithRed:255.0f green:255.0f blue:255.0f alpha:0.4f];
-        self.textLabel.shadowOffset = CGSizeMake(0.0f, 1.0f);
-        
-        self.indentationLevel = 1;
-        self.indentationWidth = 5.0f;
     }
     return self;
+}
+
+- (void)addStyles {
+    self.backgroundColor = [UIColor clearColor];
+    
+    self.textLabel.textColor = HEXColor(0x333333);
+    self.textLabel.highlightedTextColor = HEXColor(0x333333);
+    self.textLabel.shadowColor = [UIColor colorWithRed:255.0f green:255.0f blue:255.0f alpha:0.4f];
+    self.textLabel.shadowOffset = CGSizeMake(0.0f, 1.0f);
+    
+    self.indentationLevel = 1;
+    self.indentationWidth = 5.0f;
 }
 
 - (void)layoutSubviews {
@@ -44,6 +46,7 @@
 
 - (void)configureForTableView:(UITableView *)aTableView indexPath:(NSIndexPath *)anIndexPath
 {
+    [self addStyles];
     MJCellPosition position = [self positionForIndexPath:anIndexPath inTableView:aTableView];
     
     self.detailTextLabel.backgroundColor = [UIColor clearColor];

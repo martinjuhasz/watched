@@ -145,7 +145,7 @@
         _popupView.displayState = PopupViewDisplayStateContent;
         
     } failure:^(NSError *error) {
-        XLog(@"%@", [error localizedDescription]);
+        DebugLog(@"%@", [error localizedDescription]);
         _popupView.displayState = PopupViewDisplayStateError;
     }];
     [operation start];
@@ -237,7 +237,7 @@
         });
         
     } failure:^(NSError *error) {
-        XLog(@"%@", [error localizedDescription]);
+        DebugLog(@"%@", [error localizedDescription]);
         isAdding = NO;
         [self checkButtonStates];
         dispatch_async(dispatch_get_main_queue(), ^{

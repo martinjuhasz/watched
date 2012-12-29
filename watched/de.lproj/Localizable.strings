@@ -138,6 +138,13 @@
 "SETTINGS_ABOUT_VENDOR"         = "Resources & 3rd-Party-Libraries";
 "SETTINGS_POP_REFRESHING"       = "Erneuern ...";
 
+"SETTINGS_HEADER_OPTOUT"        = "Fehlerdiagnose";
+"SETTINGS_FOOTER_OPTOUT"        = "Sämtliche Daten sind anonymisiert und helfen uns das Produkt zu verbessern. Wir geben niemals diese Daten weiter.";
+"SETTINGS_OPTOUT"               = "Ich will helfen";
+"SETTINGS_POP_OPTOUT_TITLE"     = "Hinweis";
+"SETTINGS_POP_OPTOUT_CONTENT"   = "Wir würden uns freuen wenn du uns hilfst unser Produkt zu verbessern, wenn nicht, ist das auch kein Problem. \nHinweis: Diese Option ist solange aktiv bis die Anwendung einmal komplett geschlossen wurde.";
+"SETTINGS_POP_OPTOUT_CANCEL"    = "OK";
+
 /*================================================
  NOTES
  ================================================*/

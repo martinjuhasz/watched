@@ -7,10 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "WatchedStyledViewController.h"
 
 @class Movie;
 
-@interface MovieNoteViewController : UIViewController
+@interface MovieNoteViewController : WatchedStyledViewController
 
 @property (strong, nonatomic) IBOutlet UINavigationBar *navBar;
 @property (strong, nonatomic) IBOutlet UITextView *textView;

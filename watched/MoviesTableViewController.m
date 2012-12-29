@@ -263,7 +263,7 @@ const int kMovieDisplayCellImageView = 200;
 		[mainContext deleteObject:aMovie];
 		[mainContext save:&error];
         if(error) {
-            XLog("%@", [error localizedDescription]);
+            ErrorLog("%@", [error localizedDescription]);
         }
     }
 }

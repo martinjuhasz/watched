@@ -7,10 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "WatchedStyledViewController.h"
 
 @class SearchResult;
 
-@interface SearchMovieViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate> {
+@interface SearchMovieViewController : WatchedStyledViewController<UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate> {
     NSInteger currentPage;
     NSInteger totalPages;
     BOOL isLoading;

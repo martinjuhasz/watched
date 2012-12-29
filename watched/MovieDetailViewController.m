@@ -271,7 +271,7 @@
     } failure:^(NSError *error) {
         isLoadingImages = NO;
         [self.detailView toggleLoadingViewForPosterType:selectedType];
-        XLog("%@", [error localizedDescription]);
+        DebugLog("%@", [error localizedDescription]);
     }];
     [operation start];
 }
@@ -286,13 +286,20 @@
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
         
-        NSManagedObjectContext *context = [[MoviesDataModel sharedDataModel] mainContext];
+        //NSManagedObjectContext *context = [[MoviesDataModel sharedDataModel] mainContext];
+        NSManagedObjectContext *context = [[NSManagedObjectContext alloc] init];
+        [context setPersistentStoreCoordinator:[[MoviesDataModel sharedDataModel] persistentStoreCoordinator]];
         
-        self.movie.rating = [NSNumber numberWithFloat:newRating];
+        // retrieve Movie
+        Movie *toSaveMovie = (Movie*)[context objectWithID:[self.movie objectID]];
+        if(!toSaveMovie) return;
+        
+        toSaveMovie.rating = [NSNumber numberWithFloat:newRating];
+        
         NSError *error;
         [context save:&error];
         if(error) {
-            XLog("%@", [error localizedDescription]);
+            ErrorLog("%@", [error localizedDescription]);
         }
         
     });
@@ -367,11 +374,16 @@
         NSManagedObjectContext *context = [[NSManagedObjectContext alloc] init];
         [context setPersistentStoreCoordinator:[[MoviesDataModel sharedDataModel] persistentStoreCoordinator]];
         
-        self.movie.watchedOn = watchedDate;
+        // retrieve Movie
+        Movie *toSaveMovie = (Movie*)[context objectWithID:[self.movie objectID]];
+        if(!toSaveMovie) return;
+        
+        toSaveMovie.watchedOn = watchedDate;
+        
         NSError *error;
         [context save:&error];
         if(error) {
-            XLog("%@", [error localizedDescription]);
+            ErrorLog("%@", [error localizedDescription]);
         }
         
     });
@@ -438,7 +450,7 @@
         [context deleteObject:[context objectWithID:movie.objectID]];
         [context save:&error];
         if(error) {
-            XLog("%@", [error localizedDescription]);
+            ErrorLog("%@", [error localizedDescription]);
         }
         
     });
@@ -565,7 +577,7 @@
     [mailViewController setSubject:self.movie.title];
     [mailViewController setMessageBody:sharebymailString isHTML:YES];
     
-    [self presentModalViewController:mailViewController animated:YES];
+    [self presentViewController:mailViewController animated:YES completion:nil];
 }
 
 - (void)shareWithMessage
@@ -587,7 +599,7 @@
     messageViewController.messageComposeDelegate = self;
     messageViewController.body = completeText;
     
-    [self presentModalViewController:messageViewController animated:YES];
+    [self presentViewController:messageViewController animated:YES completion:nil];
 }
 
 
@@ -598,7 +610,7 @@
 
 - (void)mailComposeController:(MFMailComposeViewController*)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError*)error
 {
-    [self dismissModalViewControllerAnimated:YES];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 
@@ -608,7 +620,7 @@
 
 - (void)messageComposeViewController:(MFMessageComposeViewController *)controller didFinishWithResult:(MessageComposeResult)result
 {
-    [self dismissModalViewControllerAnimated:YES];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 
@@ -673,11 +685,11 @@
                 NSError *error;
                 [context save:&error];
                 if(error) {
-                    XLog("%@", [error localizedDescription]);
+                    ErrorLog("%@", [error localizedDescription]);
                 }
             });
         } failure:^(NSError *error) {
-            XLog("%@", [error localizedDescription]);
+            DebugLog("%@", [error localizedDescription]);
         }];
     
     // Poster
@@ -700,11 +712,11 @@
                 NSError *error;
                 [context save:&error];
                 if(error) {
-                    XLog("%@", [error localizedDescription]);
+                    ErrorLog("%@", [error localizedDescription]);
                 }
             });
         } failure:^(NSError *error) {
-            XLog("%@", [error localizedDescription]);
+            DebugLog("%@", [error localizedDescription]);
         }];
     }
 }

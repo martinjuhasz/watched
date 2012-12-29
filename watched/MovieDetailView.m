@@ -269,7 +269,7 @@
     self.releaseDateButton.titleLabel.font = [UIFont fontWithName:@"HelveticaNeue-Bold" size:10.0f];
     self.releaseDateButton.titleLabel.adjustsFontSizeToFitWidth = NO;
     [self.releaseDateButton setTitleColor:HEXColor(0xD1D1D1)];
-    self.releaseDateButton.contentHorizontalAlignment = UITextAlignmentRight;
+    self.releaseDateButton.contentHorizontalAlignment = NSTextAlignmentRight;
     self.releaseDateButton.titleEdgeInsets = UIEdgeInsetsMake(0.0f, 10.0f, 0.0f, 10.0f);
     [self.releaseDateButton setBackgroundImage:metaBackground];
     [self.mainScrollView addSubview:self.releaseDateButton];
@@ -278,7 +278,7 @@
     self.runtimeButton.titleLabel.font = [UIFont fontWithName:kContentFont size:10.0f];
     self.runtimeButton.titleLabel.adjustsFontSizeToFitWidth = NO;
     [self.runtimeButton setTitleColor:HEXColor(0xD1D1D1)];
-    self.runtimeButton.contentHorizontalAlignment = UITextAlignmentRight;
+    self.runtimeButton.contentHorizontalAlignment = NSTextAlignmentRight;
     self.runtimeButton.titleEdgeInsets = UIEdgeInsetsMake(0.0f, 10.0f, 0.0f, 10.0f);
     [self.runtimeButton setBackgroundImage:metaBackground];
     [self.mainScrollView addSubview:self.runtimeButton];
@@ -414,7 +414,7 @@
     label.font = [UIFont fontWithName:@"HelveticaNeue-Bold" size:14.0f];
     label.backgroundColor = [UIColor clearColor];
     label.numberOfLines = 0;
-    label.lineBreakMode = UILineBreakModeWordWrap;
+    label.lineBreakMode = NSLineBreakByWordWrapping;
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)aScrollView

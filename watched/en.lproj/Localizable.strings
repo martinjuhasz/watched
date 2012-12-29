@@ -140,6 +140,13 @@
 "SETTINGS_ABOUT_VENDOR"         = "Resources & 3rd-Party-Libraries";
 "SETTINGS_POP_REFRESHING"       = "Refreshing ...";
 
+"SETTINGS_HEADER_OPTOUT"        = "Diagnostics";
+"SETTINGS_FOOTER_OPTOUT"        = "All data is anonymized and helps us to improve our product. we will never share any of this data.";
+"SETTINGS_OPTOUT"               = "i want to help";
+"SETTINGS_POP_OPTOUT_TITLE"     = "That's ok";
+"SETTINGS_POP_OPTOUT_CONTENT"   = "We would love if you help us improve the app, if not, that's fine!\nNote: This option will be enabled until you close the app completely.";
+"SETTINGS_POP_OPTOUT_CANCEL"    = "OK";
+
 /*================================================
  OTHER
  ================================================*/

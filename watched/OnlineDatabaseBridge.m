@@ -35,7 +35,7 @@
 - (void)saveSearchResultDictAsMovie:(NSDictionary *)movieDict completion:(OnlineBridgeCompletionBlock)aCompletionBlock failure:(OnlineBridgeFailureBlock)aFailureBlock
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
-        
+
         // Setup Core Data with extra Context for Background Process
         __block NSError *runtimeError = nil;
         NSManagedObjectContext *context = [[NSManagedObjectContext alloc] init];
@@ -91,7 +91,6 @@
             
             
             dispatch_group_wait(group, DISPATCH_TIME_FOREVER);
-            dispatch_release(group);
             
             if(!runtimeError) {
                 [context save:nil];
@@ -240,7 +239,6 @@
             
             // wait until everything is finished
             dispatch_group_wait(group, DISPATCH_TIME_FOREVER);
-            dispatch_release(group);
             
             if(!runtimeError) {
                 aCompletionBlock(movie);

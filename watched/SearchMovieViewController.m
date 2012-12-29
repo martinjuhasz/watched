@@ -407,7 +407,7 @@ const int kMovieFlagCellTag = 34773;
 
 - (IBAction)cancelButtonClicked:(id)sender
 {
-    [self dismissModalViewControllerAnimated:YES];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 
@@ -432,7 +432,7 @@ const int kMovieFlagCellTag = 34773;
         }
         [self.tableView reloadData];
     } failure:^(NSError *error) {
-        XLog("%@", [error localizedDescription]);
+        DebugLog("%@", [error localizedDescription]);
         isLoading = NO;
         isError = YES;
         [self.tableView reloadData];

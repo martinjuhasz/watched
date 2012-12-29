@@ -219,7 +219,7 @@ const int kMovieCastCellProfileImageView = 200;
         }
         
         NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"http://m.imdb.com/find?q=%@", encodedName]];
-        XLog("%@", url);
+
         WatchedWebBrowser *webBrowser = (WatchedWebBrowser*)segue.destinationViewController;
         webBrowser.url = url;
         

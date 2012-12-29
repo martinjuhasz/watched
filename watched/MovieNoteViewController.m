@@ -71,7 +71,7 @@
         NSError *error;
         [context save:&error];
         if(error) {
-            XLog("%@", [error localizedDescription]);
+            ErrorLog("%@", [error localizedDescription]);
         }
         
     });
@@ -79,18 +79,11 @@
 
 - (IBAction)saveButtonClicked:(id)sender {
     [self saveNote];
-    [self dismissModalViewControllerAnimated:YES];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (IBAction)cancelButtonClicked:(id)sender {
-    [self dismissModalViewControllerAnimated:YES];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
-
-
-- (void)dealloc
-{
-    XLog("");
-}
-
 
 @end
