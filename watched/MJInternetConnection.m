@@ -28,10 +28,11 @@
     self = [super init];
     if (self) {
         _internetAvailable = NO;
+        __weak __block MJInternetConnection *blockSelf = self;
         _reachability = [KSReachability reachabilityToHost:@"http://google.de/"];
         _reachability.onReachabilityChanged = ^(KSReachability* reachability)
         {
-            self.internetAvailable = (reachability.reachable) ? YES : NO;
+            blockSelf.internetAvailable = (reachability.reachable) ? YES : NO;
         };
     }
     return self;

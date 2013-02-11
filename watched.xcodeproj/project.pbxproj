@@ -283,6 +283,7 @@
 		7A99CCAF157C12BC0097F8E1 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A99CCAE157C12BC0097F8E1 /* MessageUI.framework */; };
 		7AA2975415F3C04D00F191EB /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 7AA2975215F3C04D00F191EB /* Default.png */; };
 		7AA2975515F3C04D00F191EB /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7AA2975315F3C04D00F191EB /* Default@2x.png */; };
+		7AA53EAE16C7D2D300D25917 /* MoviesTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AA53EAD16C7D2D300D25917 /* MoviesTableViewCell.m */; };
 		7AB5BD001575014C003DAFAB /* _Crew.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AB5BCFD1575014C003DAFAB /* _Crew.m */; };
 		7AB5BD011575014C003DAFAB /* Crew.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AB5BCFF1575014C003DAFAB /* Crew.m */; };
 		7AB5F855155087CC00D767E7 /* OnlineMovieDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AB5F854155087CC00D767E7 /* OnlineMovieDatabase.m */; };
@@ -664,6 +665,8 @@
 		7A99CCAE157C12BC0097F8E1 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		7AA2975215F3C04D00F191EB /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Default.png; path = ../../../../Dropbox/Arbeit/iOS/watched/assets/images/Default.png; sourceTree = "<group>"; };
 		7AA2975315F3C04D00F191EB /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default@2x.png"; path = "../../../../Dropbox/Arbeit/iOS/watched/assets/images/Default@2x.png"; sourceTree = "<group>"; };
+		7AA53EAC16C7D2D300D25917 /* MoviesTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MoviesTableViewCell.h; sourceTree = "<group>"; };
+		7AA53EAD16C7D2D300D25917 /* MoviesTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MoviesTableViewCell.m; sourceTree = "<group>"; };
 		7AB5BCFC1575014C003DAFAB /* _Crew.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _Crew.h; sourceTree = "<group>"; };
 		7AB5BCFD1575014C003DAFAB /* _Crew.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _Crew.m; sourceTree = "<group>"; };
 		7AB5BCFE1575014C003DAFAB /* Crew.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Crew.h; sourceTree = "<group>"; };
@@ -1089,6 +1092,8 @@
 			children = (
 				7A2B9A68155B090200442D54 /* MoviesTableViewController.h */,
 				7A2B9A69155B090200442D54 /* MoviesTableViewController.m */,
+				7AA53EAC16C7D2D300D25917 /* MoviesTableViewCell.h */,
+				7AA53EAD16C7D2D300D25917 /* MoviesTableViewCell.m */,
 			);
 			name = MoviesTableView;
 			sourceTree = "<group>";
@@ -1369,7 +1374,7 @@
 		7A584CEA154877A600A548EE /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0450;
+				LastUpgradeCheck = 0460;
 			};
 			buildConfigurationList = 7A584CED154877A600A548EE /* Build configuration list for PBXProject "watched" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -1755,6 +1760,7 @@
 				7A6756C0162EF104007FD710 /* MoviePopupViewController.m in Sources */,
 				7A3F80D01635F5F700FF8349 /* PopupLoadingView.m in Sources */,
 				7A7D4EF91655249D00CD3F86 /* WatchedStyledViewController.m in Sources */,
+				7AA53EAE16C7D2D300D25917 /* MoviesTableViewCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1795,6 +1801,10 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer: Martin Juhasz (6UXQ7ZK229)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Martin Juhasz (6UXQ7ZK229)";
 				COPY_PHASE_STRIP = NO;
@@ -1809,6 +1819,7 @@
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				PROVISIONING_PROFILE = "AE0FD7FA-6B7B-4515-B231-BB7237D7654F";
@@ -1823,6 +1834,10 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "iPhone Distribution: Martin Juhasz";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Martin Juhasz";
 				COPY_PHASE_STRIP = YES;
@@ -1830,6 +1845,7 @@
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";

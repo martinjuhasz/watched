@@ -14,13 +14,14 @@
 #import "UILabel+Additions.h"
 #import "MJCustomAccessoryControl.h"
 #import "UIView+Additions.h"
-
-
-const int kMovieDisplayCellTitleLabel = 100;
-const int kMovieDisplayCellYearLabel = 101;
-const int kMovieDisplayCellImageView = 200;
+#import "AFJSONRequestOperation.h"
+#import "OnlineMovieDatabase.h"
+#import "SearchResult.h"
+#import "MoviesTableViewCell.h"
 
 #define kSectionHeaderHeight 24.0f
+const int kMovieTableLoadingCellTag = 2000;
+const int kMovieTableDefaultCellTag = 2001;
 
 @interface MoviesTableViewController ()
 - (void)loadMoviesWithSortType:(MovieSortType)sortType;
@@ -64,12 +65,21 @@ const int kMovieDisplayCellImageView = 200;
     
     // Search View
     _searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, 40.0f)];
+    _searchBar.delegate = self;
     self.tableView.tableHeaderView = _searchBar;
     _searchController = [[UISearchDisplayController alloc] initWithSearchBar:_searchBar contentsController:self];
     _searchController.delegate = self;
     _searchController.searchResultsDelegate = self;
     _searchController.searchResultsDataSource = self;
     _searchController.searchResultsTableView.delegate = self;
+    self.searchOperations = [[NSOperationQueue alloc] init];
+    [_searchOperations setMaxConcurrentOperationCount:1];
+    
+    self.searchResults = [NSMutableArray array];
+    currentPage = 0;
+    totalPages = 1;
+    isError = NO;
+    isLoading = NO;
     
     // Add Button
     UIImage *addButtonBgImage = [[UIImage imageNamed:@"mv_addbutton.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(26, 8, 26, 8)];
@@ -129,13 +139,37 @@ const int kMovieDisplayCellImageView = 200;
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)aTableView
 {
-    return [[[self fetchedResultsControllerForTableView:aTableView] sections] count];
+    NSFetchedResultsController *currentController = [self fetchedResultsControllerForTableView:aTableView];
+    if([currentController isEqual:self.searchFetchedResultsController]) {
+        return [[currentController sections] count] + 1;
+    }
+    return [[currentController sections] count];
 }
 
 - (NSInteger)tableView:(UITableView *)aTableView numberOfRowsInSection:(NSInteger)section
 {
+    if([self isOnlineSearchSectionInTableView:aTableView currentSection:section]) {
+        if(currentPage < totalPages) {
+            return [self.searchResults count] + 1;
+        } else {
+            return [self.searchResults count];
+        }
+    }
     id<NSFetchedResultsSectionInfo> sectionInfo = [[[self fetchedResultsControllerForTableView:aTableView] sections] objectAtIndex:section];
     return [sectionInfo numberOfObjects];
+}
+
+- (NSString *)tableView:(UITableView *)aTableView titleForHeaderInSection:(NSInteger)section
+{
+    if([self isOnlineSearchSectionInTableView:aTableView currentSection:section]) {
+        return @"HEADER_TITLE_ONLINESEARCH";
+    }
+    
+    // without headers
+    if(currentSortType != MovieSortTypeAll) return nil;
+    NSString *star = [[[[self fetchedResultsControllerForTableView:aTableView] sections] objectAtIndex:section] name];
+    if([star isEqualToString:@"0"]) star = NSLocalizedString(@"HEADER_TITLE_ZERORATING", nil);
+    return star;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)aTableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -143,68 +177,63 @@ const int kMovieDisplayCellImageView = 200;
     static NSString *CellIdentifier = @"MoviesTableCell";
     UITableViewCell *cell;
     
-    cell = [self.tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    cell = [aTableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+        cell = [[MoviesTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     }
     
-    [self fetchedResultsController:[self fetchedResultsControllerForTableView:aTableView] configureCell:cell atIndexPath:indexPath];
-        
+    if([self isOnlineSearchSectionInTableView:aTableView currentSection:indexPath.section]) {
+        if(indexPath.row >= self.searchResults.count) {
+            [self configureLoadingCell:cell atIndexPath:indexPath];
+        } else {
+            [self configureOnlineSearchResultCell:cell atIndexPath:indexPath];
+        }
+    } else {
+        [self fetchedResultsController:[self fetchedResultsControllerForTableView:aTableView] configureCell:cell atIndexPath:indexPath];
+    }
+    
+    
     return cell;
 }
 
 - (void)fetchedResultsController:(NSFetchedResultsController *)aFetchedResultsController configureCell:(UITableViewCell *)aCell atIndexPath:(NSIndexPath *)indexPath
 {
-    
-    // appearance
-    UIView *tableCellBackgroundView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, 79.0f)];
-    tableCellBackgroundView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"g_bg-table.png"]];
-    UIView *tableCellBackgroundViewSelected = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, 79.0f)];
-    tableCellBackgroundViewSelected.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"g_bg-table_active.png"]];
-    MJCustomAccessoryControl *accessoryView = [MJCustomAccessoryControl accessory];
-    
-    [aCell setBackgroundView:tableCellBackgroundView];
-    [aCell setSelectedBackgroundView:tableCellBackgroundViewSelected];
-    [aCell setAccessoryView:accessoryView];
-    
-    UILabel *titleLabel = (UILabel *)[aCell viewWithTag:kMovieDisplayCellTitleLabel];
-    UILabel *yearLabel = (UILabel *)[aCell viewWithTag:kMovieDisplayCellYearLabel];
-    UIImageView *coverImageView = (UIImageView *)[aCell viewWithTag:kMovieDisplayCellImageView];
-    
+    MoviesTableViewCell *cell = (MoviesTableViewCell*)aCell;
+    cell.tag = kMovieTableDefaultCellTag;
     
     Movie *movie = [aFetchedResultsController objectAtIndexPath:indexPath];
-    
-    titleLabel.text = movie.title;
-    [titleLabel sizeToFitWithWith:200.0f andMaximumNumberOfLines:2];
+    cell.titleLabel.text = movie.title;
+    [cell.titleLabel sizeToFitWithWith:200.0f andMaximumNumberOfLines:2];
     
     // get year
-    if(movie.releaseDate) {
-        NSUInteger componentFlags = NSYearCalendarUnit;
-        NSDateComponents *components = [[NSCalendar currentCalendar] components:componentFlags fromDate:movie.releaseDate];
-        NSInteger year = [components year];
-        CGRect yearLabelRect = yearLabel.frame;
-        yearLabelRect.origin.y = titleLabel.bottom;
-        yearLabel.frame = yearLabelRect;
-        yearLabel.text = [NSString stringWithFormat:@"%d", year];
-    } else {
-        yearLabel.text = @"";
-    }
-    
-    if(movie.posterThumbnail) {
-        coverImageView.image = movie.posterThumbnail;
-    } else {
-        coverImageView.image = [UIImage imageNamed:@"g_placeholder-cover.png"];
-    }
+    [cell setYear:movie.releaseDate];
+    [cell setCoverImage:movie.posterThumbnail];
 }
 
-
-
-- (NSString *)tableView:(UITableView *)aTableView titleForHeaderInSection:(NSInteger)section
+- (void)configureOnlineSearchResultCell:(UITableViewCell *)aCell atIndexPath:(NSIndexPath *)indexPath
 {
-    if(currentSortType != MovieSortTypeAll) return nil;
-    NSString *star = [[[[self fetchedResultsControllerForTableView:aTableView] sections] objectAtIndex:section] name];
-    if([star isEqualToString:@"0"]) star = NSLocalizedString(@"HEADER_TITLE_ZERORATING", nil);
-    return star;
+    MoviesTableViewCell *cell = (MoviesTableViewCell*)aCell;
+    cell.tag = kMovieTableDefaultCellTag;
+    
+    SearchResult *movie = [self.searchResults objectAtIndex:indexPath.row];
+    cell.titleLabel.text = movie.title;
+    [cell.titleLabel sizeToFitWithWith:200.0f andMaximumNumberOfLines:2];
+    
+    // get year
+    [cell setYear:movie.releaseDate];
+    UIImage *placeholder = [UIImage imageNamed:@"g_placeholder-cover.png"];
+    NSURL *imageURL = [[OnlineMovieDatabase sharedMovieDatabase] getImageURLForImagePath:movie.posterPath imageType:ImageTypePoster nearWidth:70.0f*2];
+    [cell.coverImageView setImageWithURL:imageURL placeholderImage:placeholder];
+}
+
+- (void)configureLoadingCell:(UITableViewCell *)aCell atIndexPath:(NSIndexPath *)indexPath
+{
+    MoviesTableViewCell *cell = (MoviesTableViewCell*)aCell;
+    cell.tag = kMovieTableLoadingCellTag;
+    
+    cell.titleLabel.text = @"Loading";
+    [cell setYear:nil];
+    [cell setCoverImage:nil];
 }
 
 - (CGFloat)tableView:(UITableView *)aTableView heightForHeaderInSection:(NSInteger)section
@@ -240,7 +269,7 @@ const int kMovieDisplayCellImageView = 200;
         unratedLabel.shadowColor = [UIColor colorWithRed:0.0f green:0.0f blue:0.0f alpha:0.44f];
         unratedLabel.shadowOffset = CGSizeMake(0.0f, 1.0f);
         unratedLabel.font = [UIFont fontWithName:@"HelveticaNeue-Bold" size:12.0f];
-        unratedLabel.text = NSLocalizedString(@"HEADER_TITLE_ZERORATING", nil);
+        unratedLabel.text = sectionTitle;
         [backgroundView addSubview:unratedLabel];
     }
     
@@ -254,10 +283,14 @@ const int kMovieDisplayCellImageView = 200;
 #pragma mark -
 #pragma mark UITableViewDelegate
 
-//- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-//{
-//
-//}
+- (void)tableView:(UITableView *)aTableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if([self isOnlineSearchSectionInTableView:aTableView currentSection:indexPath.section]) {
+        DebugLog("TODO:Add Movie");
+    } else {
+        [self performSegueWithIdentifier:@"MovieDetailSegue" sender:self];
+    }
+}
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -279,6 +312,13 @@ const int kMovieDisplayCellImageView = 200;
         if(error) {
             ErrorLog("%@", [error localizedDescription]);
         }
+    }
+}
+
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (cell.tag == kMovieTableLoadingCellTag) {
+        currentPage++;
+        [self startSearch];
     }
 }
 
@@ -405,6 +445,15 @@ const int kMovieDisplayCellImageView = 200;
     return aTableView == self.tableView ? self.fetchedResultsController : self.searchFetchedResultsController;
 }
 
+- (BOOL)isOnlineSearchSectionInTableView:(UITableView *)aTableView currentSection:(NSInteger)section
+{
+    NSFetchedResultsController *currentController = [self fetchedResultsControllerForTableView:aTableView];
+    if([currentController isEqual:self.searchFetchedResultsController] && section == [[currentController sections] count]) {
+        return true;
+    }
+    return false;
+}
+
 - (NSFetchedResultsController *)activeFetchedResultsController
 {
     if(_searchController.active) {
@@ -473,6 +522,56 @@ const int kMovieDisplayCellImageView = 200;
     UIView *emptyTable = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, 1.0f)];
     [emptyTable setBackgroundColor:[UIColor clearColor]];
     _searchController.searchResultsTableView.tableFooterView = emptyTable;
+}
+
+
+
+////////////////////////////////////////////////////////////////////////////
+#pragma mark -
+#pragma mark Searching | UISearchBarDelegate
+
+- (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
+{
+    totalPages = 1;
+    currentPage = 0;
+    [_searchOperations cancelAllOperations];
+    [self.searchResults removeAllObjects];
+    [self startSearchWithQuery:searchText];
+}
+
+- (void)startSearch
+{
+    NSString *searchText = self.searchBar.text;
+    [self startSearchWithQuery:searchText];
+}
+
+- (void)startSearchWithQuery:(NSString*)query
+{
+    isLoading = YES;
+    AFJSONRequestOperation *operation = [[OnlineMovieDatabase sharedMovieDatabase] getMoviesWithSearchString:query atPage:currentPage completion:^(NSDictionary *results) {
+        
+        isLoading = NO;
+        isError = NO;
+        
+        NSArray *movies = [results objectForKey:@"results"];
+        totalPages = [[results objectForKey:@"total_pages"] intValue];
+        
+        for (NSDictionary *movie in movies) {
+            SearchResult *aResult = [SearchResult instanceFromDictionary:movie];
+            
+            BOOL isAdded = [Movie movieWithServerIDExists:[aResult.searchResultId integerValue] usingManagedObjectContext:[[MoviesDataModel sharedDataModel] mainContext]];
+            if(!isAdded) {
+                [self.searchResults addObject:aResult];
+            }
+        }
+        [_searchController.searchResultsTableView reloadData];
+    
+    } failure:^(NSError *error) {
+        DebugLog("%@", [error localizedDescription]);
+        isLoading = NO;
+        isError = YES;
+    }];
+    [_searchOperations addOperation:operation];
 }
 
 

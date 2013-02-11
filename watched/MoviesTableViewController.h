@@ -15,7 +15,13 @@ typedef enum {
     MovieSortTypeUnrated
 } MovieSortType;
 
-@interface MoviesTableViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, UISearchDisplayDelegate>
+@interface MoviesTableViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, UISearchDisplayDelegate, UISearchBarDelegate>
+{
+    NSInteger currentPage;
+    NSInteger totalPages;
+    BOOL isLoading;
+    BOOL isError;
+}
 
 @property (strong, nonatomic) NSFetchedResultsController *fetchedResultsController;
 @property (strong, nonatomic) NSFetchedResultsController *searchFetchedResultsController;
@@ -26,5 +32,7 @@ typedef enum {
 @property (strong, nonatomic) IBOutlet UISegmentedControl *sortControl;
 @property (strong, nonatomic) UISearchBar *searchBar;
 @property (strong, nonatomic) UISearchDisplayController *searchController;
+@property (strong, nonatomic) NSOperationQueue *searchOperations;
+@property (strong, nonatomic) NSMutableArray *searchResults;
 
 @end

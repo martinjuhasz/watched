@@ -255,7 +255,7 @@
         
     }
     
-    [UIView animateWithDuration:0.4f delay:0.0f options:UIViewAnimationCurveEaseOut animations:^{
+    [UIView animateWithDuration:0.4f delay:0.0f options:UIViewAnimationOptionCurveEaseOut animations:^{
         _contentContainerView.frame = endFrame;
         CGRect popupFrame = self.frame;
         popupFrame.size.height = popupHeight;
@@ -402,7 +402,7 @@
 
     
     CGFloat animationTime = (animated) ? 0.4f : 0.0f;
-    [UIView animateWithDuration:animationTime delay:0.0f options:UIViewAnimationCurveEaseOut animations:^{
+    [UIView animateWithDuration:animationTime delay:0.0f options:UIViewAnimationOptionCurveEaseOut animations:^{
         _contentContainerView.frame = endFrame;
         CGRect popupFrame = self.frame;
         popupFrame.size.height = popupHeight;

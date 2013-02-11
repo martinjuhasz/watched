@@ -211,7 +211,7 @@ static void * const keypath = (void*)&keypath;
     // Set starting properties
     popupView.frame = popupStartRect;
     popupView.alpha = 1.0f;
-    [UIView animateWithDuration:kPopupModalAnimationDuration delay:0.0f options:UIViewAnimationCurveEaseOut animations:^{
+    [UIView animateWithDuration:kPopupModalAnimationDuration delay:0.0f options:UIViewAnimationOptionCurveEaseOut animations:^{
         backgroundView.alpha = 1.0f;
         popupView.frame = popupEndRect;
     } completion:^(BOOL finished) {
@@ -243,7 +243,7 @@ static void * const keypath = (void*)&keypath;
                                   popupSize.height);
     }
     
-    [UIView animateWithDuration:kPopupModalAnimationDuration delay:0.0f options:UIViewAnimationCurveEaseIn animations:^{
+    [UIView animateWithDuration:kPopupModalAnimationDuration delay:0.0f options:UIViewAnimationOptionCurveEaseIn animations:^{
         popupView.frame = popupEndRect;
         backgroundView.alpha = 0.0f;
     } completion:^(BOOL finished) {
