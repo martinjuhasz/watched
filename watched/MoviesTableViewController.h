@@ -15,6 +15,13 @@ typedef enum {
     MovieSortTypeUnrated
 } MovieSortType;
 
+typedef enum {
+    MovieCellTypeDefault = 1,
+    MovieCellTypeLoading,
+    MovieCellTypeOnline,
+    MovieCellTypeError
+} MovieCellType;
+
 @interface MoviesTableViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, UISearchDisplayDelegate, UISearchBarDelegate>
 {
     NSInteger currentPage;

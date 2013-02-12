@@ -18,10 +18,21 @@
 #import "OnlineMovieDatabase.h"
 #import "SearchResult.h"
 #import "MoviesTableViewCell.h"
+#import "MoviesTableViewLoadingCell.h"
+#import "OnlineDatabaseBridge.h"
+#import "MoviesTableViewOnlineCell.h"
 
 #define kSectionHeaderHeight 24.0f
-const int kMovieTableLoadingCellTag = 2000;
-const int kMovieTableDefaultCellTag = 2001;
+
+#define kMovieTableDefaultCell @"kMovieTableDefaultCell"
+#define kMovieTableLoadingCell @"kMovieTableLoadingCell"
+#define kMovieTableErrorCell @"kMovieTableOnlineCell"
+#define kMovieTableOnlineCell @"kMovieTableErrorCell"
+
+const int kMovieTableDefaultCellTag = 2000;
+const int kMovieTableLoadingCellTag = 2001;
+const int kMovieTableErrorCellTag = 2002;
+const int kMovieTableOnlineCellTag = 2003;
 
 @interface MoviesTableViewController ()
 - (void)loadMoviesWithSortType:(MovieSortType)sortType;
@@ -172,26 +183,57 @@ const int kMovieTableDefaultCellTag = 2001;
     return star;
 }
 
+- (UITableViewCell*)createCellWithType:(MovieCellType)cellType onTableView:(UITableView*)aTableView
+{
+    static NSString *cellIdentifier;
+    UITableViewCell *cell = nil;
+    int tag;
+    
+    if(cellType == MovieCellTypeDefault) {
+        cellIdentifier = kMovieTableDefaultCell;
+        tag = kMovieTableDefaultCellTag;
+    } else if (cellType == MovieCellTypeLoading) {
+        cellIdentifier = kMovieTableLoadingCell;
+        tag = kMovieTableLoadingCellTag;
+    } else if(cellType == MovieCellTypeOnline) {
+        cellIdentifier = kMovieTableOnlineCell;
+        tag = kMovieTableOnlineCellTag;
+    } else {
+        cellIdentifier = kMovieTableErrorCell;
+        tag = kMovieTableErrorCellTag;
+    }
+    
+    cell = [aTableView dequeueReusableCellWithIdentifier:cellIdentifier];
+    if (cell == nil) {
+        if(cellType == MovieCellTypeDefault) {
+            cell = [[MoviesTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
+        } else if (cellType == MovieCellTypeLoading) {
+            cell = [[MoviesTableViewLoadingCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
+        } else if (cellType == MovieCellTypeOnline) {
+            cell = [[MoviesTableViewOnlineCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
+        }  else {
+            cell = [[MoviesTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
+        }
+    }
+    cell.tag = tag;
+    return cell;
+}
+
 - (UITableViewCell *)tableView:(UITableView *)aTableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *CellIdentifier = @"MoviesTableCell";
-    UITableViewCell *cell;
+    MovieCellType cellType = [self cellTypeForTableView:aTableView indexPath:indexPath];
+    UITableViewCell *cell = [self createCellWithType:cellType onTableView:aTableView];
     
-    cell = [aTableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    if (cell == nil) {
-        cell = [[MoviesTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-    }
     
-    if([self isOnlineSearchSectionInTableView:aTableView currentSection:indexPath.section]) {
-        if(indexPath.row >= self.searchResults.count) {
-            [self configureLoadingCell:cell atIndexPath:indexPath];
-        } else {
-            [self configureOnlineSearchResultCell:cell atIndexPath:indexPath];
-        }
-    } else {
+    if(cellType == MovieCellTypeDefault) {
         [self fetchedResultsController:[self fetchedResultsControllerForTableView:aTableView] configureCell:cell atIndexPath:indexPath];
+    } else if(cellType == MovieCellTypeLoading) {
+        [self configureLoadingCell:cell atIndexPath:indexPath];
+    } else if(cellType == MovieCellTypeOnline) {
+        [self configureOnlineSearchResultCell:cell atIndexPath:indexPath];
+    } else {
+        // ERROR
     }
-    
     
     return cell;
 }
@@ -199,7 +241,6 @@ const int kMovieTableDefaultCellTag = 2001;
 - (void)fetchedResultsController:(NSFetchedResultsController *)aFetchedResultsController configureCell:(UITableViewCell *)aCell atIndexPath:(NSIndexPath *)indexPath
 {
     MoviesTableViewCell *cell = (MoviesTableViewCell*)aCell;
-    cell.tag = kMovieTableDefaultCellTag;
     
     Movie *movie = [aFetchedResultsController objectAtIndexPath:indexPath];
     cell.titleLabel.text = movie.title;
@@ -212,15 +253,14 @@ const int kMovieTableDefaultCellTag = 2001;
 
 - (void)configureOnlineSearchResultCell:(UITableViewCell *)aCell atIndexPath:(NSIndexPath *)indexPath
 {
-    MoviesTableViewCell *cell = (MoviesTableViewCell*)aCell;
-    cell.tag = kMovieTableDefaultCellTag;
+    MoviesTableViewOnlineCell *cell = (MoviesTableViewOnlineCell*)aCell;
     
-    SearchResult *movie = [self.searchResults objectAtIndex:indexPath.row];
+    SearchResult *movie = [self.searchResults objectAtIndex:(NSUInteger)indexPath.row];
     cell.titleLabel.text = movie.title;
-    [cell.titleLabel sizeToFitWithWith:200.0f andMaximumNumberOfLines:2];
+    //[cell.titleLabel sizeToFitWithWith:200.0f andMaximumNumberOfLines:2];
     
     // get year
-    [cell setYear:movie.releaseDate];
+    //[cell setYear:movie.releaseDate];
     UIImage *placeholder = [UIImage imageNamed:@"g_placeholder-cover.png"];
     NSURL *imageURL = [[OnlineMovieDatabase sharedMovieDatabase] getImageURLForImagePath:movie.posterPath imageType:ImageTypePoster nearWidth:70.0f*2];
     [cell.coverImageView setImageWithURL:imageURL placeholderImage:placeholder];
@@ -228,12 +268,8 @@ const int kMovieTableDefaultCellTag = 2001;
 
 - (void)configureLoadingCell:(UITableViewCell *)aCell atIndexPath:(NSIndexPath *)indexPath
 {
-    MoviesTableViewCell *cell = (MoviesTableViewCell*)aCell;
-    cell.tag = kMovieTableLoadingCellTag;
-    
-    cell.titleLabel.text = @"Loading";
-    [cell setYear:nil];
-    [cell setCoverImage:nil];
+    MoviesTableViewLoadingCell *cell = (MoviesTableViewLoadingCell*)aCell;
+    [cell.loadingView startAnimating];
 }
 
 - (CGFloat)tableView:(UITableView *)aTableView heightForHeaderInSection:(NSInteger)section
@@ -286,18 +322,22 @@ const int kMovieTableDefaultCellTag = 2001;
 - (void)tableView:(UITableView *)aTableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if([self isOnlineSearchSectionInTableView:aTableView currentSection:indexPath.section]) {
-        DebugLog("TODO:Add Movie");
+        [self saveMovieToDatabase:[[self searchResults] objectAtIndex:(NSUInteger)indexPath.row]];
     } else {
         [self performSegueWithIdentifier:@"MovieDetailSegue" sender:self];
     }
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+- (CGFloat)tableView:(UITableView *)aTableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    MovieCellType cellType = [self cellTypeForTableView:aTableView indexPath:indexPath];
+    if(cellType == MovieCellTypeLoading || cellType == MovieCellTypeOnline) {
+        return 44.0f;
+    }
     return 78.0f;
 }
 
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
+- (void)tableView:(UITableView *)aTableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         
@@ -312,10 +352,11 @@ const int kMovieTableDefaultCellTag = 2001;
         if(error) {
             ErrorLog("%@", [error localizedDescription]);
         }
+        self.searchFetchedResultsController = nil;
     }
 }
 
-- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
+- (void)tableView:(UITableView *)aTableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
     if (cell.tag == kMovieTableLoadingCellTag) {
         currentPage++;
         [self startSearch];
@@ -454,6 +495,21 @@ const int kMovieTableDefaultCellTag = 2001;
     return false;
 }
 
+- (MovieCellType)cellTypeForTableView:(UITableView*)aTableView indexPath:(NSIndexPath*)indexPath
+{
+    MovieCellType cellType;
+    if([self isOnlineSearchSectionInTableView:aTableView currentSection:indexPath.section]) {
+        if(indexPath.row >= self.searchResults.count) {
+            cellType = MovieCellTypeLoading;
+        } else {
+            cellType = MovieCellTypeOnline;
+        }
+    } else {
+        cellType = MovieCellTypeDefault;
+    }
+    return cellType;
+}
+
 - (NSFetchedResultsController *)activeFetchedResultsController
 {
     if(_searchController.active) {
@@ -473,11 +529,13 @@ const int kMovieTableDefaultCellTag = 2001;
 - (void)contextDidSave:(NSNotification *)notification
 {
     dispatch_async(dispatch_get_main_queue(), ^{
+        DebugLog("");
         NSManagedObjectContext *mainContext = [[MoviesDataModel sharedDataModel] mainContext];
         [mainContext mergeChangesFromContextDidSaveNotification:notification];
         
         [self loadMoviesWithSortType:self.currentSortType];
         [self.tableView reloadData];
+        [self.searchController.searchResultsTableView reloadData];
     });
 }
 
@@ -536,7 +594,6 @@ const int kMovieTableDefaultCellTag = 2001;
     currentPage = 0;
     [_searchOperations cancelAllOperations];
     [self.searchResults removeAllObjects];
-    [self startSearchWithQuery:searchText];
 }
 
 - (void)startSearch
@@ -572,6 +629,26 @@ const int kMovieTableDefaultCellTag = 2001;
         isError = YES;
     }];
     [_searchOperations addOperation:operation];
+}
+
+
+////////////////////////////////////////////////////////////////////////////
+#pragma mark -
+#pragma mark Adding a Movie
+
+- (void)saveMovieToDatabase:(SearchResult*)aSearchResult
+{
+    OnlineDatabaseBridge *bridge = [[OnlineDatabaseBridge alloc] init];
+    AFJSONRequestOperation *operation = [bridge saveSearchResultAsMovie:aSearchResult completion:^(Movie *movie) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.searchResults removeObject:aSearchResult];
+            self.searchFetchedResultsController = nil;
+            [[self activeTableView] reloadData];
+        });
+    } failure:^(NSError *error) {
+        DebugLog("%@", [error localizedDescription]);
+    }];
+    [operation start];
 }
 
 

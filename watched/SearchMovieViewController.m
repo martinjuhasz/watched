@@ -458,12 +458,6 @@ const int kMovieFlagCellTag = 34773;
     } failure:^(NSError *error) {
         isLoading = NO;
         isError = YES;
-//        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-//        hud.dimBackground = YES;
-//        hud.mode = MBProgressHUDModeText;
-//        hud.labelText = [error localizedDescription];
-//        hud.removeFromSuperViewOnHide = YES;
-//        [hud hide:YES afterDelay:1.0f];
     }];
     [operation start];
 }
