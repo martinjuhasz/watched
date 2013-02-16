@@ -238,6 +238,11 @@ const int kMovieTableOnlineCellTag = 2003;
     return cell;
 }
 
+- (BOOL)tableView:(UITableView *)aTableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return ![self isOnlineSearchSectionInTableView:aTableView currentSection:indexPath.section];
+}
+
 - (void)fetchedResultsController:(NSFetchedResultsController *)aFetchedResultsController configureCell:(UITableViewCell *)aCell atIndexPath:(NSIndexPath *)indexPath
 {
     MoviesTableViewCell *cell = (MoviesTableViewCell*)aCell;
@@ -321,7 +326,6 @@ const int kMovieTableOnlineCellTag = 2003;
 
 - (void)tableView:(UITableView *)aTableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    DebugLog("%i", [self.searchController.searchResultsTableView numberOfRowsInSection:0]);
     if([self isOnlineSearchSectionInTableView:aTableView currentSection:indexPath.section]) {
         [self saveMovieToDatabase:[[self searchResults] objectAtIndex:(NSUInteger)indexPath.row]];
     } else {
@@ -342,9 +346,6 @@ const int kMovieTableOnlineCellTag = 2003;
 
 - (void)tableView:(UITableView *)aTableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if(![aTableView isEqual:self.tableView]) return;
-    DebugLog("%i", editingStyle);
-    
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         
         Movie *aMovie = nil;
@@ -359,39 +360,24 @@ const int kMovieTableOnlineCellTag = 2003;
             ErrorLog("%@", [error localizedDescription]);
         }        
     }
-    //[aTableView endUpdates];
 }
 
-- (void)controllerWillChangeContent:(NSFetchedResultsController *)controller {
-    if(![controller isEqual:self.fetchedResultsController]) return;
-    DebugLog("");
-    
+- (void)controllerWillChangeContent:(NSFetchedResultsController *)controller
+{
     [[self tableViewForResultsController:controller] beginUpdates];
 }
-- (void)controllerDidChangeContent:(NSFetchedResultsController *)controller {
-    if(![controller isEqual:self.fetchedResultsController]) return;
-    DebugLog("");
-    
+
+- (void)controllerDidChangeContent:(NSFetchedResultsController *)controller
+{
     [[self tableViewForResultsController:controller] endUpdates];
 }
 
 - (void)controller:(NSFetchedResultsController *)controller didChangeObject:(id)anObject atIndexPath:(NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type newIndexPath:(NSIndexPath *)newIndexPath
 {
-    if(![controller isEqual:self.fetchedResultsController]) return;
-    
-    DebugLog("%i", type);
-    
     UITableView *aTableView = [self tableViewForResultsController:controller];
     
     if (type == NSFetchedResultsChangeDelete) {
-        //id<NSFetchedResultsSectionInfo> sectionInfo = [[controller sections] objectAtIndex:indexPath.section];
-        //DebugLog("%@",indexPath);
-        //DebugLog("%i", [sectionInfo numberOfObjects]);
-        //[aTableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
         [aTableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
-        
-        //self.searchFetchedResultsController = nil;
-        //self.fetchedResultsController = nil;
     } else if(type == NSFetchedResultsChangeInsert) {
         [aTableView insertRowsAtIndexPaths:@[newIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
     } else if(type == NSFetchedResultsChangeMove) {
@@ -401,26 +387,12 @@ const int kMovieTableOnlineCellTag = 2003;
         //[aTableView moveRowAtIndexPath:indexPath toIndexPath:newIndexPath];
     }
     else {
-        [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:[indexPath section]] withRowAnimation:UITableViewRowAnimationFade];
-        
-        
-        
+        [aTableView reloadSections:[NSIndexSet indexSetWithIndex:[indexPath section]] withRowAnimation:UITableViewRowAnimationFade];
     }
-//    if (type == NSFetchedResultsChangeDelete) {
-//        if([controller isEqual:_searchFetchedResultsController]) {
-//            [self.searchController.searchResultsTableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
-//        } else if([controller isEqual:_fetchedResultsController]){
-//            //[self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
-//        }
-//    }
 }
-//
+
 - (void)controller:(NSFetchedResultsController *)controller didChangeSection:(id <NSFetchedResultsSectionInfo>)sectionInfo atIndex:(NSUInteger)sectionIndex forChangeType:(NSFetchedResultsChangeType)type
 {
-    if(![controller isEqual:self.fetchedResultsController]) return;
-    
-    DebugLog("%i", type);
-
     if(type == NSFetchedResultsChangeDelete) {
         [[self tableViewForResultsController:controller] deleteSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:UITableViewRowAnimationAutomatic];
     } else if(type == NSFetchedResultsChangeInsert) {
@@ -435,8 +407,6 @@ const int kMovieTableOnlineCellTag = 2003;
         [self startSearch];
     }
 }
-
-
 
 
 ////////////////////////////////////////////////////////////////////////////
