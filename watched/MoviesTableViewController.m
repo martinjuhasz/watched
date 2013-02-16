@@ -321,6 +321,7 @@ const int kMovieTableOnlineCellTag = 2003;
 
 - (void)tableView:(UITableView *)aTableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    DebugLog("%i", [self.searchController.searchResultsTableView numberOfRowsInSection:0]);
     if([self isOnlineSearchSectionInTableView:aTableView currentSection:indexPath.section]) {
         [self saveMovieToDatabase:[[self searchResults] objectAtIndex:(NSUInteger)indexPath.row]];
     } else {
@@ -337,23 +338,95 @@ const int kMovieTableOnlineCellTag = 2003;
     return 78.0f;
 }
 
-- (void)tableView:(UITableView *)aTableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
+
+
+- (void)tableView:(UITableView *)aTableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if(![aTableView isEqual:self.tableView]) return;
+    DebugLog("%i", editingStyle);
     
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         
-        // Delete the row from the data source
-		Movie *aMovie = nil;
+        Movie *aMovie = nil;
         NSManagedObjectContext *mainContext = [[MoviesDataModel sharedDataModel] mainContext];
-		aMovie = [self.fetchedResultsController objectAtIndexPath:indexPath];
+        aMovie = [[self fetchedResultsControllerForTableView:aTableView] objectAtIndexPath:indexPath];
+
         NSError *error;
-        
-		[mainContext deleteObject:aMovie];
-		[mainContext save:&error];
+        [mainContext deleteObject:aMovie];
+        [mainContext save:&error];
+    
         if(error) {
             ErrorLog("%@", [error localizedDescription]);
-        }
-        self.searchFetchedResultsController = nil;
+        }        
     }
+    //[aTableView endUpdates];
+}
+
+- (void)controllerWillChangeContent:(NSFetchedResultsController *)controller {
+    if(![controller isEqual:self.fetchedResultsController]) return;
+    DebugLog("");
+    
+    [[self tableViewForResultsController:controller] beginUpdates];
+}
+- (void)controllerDidChangeContent:(NSFetchedResultsController *)controller {
+    if(![controller isEqual:self.fetchedResultsController]) return;
+    DebugLog("");
+    
+    [[self tableViewForResultsController:controller] endUpdates];
+}
+
+- (void)controller:(NSFetchedResultsController *)controller didChangeObject:(id)anObject atIndexPath:(NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type newIndexPath:(NSIndexPath *)newIndexPath
+{
+    if(![controller isEqual:self.fetchedResultsController]) return;
+    
+    DebugLog("%i", type);
+    
+    UITableView *aTableView = [self tableViewForResultsController:controller];
+    
+    if (type == NSFetchedResultsChangeDelete) {
+        //id<NSFetchedResultsSectionInfo> sectionInfo = [[controller sections] objectAtIndex:indexPath.section];
+        //DebugLog("%@",indexPath);
+        //DebugLog("%i", [sectionInfo numberOfObjects]);
+        //[aTableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+        [aTableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+        
+        //self.searchFetchedResultsController = nil;
+        //self.fetchedResultsController = nil;
+    } else if(type == NSFetchedResultsChangeInsert) {
+        [aTableView insertRowsAtIndexPaths:@[newIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+    } else if(type == NSFetchedResultsChangeMove) {
+        if (newIndexPath == nil) return;
+        [aTableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+        [aTableView insertRowsAtIndexPaths: [NSArray arrayWithObject:newIndexPath] withRowAnimation: UITableViewRowAnimationAutomatic];
+        //[aTableView moveRowAtIndexPath:indexPath toIndexPath:newIndexPath];
+    }
+    else {
+        [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:[indexPath section]] withRowAnimation:UITableViewRowAnimationFade];
+        
+        
+        
+    }
+//    if (type == NSFetchedResultsChangeDelete) {
+//        if([controller isEqual:_searchFetchedResultsController]) {
+//            [self.searchController.searchResultsTableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+//        } else if([controller isEqual:_fetchedResultsController]){
+//            //[self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+//        }
+//    }
+}
+//
+- (void)controller:(NSFetchedResultsController *)controller didChangeSection:(id <NSFetchedResultsSectionInfo>)sectionInfo atIndex:(NSUInteger)sectionIndex forChangeType:(NSFetchedResultsChangeType)type
+{
+    if(![controller isEqual:self.fetchedResultsController]) return;
+    
+    DebugLog("%i", type);
+
+    if(type == NSFetchedResultsChangeDelete) {
+        [[self tableViewForResultsController:controller] deleteSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:UITableViewRowAnimationAutomatic];
+    } else if(type == NSFetchedResultsChangeInsert) {
+        [[self tableViewForResultsController:controller] insertSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:UITableViewRowAnimationAutomatic];
+    }
+    
 }
 
 - (void)tableView:(UITableView *)aTableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -402,7 +475,7 @@ const int kMovieTableOnlineCellTag = 2003;
         sortPredicate = [NSPredicate predicateWithFormat:@"watchedOn == nil"];
     } else if(self.currentSortType == MovieSortTypeUnrated) {
         sortPredicate = [NSPredicate predicateWithFormat:@"rating == 0"];
-    } else if (self.currentSortType == MovieSortTypeAll) {
+    } else if (self.currentSortType == MovieSortTypeAll && searchString == nil) {
         sectionKeyPath = @"rating";
     }
     
@@ -442,7 +515,8 @@ const int kMovieTableOnlineCellTag = 2003;
                                                                    managedObjectContext:[[MoviesDataModel sharedDataModel] mainContext]
                                                                      sectionNameKeyPath:sectionKeyPath
                                                                               cacheName:nil];
-    
+
+    aFetchedResultsController.delegate = self;
     NSError *error = nil;
     if (![aFetchedResultsController performFetch:&error]) {
         ErrorLog(@"Unresolved error %@, %@", error, [error userInfo]);
@@ -458,6 +532,7 @@ const int kMovieTableOnlineCellTag = 2003;
     {
         return _fetchedResultsController;
     }
+    DebugLog("");
     _fetchedResultsController = [self newFetchedResultsControllerWithSearch:nil];
     return _fetchedResultsController;
 }
@@ -484,6 +559,11 @@ const int kMovieTableOnlineCellTag = 2003;
 - (NSFetchedResultsController *)fetchedResultsControllerForTableView:(UITableView *)aTableView
 {
     return aTableView == self.tableView ? self.fetchedResultsController : self.searchFetchedResultsController;
+}
+
+- (UITableView *)tableViewForResultsController:(NSFetchedResultsController *)aController
+{
+    return aController == self.fetchedResultsController ? self.tableView : self.searchController.searchResultsTableView;
 }
 
 - (BOOL)isOnlineSearchSectionInTableView:(UITableView *)aTableView currentSection:(NSInteger)section
@@ -529,13 +609,12 @@ const int kMovieTableOnlineCellTag = 2003;
 - (void)contextDidSave:(NSNotification *)notification
 {
     dispatch_async(dispatch_get_main_queue(), ^{
-        DebugLog("");
         NSManagedObjectContext *mainContext = [[MoviesDataModel sharedDataModel] mainContext];
         [mainContext mergeChangesFromContextDidSaveNotification:notification];
-        
-        [self loadMoviesWithSortType:self.currentSortType];
-        [self.tableView reloadData];
-        [self.searchController.searchResultsTableView reloadData];
+        DebugLog("");
+        //[self loadMoviesWithSortType:self.currentSortType];
+        //[self.tableView reloadData];
+        //[self.searchController.searchResultsTableView reloadData];
     });
 }
 

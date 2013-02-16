@@ -31,8 +31,6 @@
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="416"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <inset key="contentInset" minX="0.0" minY="0.0" maxX="0.0" maxY="70"/>
-                                <inset key="scrollIndicatorInsets" minX="0.0" minY="0.0" maxX="0.0" maxY="70"/>
                                 <prototypes>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="blue" indentationWidth="10" reuseIdentifier="MoviesTableCellSoft" rowHeight="78" id="ees-f9-d6I">
                                         <rect key="frame" x="0.0" y="22" width="320" height="78"/>
@@ -1090,8 +1088,6 @@
             <source key="sourceIdentifier" type="project" relativePath="./Classes/AddMovieViewController.h"/>
             <relationships>
                 <relationship kind="action" name="cancelButtonClicked:"/>
-                <relationship kind="action" name="retryButtonClicked:"/>
-                <relationship kind="action" name="saveButtonClicked:"/>
                 <relationship kind="outlet" name="backgroundImageView" candidateClass="UIImageView"/>
                 <relationship kind="outlet" name="displayView" candidateClass="UIView"/>
                 <relationship kind="outlet" name="errorLabel" candidateClass="UILabel"/>
@@ -1221,6 +1217,6 @@
         <simulatedScreenMetrics key="destination"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="w8V-Ip-ajx"/>
+        <segue reference="1Bi-Fz-U7p"/>
     </inferredMetricsTieBreakers>
 </document>

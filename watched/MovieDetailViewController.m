@@ -279,8 +279,8 @@
 - (void)newRating:(DLStarRatingControl *)control :(float)newRating
 {
     // toggle to seen
-    if([self.movie.rating intValue] == 0 && newRating > 0 && self.detailView.watchedControl.selectedSegmentIndex != 0) {
-        [self setWatchedStateToSeen:YES];
+    bool toggleWatched = ([self.movie.rating intValue] == 0 && newRating > 0 && self.detailView.watchedControl.selectedSegmentIndex != 0);
+    if(toggleWatched) {
         self.detailView.watchedControl.selectedSegmentIndex = 0;
     }
     
@@ -295,6 +295,7 @@
         if(!toSaveMovie) return;
         
         toSaveMovie.rating = [NSNumber numberWithFloat:newRating];
+        if(toggleWatched) toSaveMovie.watchedOn = [NSDate date];
         
         NSError *error;
         [context save:&error];

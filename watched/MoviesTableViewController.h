@@ -22,7 +22,7 @@ typedef enum {
     MovieCellTypeError
 } MovieCellType;
 
-@interface MoviesTableViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, UISearchDisplayDelegate, UISearchBarDelegate>
+@interface MoviesTableViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, UISearchDisplayDelegate, UISearchBarDelegate, NSFetchedResultsControllerDelegate>
 {
     NSInteger currentPage;
     NSInteger totalPages;
