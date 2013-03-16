@@ -36,7 +36,8 @@
     if (![aDictionary isKindOfClass:[NSDictionary class]]) {
         return;
     }
-
+    
+    self.added = NO;
     self.adult = [(NSNumber *)[aDictionary objectForKey:@"adult"] boolValue];
     self.backdropPath = [aDictionary objectForKey:@"backdrop_path"];
     self.searchResultId = [aDictionary objectForKey:@"id"];

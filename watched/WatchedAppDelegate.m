@@ -23,11 +23,15 @@
 #import <Social/Social.h>
 #import "MJWatchedNavigationController.h"
 #import "WatchedStyledViewController.h"
+#import "UISS.h"
+#import <Crashlytics/Crashlytics.h>
 
 @interface WatchedAppDelegate ()<AddMovieViewDelegate, MoviePopupViewControllerDelegate> {
 }
-@end
 
+@property (strong, nonatomic) UISS *uiss;
+
+@end
 
 @implementation WatchedAppDelegate
 
@@ -35,10 +39,16 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    [self setStyles];
+    //[UISS configureWithDefaultJSONFile];
+    self.uiss = [UISS configureWithDefaultJSONFile];
+    //self.uiss = [UISS configureWithURL:[NSURL URLWithString:@"https://dl.dropbox.com/s/m3rm0e40oi97nvv/uiss.json"]];
+    self.uiss.statusWindowEnabled = YES;
+    //[self setStyles];
+    
     [MJInternetConnection sharedInternetConnection];
     [UIResponder cacheKeyboard:YES];
     
+    [Crashlytics startWithAPIKey:@"145e624fa03124a3e4abe820c9bf1a8a9fe96274"];
     [self startTestFlight];
     
     [[OnlineMovieDatabase sharedMovieDatabase] setApiKey:@"d518563ee67cb6d475d2440d3e663e93"];
@@ -58,135 +68,171 @@
 
 - (void)startTestFlight
 {
+    [TestFlight setOptions:[NSDictionary dictionaryWithObject:[NSNumber numberWithBool:NO] forKey:@"logToConsole"]];
+    [TestFlight setOptions:[NSDictionary dictionaryWithObject:[NSNumber numberWithBool:NO] forKey:@"logToSTDERR"]];
     NSString *token = @"b4bbe6c9-dd95-4a5b-98b9-1c24baf90bae";
 #ifdef DEBUG_MODE
     [TestFlight setDeviceIdentifier:[[UIDevice currentDevice] uniqueIdentifier]];
-    [TestFlight takeOff:token];
 #else
-    NSUserDefaults *standardUserDefaults = [NSUserDefaults standardUserDefaults];
-    BOOL isDisabled = [standardUserDefaults boolForKey:OPTOUT_SETTINGS];
-    if(!isDisabled) {
-        [TestFlight takeOff:token];
-    }
+//    NSUserDefaults *standardUserDefaults = [NSUserDefaults standardUserDefaults];
+//    BOOL isDisabled = [standardUserDefaults boolForKey:OPTOUT_SETTINGS];
+//    if(!isDisabled) {
+//        [TestFlight takeOff:token];
+//    }
 #endif
+    [TestFlight takeOff:token];
 }
 
 - (void)setStyles
 {
-    
     // UINavigationBar
-    UIImage *navigationBarBgImage = [[UIImage imageNamed:@"g_bg_navbar.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
-    UIImage *navigationBarBgImageLS = [[UIImage imageNamed:@"g_bg_navbar_landscape.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
+    //UIImage *navigationBarBgImage = [[UIImage imageNamed:@"g_bg_navbar.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
+    //UIImage *navigationBarBgImageLS = [[UIImage imageNamed:@"g_bg_navbar_landscape.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
     
-    [[UINavigationBar appearanceWhenContainedIn:[MJWatchedNavigationController class] , nil] setBackgroundImage:navigationBarBgImage forBarMetrics:UIBarMetricsDefault];
-    [[UINavigationBar appearanceWhenContainedIn:[WatchedStyledViewController class] , nil] setBackgroundImage:navigationBarBgImage forBarMetrics:UIBarMetricsDefault];
+    //[[UINavigationBar appearanceWhenContainedIn:[MJWatchedNavigationController class] , nil] setBackgroundImage:navigationBarBgImage forBarMetrics:UIBarMetricsDefault];
+    //[[UINavigationBar appearanceWhenContainedIn:[WatchedStyledViewController class] , nil] setBackgroundImage:navigationBarBgImage forBarMetrics:UIBarMetricsDefault];
 
     // Bar Button Items
-    id navBarButtonAppearance1 = [UIBarButtonItem appearanceWhenContainedIn:[MJWatchedNavigationController class], nil];
-    id navBarButtonAppearance2 = [UIBarButtonItem appearanceWhenContainedIn:[WatchedStyledViewController class], nil];
-    [self setStylesForBarButtonItem:navBarButtonAppearance1];
-    [self setStylesForBarButtonItem:navBarButtonAppearance2];
+//    id navBarButtonAppearance1 = [UIBarButtonItem appearanceWhenContainedIn:[MJWatchedNavigationController class], nil];
+//    id navBarButtonAppearance2 = [UIBarButtonItem appearanceWhenContainedIn:[WatchedStyledViewController class], nil];
+//    id navBarButtonAppearance3 = [UIBarButtonItem appearanceWhenContainedIn:[UISearchBar class], [MJWatchedNavigationController class], nil];
+//    [self setStylesForBarButtonItem:navBarButtonAppearance1];
+//    [self setStylesForBarButtonItem:navBarButtonAppearance2];
+//    [self setStylesForBarButtonItem:navBarButtonAppearance3];
+
+    // SearchBarButton
+//    [self setStylesForBarButtonItemInSearchBar:navBarButtonAppearance3];
+//    [navBarButtonAppearance3 setTitlePositionAdjustment:UIOffsetMake(0.0f, 1.0f) forBarMetrics:UIBarMetricsDefault];
+
+    // NavigationBar
+    //[[UINavigationBar appearance] setBackgroundImage:navigationBarBgImageLS forBarMetrics:UIBarMetricsLandscapePhone];
     
-    [[UINavigationBar appearance] setBackgroundImage:navigationBarBgImageLS forBarMetrics:UIBarMetricsLandscapePhone];
+    
+    // UINavigationBar Popoverx
+    //UIImage *navigationPopoverBarBgImage = [[UIImage imageNamed:@"pv_bg_navbar.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(16.0f, 12.0f, 7.0f, 12.0f)];
+    //[[UINavigationBar appearanceWhenContainedIn:[AddMovieViewController class], nil] setBackgroundImage:navigationPopoverBarBgImage forBarMetrics:UIBarMetricsDefault];
+    //[[UIToolbar appearanceWhenContainedIn:[AddMovieViewController class], nil] setBackgroundImage:navigationPopoverBarBgImage forToolbarPosition:UIToolbarPositionAny barMetrics:UIBarMetricsDefault];
     
     
-    // UINavigationBar Popover
-    UIImage *navigationPopoverBarBgImage = [[UIImage imageNamed:@"pv_bg_navbar.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(16.0f, 12.0f, 7.0f, 12.0f)];
-     [[UINavigationBar appearanceWhenContainedIn:[AddMovieViewController class], nil] setBackgroundImage:navigationPopoverBarBgImage forBarMetrics:UIBarMetricsDefault];
-    [[UIToolbar appearanceWhenContainedIn:[AddMovieViewController class], nil] setBackgroundImage:navigationPopoverBarBgImage forToolbarPosition:UIToolbarPositionAny barMetrics:UIBarMetricsDefault];
-    
-    
-    NSDictionary *navBarTitleStyles = [NSDictionary dictionaryWithObjectsAndKeys:
-                                       HEXColor(0xFFFFFF),
-                                       UITextAttributeTextColor,
-                                       [UIColor colorWithRed:0.0f green:0.0f blue:0.0f alpha:0.44f],
-                                       UITextAttributeTextShadowColor,
-                                       [NSValue valueWithUIOffset:UIOffsetMake(0, 1)],
-                                       UITextAttributeTextShadowOffset, 
-                                       [UIFont fontWithName:@"HelveticaNeue-Bold" size:18.0f],
-                                       UITextAttributeFont, 
-                                       nil];
-    
-    [[UINavigationBar appearanceWhenContainedIn:[MJWatchedNavigationController class], nil] setTitleTextAttributes:navBarTitleStyles];
-    [[UINavigationBar appearanceWhenContainedIn:[WatchedStyledViewController class], nil] setTitleTextAttributes:navBarTitleStyles];
+//    NSDictionary *navBarTitleStyles = [NSDictionary dictionaryWithObjectsAndKeys:
+//                                       HEXColor(0xFFFFFF),
+//                                       UITextAttributeTextColor,
+//                                       [UIColor colorWithRed:0.0f green:0.0f blue:0.0f alpha:0.44f],
+//                                       UITextAttributeTextShadowColor,
+//                                       [NSValue valueWithUIOffset:UIOffsetMake(0, 1)],
+//                                       UITextAttributeTextShadowOffset, 
+//                                       [UIFont fontWithName:@"HelveticaNeue-Bold" size:18.0f],
+//                                       UITextAttributeFont, 
+//                                       nil];
+//    
+//    [[UINavigationBar appearanceWhenContainedIn:[MJWatchedNavigationController class], nil] setTitleTextAttributes:navBarTitleStyles];
+//    [[UINavigationBar appearanceWhenContainedIn:[WatchedStyledViewController class], nil] setTitleTextAttributes:navBarTitleStyles];
     
     // UIToolbar
-    UIImage *browserBarBgImage = [[UIImage imageNamed:@"g_browser.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
-    [[UIToolbar appearance] setBackgroundImage:navigationBarBgImage forToolbarPosition:UIToolbarPositionAny barMetrics:UIBarMetricsDefault];
-    [[UIToolbar appearanceWhenContainedIn:[WatchedWebBrowser class], nil] setBackgroundImage:browserBarBgImage forToolbarPosition:UIToolbarPositionAny barMetrics:UIBarMetricsDefault];
+    //UIImage *browserBarBgImage = [[UIImage imageNamed:@"g_browser.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
+    //[[UIToolbar appearance] setBackgroundImage:navigationBarBgImage forToolbarPosition:UIToolbarPositionAny barMetrics:UIBarMetricsDefault];
+    //[[UIToolbar appearanceWhenContainedIn:[WatchedWebBrowser class], nil] setBackgroundImage:browserBarBgImage forToolbarPosition:UIToolbarPositionAny barMetrics:UIBarMetricsDefault];
     
     // UISearchBar
-    [[UISearchBar appearanceWhenContainedIn:[MJWatchedNavigationController class], nil] setBackgroundImage:navigationBarBgImage];
-    [[UISearchBar appearanceWhenContainedIn:[WatchedStyledViewController class], nil] setBackgroundImage:navigationBarBgImage];
+    //UIImage *searchBarBgImage = [[UIImage imageNamed:@"g_bg_searchbar.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
+    //[[UISearchBar appearanceWhenContainedIn:[MJWatchedNavigationController class], nil] setBackgroundImage:searchBarBgImage];
+    //[[UISearchBar appearanceWhenContainedIn:[WatchedStyledViewController class], nil] setBackgroundImage:searchBarBgImage];
     
     // TableView
-    [[UITableView appearance] setBackgroundColor:HEXColor(DEFAULT_COLOR_BG)];
-    [[UITableView appearance] setSeparatorColor:HEXColor(0x1C1C1C)];
+    //[[UITableView appearance] setBackgroundColor:HEXColor(DEFAULT_COLOR_BG)];
+    //[[UITableView appearance] setSeparatorColor:HEXColor(0x2C2C2C)];
     
     // UISegmentedControl
-    UIImage *segmentedControlBgImage = [[UIImage imageNamed:@"mv_segmented.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 4, 0, 4)];
-    UIImage *segmentedControlBgImageActive = [[UIImage imageNamed:@"mv_segmented_active.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 14, 0, 14)];
-    UIImage *segmentedDividerNN = [UIImage imageNamed:@"mv_segmented-dv-nn.png"];
-    UIImage *segmentedDividerAN = [UIImage imageNamed:@"mv_segmented-dv-an.png"];
-    UIImage *segmentedDividerNA = [UIImage imageNamed:@"mv_segmented-dv-na.png"];
-    [[UISegmentedControl appearance] setBackgroundImage:segmentedControlBgImage forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
-    [[UISegmentedControl appearance] setBackgroundImage:segmentedControlBgImageActive forState:UIControlStateSelected barMetrics:UIBarMetricsDefault];
-    [[UISegmentedControl appearance] setDividerImage:segmentedDividerNN forLeftSegmentState:UIControlStateNormal rightSegmentState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
-    [[UISegmentedControl appearance] setDividerImage:segmentedDividerAN forLeftSegmentState:UIControlStateSelected rightSegmentState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
-    [[UISegmentedControl appearance] setDividerImage:segmentedDividerNA forLeftSegmentState:UIControlStateNormal rightSegmentState:UIControlStateSelected barMetrics:UIBarMetricsDefault];
-    [[UISegmentedControl appearance] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
-                                                 HEXColor(0xFFFFFF),
-                                                 UITextAttributeTextColor,
-                                                 [UIColor colorWithRed:0.0f green:0.0f blue:0.0f alpha:0.44f],
-                                                 UITextAttributeTextShadowColor,
-                                                 [NSValue valueWithUIOffset:UIOffsetMake(0, 1)],
-                                                 UITextAttributeTextShadowOffset,
-                                                 [UIFont fontWithName:@"HelveticaNeue-Bold" size:12.0f],
-                                                 UITextAttributeFont,
-                                                 nil] forState:UIControlStateNormal];
+//    UIImage *segmentedControlBgImage = [[UIImage imageNamed:@"mv_segmented.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 4, 0, 4)];
+//    UIImage *segmentedControlBgImageActive = [[UIImage imageNamed:@"mv_segmented_active.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 14, 0, 14)];
+//    UIImage *segmentedDividerNN = [UIImage imageNamed:@"mv_segmented-dv-nn.png"];
+//    UIImage *segmentedDividerAN = [UIImage imageNamed:@"mv_segmented-dv-an.png"];
+//    UIImage *segmentedDividerNA = [UIImage imageNamed:@"mv_segmented-dv-na.png"];
+//    [[UISegmentedControl appearance] setBackgroundImage:segmentedControlBgImage forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
+//    [[UISegmentedControl appearance] setBackgroundImage:segmentedControlBgImageActive forState:UIControlStateSelected barMetrics:UIBarMetricsDefault];
+//    [[UISegmentedControl appearance] setDividerImage:segmentedDividerNN forLeftSegmentState:UIControlStateNormal rightSegmentState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
+//    [[UISegmentedControl appearance] setDividerImage:segmentedDividerAN forLeftSegmentState:UIControlStateSelected rightSegmentState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
+//    [[UISegmentedControl appearance] setDividerImage:segmentedDividerNA forLeftSegmentState:UIControlStateNormal rightSegmentState:UIControlStateSelected barMetrics:UIBarMetricsDefault];
+//    [[UISegmentedControl appearance] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
+//                                                 HEXColor(0xFFFFFF),
+//                                                 UITextAttributeTextColor,
+//                                                 [UIColor colorWithRed:0.0f green:0.0f blue:0.0f alpha:0.44f],
+//                                                 UITextAttributeTextShadowColor,
+//                                                 [NSValue valueWithUIOffset:UIOffsetMake(0, 1)],
+//                                                 UITextAttributeTextShadowOffset,
+//                                                 [UIFont fontWithName:@"HelveticaNeue-Bold" size:12.0f],
+//                                                 UITextAttributeFont,
+//                                                 nil] forState:UIControlStateNormal];
     
     // UISwitch
-    [[UISwitch appearance] setOnImage:[UIImage imageNamed:@"g_uiswitch_bg_on.png"]];
+    //[[UISwitch appearance] setOnImage:[UIImage imageNamed:@"g_uiswitch_bg_on.png"]];
 }
 
 - (void)setStylesForBarButtonItem:(id)itemAppearance
 {
     
-    UIImage *navigationBarBackBgImage = [[UIImage imageNamed:@"g_backbutton.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 13, 0, 4)];
-    UIImage *navigationBarBackBgImageLS = [[UIImage imageNamed:@"g_backbutton_landscape.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 13, 0, 4)];
-    UIImage *navigationBarBackBgImageActive = [[UIImage imageNamed:@"g_backbutton_active.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 13, 0, 4)];
-    UIImage *navigationBarBackBgImageActiveLS = [[UIImage imageNamed:@"g_backbutton_landscape_active.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 13, 0, 4)];
-    
-    [itemAppearance setBackButtonBackgroundImage:navigationBarBackBgImage
-                                                forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
-    [itemAppearance setBackButtonBackgroundImage:navigationBarBackBgImageActive
-                                                forState:UIControlStateHighlighted barMetrics:UIBarMetricsDefault];
-    [itemAppearance setBackButtonBackgroundImage:navigationBarBackBgImageLS
-                                                forState:UIControlStateNormal barMetrics:UIBarMetricsLandscapePhone];
-    [itemAppearance setBackButtonBackgroundImage:navigationBarBackBgImageActiveLS
-                                                forState:UIControlStateHighlighted barMetrics:UIBarMetricsLandscapePhone];
+//    UIImage *navigationBarBackBgImage = [[UIImage imageNamed:@"g_backbutton.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 13, 0, 4)];
+//    UIImage *navigationBarBackBgImageLS = [[UIImage imageNamed:@"g_backbutton_landscape.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 13, 0, 4)];
+//    UIImage *navigationBarBackBgImageActive = [[UIImage imageNamed:@"g_backbutton_active.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 13, 0, 4)];
+//    UIImage *navigationBarBackBgImageActiveLS = [[UIImage imageNamed:@"g_backbutton_landscape_active.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 13, 0, 4)];
+//    
+//    [itemAppearance setBackButtonBackgroundImage:navigationBarBackBgImage
+//                                                forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
+//    [itemAppearance setBackButtonBackgroundImage:navigationBarBackBgImageActive
+//                                                forState:UIControlStateHighlighted barMetrics:UIBarMetricsDefault];
+//    [itemAppearance setBackButtonBackgroundImage:navigationBarBackBgImageLS
+//                                                forState:UIControlStateNormal barMetrics:UIBarMetricsLandscapePhone];
+//    [itemAppearance setBackButtonBackgroundImage:navigationBarBackBgImageActiveLS
+//                                                forState:UIControlStateHighlighted barMetrics:UIBarMetricsLandscapePhone];
     
     // UIBarButtonItem
-    UIImage *barButtonBgImage = [[UIImage imageNamed:@"g_barbutton.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(15, 4, 15, 4)];
-    UIImage *barButtonBgImageActive = [[UIImage imageNamed:@"g_barbutton_active.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(15, 4, 15, 4)];
-    [itemAppearance setBackgroundImage:barButtonBgImage forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
-    [itemAppearance setBackgroundImage:barButtonBgImageActive forState:UIControlStateSelected barMetrics:UIBarMetricsDefault];
+//    UIImage *barButtonBgImage = [[UIImage imageNamed:@"g_barbutton.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(15, 4, 15, 4)];
+//    UIImage *barButtonBgImageActive = [[UIImage imageNamed:@"g_barbutton_active.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(15, 4, 15, 4)];
+//    [itemAppearance setBackgroundImage:barButtonBgImage forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
+//    [itemAppearance setBackgroundImage:barButtonBgImageActive forState:UIControlStateSelected barMetrics:UIBarMetricsDefault];
     
-    [itemAppearance setTitleTextAttributes:
-     [NSDictionary dictionaryWithObjectsAndKeys:
-      HEXColor(0xFFFFFF),
-      UITextAttributeTextColor,
-      [UIColor colorWithRed:0.0f green:0.0f blue:0.0f alpha:0.44f],
-      UITextAttributeTextShadowColor,
-      [NSValue valueWithUIOffset:UIOffsetMake(0, 1)],
-      UITextAttributeTextShadowOffset,
-      [UIFont fontWithName:@"HelveticaNeue-Bold" size:12.0f],
-      UITextAttributeFont,
-      nil] forState:UIControlStateNormal];
+//    [itemAppearance setTitleTextAttributes:
+//     [NSDictionary dictionaryWithObjectsAndKeys:
+//      HEXColor(0xFFFFFF),
+//      UITextAttributeTextColor,
+//      [UIColor colorWithRed:0.0f green:0.0f blue:0.0f alpha:0.44f],
+//      UITextAttributeTextShadowColor,
+//      [NSValue valueWithUIOffset:UIOffsetMake(0, 1)],
+//      UITextAttributeTextShadowOffset,
+//      [UIFont fontWithName:@"HelveticaNeue-Bold" size:12.0f],
+//      UITextAttributeFont,
+//      nil] forState:UIControlStateNormal];
     
     // landscape
-    [itemAppearance setBackButtonBackgroundImage:navigationBarBackBgImageLS forState:UIControlStateNormal barMetrics:UIBarMetricsLandscapePhone];
-    [itemAppearance setBackButtonBackgroundImage:navigationBarBackBgImageActiveLS forState:UIControlStateHighlighted barMetrics:UIBarMetricsLandscapePhone];
+//    [itemAppearance setBackButtonBackgroundImage:navigationBarBackBgImageLS forState:UIControlStateNormal barMetrics:UIBarMetricsLandscapePhone];
+//    [itemAppearance setBackButtonBackgroundImage:navigationBarBackBgImageActiveLS forState:UIControlStateHighlighted barMetrics:UIBarMetricsLandscapePhone];
+}
+
+- (void)setStylesForBarButtonItemInSearchBar:(id)itemAppearance
+{
+//    [self setStylesForBarButtonItem:itemAppearance];
+//    
+//    UIImage *searchBarButtonBgImage = [[UIImage imageNamed:@"g_searchbutton.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(15, 4, 15, 4)];
+//    UIImage *searchBarButtonBgImageActive = [[UIImage imageNamed:@"g_searchbutton_active.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(15, 4, 15, 4)];
+//    [itemAppearance setBackgroundImage:searchBarButtonBgImage forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
+//    [itemAppearance setBackgroundImage:searchBarButtonBgImageActive forState:UIControlStateSelected barMetrics:UIBarMetricsDefault];
+//    
+//    [itemAppearance setTitleTextAttributes:
+//     [NSDictionary dictionaryWithObjectsAndKeys:
+//      HEXColor(0xFFFFFF),
+//      UITextAttributeTextColor,
+//      [UIColor colorWithRed:0.0f green:0.0f blue:0.0f alpha:0.44f],
+//      UITextAttributeTextShadowColor,
+//      [NSValue valueWithUIOffset:UIOffsetMake(0, -1)],
+//      UITextAttributeTextShadowOffset,
+//      [UIFont fontWithName:@"HelveticaNeue-Bold" size:12.0f],
+//      UITextAttributeFont,
+//      [UIColor colorWithRed:0.0f green:0.0f blue:0.0f alpha:0.22f],
+//      UITextAttributeTextShadowColor,
+//      nil] forState:UIControlStateNormal];
+    
+    
+    
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application

@@ -548,9 +548,18 @@
     // Get HTML String
     NSString *sharebymailPath = [[NSBundle mainBundle] pathForResource:@"sharebymail" ofType:@"html"];
     NSString *sharebymailString = [NSString stringWithContentsOfFile:sharebymailPath encoding:NSUTF8StringEncoding error:nil];
-    NSString *imageURL = [[[OnlineMovieDatabase sharedMovieDatabase] getImageURLForImagePath:self.movie.posterURL imageType:ImageTypeBackdrop nearWidth:260.0f] absoluteString];
- 
+    
+    NSString *imageURL;
+    NSString *imageDisplay = @"block";
+    if(self.movie.posterURL) {
+        imageURL = [[[OnlineMovieDatabase sharedMovieDatabase] getImageURLForImagePath:self.movie.posterURL imageType:ImageTypeBackdrop nearWidth:260.0f] absoluteString];
+    } else {
+        imageURL = @"";
+        imageDisplay = @"none";
+    }
+    
     sharebymailString = [sharebymailString stringByReplacingOccurrencesOfString:@"###IMAGE_URL###" withString:imageURL];
+    sharebymailString = [sharebymailString stringByReplacingOccurrencesOfString:@"###IMAGE_DISPLAY###" withString:imageDisplay];
     sharebymailString = [sharebymailString stringByReplacingOccurrencesOfString:@"###MOVIE_TITLE###" withString:self.movie.title];
     sharebymailString = [sharebymailString stringByReplacingOccurrencesOfString:@"###MOVIE_DESCRIPTION###" withString:self.movie.overview];
     sharebymailString = [sharebymailString stringByReplacingOccurrencesOfString:@"###MOVIE_ID###" withString:[self.movie.movieID stringValue]];
@@ -736,7 +745,7 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     if(section == 0) return 3;
-    return 2;
+    return 1;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)aTableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -776,24 +785,13 @@
                 cell.imageView.image = [UIImage imageNamed:@"dv_icon_cast.png"];
             }
         } else {
-            // website
-            cell.textLabel.text = NSLocalizedString(@"BUTTON_VISIT_HOMEPAGE", nil);
-            if(!self.movie.homepage) {
-                cell.activated = NO;
-                cell.userInteractionEnabled = NO;
-                accessoryView.controlImageView.image = [UIImage imageNamed:@"g_table-accessory_disabled.png"];
-                cell.imageView.image = [UIImage imageNamed:@"dv_icon_website_disabled.png"];
-            } else {
-                cell.imageView.image = [UIImage imageNamed:@"dv_icon_website.png"];
-            }
-        }
-    } else if (indexPath.section == 1) {
-        if(indexPath.row == 0) {
             // Similar Movies
             cell.textLabel.text = NSLocalizedString(@"BUTTON_SIMILAR", nil);
             cell.imageView.image = [UIImage imageNamed:@"dv_icon_similar.png"];
-        } else if (indexPath.row == 1) {
-            // cast
+        }
+    } else if (indexPath.section == 1) {
+        if(indexPath.row == 0) {
+            // Note
             cell.textLabel.text = NSLocalizedString(@"BUTTON_ADD_NOTE", nil);
             cell.imageView.image = [UIImage imageNamed:@"dv_icon_notes.png"];
         }
@@ -832,14 +830,11 @@
             // cast
             [self castsRowClicked];
         } else {
-            // website
-            [self websiteRowClicked];
+            // Similar Movies
+            [self similarRowClicked];
         }
     } else if (indexPath.section == 1) {
         if(indexPath.row == 0) {
-            // Similar Movies
-            [self similarRowClicked];
-        } else if (indexPath.row == 1) {
             // Notes
             [self noteRowClicked];
         }

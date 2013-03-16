@@ -74,7 +74,7 @@
 
 - (NSPersistentStoreCoordinator *)persistentStoreCoordinator {
     if (_persistentStoreCoordinator == nil) {
-        NSLog(@"SQLITE STORE PATH: %@", [self pathToLocalStore]);
+        DebugLog(@"SQLITE STORE PATH: %@", [self pathToLocalStore]);
         NSURL *storeURL = [NSURL fileURLWithPath:[self pathToLocalStore]];
         NSPersistentStoreCoordinator *psc = [[NSPersistentStoreCoordinator alloc] 
                                              initWithManagedObjectModel:[self managedObjectModel]];

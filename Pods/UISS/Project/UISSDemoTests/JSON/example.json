@@ -1,0 +1,23 @@
+{
+    "Variables": {
+        "color": "yellowColor"
+    },
+    "UIToolbar": {
+        "tintColor": "$color",
+        "backgroundImage:any:default": "black"
+    },
+    "UINavigationBar": {
+        "Pad": {
+            "tintColor": "green"
+        },
+        "Phone": {
+            "tintColor": "red"
+        },
+        "titleVerticalPositionAdjustment:default": 10,
+        "backgroundImage:landscapePhone": "black"
+    },
+    "UITabBarItem": {
+        "titlePositionAdjustment": [10, 10],
+        "titleTextAttributes:normal": {"font":24}
+    }
+}

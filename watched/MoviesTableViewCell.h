@@ -14,6 +14,7 @@
 @property(strong, nonatomic) UILabel *yearLabel;
 @property(strong, nonatomic) UIImageView *coverImageView;
 
+- (void)setDetailText:(NSString*)aText;
 - (void)setYear:(NSDate*)aDate;
 - (void)setCoverImage:(UIImage*)aImage;
 

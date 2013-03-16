@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="2.0" toolsVersion="3084" systemVersion="12C60" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="xLq-tF-y1P">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="2.0" toolsVersion="3084" systemVersion="12D78" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="xLq-tF-y1P">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="2083"/>
     </dependencies>
@@ -258,7 +258,7 @@
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="jLZ-ge-01M">
                                 <rect key="frame" x="0.0" y="44" width="320" height="200"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                <inset key="contentInset" minX="0.0" minY="0.0" maxX="0.0" maxY="48"/>
+                                <inset key="contentInset" minX="1" minY="0.0" maxX="-1" maxY="48"/>
                                 <inset key="scrollIndicatorInsets" minX="0.0" minY="0.0" maxX="0.0" maxY="24"/>
                                 <color key="textColor" red="0.22745098039215686" green="0.22745098039215686" blue="0.22745098039215686" alpha="1" colorSpace="calibratedRGB"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="16"/>
@@ -295,7 +295,7 @@
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <subviews>
                                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Movie" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" adjustsFontSizeToFit="NO" id="z6G-Yv-V4h">
-                                                <rect key="frame" x="12" y="2" width="204" height="21"/>
+                                                <rect key="frame" x="9" y="2" width="204" height="21"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="12"/>
                                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
@@ -304,7 +304,7 @@
                                                 <size key="shadowOffset" width="0.0" height="1"/>
                                             </label>
                                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" id="fvs-gz-I4T">
-                                                <rect key="frame" x="225" y="5" width="86" height="14"/>
+                                                <rect key="frame" x="224" y="5" width="86" height="14"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             </imageView>
                                         </subviews>
@@ -1012,15 +1012,11 @@
             <objects>
                 <viewController storyboardIdentifier="LoadingMovieViewController" autoresizesArchivedViewToFullSize="NO" id="jhR-8L-ypu" customClass="LoadingPopupViewController" sceneMemberID="viewController">
                     <view key="view" opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" id="d6H-zN-bmY" customClass="PopupLoadingView">
-                        <rect key="frame" x="0.0" y="0.0" width="278" height="49"/>
+                        <rect key="frame" x="0.0" y="0.0" width="278" height="50"/>
                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" animating="YES" style="gray" id="68F-He-Pkc">
-                                <rect key="frame" x="190" y="14" width="20" height="20"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            </activityIndicatorView>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="sv_bg_meta_small.png" id="y7f-Gm-mEj">
-                                <rect key="frame" x="0.0" y="0.0" width="278" height="49"/>
+                                <rect key="frame" x="0.0" y="0.0" width="278" height="50"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="34772" contentMode="left" text="Refreshing ..." lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" id="4rU-lf-5BG">
@@ -1033,7 +1029,7 @@
                                 <size key="shadowOffset" width="0.0" height="1"/>
                             </label>
                             <imageView userInteractionEnabled="NO" tag="75433" contentMode="scaleToFill" image="sv_error.png" id="wFq-rI-xKR">
-                                <rect key="frame" x="16" y="14" width="18" height="21"/>
+                                <rect key="frame" x="16" y="15" width="18" height="20"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="T3x-wf-lbQ">
@@ -1080,7 +1076,7 @@
         <image name="pv_mask-top.png" width="20" height="10"/>
         <image name="sv_already-added.png" width="36" height="36"/>
         <image name="sv_bg_meta.png" width="320" height="42"/>
-        <image name="sv_bg_meta_small.png" width="278" height="49"/>
+        <image name="sv_bg_meta_small.png" width="278" height="50"/>
         <image name="sv_error.png" width="18" height="20"/>
     </resources>
     <classes>
@@ -1088,6 +1084,8 @@
             <source key="sourceIdentifier" type="project" relativePath="./Classes/AddMovieViewController.h"/>
             <relationships>
                 <relationship kind="action" name="cancelButtonClicked:"/>
+                <relationship kind="action" name="retryButtonClicked:"/>
+                <relationship kind="action" name="saveButtonClicked:"/>
                 <relationship kind="outlet" name="backgroundImageView" candidateClass="UIImageView"/>
                 <relationship kind="outlet" name="displayView" candidateClass="UIView"/>
                 <relationship kind="outlet" name="errorLabel" candidateClass="UILabel"/>

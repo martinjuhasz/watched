@@ -1,0 +1,44 @@
+//
+// Copyright (c) 2013 Robert Wijas. All rights reserved.
+//
+
+#import <SenTestingKit/SenTestingKit.h>
+#import "UISSOffsetValueConverter.h"
+
+@interface UISSOffsetValueConverterTests : SenTestCase
+
+@property(nonatomic, strong) UISSOffsetValueConverter *converter;
+
+@end
+
+@implementation UISSOffsetValueConverterTests
+
+- (void)setUp; {
+    self.converter = [[UISSOffsetValueConverter alloc] init];
+}
+
+- (void)tearDown; {
+    self.converter = nil;
+}
+
+- (void)testOffsetAsArray; {
+    [self testValue:@[@1.0f, @2.0f]
+     expectedOffset:UIOffsetMake(1, 2) expectedCode:@"UIOffsetMake(1.0, 2.0)"];
+
+    [self testValue:@[@1.2f, @2.5f]
+     expectedOffset:UIOffsetMake(1.2, 2.5) expectedCode:@"UIOffsetMake(1.2, 2.5)"];
+}
+
+- (void)testOffsetAsNumber; {
+    [self testValue:@1.0f expectedOffset:UIOffsetMake(1, 1) expectedCode:@"UIOffsetMake(1.0, 1.0)"];
+}
+
+- (void)testValue:(id)value expectedOffset:(UIOffset)expectedOffset expectedCode:(NSString *)expectedCode; {
+    id converted = [self.converter convertValue:value];
+    STAssertEquals([converted UIOffsetValue], expectedOffset, nil);
+
+    NSString *code = [self.converter generateCodeForValue:value];
+    STAssertEqualObjects(code, expectedCode, nil);
+}
+
+@end

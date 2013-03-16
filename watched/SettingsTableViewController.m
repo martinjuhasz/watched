@@ -55,9 +55,9 @@
                       [NSDictionary dictionaryWithObject:NSLocalizedString(@"SETTINGS_WEBSITE", nil) forKey:@"name"],
                        [NSDictionary dictionaryWithObject:NSLocalizedString(@"SETTINGS_TWITTER", nil) forKey:@"name"],
                       nil],
-                     [NSArray arrayWithObjects:
-                      [NSDictionary dictionaryWithObject:NSLocalizedString(@"SETTINGS_OPTOUT", nil) forKey:@"name"],
-                      nil],
+                     //[NSArray arrayWithObjects:
+                      //[NSDictionary dictionaryWithObject:NSLocalizedString(@"SETTINGS_OPTOUT", nil) forKey:@"name"],
+                      //nil],
 #ifdef DEBUG_MODE
                      [NSArray arrayWithObjects:
                       [NSDictionary dictionaryWithObject:@"Dummy Content" forKey:@"name"],
@@ -103,19 +103,26 @@
 {
     MJCustomTableViewCell *cell;
     
-    if(indexPath.section != 2) {
-        static NSString *CellIdentifier = @"SettingsTableViewCellCustom";
-        cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-        if (cell == nil) {
-            cell = [[MJCustomTableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier];
-        }
-    } else if(indexPath.section == 2) {
-        static NSString *CellIdentifier = @"SettingsTableViewCellSwitch";
-        cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-        if (cell == nil) {
-            cell = [[MJCustomTableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier];
-        }
+    static NSString *CellIdentifier = @"SettingsTableViewCellCustom";
+    cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    if (cell == nil) {
+        cell = [[MJCustomTableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier];
     }
+    
+//    if(indexPath.section != 2) {
+//        static NSString *CellIdentifier = @"SettingsTableViewCellCustom";
+//        cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+//        if (cell == nil) {
+//            cell = [[MJCustomTableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier];
+//        }
+//    } else if(indexPath.section == 2) {
+//        static NSString *CellIdentifier = @"SettingsTableViewCellSwitch";
+//        cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+//        if (cell == nil) {
+//            cell = [[MJCustomTableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier];
+//        }
+//    }
+    
     cell.activated = YES;
     
     [cell configureForTableView:tableView indexPath:indexPath];
@@ -129,19 +136,20 @@
 
 - (void)configureCellForRowAtIndexPath:(NSIndexPath*)indexPath cell:(UITableViewCell*)aCell
 {
-    if(indexPath.section == 2) {
-        aCell.selectionStyle = UITableViewCellSelectionStyleNone;
-        
-        NSUserDefaults *standardUserDefaults = [NSUserDefaults standardUserDefaults];
-        BOOL isDisabled = [standardUserDefaults boolForKey:OPTOUT_SETTINGS];
-        UISwitch *optSwitch = (UISwitch*)[aCell viewWithTag:kOptOutSwitchTag];
-        [optSwitch setOn:!isDisabled animated:NO];
-    } else {
-        aCell.selectionStyle = UITableViewCellSelectionStyleBlue;
-    }
+//    if(indexPath.section == 2) {
+//        aCell.selectionStyle = UITableViewCellSelectionStyleNone;
+//        
+//        NSUserDefaults *standardUserDefaults = [NSUserDefaults standardUserDefaults];
+//        BOOL isDisabled = [standardUserDefaults boolForKey:OPTOUT_SETTINGS];
+//        UISwitch *optSwitch = (UISwitch*)[aCell viewWithTag:kOptOutSwitchTag];
+//        [optSwitch setOn:!isDisabled animated:NO];
+//    } else {
+//        aCell.selectionStyle = UITableViewCellSelectionStyleBlue;
+//    }
+    aCell.selectionStyle = UITableViewCellSelectionStyleBlue;
     
     // Accecory Type
-    if(indexPath.section == 0 || indexPath.section == 2) {
+    if(indexPath.section == 0) { // || indexPath.section == 2) {
         aCell.accessoryType = UITableViewCellAccessoryNone;
     } else {
         MJCustomAccessoryControl *accessoryView = [MJCustomAccessoryControl accessory];
@@ -165,14 +173,14 @@
 {
     if(section == 0) return NSLocalizedString(@"SETTINGS_HEADER_SETTINGS", nil);
     if(section == 1) return NSLocalizedString(@"SETTINGS_HEADER_CONTACT", nil);
-    if(section == 2) return NSLocalizedString(@"SETTINGS_HEADER_OPTOUT", nil);
-    if(section == 3) return NSLocalizedString(@"SETTINGS_HEADER_BETA", nil);
+    //if(section == 2) return NSLocalizedString(@"SETTINGS_HEADER_OPTOUT", nil);
+    if(section == 2) return NSLocalizedString(@"SETTINGS_HEADER_BETA", nil);
     return nil;
 }
 
 - (NSString*)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section
 {
-    if(section == 2) return NSLocalizedString(@"SETTINGS_FOOTER_OPTOUT", nil);
+    //if(section == 2) return NSLocalizedString(@"SETTINGS_FOOTER_OPTOUT", nil);
     return nil;
 }
 
@@ -284,7 +292,7 @@
     
     // Beta
 #ifdef DEBUG_MODE
-    if(indexPath.section == 3) {
+    if(indexPath.section == 2) {
         if (indexPath.row == 0) {
             [self loadDummyContent];
         }

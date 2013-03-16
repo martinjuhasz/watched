@@ -36,6 +36,11 @@
 "CONTROL_SORTMOVIES_TITLE_UNRATED"      = "Unbewertet ";
 "HEADER_TITLE_ZERORATING"               = "unbewertet";
 "OVERVIEW_TITLE"                        = "Meine Filme";
+"SEARCHBAR_PLACEHOLDER"                 = "Suchen oder Film hinzufügen";
+"MOVIE_RESULT_ADDED"                    = "hinzugefügt";
+"MOVIE_RESULT_ADDING"                   = "laden...";
+"HEADER_TITLE_ONLINESEARCH"             = "Noch nicht hinzugefügt";
+"HEADER_TITLE_ADDING"                   = "Kürzlich hinzugefügt";
 
 /*================================================
  DETAIL VIEW
@@ -61,7 +66,7 @@
 "DV_CONTROL_WATCHED"            = "GESEHEN";
 "DV_CONTROL_UNWATCHED"          = "UNGESEHEN";
 
-"SHARE_BUTTON_TITLE"            = "Teilen mit";
+"SHARE_BUTTON_TITLE"            = "Film teilen";
 "SHARE_BUTTON_EMAIL"            = "E-Mail";
 "SHARE_BUTTON_TWITTER"          = "Twitter";
 "SHARE_BUTTON_FACEBOOK"         = "Facebook";
@@ -73,7 +78,7 @@
 "SHARE_TWITTER_TEXT_RATING"     = " und mit %i von 5 Sternen bewertet";
 
 "PICKER_POP_NOPOSTER_TITLE"     = "Entschuldigung";
-"PICKER_POP_NOPOSTER_CONTENT"   = "Leider gibt es keine weiteren Bilder.";
+"PICKER_POP_NOPOSTER_CONTENT"   = "Leider gibt es keine Bilder.";
 "PICKER_POP_NOPOSTER_OK"        = "Ok";
 
 "HOURS_MIN"                     = "h";

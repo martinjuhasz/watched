@@ -19,7 +19,8 @@ typedef enum {
     MovieCellTypeDefault = 1,
     MovieCellTypeLoading,
     MovieCellTypeOnline,
-    MovieCellTypeError
+    MovieCellTypeError,
+    MovieCellTypeAdding
 } MovieCellType;
 
 @interface MoviesTableViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, UISearchDisplayDelegate, UISearchBarDelegate, NSFetchedResultsControllerDelegate>
@@ -41,5 +42,7 @@ typedef enum {
 @property (strong, nonatomic) UISearchDisplayController *searchController;
 @property (strong, nonatomic) NSOperationQueue *searchOperations;
 @property (strong, nonatomic) NSMutableArray *searchResults;
+@property (strong, nonatomic) NSMutableArray *addedSearchResults;
+@property (strong, nonatomic) NSIndexPath *detailedCell;
 
 @end

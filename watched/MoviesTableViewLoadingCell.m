@@ -21,7 +21,7 @@
         [self addSubview:backgroundImage];
         
         // Loader
-        _loadingView = [[UIImageView alloc] initWithFrame:CGRectMake(12.0f, 11.0f, 18.0f, 21.0f)];
+        _loadingView = [[UIImageView alloc] initWithFrame:CGRectMake(12.0f, 11.0f, 18.0f, 20.0f)];
         _loadingView.animationImages = [NSArray arrayWithObjects:
                                        [UIImage imageNamed:@"sv_spinner1.png"],
                                        [UIImage imageNamed:@"sv_spinner2.png"],

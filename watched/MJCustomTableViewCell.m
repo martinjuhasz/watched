@@ -20,6 +20,11 @@
     return self;
 }
 
+- (void)setFrame:(CGRect)frame {
+    frame.origin.x = 1.0f;
+    [super setFrame:frame];
+}
+
 - (void)addStyles {
     self.backgroundColor = [UIColor clearColor];
     

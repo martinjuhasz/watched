@@ -37,7 +37,7 @@
 
 - (void)setupContent
 {
-    _titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(69.0f, 9.0f, 200.0f, 39.0f)];
+    _titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(68.0f, 9.0f, 200.0f, 39.0f)];
     [_titleLabel setFont:[UIFont boldSystemFontOfSize:17.0f]];
     [_titleLabel setTextColor:[UIColor blackColor]];
     [_titleLabel setShadowColor:[UIColor colorWithRed:255.0f green:255.0f blue:255.0f alpha:0.33f]];
@@ -45,7 +45,7 @@
     [_titleLabel setBackgroundColor:[UIColor clearColor]];
     [self addSubview:_titleLabel];
     
-    _yearLabel = [[UILabel alloc] initWithFrame:CGRectMake(69.0f, 50.0f, 153.0f, 21.0f)];
+    _yearLabel = [[UILabel alloc] initWithFrame:CGRectMake(68.0f, 50.0f, 153.0f, 21.0f)];
     [_yearLabel setFont:[UIFont systemFontOfSize:14.0f]];
     [_yearLabel setTextColor:RGBColor(91, 91, 91)];
     [_yearLabel setShadowColor:[UIColor colorWithRed:255.0f green:255.0f blue:255.0f alpha:0.33f]];
@@ -78,6 +78,14 @@
     } else {
         self.yearLabel.text = @"";
     }
+}
+
+- (void)setDetailText:(NSString*)aText
+{
+    CGRect yearLabelRect = self.yearLabel.frame;
+    yearLabelRect.origin.y = self.titleLabel.bottom;
+    self.yearLabel.frame = yearLabelRect;
+    self.yearLabel.text = aText;
 }
 
 - (void)setCoverImage:(UIImage*)aImage

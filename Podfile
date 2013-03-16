@@ -8,6 +8,7 @@ pod 'OBGradientView', :podspec => 'OBGradientView.podspec'
 pod 'BlockAlertsAnd-ActionSheets', :podspec => 'BlockAlertsAnd-ActionSheets.podspec'
 pod 'KSReachability', :podspec => 'KSReachability.podspec'
 pod 'UIResponder+KeyboardCache'
+pod 'UISS'
 
 #pod 'iOS-Hierarchy-Viewer'
 #pod 'PonyDebugger'
