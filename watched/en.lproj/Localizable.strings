@@ -35,11 +35,12 @@
 "CONTROL_SORTMOVIES_TITLE_ALL"          = " All Movies";
 "CONTROL_SORTMOVIES_TITLE_UNWATCHED"    = "Unwatched";
 "CONTROL_SORTMOVIES_TITLE_UNRATED"      = "Unrated ";
-"HEADER_TITLE_ZERORATING"               = "unrated";
+"HEADER_TITLE_ZERORATING"               = "Unrated";
 "OVERVIEW_TITLE"                        = "My Movies";
 "SEARCHBAR_PLACEHOLDER"                 = "Search or add Movie";
 "MOVIE_RESULT_ADDED"                    = "added";
 "MOVIE_RESULT_ADDING"                   = "adding...";
+"MOVIE_RESULT_FAILED"                   = "failed";
 "HEADER_TITLE_ONLINESEARCH"             = "Movies you haven't added";
 "HEADER_TITLE_ADDING"                   = "Recently added";
 

@@ -9,12 +9,13 @@
 #import "MovieCastTableViewCell.h"
 #import "MovieCastCellBackgroundView.h"
 
+
 @implementation MovieCastTableViewCell
 
 - (void)configureForTableView:(UITableView *)aTableView indexPath:(NSIndexPath *)anIndexPath
 {
     [super configureForTableView:aTableView indexPath:anIndexPath];
-    MJCellPosition position = [self positionForIndexPath:anIndexPath inTableView:aTableView];
+    MJCellPosition position = [aTableView positionForIndexPath:anIndexPath];
     
     BOOL grouped = aTableView.style == UITableViewStyleGrouped;
     

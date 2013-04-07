@@ -34,11 +34,12 @@
 "CONTROL_SORTMOVIES_TITLE_ALL"          = " Alle Filme";
 "CONTROL_SORTMOVIES_TITLE_UNWATCHED"    = "Ungesehen";
 "CONTROL_SORTMOVIES_TITLE_UNRATED"      = "Unbewertet ";
-"HEADER_TITLE_ZERORATING"               = "unbewertet";
+"HEADER_TITLE_ZERORATING"               = "Unbewertet";
 "OVERVIEW_TITLE"                        = "Meine Filme";
 "SEARCHBAR_PLACEHOLDER"                 = "Suchen oder Film hinzufügen";
 "MOVIE_RESULT_ADDED"                    = "hinzugefügt";
 "MOVIE_RESULT_ADDING"                   = "laden...";
+"MOVIE_RESULT_FAILED"                   = "fehlgeschlagen";
 "HEADER_TITLE_ONLINESEARCH"             = "Noch nicht hinzugefügt";
 "HEADER_TITLE_ADDING"                   = "Kürzlich hinzugefügt";
 

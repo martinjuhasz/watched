@@ -3,7 +3,7 @@
 //  watched
 //
 //  Created by Martin Juhasz on 12.06.12.
-//  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
+//  Copyright (c) 2012 watched. All rights reserved.
 //
 
 #import "SettingsAboutTableViewController.h"
@@ -55,6 +55,8 @@
                       [NSDictionary dictionaryWithObject:NSLocalizedString(@"OBGradientView", nil) forKey:@"name"],
                       [NSDictionary dictionaryWithObject:NSLocalizedString(@"BlockAlerts and ActionSheets", nil) forKey:@"name"],
                       [NSDictionary dictionaryWithObject:NSLocalizedString(@"Crashlytics", nil) forKey:@"name"],
+                      [NSDictionary dictionaryWithObject:NSLocalizedString(@"UISS", nil) forKey:@"name"],
+                      [NSDictionary dictionaryWithObject:NSLocalizedString(@"UIResponder+KeyboardCache", nil) forKey:@"name"],
                       nil],
                      nil];
 
@@ -172,9 +174,9 @@
 	UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(11.0f, 10.0f, headerView.frame.size.width - 20.0f, 22.0f)];
 	label.text = [self tableView:tableView titleForHeaderInSection:section];
 	label.font = [UIFont boldSystemFontOfSize:17.0f];
-	label.shadowOffset = CGSizeMake(0.0f, 1.0f);
+	label.shadowOffset = CGSizeMake(0.0f, -1.0f);
     label.textColor = [UIColor whiteColor];
-	label.shadowColor = [UIColor colorWithRed:0.0f green:0.0f blue:0.0f alpha:0.44f];
+	label.shadowColor = [UIColor colorWithRed:0.0f green:0.0f blue:0.0f alpha:0.22f];
 	label.backgroundColor = [UIColor clearColor];
     
 	[headerView addSubview:label];
@@ -233,6 +235,12 @@
                 break;
             case 8:
                 fileName = @"settings_crashlytics";
+                break;
+            case 9:
+                fileName = @"settings_uiss";
+                break;
+            case 10:
+                fileName = @"settings_keyboardcache";
                 break;
         }
         url = [NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:fileName ofType:@"html"]];

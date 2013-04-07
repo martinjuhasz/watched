@@ -27,9 +27,4 @@
 	return ret;
 }
 
-//- (void)setHighlighted:(BOOL)highlighted
-//{
-//	[super setHighlighted:highlighted];
-//}
-
 @end

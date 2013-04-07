@@ -8,12 +8,13 @@
 
 #import <UIKit/UIKit.h>
 #import "MJCustomCellBackgroundView.h"
+#import "UITableView+CellPosition.h"
 
 @interface MJCustomTableViewCell : UITableViewCell
 
 @property (nonatomic, assign) BOOL activated;
+@property (nonatomic, assign) MJCellPosition position;
 
 - (void)configureForTableView:(UITableView *)aTableView indexPath:(NSIndexPath *)anIndexPath;
-- (MJCellPosition)positionForIndexPath:(NSIndexPath *)anIndexPath inTableView:(UITableView *)aTableView;
 
 @end

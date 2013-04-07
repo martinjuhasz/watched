@@ -3,7 +3,7 @@
 //  watched
 //
 //  Created by Martin Juhasz on 09.05.12.
-//  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
+//  Copyright (c) 2012 watched. All rights reserved.
 //
 
 #import "MoviesTableViewController.h"
@@ -22,6 +22,7 @@
 #import "OnlineDatabaseBridge.h"
 #import "MoviesTableViewOnlineCell.h"
 #import "MJLoadingAccessoryControl.h"
+#import "MJReloadAccessoryControl.h"
 
 #define kSectionHeaderHeight 24.0f
 
@@ -49,8 +50,6 @@ const int kMovieTableAddingCellTag = 2004;
 
 @synthesize tableView;
 @synthesize currentSortType;
-@synthesize addButton;
-@synthesize addButtonBackgroundView;
 @synthesize sortControl;
 
 
@@ -87,8 +86,6 @@ const int kMovieTableAddingCellTag = 2004;
     headerView.hidden = YES;
     self.tableView.tableHeaderView = headerView;
     [self.tableView addSubview:self.searchBar];
-    //self.tableView.contentOffset = CGPointMake(0, CGRectGetHeight(self.searchBar.bounds));
-    //self.tableView.tableHeaderView = _searchBar;
     
     _searchController = [[UISearchDisplayController alloc] initWithSearchBar:_searchBar contentsController:self];
     _searchController.delegate = self;
@@ -105,17 +102,6 @@ const int kMovieTableAddingCellTag = 2004;
     isError = NO;
     isLoading = NO;
     
-    // Add Button
-    UIImage *addButtonBgImage = [[UIImage imageNamed:@"mv_addbutton.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(26, 8, 26, 8)];
-    UIImage *addButtonBgImageActive = [[UIImage imageNamed:@"mv_addbutton_active.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(26, 8, 26, 8)];
-    [self.addButton setBackgroundImage:addButtonBgImage forState:UIControlStateNormal];
-    [self.addButton setBackgroundImage:addButtonBgImageActive forState:UIControlStateHighlighted];
-    [self.addButton setTitleColor:HEXColor(0xFFFFFF) forState:UIControlStateNormal];
-    [self.addButton setTitleShadowColor:[UIColor colorWithRed:0.0f green:0.0f blue:0.0f alpha:0.33f] forState:UIControlStateNormal];
-    [[self.addButton titleLabel] setShadowOffset:CGSizeMake(0.0f, 1.0f)];
-    self.addButtonBackgroundView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"mv_bg_add.png"]];
-    [self.addButton setTitle:NSLocalizedString(@"BUTTON_ADDMOVIE_TITLE", nil) forState:UIControlStateNormal];
-    
     // Segmented Control
     [self.sortControl setTitle:NSLocalizedString(@"CONTROL_SORTMOVIES_TITLE_ALL", nil) forSegmentAtIndex:0];
     [self.sortControl setTitle:NSLocalizedString(@"CONTROL_SORTMOVIES_TITLE_UNWATCHED", nil) forSegmentAtIndex:1];
@@ -126,15 +112,15 @@ const int kMovieTableAddingCellTag = 2004;
                                              selector:@selector(contextDidSave:) 
                                                  name:NSManagedObjectContextDidSaveNotification 
                                                object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleDataModelChange:) name:NSManagedObjectContextObjectsDidChangeNotification object:[[MoviesDataModel sharedDataModel] mainContext]];
 }
 
 - (void)viewDidUnload
 {
     [self setTableView:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:NSManagedObjectContextDidSaveNotification object:nil];
-    
-    [self setAddButton:nil];
-    [self setAddButtonBackgroundView:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:NSManagedObjectContextObjectsDidChangeNotification object:[[MoviesDataModel sharedDataModel] mainContext]];
     [self setSortControl:nil];
     [super viewDidUnload];
     // Release any retained subviews of the main view.
@@ -163,38 +149,42 @@ const int kMovieTableAddingCellTag = 2004;
 {
     NSFetchedResultsController *currentController = [self fetchedResultsControllerForTableView:aTableView];
     NSInteger sectionCount = [[currentController sections] count];
+    
     if([currentController isEqual:self.searchFetchedResultsController]) {
         if([self.addedSearchResults count] > 0) {
             sectionCount++;
         }
-        if(currentPage < totalPages || self.searchResults.count > 0) {
+        if(currentPage < totalPages || self.searchResults.count > 0 || isLoading) {
             sectionCount++;
         }
     }
+    
     return sectionCount;
 }
 
 - (NSInteger)tableView:(UITableView *)aTableView numberOfRowsInSection:(NSInteger)section
 {
-    if([self isOnlineSearchSectionInTableView:aTableView currentSection:section]) {
-        if(currentPage < totalPages) {
+    if([self isSearchSectionType:SearchSectionTypeOnline inTableView:aTableView orResultsController:nil forSection:section]) {
+        // dont display loading if error, although currentpage < totalpages
+        if(isError) return [self.searchResults count];
+        if(currentPage < totalPages || isLoading) {
             return [self.searchResults count] + 1;
         } else {
             return [self.searchResults count];
         }
-    } else if([self isAddingSectionInTableView:aTableView currentSection:section]) {
+    } else if([self isSearchSectionType:SearchSectionTypeAdded inTableView:aTableView orResultsController:nil forSection:section]) {
         return [self.addedSearchResults count];
     }
-
+    
     id<NSFetchedResultsSectionInfo> sectionInfo = [[[self fetchedResultsControllerForTableView:aTableView] sections] objectAtIndex:section];
     return [sectionInfo numberOfObjects];
 }
 
 - (NSString *)tableView:(UITableView *)aTableView titleForHeaderInSection:(NSInteger)section
 {
-    if([self isOnlineSearchSectionInTableView:aTableView currentSection:section]) {
+    if([self isSearchSectionType:SearchSectionTypeOnline inTableView:aTableView orResultsController:nil forSection:section]) {
         return NSLocalizedString(@"HEADER_TITLE_ONLINESEARCH", nil);
-    } else if([self isAddingSectionInTableView:aTableView currentSection:section]) {
+    } else if([self isSearchSectionType:SearchSectionTypeAdded inTableView:aTableView orResultsController:nil forSection:section]) {
         return NSLocalizedString(@"HEADER_TITLE_ADDING", nil);
     }
     
@@ -269,8 +259,8 @@ const int kMovieTableAddingCellTag = 2004;
 
 - (BOOL)tableView:(UITableView *)aTableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if([self isOnlineSearchSectionInTableView:aTableView currentSection:indexPath.section]) return NO;
-    if([self isAddingSectionInTableView:aTableView currentSection:indexPath.section]) {
+    if([self isSearchSectionType:SearchSectionTypeOnline inTableView:aTableView orResultsController:nil forSection:indexPath.section]) return NO;
+    if([self isSearchSectionType:SearchSectionTypeAdded inTableView:aTableView orResultsController:nil forSection:indexPath.section]) {
         SearchResult *aResult = [self.addedSearchResults objectAtIndex:indexPath.row];
         if(!aResult || aResult.added == NO)
             return NO;
@@ -316,11 +306,17 @@ const int kMovieTableAddingCellTag = 2004;
     
     if(movie.added) {
         [cell setYear:movie.releaseDate];
+        cell.selectionStyle = UITableViewCellSelectionStyleGray;
+        cell.accessoryView = [MJCustomAccessoryControl accessory];
+    } else if(movie.failed) {
+        [cell setDetailText:NSLocalizedString(@"MOVIE_RESULT_FAILED", nil)];
+        cell.selectionStyle = UITableViewCellSelectionStyleGray;
+        cell.accessoryView = [MJReloadAccessoryControl accessory];
     } else {
         [cell setDetailText:NSLocalizedString(@"MOVIE_RESULT_ADDING", nil)];
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        cell.accessoryView = [MJLoadingAccessoryControl accessory];
     }
-    cell.selectionStyle = movie.added ? UITableViewCellSelectionStyleGray : UITableViewCellSelectionStyleNone;
-    cell.accessoryView = movie.added ? [MJCustomAccessoryControl accessory] : [MJLoadingAccessoryControl accessory];
     
     UIImage *placeholder = [UIImage imageNamed:@"g_placeholder-cover.png"];
     NSURL *imageURL = [[OnlineMovieDatabase sharedMovieDatabase] getImageURLForImagePath:movie.posterPath imageType:ImageTypePoster nearWidth:70.0f*2];
@@ -330,6 +326,7 @@ const int kMovieTableAddingCellTag = 2004;
 - (void)configureLoadingCell:(UITableViewCell *)aCell atIndexPath:(NSIndexPath *)indexPath
 {
     MoviesTableViewLoadingCell *cell = (MoviesTableViewLoadingCell*)aCell;
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
     [cell.loadingView startAnimating];
 }
 
@@ -383,7 +380,7 @@ const int kMovieTableAddingCellTag = 2004;
 - (Movie*)movieForTableView:(UITableView*)aTableView atIndexPath:(NSIndexPath*)aIndexPath
 {
     Movie *aMovie = nil;
-    if([self isAddingSectionInTableView:aTableView currentSection:aIndexPath.section]) {
+    if([self isSearchSectionType:SearchSectionTypeAdded inTableView:aTableView orResultsController:nil forSection:aIndexPath.section]) {
         NSManagedObjectContext *mainContext = [[MoviesDataModel sharedDataModel] mainContext];
         int movieID = [[[self.addedSearchResults objectAtIndex:aIndexPath.row] searchResultId] intValue];
         aMovie = [Movie movieWithServerId:movieID usingManagedObjectContext:mainContext];
@@ -395,12 +392,17 @@ const int kMovieTableAddingCellTag = 2004;
 
 - (void)tableView:(UITableView *)aTableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if([self isOnlineSearchSectionInTableView:aTableView currentSection:indexPath.section]) {
+    MovieCellType cellType = [self cellTypeForTableView:aTableView indexPath:indexPath];
+    if(cellType == MovieCellTypeLoading) return;
+    
+    if([self isSearchSectionType:SearchSectionTypeOnline inTableView:aTableView orResultsController:nil forSection:indexPath.section]) {
         [self saveMovieToDatabase:[[self searchResults] objectAtIndex:(NSUInteger)indexPath.row] atIndexPath:indexPath];
-    } else if([self isAddingSectionInTableView:aTableView currentSection:indexPath.section]) {
+    } else if([self isSearchSectionType:SearchSectionTypeAdded inTableView:aTableView orResultsController:nil forSection:indexPath.section]) {
         if([[self.addedSearchResults objectAtIndex:indexPath.row] added]) {
             Movie *aMovie = [self movieForTableView:aTableView atIndexPath:indexPath];
             [self performSegueWithIdentifier:@"MovieDetailSegue" sender:aMovie];
+        } else if([[self.addedSearchResults objectAtIndex:indexPath.row] failed]) {
+            [self saveMovieToDatabase:[[self addedSearchResults] objectAtIndex:(NSUInteger)indexPath.row] atIndexPath:indexPath];
         }
     } else {
         Movie *aMovie = [self movieForTableView:aTableView atIndexPath:indexPath];
@@ -412,28 +414,19 @@ const int kMovieTableAddingCellTag = 2004;
 {
     MovieCellType cellType = [self cellTypeForTableView:aTableView indexPath:indexPath];
     if(cellType == MovieCellTypeLoading) {
-        return 44.0f;
+        return 43.0f;
     } else if(cellType == MovieCellTypeOnline) {
         return 56.0f;
     }
-    return 78.0f;
+    return 79.0f;
 }
 
 - (void)tableView:(UITableView *)aTableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
-        
         Movie *aMovie = nil;
-        NSManagedObjectContext *mainContext = [[MoviesDataModel sharedDataModel] mainContext];
         aMovie = [self movieForTableView:aTableView atIndexPath:indexPath];
-
-        NSError *error;
-        [mainContext deleteObject:aMovie];
-        [mainContext save:&error];
-    
-        if(error) {
-            ErrorLog("%@", [error localizedDescription]);
-        }        
+        [self deleteMovie:aMovie];
     }
 }
 
@@ -450,42 +443,77 @@ const int kMovieTableAddingCellTag = 2004;
 - (void)controller:(NSFetchedResultsController *)controller didChangeObject:(id)anObject atIndexPath:(NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type newIndexPath:(NSIndexPath *)newIndexPath
 {
     UITableView *aTableView = [self tableViewForResultsController:controller];
-    
+
     if (type == NSFetchedResultsChangeDelete) {
-        [aTableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationTop];
-        [self deleteRecentlyAddedMovieForController:controller atIndexPath:indexPath withObject:anObject];
+        if(!(aTableView == self.searchController.searchResultsTableView) || [self isSearchSectionType:SearchSectionTypeFound inTableView:nil orResultsController:controller forSection:indexPath.section]) {
+            [aTableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationTop];
+        }
     } else if(type == NSFetchedResultsChangeInsert) {
         [aTableView insertRowsAtIndexPaths:@[newIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
     } else if(type == NSFetchedResultsChangeMove) {
         if (newIndexPath == nil) return;
         [aTableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationTop];
         [aTableView insertRowsAtIndexPaths: [NSArray arrayWithObject:newIndexPath] withRowAnimation: UITableViewRowAnimationAutomatic];
-        //[aTableView moveRowAtIndexPath:indexPath toIndexPath:newIndexPath];
-    }
-    else {
-        [aTableView reloadSections:[NSIndexSet indexSetWithIndex:[indexPath section]] withRowAnimation:UITableViewRowAnimationFade];
+    } else if(type == NSFetchedResultsChangeUpdate) {
+        [aTableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+    } else {
+        // Why did i implement this? Well... leave it until i know
+        [aTableView reloadSections:[NSIndexSet indexSetWithIndex:[indexPath section]] withRowAnimation:UITableViewRowAnimationNone];
     }
 }
 
-- (void)deleteRecentlyAddedMovieForController:(NSFetchedResultsController*)aController atIndexPath:(NSIndexPath*)aIndexPath withObject:(id)anObject
+- (void)checkDeletedMoviesForAddingSection:(NSSet*)movies
 {
-    if(![anObject isKindOfClass:[Movie class]]) return;
+    for (Movie *aMovie in movies) {
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"searchResultId == %@", aMovie.movieID];
+        NSArray *addedMovies = [self.addedSearchResults filteredArrayUsingPredicate:predicate];
+        if([addedMovies count] == 1) {
+            SearchResult *aSearchResult = [addedMovies objectAtIndex:0];
+            NSInteger toRemoveSection = [self getSectionNumberForSectionType:SearchSectionTypeAdded];
+            NSInteger toRemoveRow = [self.addedSearchResults indexOfObject:aSearchResult];
+            NSIndexPath *toRemoveIndexPath = [NSIndexPath indexPathForItem:toRemoveRow inSection:toRemoveSection];
+            [self deleteAddedSearchResult:aSearchResult atIndexPath:toRemoveIndexPath];
+        }
+    }
+}
+
+- (void)deleteAddedSearchResult:(SearchResult*)aResult atIndexPath:(NSIndexPath*)aIndexPath
+{
+    UITableView *aTableView = self.searchController.searchResultsTableView;
+    
+    if(!aResult) return;
+    //if(!self.searchController.active) return;
+    
+    [aTableView beginUpdates];
+
+    [self.addedSearchResults removeObjectAtIndex:aIndexPath.row];
+    [aTableView deleteRowsAtIndexPaths:@[aIndexPath] withRowAnimation:UITableViewRowAnimationTop];
+    if([self.addedSearchResults count] <= 0) {
+        [aTableView deleteSections:[NSIndexSet indexSetWithIndex:aIndexPath.section] withRowAnimation:UITableViewRowAnimationAutomatic];
+    }
+    [aTableView endUpdates];
+}
+
+- (void)deleteAddedMovieForControllerAtIndexPath:(NSIndexPath*)aIndexPath
+{
+    UITableView *aTableView = self.searchController.searchResultsTableView;
+    Movie *aMovie = [self movieForTableView:aTableView atIndexPath:aIndexPath];
+    
+    if(!aMovie) return;
     if(!self.searchController.active) return;
     
-    UITableView *aTableView = self.searchController.searchResultsTableView;
     [aTableView beginUpdates];
     
-    Movie *aMovie = (Movie*)anObject;
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"searchResultId == %@", aMovie.movieID];
     NSArray *addedMovies = [self.addedSearchResults filteredArrayUsingPredicate:predicate];
     
+    // movie comes from adding section
     if([addedMovies count] == 1) {
-        NSInteger addedRow = [self.addedSearchResults indexOfObject:[addedMovies objectAtIndex:0]];
-        [self.addedSearchResults removeObjectAtIndex:addedRow];
-        NSIndexPath *removedIndexPath = [NSIndexPath indexPathForItem:addedRow inSection:1];
-        [aTableView deleteRowsAtIndexPaths:@[removedIndexPath] withRowAnimation:UITableViewRowAnimationTop];
+        [self.addedSearchResults removeObjectAtIndex:aIndexPath.row];
+        [self deleteMovie:aMovie];
+        [aTableView deleteRowsAtIndexPaths:@[aIndexPath] withRowAnimation:UITableViewRowAnimationTop];
         if([self.addedSearchResults count] <= 0) {
-            [aTableView deleteSections:[NSIndexSet indexSetWithIndex:1] withRowAnimation:UITableViewRowAnimationAutomatic];
+            [aTableView deleteSections:[NSIndexSet indexSetWithIndex:aIndexPath.section] withRowAnimation:UITableViewRowAnimationAutomatic];
         }
     }
     
@@ -494,6 +522,7 @@ const int kMovieTableAddingCellTag = 2004;
 
 - (void)controller:(NSFetchedResultsController *)controller didChangeSection:(id <NSFetchedResultsSectionInfo>)sectionInfo atIndex:(NSUInteger)sectionIndex forChangeType:(NSFetchedResultsChangeType)type
 {
+    // this method is invoced by the main table view and automatically deletes sections
     if(type == NSFetchedResultsChangeDelete) {
         [[self tableViewForResultsController:controller] deleteSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:UITableViewRowAnimationAutomatic];
     } else if(type == NSFetchedResultsChangeInsert) {
@@ -569,16 +598,18 @@ const int kMovieTableAddingCellTag = 2004;
     // Search String
     NSMutableArray *predicateArray = [NSMutableArray array];
     if(searchString.length) {
+
         [predicateArray addObject:[NSPredicate predicateWithFormat:@"title CONTAINS[cd] %@", searchString]];
         
         // Exclude addedSearchResults
         if([self.addedSearchResults count] > 0) {
             NSArray *addedIDs = [self.addedSearchResults valueForKey:@"searchResultId"];
-            [predicateArray addObject:[NSPredicate predicateWithFormat:@"NOT (movieID IN %@)", addedIDs]];
+            NSPredicate *excludedIdsPredicate = [NSPredicate predicateWithFormat:@"NOT (movieID IN %@)", addedIDs];
+            [predicateArray addObject:excludedIdsPredicate];
         }
         
         if(sortPredicate) {
-            sortPredicate = [NSCompoundPredicate andPredicateWithSubpredicates:[NSArray arrayWithObjects:sortPredicate, [NSCompoundPredicate orPredicateWithSubpredicates:predicateArray], nil]];
+            sortPredicate = [NSCompoundPredicate andPredicateWithSubpredicates:[NSArray arrayWithObjects:sortPredicate, [NSCompoundPredicate andPredicateWithSubpredicates:predicateArray], nil]];
         } else {
             sortPredicate = [NSCompoundPredicate andPredicateWithSubpredicates:predicateArray];
         }
@@ -647,6 +678,7 @@ const int kMovieTableAddingCellTag = 2004;
 
     self.fetchedResultsController = nil;
     [self.tableView reloadData];
+    [self.tableView setContentOffset:CGPointZero animated:NO];
 }
 
 - (NSFetchedResultsController *)fetchedResultsControllerForTableView:(UITableView *)aTableView
@@ -659,41 +691,71 @@ const int kMovieTableAddingCellTag = 2004;
     return aController == self.fetchedResultsController ? self.tableView : self.searchController.searchResultsTableView;
 }
 
-- (BOOL)isOnlineSearchSectionInTableView:(UITableView *)aTableView currentSection:(NSInteger)section
+- (BOOL)isSearchSectionType:(SearchSectionType)sectionType inTableView:(UITableView*)aTableView orResultsController:(NSFetchedResultsController*)aResultsController forSection:(NSInteger)aSection
 {
-    NSFetchedResultsController *currentController = [self fetchedResultsControllerForTableView:aTableView];
-    if([currentController isEqual:self.searchFetchedResultsController]) {
-        if(section == [[currentController sections] count] && [self.addedSearchResults count] <= 0) {
-            return true;
-        } else if([self.addedSearchResults count] > 0 && section == [[currentController sections] count] + 1) {
-            return true;
-        }
+    // check params
+    if(!aTableView && !aResultsController) return false;
+    
+    // get Table View
+    NSFetchedResultsController *wantedController = nil;
+    if(aResultsController) {
+        wantedController = aResultsController;
+    } else {
+        wantedController = [self fetchedResultsControllerForTableView:aTableView];
     }
+    
+    // false if searchController isnt the one for search section
+    if(![wantedController isEqual:self.searchFetchedResultsController]) return false;
+    
+    if(sectionType == SearchSectionTypeAdded) {
+        if(aSection == [[wantedController sections] count] && [self.addedSearchResults count] > 0) return true;
+    } else if(sectionType == SearchSectionTypeOnline) {
+        // adding section is missing
+        if(aSection == [[wantedController sections] count] && [self.addedSearchResults count] <= 0) return true;
+        // addings section exists
+        if(aSection == [[wantedController sections] count] +1 && [self.addedSearchResults count] > 0) return true;
+    } else if(sectionType == SearchSectionTypeFound) {
+        if(aSection == [[wantedController sections] count] -1) return true;
+    }
+    
     return false;
 }
 
-- (BOOL)isAddingSectionInTableView:(UITableView *)aTableView currentSection:(NSInteger)section
+- (NSInteger)getSectionNumberForSectionType:(SearchSectionType)sectionType
 {
-    NSFetchedResultsController *currentController = [self fetchedResultsControllerForTableView:aTableView];
-    if([self.addedSearchResults count] <= 0) {
-        return false;
-    } else if([self.addedSearchResults count] > 0 && [[currentController sections] count] == section) {
-        return true;
+    if(sectionType == SearchSectionTypeFound) {
+        if([[self.searchFetchedResultsController sections] count] > 0) {
+            return 0;
+        }
     }
-    return false;
+    else if(sectionType == SearchSectionTypeAdded) {
+        if([self.addedSearchResults count] > 0) {
+            return [[self.searchFetchedResultsController sections] count];
+        }
+    }
+    else if(sectionType == SearchSectionTypeOnline) {
+        if(isLoading || [self.searchResults count] > 0) {
+            if([self.addedSearchResults count] > 0) {
+                return [[self.searchFetchedResultsController sections] count] + 1;
+            } else {
+                return [[self.searchFetchedResultsController sections] count];
+            }
+        }
+    }
+    return NSNotFound;
 }
 
 
 - (MovieCellType)cellTypeForTableView:(UITableView*)aTableView indexPath:(NSIndexPath*)indexPath
 {
     MovieCellType cellType;
-    if([self isOnlineSearchSectionInTableView:aTableView currentSection:indexPath.section]) {
+    if([self isSearchSectionType:SearchSectionTypeOnline inTableView:aTableView orResultsController:nil forSection:indexPath.section]) {
         if(indexPath.row >= self.searchResults.count) {
             cellType = MovieCellTypeLoading;
         } else {
             cellType = MovieCellTypeOnline;
         }
-    } else if([self isAddingSectionInTableView:aTableView currentSection:indexPath.section]) {
+    } else if([self isSearchSectionType:SearchSectionTypeAdded inTableView:aTableView orResultsController:nil forSection:indexPath.section]) {
         cellType = MovieCellTypeAdding;
     }else {
         cellType = MovieCellTypeDefault;
@@ -722,11 +784,29 @@ const int kMovieTableAddingCellTag = 2004;
     dispatch_async(dispatch_get_main_queue(), ^{
         NSManagedObjectContext *mainContext = [[MoviesDataModel sharedDataModel] mainContext];
         [mainContext mergeChangesFromContextDidSaveNotification:notification];
-        DebugLog("");
-        //[self loadMoviesWithSortType:self.currentSortType];
-        //[self.tableView reloadData];
-        //[self.searchController.searchResultsTableView reloadData];
     });
+}
+
+- (void)handleDataModelChange:(NSNotification *)note
+{
+    NSSet *deletedObjects = [[note userInfo] objectForKey:NSDeletedObjectsKey];
+    NSPredicate *pred = [NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *bindings) {
+        return [evaluatedObject isKindOfClass:[Movie class]];
+    }];
+    NSSet *filteredSet = [deletedObjects filteredSetUsingPredicate:pred];
+    [self checkDeletedMoviesForAddingSection:filteredSet];
+}
+
+- (void)deleteMovie:(Movie*)aMovie
+{
+    NSManagedObjectContext *mainContext = [[MoviesDataModel sharedDataModel] mainContext];
+    NSError *error;
+    [mainContext deleteObject:aMovie];
+    [mainContext save:&error];
+    
+    if(error) {
+        ErrorLog("%@", [error localizedDescription]);
+    }
 }
 
 
@@ -782,6 +862,7 @@ const int kMovieTableAddingCellTag = 2004;
 {
     totalPages = 1;
     currentPage = 0;
+    isError = NO;
     [_searchOperations cancelAllOperations];
     [self.searchResults removeAllObjects];
 }
@@ -817,6 +898,7 @@ const int kMovieTableAddingCellTag = 2004;
         DebugLog("%@", [error localizedDescription]);
         isLoading = NO;
         isError = YES;
+        [_searchController.searchResultsTableView reloadData];
     }];
     [_searchOperations addOperation:operation];
 }
@@ -827,6 +909,7 @@ const int kMovieTableAddingCellTag = 2004;
 }
 
 
+
 ////////////////////////////////////////////////////////////////////////////
 #pragma mark -
 #pragma mark Adding a Movie
@@ -834,23 +917,55 @@ const int kMovieTableAddingCellTag = 2004;
 - (void)saveMovieToDatabase:(SearchResult*)aSearchResult atIndexPath:(NSIndexPath*)oldIndexPath
 {
     UITableView *searchTableView = self.searchController.searchResultsTableView;
+    Movie *aMovie = nil;
+    aMovie = [Movie movieWithServerId:[[aSearchResult searchResultId] intValue] usingManagedObjectContext:[[MoviesDataModel sharedDataModel] mainContext]];
     
     [searchTableView beginUpdates];
     
-    int index = [[[self searchFetchedResultsController] sections] count];
-    NSIndexPath *newIndexPath = [NSIndexPath indexPathForRow:[self.addedSearchResults count] inSection:index];
+    NSIndexPath *newIndexPath;
     
-    if([self.addedSearchResults count] <= 0) {
-        [searchTableView insertSections:[NSIndexSet indexSetWithIndex:index] withRowAnimation:UITableViewRowAnimationTop];
+    if([self.addedSearchResults containsObject:aSearchResult] && aSearchResult.failed) {
+        aSearchResult.failed = NO;
+        aSearchResult.added = NO;
+        newIndexPath = oldIndexPath;
+        
+        // movie has been added elsewhere
+        if(aMovie != nil) {
+            [self deleteAddedSearchResult:aSearchResult atIndexPath:oldIndexPath];
+            [searchTableView endUpdates];
+            return;
+        }
+        
+        [searchTableView reloadRowsAtIndexPaths:@[oldIndexPath] withRowAnimation:UITableViewRowAnimationNone];
+        
+    } else {
+        int index = [[[self searchFetchedResultsController] sections] count];
+        newIndexPath = [NSIndexPath indexPathForRow:[self.addedSearchResults count] inSection:index];
+        
+        // movie has been added elsewhere
+        if(aMovie != nil) {
+            [self.searchResults removeObject:aSearchResult];
+            [searchTableView deleteRowsAtIndexPaths:@[oldIndexPath] withRowAnimation:UITableViewRowAnimationTop];
+            [searchTableView endUpdates];
+            return;
+        }
+        
+        if([self.addedSearchResults count] <= 0) {
+            [searchTableView insertSections:[NSIndexSet indexSetWithIndex:index] withRowAnimation:UITableViewRowAnimationTop];
+        }
+        
+        // TODO: Find way that works
+        [searchTableView insertRowsAtIndexPaths:@[newIndexPath] withRowAnimation:UITableViewRowAnimationTop];
+        [searchTableView deleteRowsAtIndexPaths:@[oldIndexPath] withRowAnimation:UITableViewRowAnimationTop];
+        
+        [self.addedSearchResults addObject:aSearchResult];
+        [self.searchResults removeObject:aSearchResult];
+    
+        if([self.searchResults count] == 0) {
+            [searchTableView deleteSections:[NSIndexSet indexSetWithIndex:oldIndexPath.section] withRowAnimation:UITableViewRowAnimationTop];
+        }
     }
     
-    // TODO: Find way that works
-    [searchTableView insertRowsAtIndexPaths:@[newIndexPath] withRowAnimation:UITableViewRowAnimationTop];
-    [searchTableView deleteRowsAtIndexPaths:@[oldIndexPath] withRowAnimation:UITableViewRowAnimationTop];
-    
-    
-    [self.addedSearchResults addObject:aSearchResult];
-    [self.searchResults removeObject:aSearchResult];
     self.searchFetchedResultsController = nil;
     [searchTableView endUpdates];
     
@@ -859,13 +974,33 @@ const int kMovieTableAddingCellTag = 2004;
         aSearchResult.added = YES;
         dispatch_async(dispatch_get_main_queue(), ^{
             if(self.searchController.active) {
-                [searchTableView beginUpdates];
-                [searchTableView reloadRowsAtIndexPaths:@[newIndexPath] withRowAnimation:UITableViewRowAnimationNone];
-                [searchTableView endUpdates];
+                
+                NSInteger addingSection = [self getSectionNumberForSectionType:SearchSectionTypeAdded];
+                NSInteger addingRow = [self.addedSearchResults indexOfObject:aSearchResult];
+                if(addingSection != NSNotFound && addingRow != NSNotFound) {
+                    NSIndexPath *reloadIndexPath = [NSIndexPath indexPathForItem:addingRow inSection:addingSection];
+                    [searchTableView beginUpdates];
+                    [searchTableView reloadRowsAtIndexPaths:@[reloadIndexPath] withRowAnimation:UITableViewRowAnimationNone];
+                    [searchTableView endUpdates];
+                }
+                
             }
         });
     } failure:^(NSError *error) {
         DebugLog("%@", [error localizedDescription]);
+        aSearchResult.failed = YES;
+        if(self.searchController.active) {
+            
+            NSInteger addingSection = [self getSectionNumberForSectionType:SearchSectionTypeAdded];
+            NSInteger addingRow = [self.addedSearchResults indexOfObject:aSearchResult];
+            if(addingSection != NSNotFound && addingRow != NSNotFound) {
+                NSIndexPath *reloadIndexPath = [NSIndexPath indexPathForItem:addingRow inSection:addingSection];
+                [searchTableView beginUpdates];
+                [searchTableView reloadRowsAtIndexPaths:@[reloadIndexPath] withRowAnimation:UITableViewRowAnimationNone];
+                [searchTableView endUpdates];
+            }
+            
+        }
     }];
     [operation start];
 }

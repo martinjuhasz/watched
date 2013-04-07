@@ -3,7 +3,7 @@
 //  watched
 //
 //  Created by Martin Juhasz on 04.06.12.
-//  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
+//  Copyright (c) 2012 watched. All rights reserved.
 //
 
 #import "SettingsTableViewController.h"
@@ -191,9 +191,9 @@
 	UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(11.0f, 10.0f, headerView.frame.size.width - 20.0f, 22.0f)];
 	label.text = [self tableView:tableView titleForHeaderInSection:section];
 	label.font = [UIFont boldSystemFontOfSize:17.0f];
-	label.shadowOffset = CGSizeMake(0.0f, 1.0f);
+	label.shadowOffset = CGSizeMake(0.0f, -1.0f);
     label.textColor = [UIColor whiteColor];
-	label.shadowColor = [UIColor colorWithRed:0.0f green:0.0f blue:0.0f alpha:0.44f];
+	label.shadowColor = [UIColor colorWithRed:0.0f green:0.0f blue:0.0f alpha:0.22f];
 	label.backgroundColor = [UIColor clearColor];
     
 	[headerView addSubview:label];
@@ -618,11 +618,11 @@
 - (void)addHeaderView
 {
     // Statistic View
-    UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, 118.0f)];
+    UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, 117.0f)];
     headerView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"sv_bg_stats.png"]];
     
-    UILabel *ratedLabel = [[UILabel alloc] initWithFrame:CGRectMake(12.0f, 70.0f, 141.0f, 13.0f)];
-    UILabel *averageLabel = [[UILabel alloc] initWithFrame:CGRectMake(167.0f, 70.0f, 141.0f, 13.0f)];
+    UILabel *ratedLabel = [[UILabel alloc] initWithFrame:CGRectMake(12.0f, 71.0f, 141.0f, 13.0f)];
+    UILabel *averageLabel = [[UILabel alloc] initWithFrame:CGRectMake(167.0f, 71.0f, 141.0f, 13.0f)];
     ratedLabel.text = NSLocalizedString(@"SETTINGS_MOVIECOUNT", nil);
     ratedLabel.font = [UIFont boldSystemFontOfSize:10.0f];
     ratedLabel.shadowColor = [UIColor colorWithRed:255.0f green:255.0f blue:255.0f alpha:0.2f];
@@ -640,7 +640,7 @@
     [headerView addSubview:ratedLabel];
     [headerView addSubview:averageLabel];
     
-    self.movieCountLabel = [[UILabel alloc] initWithFrame:CGRectMake(14.0f, 18.0f, 137.0f, 46.0f)];
+    self.movieCountLabel = [[UILabel alloc] initWithFrame:CGRectMake(14.0f, 19.0f, 137.0f, 46.0f)];
     self.movieCountLabel.font = [UIFont boldSystemFontOfSize:37.0f];
     self.movieCountLabel.shadowColor = [UIColor colorWithRed:255.0f green:255.0f blue:255.0f alpha:0.2f];
     self.movieCountLabel.shadowOffset = CGSizeMake(0.0f, 1.0f);
@@ -648,7 +648,7 @@
     self.movieCountLabel.textAlignment = NSTextAlignmentCenter;
     self.movieCountLabel.backgroundColor = [UIColor clearColor];
     
-    self.averageRatingLabel = [[UILabel alloc] initWithFrame:CGRectMake(169.0f, 18.0f, 137.0f, 46.0f)];
+    self.averageRatingLabel = [[UILabel alloc] initWithFrame:CGRectMake(169.0f, 19.0f, 137.0f, 46.0f)];
     self.averageRatingLabel.font = [UIFont boldSystemFontOfSize:37.0f];
     self.averageRatingLabel.shadowColor = [UIColor colorWithRed:255.0f green:255.0f blue:255.0f alpha:0.2f];
     self.averageRatingLabel.shadowOffset = CGSizeMake(0.0f, 1.0f);

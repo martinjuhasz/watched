@@ -12,6 +12,7 @@
 
 @property (nonatomic, assign) BOOL adult;
 @property (nonatomic, assign) BOOL added;
+@property (nonatomic, assign) BOOL failed;
 @property (nonatomic, strong) NSString *backdropPath;
 @property (nonatomic, strong) NSNumber *searchResultId;
 @property (nonatomic, strong) NSString *originalTitle;

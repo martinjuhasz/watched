@@ -3,7 +3,7 @@
 //  watched
 //
 //  Created by Martin Juhasz on 28.05.12.
-//  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
+//  Copyright (c) 2012 watched. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
@@ -17,5 +17,6 @@
 
 @property (nonatomic, strong) Movie *movie;
 @property (nonatomic, strong) MovieDetailView *detailView;
+@property (nonatomic, strong) IBOutlet UIBarButtonItem *shareButton;
 
 @end

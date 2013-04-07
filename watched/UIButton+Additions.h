@@ -3,7 +3,7 @@
 //  MovieRater
 //
 //  Created by Martin Juhasz on 07.08.11.
-//  Copyright 2011 __MyCompanyName__. All rights reserved.
+//  Copyright 2011 watched. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>

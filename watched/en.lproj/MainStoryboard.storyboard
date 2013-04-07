@@ -31,6 +31,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="416"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <inset key="contentInset" minX="0.0" minY="0.0" maxX="0.0" maxY="-2"/>
                                 <prototypes>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="blue" indentationWidth="10" reuseIdentifier="MoviesTableCellSoft" rowHeight="78" id="ees-f9-d6I">
                                         <rect key="frame" x="0.0" y="22" width="320" height="78"/>
@@ -78,35 +79,13 @@
                                     <outlet property="delegate" destination="jkq-Yu-AXG" id="hgJ-Im-DgM"/>
                                 </connections>
                             </tableView>
-                            <view hidden="YES" contentMode="scaleToFill" id="uuS-7l-PMb" userLabel="Button Container VIew">
-                                <rect key="frame" x="0.0" y="335" width="320" height="81"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="LKR-Do-Mqt">
-                                        <rect key="frame" x="10" y="20" width="300" height="52"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <fontDescription key="fontDescription" type="boldSystem" size="button"/>
-                                        <state key="normal" title="add Movie">
-                                            <color key="titleColor" red="0.19607843137254902" green="0.30980392156862746" blue="0.52156862745098043" alpha="1" colorSpace="calibratedRGB"/>
-                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                        </state>
-                                        <state key="highlighted">
-                                            <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                        </state>
-                                        <connections>
-                                            <segue destination="XfI-Ie-lYa" kind="modal" id="BMk-9K-XeV"/>
-                                        </connections>
-                                    </button>
-                                </subviews>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <navigationItem key="navigationItem" id="LFE-3Y-IEn">
                         <nil key="title"/>
                         <segmentedControl key="titleView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="bar" selectedSegmentIndex="0" id="p6I-ry-VOo">
-                            <rect key="frame" x="5" y="7" width="262" height="30"/>
+                            <rect key="frame" x="6" y="7" width="262" height="30"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <segments>
                                 <segment title="All Movies"/>
@@ -125,8 +104,6 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
-                        <outlet property="addButton" destination="LKR-Do-Mqt" id="IIC-0l-2WF"/>
-                        <outlet property="addButtonBackgroundView" destination="uuS-7l-PMb" id="PKA-jk-771"/>
                         <outlet property="sortControl" destination="p6I-ry-VOo" id="Bwd-FU-eVY"/>
                         <outlet property="tableView" destination="4ys-yN-434" id="43A-Pu-XUg"/>
                     </connections>
@@ -205,18 +182,19 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <navigationItem key="navigationItem" title="Detail" id="OVQ-Xf-fIl">
-                        <barButtonItem key="rightBarButtonItem" image="dv_icon_share.png" id="66s-MO-SL9">
+                        <barButtonItem key="rightBarButtonItem" image="dv_icon_share.png" id="9Id-lP-xw8">
                             <connections>
-                                <action selector="shareButtonClicked:" destination="hEG-vR-tpH" id="PIv-HK-DhV"/>
+                                <action selector="shareButtonClicked:" destination="hEG-vR-tpH" id="boT-ij-szn"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="shareButton" destination="9Id-lP-xw8" id="Iyj-5g-ZRY"/>
                         <segue destination="aIh-ZM-gS8" kind="push" identifier="MovieCastSegue" id="uyO-M3-raF"/>
                         <segue destination="pqS-3R-9IU" kind="modal" identifier="MovieNoteSegue" id="aGY-CZ-TGK"/>
                         <segue destination="hjq-mA-Ll1" kind="push" identifier="ThumbnailPickerSegue" id="g3C-LE-fgC"/>
                         <segue destination="YNR-hM-njU" kind="push" identifier="DetailWebViewSegue" id="dp1-K0-eya"/>
-                        <segue destination="4fU-0X-pgW" kind="modal" identifier="SimilarMovieSegue" id="ZNA-Vd-r8y"/>
+                        <segue destination="WYc-aO-Ggw" kind="push" identifier="SimilarMovieSegue" id="SVs-AI-VUn"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="haJ-dp-Bvw" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -723,289 +701,23 @@
             </objects>
             <point key="canvasLocation" x="842" y="660"/>
         </scene>
-        <!--Search Movie View Controller-->
-        <scene sceneID="Pda-5p-Gwf">
+        <!--Similar Movies Table View Controller-->
+        <scene sceneID="aPS-7g-3s0">
             <objects>
-                <viewController id="XfI-Ie-lYa" customClass="SearchMovieViewController" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="7hx-ar-jxb">
-                        <rect key="frame" x="0.0" y="20" width="320" height="460"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="76" sectionHeaderHeight="22" sectionFooterHeight="22" id="xx4-B8-l30">
-                                <rect key="frame" x="0.0" y="44" width="320" height="416"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <prototypes>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="SearchMovieTableViewCell" rowHeight="79" id="7GD-Ke-eOS">
-                                        <rect key="frame" x="0.0" y="22" width="320" height="79"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                                            <rect key="frame" x="0.0" y="0.0" width="320" height="78"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="100" contentMode="left" text="Label" lineBreakMode="tailTruncation" numberOfLines="2" minimumFontSize="10" adjustsFontSizeToFit="NO" id="Eow-MY-OJH">
-                                                    <rect key="frame" x="69" y="9" width="200" height="39"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
-                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                                    <color key="highlightedColor" cocoaTouchSystemColor="darkTextColor"/>
-                                                    <color key="shadowColor" red="1" green="1" blue="1" alpha="0.33000000000000002" colorSpace="calibratedRGB"/>
-                                                    <size key="shadowOffset" width="0.0" height="1"/>
-                                                </label>
-                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="101" contentMode="left" text="Label" lineBreakMode="tailTruncation" minimumFontSize="10" adjustsFontSizeToFit="NO" id="ekS-AW-mri">
-                                                    <rect key="frame" x="69" y="50" width="153" height="21"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                    <color key="textColor" red="0.3553261861" green="0.3561815693" blue="0.35552577549999997" alpha="1" colorSpace="calibratedRGB"/>
-                                                    <color key="highlightedColor" red="0.3558964416" green="0.3558964416" blue="0.35658074820000002" alpha="1" colorSpace="calibratedRGB"/>
-                                                    <color key="shadowColor" red="1" green="1" blue="1" alpha="0.33000000000000002" colorSpace="calibratedRGB"/>
-                                                    <size key="shadowOffset" width="0.0" height="1"/>
-                                                </label>
-                                                <imageView userInteractionEnabled="NO" tag="200" contentMode="scaleToFill" id="LCM-7y-ei1">
-                                                    <rect key="frame" x="11" y="9" width="43" height="60"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                </imageView>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="g_cover-overlay.png" id="UCp-10-80a">
-                                                    <rect key="frame" x="9" y="7" width="47" height="64"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                </imageView>
-                                                <imageView userInteractionEnabled="NO" alpha="0.0" tag="34773" contentMode="scaleToFill" image="sv_already-added.png" id="u2d-cE-kf4">
-                                                    <rect key="frame" x="284" y="0.0" width="36" height="36"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                </imageView>
-                                            </subviews>
-                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                        </view>
-                                    </tableViewCell>
-                                    <tableViewCell userInteractionEnabled="NO" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="SearchMovieLoadingTableViewCell" rowHeight="42" id="7WY-u4-7fJ">
-                                        <rect key="frame" x="0.0" y="101" width="320" height="42"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                                            <rect key="frame" x="0.0" y="0.0" width="320" height="41"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="sv_bg_meta.png" id="vxh-cX-iL9">
-                                                    <rect key="frame" x="0.0" y="0.0" width="320" height="42"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                </imageView>
-                                                <imageView userInteractionEnabled="NO" tag="75433" contentMode="scaleToFill" image="sv_error.png" id="IhY-IP-6EZ">
-                                                    <rect key="frame" x="12" y="11" width="18" height="21"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                </imageView>
-                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="34772" contentMode="left" text="loading movies ..." lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" id="ChX-az-SCr">
-                                                    <rect key="frame" x="46" y="10" width="244" height="21"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
-                                                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                    <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                    <color key="shadowColor" red="0.0" green="0.0" blue="0.0" alpha="0.66000000000000003" colorSpace="calibratedRGB"/>
-                                                    <size key="shadowOffset" width="0.0" height="1"/>
-                                                </label>
-                                            </subviews>
-                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                        </view>
-                                    </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="SearchMovieInfoTableViewCell" rowHeight="43" id="5Mz-DL-zqa">
-                                        <rect key="frame" x="0.0" y="143" width="320" height="43"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                                            <rect key="frame" x="0.0" y="0.0" width="320" height="42"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="100" contentMode="left" text="Sorry" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" id="Lsr-3Y-S98">
-                                                    <rect key="frame" x="20" y="10" width="280" height="21"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                    <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                    <color key="shadowColor" red="0.2142857313" green="0.2142857313" blue="0.2142857313" alpha="1" colorSpace="calibratedRGB"/>
-                                                    <size key="shadowOffset" width="0.0" height="1"/>
-                                                </label>
-                                            </subviews>
-                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                        </view>
-                                    </tableViewCell>
-                                </prototypes>
-                                <connections>
-                                    <outlet property="dataSource" destination="XfI-Ie-lYa" id="yYG-AK-N1u"/>
-                                    <outlet property="delegate" destination="XfI-Ie-lYa" id="TWT-8M-GTQ"/>
-                                </connections>
-                            </tableView>
-                            <navigationBar contentMode="scaleToFill" id="Uca-eX-wQH" customClass="MJWatchedNavigationBar">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
-                                <items>
-                                    <navigationItem id="BfG-fd-7lj">
-                                        <nil key="title"/>
-                                        <view key="titleView" contentMode="scaleToFill" id="Qyc-lT-A3m">
-                                            <rect key="frame" x="5" y="6" width="242" height="33"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                            <subviews>
-                                                <searchBar contentMode="redraw" text="" id="Wag-Kj-taO">
-                                                    <rect key="frame" x="-5" y="-6" width="250" height="44"/>
-                                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
-                                                    <textInputTraits key="textInputTraits"/>
-                                                    <scopeButtonTitles>
-                                                        <string>Title</string>
-                                                        <string>Title</string>
-                                                    </scopeButtonTitles>
-                                                    <connections>
-                                                        <outlet property="delegate" destination="XfI-Ie-lYa" id="Nh4-33-tIz"/>
-                                                    </connections>
-                                                </searchBar>
-                                            </subviews>
-                                        </view>
-                                        <barButtonItem key="rightBarButtonItem" systemItem="cancel" id="AYX-Fb-I5F">
-                                            <connections>
-                                                <action selector="cancelButtonClicked:" destination="XfI-Ie-lYa" id="fnn-ki-wsk"/>
-                                            </connections>
-                                        </barButtonItem>
-                                    </navigationItem>
-                                </items>
-                            </navigationBar>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                    </view>
+                <tableViewController id="WYc-aO-Ggw" customClass="SimilarMoviesTableViewController" sceneMemberID="viewController">
+                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="h4O-PQ-CTL">
+                        <rect key="frame" x="0.0" y="64" width="320" height="416"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </tableView>
+                    <navigationItem key="navigationItem" id="YrR-i4-7lS"/>
                     <connections>
-                        <outlet property="searchBar" destination="Wag-Kj-taO" id="ghp-N1-Yq7"/>
-                        <outlet property="tableView" destination="xx4-B8-l30" id="5bL-Ul-5Mo"/>
+                        <segue destination="hEG-vR-tpH" kind="push" identifier="MovieDetailSegue" id="7cq-Xf-UVm"/>
                     </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Qla-7I-jaH" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="IZs-oa-s5k" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="86" y="-1534"/>
-        </scene>
-        <!--Search Movie View Controller-->
-        <scene sceneID="FUR-Jy-tRu">
-            <objects>
-                <viewController id="4fU-0X-pgW" customClass="SearchMovieViewController" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="W0I-LE-d2H">
-                        <rect key="frame" x="0.0" y="20" width="320" height="460"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="76" sectionHeaderHeight="22" sectionFooterHeight="22" id="p9o-Vq-j6N">
-                                <rect key="frame" x="0.0" y="44" width="320" height="416"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <prototypes>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="SearchMovieTableViewCell" rowHeight="79" id="QFt-KE-tmg">
-                                        <rect key="frame" x="0.0" y="22" width="320" height="79"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                                            <rect key="frame" x="0.0" y="0.0" width="320" height="78"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="100" contentMode="left" text="Label" lineBreakMode="tailTruncation" numberOfLines="2" minimumFontSize="10" adjustsFontSizeToFit="NO" id="vQn-lO-BPu">
-                                                    <rect key="frame" x="69" y="9" width="200" height="39"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
-                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                                    <color key="highlightedColor" cocoaTouchSystemColor="darkTextColor"/>
-                                                    <color key="shadowColor" red="1" green="1" blue="1" alpha="0.33000000000000002" colorSpace="calibratedRGB"/>
-                                                    <size key="shadowOffset" width="0.0" height="1"/>
-                                                </label>
-                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="101" contentMode="left" text="Label" lineBreakMode="tailTruncation" minimumFontSize="10" adjustsFontSizeToFit="NO" id="e40-Bh-5aQ">
-                                                    <rect key="frame" x="69" y="50" width="153" height="21"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                    <color key="textColor" red="0.3553261861" green="0.3561815693" blue="0.35552577549999997" alpha="1" colorSpace="calibratedRGB"/>
-                                                    <color key="highlightedColor" red="0.3558964416" green="0.3558964416" blue="0.35658074820000002" alpha="1" colorSpace="calibratedRGB"/>
-                                                    <color key="shadowColor" red="1" green="1" blue="1" alpha="0.33000000000000002" colorSpace="calibratedRGB"/>
-                                                    <size key="shadowOffset" width="0.0" height="1"/>
-                                                </label>
-                                                <imageView userInteractionEnabled="NO" tag="200" contentMode="scaleToFill" id="Qoe-jB-iF6">
-                                                    <rect key="frame" x="11" y="9" width="43" height="60"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                </imageView>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="g_cover-overlay.png" id="0cm-uw-3ti">
-                                                    <rect key="frame" x="9" y="7" width="47" height="64"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                </imageView>
-                                                <imageView userInteractionEnabled="NO" alpha="0.0" tag="34773" contentMode="scaleToFill" image="sv_already-added.png" id="oXF-tt-bIq">
-                                                    <rect key="frame" x="284" y="0.0" width="36" height="36"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                </imageView>
-                                            </subviews>
-                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                        </view>
-                                    </tableViewCell>
-                                    <tableViewCell userInteractionEnabled="NO" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="SearchMovieLoadingTableViewCell" rowHeight="42" id="qyV-W7-kkX">
-                                        <rect key="frame" x="0.0" y="101" width="320" height="42"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                                            <rect key="frame" x="0.0" y="0.0" width="320" height="41"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="sv_bg_meta.png" id="8Dv-zQ-l8H">
-                                                    <rect key="frame" x="0.0" y="0.0" width="320" height="42"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                </imageView>
-                                                <imageView userInteractionEnabled="NO" tag="75433" contentMode="scaleToFill" image="sv_error.png" id="d6e-tp-fEu">
-                                                    <rect key="frame" x="12" y="11" width="18" height="21"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                </imageView>
-                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="34772" contentMode="left" text="loading movies ..." lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" id="Y20-hD-jsc">
-                                                    <rect key="frame" x="46" y="10" width="244" height="21"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
-                                                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                    <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                    <color key="shadowColor" red="0.0" green="0.0" blue="0.0" alpha="0.66000000000000003" colorSpace="calibratedRGB"/>
-                                                    <size key="shadowOffset" width="0.0" height="1"/>
-                                                </label>
-                                            </subviews>
-                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                        </view>
-                                    </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="SearchMovieInfoTableViewCell" rowHeight="43" id="5l5-UT-jHp">
-                                        <rect key="frame" x="0.0" y="143" width="320" height="43"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                                            <rect key="frame" x="0.0" y="0.0" width="320" height="42"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="100" contentMode="left" text="Sorry" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" id="Fwe-Dj-uD8">
-                                                    <rect key="frame" x="20" y="10" width="280" height="21"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                    <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                    <color key="shadowColor" red="0.2142857313" green="0.2142857313" blue="0.2142857313" alpha="1" colorSpace="calibratedRGB"/>
-                                                    <size key="shadowOffset" width="0.0" height="1"/>
-                                                </label>
-                                            </subviews>
-                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                        </view>
-                                    </tableViewCell>
-                                </prototypes>
-                                <connections>
-                                    <outlet property="dataSource" destination="4fU-0X-pgW" id="NFZ-y8-Qqq"/>
-                                    <outlet property="delegate" destination="4fU-0X-pgW" id="Mi4-Cd-hyI"/>
-                                </connections>
-                            </tableView>
-                            <navigationBar contentMode="scaleToFill" id="586-OH-2uP" customClass="MJWatchedNavigationBar">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
-                                <items>
-                                    <navigationItem id="yRQ-dM-qQ9">
-                                        <barButtonItem key="rightBarButtonItem" systemItem="cancel" id="WNi-OF-R31">
-                                            <connections>
-                                                <action selector="cancelButtonClicked:" destination="4fU-0X-pgW" id="dxk-DP-Wof"/>
-                                            </connections>
-                                        </barButtonItem>
-                                    </navigationItem>
-                                </items>
-                            </navigationBar>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                    </view>
-                    <connections>
-                        <outlet property="tableView" destination="p9o-Vq-j6N" id="rlU-hQ-yRw"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="2YF-yW-tBG" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1474" y="-540"/>
+            <point key="canvasLocation" x="1819" y="-500"/>
         </scene>
         <!--Loading Popup View Controller-->
         <scene sceneID="SX1-e7-DO8">
@@ -1066,155 +778,24 @@
         <image name="cv_actor-placeholder.png" width="33" height="37"/>
         <image name="cv_thumbnail-overlay.png" width="35" height="40"/>
         <image name="dv_cover-overlay.png" width="75" height="103"/>
-        <image name="dv_icon_share.png" width="23" height="19"/>
+        <image name="dv_icon_share.png" width="23" height="23"/>
         <image name="g_button_popover_add.png" width="16" height="35"/>
         <image name="g_cover-overlay.png" width="47" height="64"/>
-        <image name="mv_icon_settings.png" width="20" height="20"/>
+        <image name="mv_icon_settings.png" width="19" height="23"/>
         <image name="nv_bg_title.png" width="320" height="24"/>
         <image name="pv_error.png" width="52" height="46"/>
         <image name="pv_mask-bottom.png" width="20" height="10"/>
         <image name="pv_mask-top.png" width="20" height="10"/>
-        <image name="sv_already-added.png" width="36" height="36"/>
-        <image name="sv_bg_meta.png" width="320" height="42"/>
         <image name="sv_bg_meta_small.png" width="278" height="50"/>
         <image name="sv_error.png" width="18" height="20"/>
     </resources>
-    <classes>
-        <class className="AddMovieViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/AddMovieViewController.h"/>
-            <relationships>
-                <relationship kind="action" name="cancelButtonClicked:"/>
-                <relationship kind="action" name="retryButtonClicked:"/>
-                <relationship kind="action" name="saveButtonClicked:"/>
-                <relationship kind="outlet" name="backgroundImageView" candidateClass="UIImageView"/>
-                <relationship kind="outlet" name="displayView" candidateClass="UIView"/>
-                <relationship kind="outlet" name="errorLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="imageView" candidateClass="UIImageView"/>
-                <relationship kind="outlet" name="infoLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="infoView" candidateClass="UIView"/>
-                <relationship kind="outlet" name="loadingView" candidateClass="UIView"/>
-                <relationship kind="outlet" name="nameLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="navBar" candidateClass="UINavigationBar"/>
-                <relationship kind="outlet" name="overviewLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="overviewTitleLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="retryButton" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="saveButton" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="scrollBottomFadeView" candidateClass="UIImageView"/>
-                <relationship kind="outlet" name="scrollTopFadeView" candidateClass="UIImageView"/>
-                <relationship kind="outlet" name="scrollView" candidateClass="UIScrollView"/>
-                <relationship kind="outlet" name="yearLabel" candidateClass="UILabel"/>
-            </relationships>
-        </class>
-        <class className="GMGridView" superclassName="UIScrollView">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/GMGridView.h"/>
-            <relationships>
-                <relationship kind="outlet" name="actionDelegate" candidateClass="NSObject"/>
-                <relationship kind="outlet" name="dataSource" candidateClass="NSObject"/>
-                <relationship kind="outlet" name="layoutStrategy"/>
-                <relationship kind="outlet" name="mainSuperView" candidateClass="UIView"/>
-                <relationship kind="outlet" name="sortingDelegate" candidateClass="NSObject"/>
-                <relationship kind="outlet" name="transformDelegate" candidateClass="NSObject"/>
-            </relationships>
-        </class>
-        <class className="LoadingPopupViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/LoadingPopupViewController.h"/>
-            <relationships>
-                <relationship kind="outlet" name="titleLabel" candidateClass="UILabel"/>
-            </relationships>
-        </class>
-        <class className="MJCustomTableViewCell" superclassName="UITableViewCell">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/MJCustomTableViewCell.h"/>
-        </class>
-        <class className="MJWatchedNavigationBar" superclassName="UINavigationBar">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/MJWatchedNavigationBar.h"/>
-        </class>
-        <class className="MJWatchedNavigationController" superclassName="UINavigationController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/MJWatchedNavigationController.h"/>
-        </class>
-        <class className="MovieCastTableViewCell" superclassName="MJCustomTableViewCell">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/MovieCastTableViewCell.h"/>
-        </class>
-        <class className="MovieCastsTableViewController" superclassName="UITableViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/MovieCastsTableViewController.h"/>
-        </class>
-        <class className="MovieDetailViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/MovieDetailViewController.h"/>
-        </class>
-        <class className="MovieNoteViewController" superclassName="WatchedStyledViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/MovieNoteViewController.h"/>
-            <relationships>
-                <relationship kind="outlet" name="navBar" candidateClass="UINavigationBar"/>
-                <relationship kind="outlet" name="starImageView" candidateClass="UIImageView"/>
-                <relationship kind="outlet" name="textView" candidateClass="UITextView"/>
-                <relationship kind="outlet" name="titleLabel" candidateClass="UILabel"/>
-            </relationships>
-        </class>
-        <class className="MoviesTableViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/MoviesTableViewController.h"/>
-            <relationships>
-                <relationship kind="outlet" name="addButton" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="addButtonBackgroundView" candidateClass="UIView"/>
-                <relationship kind="outlet" name="sortControl" candidateClass="UISegmentedControl"/>
-                <relationship kind="outlet" name="tableView" candidateClass="UITableView"/>
-            </relationships>
-        </class>
-        <class className="PopupLoadingView" superclassName="UIView">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/PopupLoadingView.h"/>
-            <relationships>
-                <relationship kind="outlet" name="detailLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="imageView" candidateClass="UIImageView"/>
-                <relationship kind="outlet" name="titleLabel" candidateClass="UILabel"/>
-            </relationships>
-        </class>
-        <class className="SearchMovieViewController" superclassName="WatchedStyledViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/SearchMovieViewController.h"/>
-            <relationships>
-                <relationship kind="action" name="cancelButtonClicked:"/>
-                <relationship kind="outlet" name="navigationBar" candidateClass="UINavigationBar"/>
-                <relationship kind="outlet" name="searchBar" candidateClass="UISearchBar"/>
-                <relationship kind="outlet" name="tableView" candidateClass="UITableView"/>
-            </relationships>
-        </class>
-        <class className="SettingsAboutTableViewController" superclassName="UITableViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/SettingsAboutTableViewController.h"/>
-        </class>
-        <class className="SettingsTableViewController" superclassName="UITableViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/SettingsTableViewController.h"/>
-            <relationships>
-                <relationship kind="action" name="doneButtonClicked:"/>
-                <relationship kind="action" name="optOutSwitchToggled:"/>
-            </relationships>
-        </class>
-        <class className="ThumbnailPickerViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/ThumbnailPickerViewController.h"/>
-            <relationships>
-                <relationship kind="outlet" name="gridView" candidateClass="GMGridView"/>
-            </relationships>
-        </class>
-        <class className="WatchedLocalWebBrowser" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/WatchedLocalWebBrowser.h"/>
-            <relationships>
-                <relationship kind="outlet" name="webView" candidateClass="UIWebView"/>
-            </relationships>
-        </class>
-        <class className="WatchedStyledViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/WatchedStyledViewController.h"/>
-        </class>
-        <class className="WatchedWebBrowser" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/WatchedWebBrowser.h"/>
-            <relationships>
-                <relationship kind="outlet" name="activityIndicator" candidateClass="UIActivityIndicatorView"/>
-                <relationship kind="outlet" name="toolbar" candidateClass="UIToolbar"/>
-                <relationship kind="outlet" name="webView" candidateClass="UIWebView"/>
-            </relationships>
-        </class>
-    </classes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar" statusBarStyle="blackTranslucent"/>
         <simulatedOrientationMetrics key="orientation"/>
         <simulatedScreenMetrics key="destination"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="1Bi-Fz-U7p"/>
+        <segue reference="05f-kv-Jji"/>
+        <segue reference="dp1-K0-eya"/>
     </inferredMetricsTieBreakers>
 </document>

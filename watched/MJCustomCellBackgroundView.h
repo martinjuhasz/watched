@@ -7,15 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-
-typedef enum
-{
-	MJCellPositionUnknown = 0,
-	MJCellPositionTop,
-	MJCellPositionBottom,
-	MJCellPositionMiddle,
-	MJCellPositionTopAndBottom
-} MJCellPosition;
+#import "UITableView+CellPosition.h"
 
 @interface MJCustomCellBackgroundView : UIView {
     BOOL selected;

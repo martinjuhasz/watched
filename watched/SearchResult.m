@@ -38,6 +38,7 @@
     }
     
     self.added = NO;
+    self.failed = NO;
     self.adult = [(NSNumber *)[aDictionary objectForKey:@"adult"] boolValue];
     self.backdropPath = [aDictionary objectForKey:@"backdrop_path"];
     self.searchResultId = [aDictionary objectForKey:@"id"];
@@ -49,6 +50,22 @@
     self.voteAverage = [aDictionary objectForKey:@"vote_average"];
     self.voteCount = [aDictionary objectForKey:@"vote_count"];
 
+}
+
+- (void)setAdded:(BOOL)newAdded
+{
+    _added = newAdded;
+    if(newAdded == YES) {
+        _failed = NO;
+    }
+}
+
+- (void)setFailed:(BOOL)newFailed
+{
+    _failed = newFailed;
+    if(newFailed == YES) {
+        _added = NO;
+    }
 }
 
 - (void)setReleaseDate:(id)aReleaseDate

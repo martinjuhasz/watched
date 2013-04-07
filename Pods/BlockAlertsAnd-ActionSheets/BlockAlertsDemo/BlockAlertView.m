@@ -26,6 +26,7 @@ static UIFont *buttonFont = nil;
 #define kAlertViewBackground   @"alert-window.png"
 #define kAlertViewBackgroundLandscape   @"alert-window-landscape.png"
 #define kAlertViewBackgroundCapHeight  38
+#define kAnimationSpeed 0.4
 
 #pragma mark - init
 
@@ -319,7 +320,7 @@ static UIFont *buttonFont = nil;
     
     _cancelBounce = NO;
     
-    [UIView animateWithDuration:0.4
+    [UIView animateWithDuration:kAnimationSpeed
                           delay:0.0
                         options:UIViewAnimationCurveEaseOut
                      animations:^{
@@ -368,7 +369,7 @@ static UIFont *buttonFont = nil;
                              _view.center = center;
                          } 
                          completion:^(BOOL finished) {
-                             [UIView animateWithDuration:0.4
+                             [UIView animateWithDuration:kAnimationSpeed
                                                    delay:0.0 
                                                  options:UIViewAnimationCurveEaseIn
                                               animations:^{

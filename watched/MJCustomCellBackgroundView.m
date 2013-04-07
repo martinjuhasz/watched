@@ -53,7 +53,7 @@
         self.backgroundImage.image = defaultImage;
     }
     
-    if(self.position == MJCellPositionTop) {
+    if(self.position == MJCellPositionTop || self.position == MJCellPositionTopAndBottom) {
         self.backgroundImage.frame = CGRectMake(0.0f, 0.0f, 300.0f, 44.0f);
     } else {
         self.backgroundImage.frame = CGRectMake(0.0f, 0.0f, 300.0f, 43.0f);

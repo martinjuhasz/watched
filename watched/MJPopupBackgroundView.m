@@ -3,7 +3,7 @@
 //  watched
 //
 //  Created by Martin Juhasz on 18.06.12.
-//  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
+//  Copyright (c) 2012 watched. All rights reserved.
 //
 
 #import "MJPopupBackgroundView.h"

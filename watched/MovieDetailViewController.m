@@ -3,7 +3,7 @@
 //  watched
 //
 //  Created by Martin Juhasz on 28.05.12.
-//  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
+//  Copyright (c) 2012 watched. All rights reserved.
 //
 
 #import "MovieDetailViewController.h"
@@ -32,6 +32,8 @@
 #import "BlockActionSheet.h"
 #import "BlockAlertView.h"
 #import "MJInternetConnection.h"
+#import "SimilarMoviesTableViewController.h"
+#import "MovieShareButtonView.h"
 
 #define kImageFadeDelay 0.0f
 
@@ -223,8 +225,8 @@
         }
     }
     if([segue.identifier isEqualToString:@"SimilarMovieSegue"]) {
-        SearchMovieViewController *detailViewController = (SearchMovieViewController*)segue.destinationViewController;
-        detailViewController.movieID = self.movie.movieID;
+        SimilarMoviesTableViewController *detailViewController = (SimilarMoviesTableViewController*)segue.destinationViewController;
+        detailViewController.movie = self.movie;
     }
     
     if([segue.identifier isEqualToString:@"DetailWebViewSegue"]) {
@@ -460,12 +462,12 @@
 
 -(IBAction)similarRowClicked
 {
-    if(![[MJInternetConnection sharedInternetConnection] internetAvailable]) {
-        [[MJInternetConnection sharedInternetConnection] displayAlert];
-        NSIndexPath *path = [NSIndexPath indexPathForRow:0 inSection:1];
-        [self.detailView.metaTableView deselectRowAtIndexPath:path animated:YES];
-        return;
-    }
+//    if(![[MJInternetConnection sharedInternetConnection] internetAvailable]) {
+//        [[MJInternetConnection sharedInternetConnection] displayAlert];
+//        NSIndexPath *path = [NSIndexPath indexPathForRow:2 inSection:0];
+//        [self.detailView.metaTableView deselectRowAtIndexPath:path animated:YES];
+//        return;
+//    }
     
     [self performSegueWithIdentifier:@"SimilarMovieSegue" sender:nil];
 }
@@ -678,18 +680,16 @@
     // Backdrop
     if(aImageType == ImageTypeBackdrop) {
         [bridge setBackdropWithImagePath:aImage toMovie:self.movie success:^{
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, kImageFadeDelay * NSEC_PER_SEC), dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, kImageFadeDelay * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
                 
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    UIImage *oldImage = self.detailView.backdropImageView.image;
-                    UIImage *newImage = self.movie.backdrop;
-                    CABasicAnimation *crossFade = [CABasicAnimation animationWithKeyPath:@"contents"];
-                    crossFade.duration = 1.0;
-                    crossFade.fromValue = (id)[oldImage CGImage];
-                    crossFade.toValue = (id)[newImage CGImage];
-                    [self.detailView.backdropImageView.layer addAnimation:crossFade forKey:@"animateContents"];
-                    self.detailView.backdropImageView.image = self.movie.backdrop;
-                });
+                UIImage *oldImage = self.detailView.backdropImageView.image;
+                UIImage *newImage = self.movie.backdrop;
+                CABasicAnimation *crossFade = [CABasicAnimation animationWithKeyPath:@"contents"];
+                crossFade.duration = 1.0;
+                crossFade.fromValue = (id)[oldImage CGImage];
+                crossFade.toValue = (id)[newImage CGImage];
+                [self.detailView.backdropImageView.layer addAnimation:crossFade forKey:@"animateContents"];
+                self.detailView.backdropImageView.image = self.movie.backdrop;
                 
                 NSManagedObjectContext *context = [[MoviesDataModel sharedDataModel] mainContext];
                 NSError *error;
@@ -705,18 +705,16 @@
     // Poster
     } else {
         [bridge setPosterWithImagePath:aImage toMovie:self.movie success:^{
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, kImageFadeDelay * NSEC_PER_SEC), dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, kImageFadeDelay * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
                 
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    UIImage *oldImage = self.detailView.posterImageView.image;
-                    UIImage *newImage = self.movie.poster;
-                    CABasicAnimation *crossFade = [CABasicAnimation animationWithKeyPath:@"contents"];
-                    crossFade.duration = 2.0;
-                    crossFade.fromValue = (id)[oldImage CGImage];
-                    crossFade.toValue = (id)[newImage CGImage];
-                    [self.detailView.posterImageView.layer addAnimation:crossFade forKey:@"animateContents"];
-                    self.detailView.posterImageView.image = newImage;
-                });
+                UIImage *oldImage = self.detailView.posterImageView.image;
+                UIImage *newImage = self.movie.poster;
+                CABasicAnimation *crossFade = [CABasicAnimation animationWithKeyPath:@"contents"];
+                crossFade.duration = 2.0;
+                crossFade.fromValue = (id)[oldImage CGImage];
+                crossFade.toValue = (id)[newImage CGImage];
+                [self.detailView.posterImageView.layer addAnimation:crossFade forKey:@"animateContents"];
+                self.detailView.posterImageView.image = newImage;
                 
                 NSManagedObjectContext *context = [[MoviesDataModel sharedDataModel] mainContext];
                 NSError *error;
@@ -805,12 +803,12 @@
     return cell;
 }
 
-- (float)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+- (float)tableView:(UITableView *)aTableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    //    MJCellPosition position = [self positionForIndexPath:indexPath inTableView:self.tableView];
-    //    if(position == MJCellPositionTop) {
-    //        return 44.0f;
-    //    }
+    MJCellPosition position = [aTableView positionForIndexPath:indexPath];
+    if(position == MJCellPositionTopAndBottom) {
+        return 44.0f;
+    }
     return 43.0f;
 }
 

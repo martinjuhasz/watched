@@ -52,7 +52,8 @@
 - (void)configureForTableView:(UITableView *)aTableView indexPath:(NSIndexPath *)anIndexPath
 {
     [self addStyles];
-    MJCellPosition position = [self positionForIndexPath:anIndexPath inTableView:aTableView];
+    MJCellPosition aPosition = [aTableView positionForIndexPath:anIndexPath];
+    self.position = aPosition;
     
     self.detailTextLabel.backgroundColor = [UIColor clearColor];
     self.textLabel.backgroundColor = [UIColor clearColor];
@@ -68,31 +69,14 @@
 	}
 
 	if (aTableView.style == UITableViewStyleGrouped) {
-        [(MJCustomCellBackgroundView*)self.backgroundView setPosition:position];
-        [(MJCustomCellBackgroundView*)self.selectedBackgroundView setPosition:position];
+        [(MJCustomCellBackgroundView*)self.backgroundView setPosition:aPosition];
+        [(MJCustomCellBackgroundView*)self.selectedBackgroundView setPosition:aPosition];
 	}
     
     if(!self.activated) {
         self.textLabel.textColor = HEXColor(0x969696);
         self.textLabel.highlightedTextColor = HEXColor(0x969696);
     }
-}
-
-- (MJCellPosition)positionForIndexPath:(NSIndexPath *)anIndexPath inTableView:(UITableView *)aTableView
-{
-	MJCellPosition result;
-    
-    result = ([anIndexPath row] != 0) ? MJCellPositionMiddle : MJCellPositionTop;
-    
-    id<UITableViewDataSource> dataSource = aTableView.dataSource;
-    int numRows = ([dataSource tableView:aTableView numberOfRowsInSection:anIndexPath.section]) - 1;
-    
-    if(anIndexPath.row == numRows) {
-        if(result == MJCellPositionTop) return MJCellPositionTopAndBottom;
-        return MJCellPositionBottom;
-    }
-    
-    return result;
 }
 
 @end

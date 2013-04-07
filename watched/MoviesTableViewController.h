@@ -3,7 +3,7 @@
 //  watched
 //
 //  Created by Martin Juhasz on 09.05.12.
-//  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
+//  Copyright (c) 2012 watched. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
@@ -23,6 +23,12 @@ typedef enum {
     MovieCellTypeAdding
 } MovieCellType;
 
+typedef enum {
+    SearchSectionTypeFound = 1,
+    SearchSectionTypeAdded,
+    SearchSectionTypeOnline
+} SearchSectionType;
+
 @interface MoviesTableViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, UISearchDisplayDelegate, UISearchBarDelegate, NSFetchedResultsControllerDelegate>
 {
     NSInteger currentPage;
@@ -35,8 +41,6 @@ typedef enum {
 @property (strong, nonatomic) NSFetchedResultsController *searchFetchedResultsController;
 @property (strong, nonatomic) IBOutlet UITableView *tableView;
 @property (assign, nonatomic) MovieSortType currentSortType;
-@property (strong, nonatomic) IBOutlet UIButton *addButton;
-@property (strong, nonatomic) IBOutlet UIView *addButtonBackgroundView;
 @property (strong, nonatomic) IBOutlet UISegmentedControl *sortControl;
 @property (strong, nonatomic) UISearchBar *searchBar;
 @property (strong, nonatomic) UISearchDisplayController *searchController;

@@ -3,7 +3,7 @@
 //  watched
 //
 //  Created by Martin Juhasz on 25.04.12.
-//  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
+//  Copyright (c) 2012 watched. All rights reserved.
 //
 
 #import "SearchMovieViewController.h"

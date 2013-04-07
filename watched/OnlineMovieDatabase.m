@@ -3,7 +3,7 @@
 //  watched
 //
 //  Created by Martin Juhasz on 01.05.12.
-//  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
+//  Copyright (c) 2012 watched. All rights reserved.
 //
 
 #import "OnlineMovieDatabase.h"
@@ -95,6 +95,11 @@ static NSString *databaseURL = @"http://api.themoviedb.org/3";
 {
     if(!configuration) {
         configuration = [NSKeyedUnarchiver unarchiveObjectWithFile:configurationPath];
+        if(!configuration) {
+            [self loadConfigurationWithFailure:^(NSError *error) {
+                DebugLog(@"%@", [error localizedDescription]);
+            }];
+        }
     }
     return configuration;
 }
