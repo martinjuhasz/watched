@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="2.0" toolsVersion="3084" systemVersion="12D78" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="xLq-tF-y1P">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="2.0" toolsVersion="3084" systemVersion="12D78" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="Xfi-OZ-djB">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="2083"/>
     </dependencies>
     <scenes>
         <!--Watched Navigation Controller-->
-        <scene sceneID="He7-pS-DVI">
+        <scene sceneID="MJt-dT-9Fw">
             <objects>
-                <navigationController storyboardIdentifier="StartNavigationController" definesPresentationContext="YES" id="xLq-tF-y1P" customClass="MJWatchedNavigationController" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="dGg-tf-XCL" customClass="MJWatchedNavigationBar">
+                <navigationController definesPresentationContext="YES" id="Xfi-OZ-djB" customClass="MJWatchedNavigationController" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="HBi-4I-X75" customClass="MJWatchedNavigationBar">
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
-                        <segue destination="jkq-Yu-AXG" kind="relationship" relationship="rootViewController" id="3sC-jQ-svu"/>
+                        <segue destination="jkq-Yu-AXG" kind="relationship" relationship="rootViewController" id="dXX-0J-mtm"/>
                     </connections>
                 </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Iyw-Db-WSh" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="UP6-jO-ZPA" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1012" y="-898"/>
+            <point key="canvasLocation" x="-1166" y="-898"/>
         </scene>
         <!--Movies Table View Controller-->
         <scene sceneID="ZRJ-hD-gZI">
@@ -99,7 +99,7 @@
                         <barButtonItem key="rightBarButtonItem" image="mv_icon_settings.png" id="nSG-I1-Sf7">
                             <connections>
                                 <action selector="settingsButtonClicked:" destination="jkq-Yu-AXG" id="DSt-SC-sud"/>
-                                <segue destination="L4d-38-F84" kind="modal" id="Z8I-3s-3QV"/>
+                                <segue destination="iSK-MC-BYY" kind="modal" id="1Sa-wK-bHN"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -158,19 +158,19 @@
             <point key="canvasLocation" x="-371" y="-215"/>
         </scene>
         <!--Watched Navigation Controller-->
-        <scene sceneID="noy-Pf-7vV">
+        <scene sceneID="gaP-52-im9">
             <objects>
-                <navigationController definesPresentationContext="YES" id="L4d-38-F84" customClass="MJWatchedNavigationController" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="SXd-d2-Ih8" customClass="MJWatchedNavigationBar">
+                <navigationController definesPresentationContext="YES" id="iSK-MC-BYY" customClass="MJWatchedNavigationController" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="5wJ-Qm-lzH" customClass="MJWatchedNavigationBar">
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
-                        <segue destination="vIw-Rh-SoE" kind="relationship" relationship="rootViewController" id="PHF-Jk-stN"/>
+                        <segue destination="vIw-Rh-SoE" kind="relationship" relationship="rootViewController" id="ueH-SU-yB1"/>
                     </connections>
                 </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="f6p-tG-6bh" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="gzv-gQ-wmY" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-825" y="-215"/>
+            <point key="canvasLocation" x="-834" y="-215"/>
         </scene>
         <!--Movie Detail View Controller - Detail-->
         <scene sceneID="GKR-54-3xz">
@@ -789,6 +789,129 @@
         <image name="sv_bg_meta_small.png" width="278" height="50"/>
         <image name="sv_error.png" width="18" height="20"/>
     </resources>
+    <classes>
+        <class className="AddMovieViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/AddMovieViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="cancelButtonClicked:"/>
+                <relationship kind="outlet" name="backgroundImageView" candidateClass="UIImageView"/>
+                <relationship kind="outlet" name="displayView" candidateClass="UIView"/>
+                <relationship kind="outlet" name="errorLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="imageView" candidateClass="UIImageView"/>
+                <relationship kind="outlet" name="infoLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="infoView" candidateClass="UIView"/>
+                <relationship kind="outlet" name="loadingView" candidateClass="UIView"/>
+                <relationship kind="outlet" name="nameLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="navBar" candidateClass="UINavigationBar"/>
+                <relationship kind="outlet" name="overviewLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="overviewTitleLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="retryButton" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="saveButton" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="scrollBottomFadeView" candidateClass="UIImageView"/>
+                <relationship kind="outlet" name="scrollTopFadeView" candidateClass="UIImageView"/>
+                <relationship kind="outlet" name="scrollView" candidateClass="UIScrollView"/>
+                <relationship kind="outlet" name="yearLabel" candidateClass="UILabel"/>
+            </relationships>
+        </class>
+        <class className="GMGridView" superclassName="UIScrollView">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/GMGridView.h"/>
+            <relationships>
+                <relationship kind="outlet" name="actionDelegate" candidateClass="NSObject"/>
+                <relationship kind="outlet" name="dataSource" candidateClass="NSObject"/>
+                <relationship kind="outlet" name="layoutStrategy"/>
+                <relationship kind="outlet" name="mainSuperView" candidateClass="UIView"/>
+                <relationship kind="outlet" name="sortingDelegate" candidateClass="NSObject"/>
+                <relationship kind="outlet" name="transformDelegate" candidateClass="NSObject"/>
+            </relationships>
+        </class>
+        <class className="LoadingPopupViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/LoadingPopupViewController.h"/>
+            <relationships>
+                <relationship kind="outlet" name="titleLabel" candidateClass="UILabel"/>
+            </relationships>
+        </class>
+        <class className="MJCustomTableViewCell" superclassName="UITableViewCell">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/MJCustomTableViewCell.h"/>
+        </class>
+        <class className="MJWatchedNavigationBar" superclassName="UINavigationBar">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/MJWatchedNavigationBar.h"/>
+        </class>
+        <class className="MJWatchedNavigationController" superclassName="UINavigationController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/MJWatchedNavigationController.h"/>
+        </class>
+        <class className="MovieCastTableViewCell" superclassName="MJCustomTableViewCell">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/MovieCastTableViewCell.h"/>
+        </class>
+        <class className="MovieCastsTableViewController" superclassName="UITableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/MovieCastsTableViewController.h"/>
+        </class>
+        <class className="MovieDetailViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/MovieDetailViewController.h"/>
+            <relationships>
+                <relationship kind="outlet" name="shareButton" candidateClass="UIBarButtonItem"/>
+            </relationships>
+        </class>
+        <class className="MovieNoteViewController" superclassName="WatchedStyledViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/MovieNoteViewController.h"/>
+            <relationships>
+                <relationship kind="outlet" name="navBar" candidateClass="UINavigationBar"/>
+                <relationship kind="outlet" name="starImageView" candidateClass="UIImageView"/>
+                <relationship kind="outlet" name="textView" candidateClass="UITextView"/>
+                <relationship kind="outlet" name="titleLabel" candidateClass="UILabel"/>
+            </relationships>
+        </class>
+        <class className="MoviesTableViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/MoviesTableViewController.h"/>
+            <relationships>
+                <relationship kind="outlet" name="sortControl" candidateClass="UISegmentedControl"/>
+                <relationship kind="outlet" name="tableView" candidateClass="UITableView"/>
+            </relationships>
+        </class>
+        <class className="PopupLoadingView" superclassName="UIView">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/PopupLoadingView.h"/>
+            <relationships>
+                <relationship kind="outlet" name="detailLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="imageView" candidateClass="UIImageView"/>
+                <relationship kind="outlet" name="titleLabel" candidateClass="UILabel"/>
+            </relationships>
+        </class>
+        <class className="SettingsAboutTableViewController" superclassName="UITableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/SettingsAboutTableViewController.h"/>
+        </class>
+        <class className="SettingsTableViewController" superclassName="UITableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/SettingsTableViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="doneButtonClicked:"/>
+                <relationship kind="action" name="optOutSwitchToggled:"/>
+            </relationships>
+        </class>
+        <class className="SimilarMoviesTableViewController" superclassName="UITableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/SimilarMoviesTableViewController.h"/>
+        </class>
+        <class className="ThumbnailPickerViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/ThumbnailPickerViewController.h"/>
+            <relationships>
+                <relationship kind="outlet" name="gridView" candidateClass="GMGridView"/>
+            </relationships>
+        </class>
+        <class className="WatchedLocalWebBrowser" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/WatchedLocalWebBrowser.h"/>
+            <relationships>
+                <relationship kind="outlet" name="webView" candidateClass="UIWebView"/>
+            </relationships>
+        </class>
+        <class className="WatchedStyledViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/WatchedStyledViewController.h"/>
+        </class>
+        <class className="WatchedWebBrowser" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/WatchedWebBrowser.h"/>
+            <relationships>
+                <relationship kind="outlet" name="activityIndicator" candidateClass="UIActivityIndicatorView"/>
+                <relationship kind="outlet" name="toolbar" candidateClass="UIToolbar"/>
+                <relationship kind="outlet" name="webView" candidateClass="UIWebView"/>
+            </relationships>
+        </class>
+    </classes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar" statusBarStyle="blackTranslucent"/>
         <simulatedOrientationMetrics key="orientation"/>
@@ -796,6 +919,6 @@
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
         <segue reference="05f-kv-Jji"/>
-        <segue reference="dp1-K0-eya"/>
+        <segue reference="w8V-Ip-ajx"/>
     </inferredMetricsTieBreakers>
 </document>

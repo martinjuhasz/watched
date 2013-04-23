@@ -540,6 +540,79 @@
                              [NSNumber numberWithInt:36419],
                              [NSNumber numberWithInt:238],
                              [NSNumber numberWithInt:10193],
+                             [NSNumber numberWithInt:110147],
+                             [NSNumber numberWithInt:12230],
+                             [NSNumber numberWithInt:12155],
+                             [NSNumber numberWithInt:170],
+                             [NSNumber numberWithInt:12244],
+                             [NSNumber numberWithInt:12092],
+                             [NSNumber numberWithInt:34573],
+                             [NSNumber numberWithInt:64688],
+                             [NSNumber numberWithInt:3021],
+                             [NSNumber numberWithInt:11467],
+                             [NSNumber numberWithInt:2752],
+                             [NSNumber numberWithInt:15739],
+                             [NSNumber numberWithInt:14367],
+                             [NSNumber numberWithInt:4688],
+                             [NSNumber numberWithInt:584],
+                             [NSNumber numberWithInt:49026],
+                             [NSNumber numberWithInt:6477],
+                             [NSNumber numberWithInt:96724],
+                             [NSNumber numberWithInt:165],
+                             [NSNumber numberWithInt:453],
+                             [NSNumber numberWithInt:9444],
+                             [NSNumber numberWithInt:4347],
+                             [NSNumber numberWithInt:10112],
+                             [NSNumber numberWithInt:155],
+                             [NSNumber numberWithInt:142],
+                             [NSNumber numberWithInt:1771],
+                             [NSNumber numberWithInt:4978],
+                             [NSNumber numberWithInt:10020],
+                             [NSNumber numberWithInt:24428],
+                             [NSNumber numberWithInt:2310],
+                             [NSNumber numberWithInt:12105],
+                             [NSNumber numberWithInt:28100],
+                             [NSNumber numberWithInt:30923],
+                             [NSNumber numberWithInt:38117],
+                             [NSNumber numberWithInt:164],
+                             [NSNumber numberWithInt:10560],
+                             [NSNumber numberWithInt:44214],
+                             [NSNumber numberWithInt:62],
+                             [NSNumber numberWithInt:62177],
+                             [NSNumber numberWithInt:196],
+                             [NSNumber numberWithInt:15171],
+                             [NSNumber numberWithInt:1588],
+                             [NSNumber numberWithInt:5966],
+                             [NSNumber numberWithInt:17979],
+                             [NSNumber numberWithInt:49038],
+                             [NSNumber numberWithInt:10588],
+                             [NSNumber numberWithInt:197],
+                             [NSNumber numberWithInt:8273],
+                             [NSNumber numberWithInt:62213],
+                             [NSNumber numberWithInt:93856],
+                             [NSNumber numberWithInt:9479],
+                             [NSNumber numberWithInt:36685],
+                             [NSNumber numberWithInt:48466],
+                             [NSNumber numberWithInt:19913],
+                             [NSNumber numberWithInt:48231],
+                             [NSNumber numberWithInt:72331],
+                             [NSNumber numberWithInt:70574],
+                             [NSNumber numberWithInt:44678],
+                             [NSNumber numberWithInt:73456],
+                             [NSNumber numberWithInt:77499],
+                             [NSNumber numberWithInt:55721],
+                             [NSNumber numberWithInt:80787],
+                             [NSNumber numberWithInt:1574],
+                             [NSNumber numberWithInt:392],
+                             [NSNumber numberWithInt:16871],
+                             [NSNumber numberWithInt:522],
+                             [NSNumber numberWithInt:49014],
+                             [NSNumber numberWithInt:74915],
+                             [NSNumber numberWithInt:12230],
+                             [NSNumber numberWithInt:50544],
+                             [NSNumber numberWithInt:56950],
+                             [NSNumber numberWithInt:37735],
+                             [NSNumber numberWithInt:96313],
                              nil];
         
         dispatch_group_t group = dispatch_group_create();
@@ -562,7 +635,7 @@
                     NSString *progress = [NSString stringWithFormat:@"%d / %.0f", current, total];
                     _loadingController.titleLabel.text = progress;
                 });
-                DebugLog("%@",[anError localizedDescription]);
+                //DebugLog("%@",[anError localizedDescription]);
                 dispatch_group_leave(group);
             }];
             [queue addOperation:operation];
@@ -647,6 +720,8 @@
     self.movieCountLabel.textColor = HEXColor(0x4C4C4C);
     self.movieCountLabel.textAlignment = NSTextAlignmentCenter;
     self.movieCountLabel.backgroundColor = [UIColor clearColor];
+    self.movieCountLabel.adjustsFontSizeToFitWidth = YES;
+    self.movieCountLabel.adjustsLetterSpacingToFitWidth = YES;
     
     self.averageRatingLabel = [[UILabel alloc] initWithFrame:CGRectMake(169.0f, 19.0f, 137.0f, 46.0f)];
     self.averageRatingLabel.font = [UIFont boldSystemFontOfSize:37.0f];
@@ -655,6 +730,8 @@
     self.averageRatingLabel.textColor = HEXColor(0x4C4C4C);
     self.averageRatingLabel.textAlignment = NSTextAlignmentCenter;
     self.averageRatingLabel.backgroundColor = [UIColor clearColor];
+    self.averageRatingLabel.adjustsFontSizeToFitWidth = YES;
+    self.averageRatingLabel.adjustsLetterSpacingToFitWidth = YES;
     
     [self reloadStatisticCells];
     
