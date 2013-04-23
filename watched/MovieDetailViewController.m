@@ -560,11 +560,15 @@
         imageDisplay = @"none";
     }
     
+    NSString *mailTitle = (self.movie.title) ? self.movie.title : @"";
+    NSString *mailOverview = (self.movie.overview) ? self.movie.overview : @"";
+    NSString *mailID = (self.movie.movieID) ? [self.movie.movieID stringValue] : @"";
+    
     sharebymailString = [sharebymailString stringByReplacingOccurrencesOfString:@"###IMAGE_URL###" withString:imageURL];
     sharebymailString = [sharebymailString stringByReplacingOccurrencesOfString:@"###IMAGE_DISPLAY###" withString:imageDisplay];
-    sharebymailString = [sharebymailString stringByReplacingOccurrencesOfString:@"###MOVIE_TITLE###" withString:self.movie.title];
-    sharebymailString = [sharebymailString stringByReplacingOccurrencesOfString:@"###MOVIE_DESCRIPTION###" withString:self.movie.overview];
-    sharebymailString = [sharebymailString stringByReplacingOccurrencesOfString:@"###MOVIE_ID###" withString:[self.movie.movieID stringValue]];
+    sharebymailString = [sharebymailString stringByReplacingOccurrencesOfString:@"###MOVIE_TITLE###" withString:mailTitle];
+    sharebymailString = [sharebymailString stringByReplacingOccurrencesOfString:@"###MOVIE_DESCRIPTION###" withString:mailOverview];
+    sharebymailString = [sharebymailString stringByReplacingOccurrencesOfString:@"###MOVIE_ID###" withString:mailID];
     
     
     int rating = [self.movie.rating intValue];

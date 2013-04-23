@@ -27,7 +27,7 @@
 		</dict>
 	</dict>
 	<key>CFBundleIdentifier</key>
-	<string>de.martinjuhasz.${PRODUCT_NAME:rfc1034identifier}</string>
+	<string>de.martinjuhasz.watched-beta</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
