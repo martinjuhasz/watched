@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="2.0" toolsVersion="3084" systemVersion="12D78" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="Xfi-OZ-djB">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4471.1" systemVersion="12E55" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="Xfi-OZ-djB">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="2083"/>
+        <deployment defaultVersion="1536" identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3697.3"/>
     </dependencies>
     <scenes>
         <!--Watched Navigation Controller-->
@@ -24,11 +25,11 @@
             <objects>
                 <viewController storyboardIdentifier="MoviesTableViewController" id="jkq-Yu-AXG" customClass="MoviesTableViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="gdk-zV-uBh">
-                        <rect key="frame" x="0.0" y="64" width="320" height="416"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="4ys-yN-434">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="416"/>
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <inset key="contentInset" minX="0.0" minY="0.0" maxX="0.0" maxY="-2"/>
@@ -36,8 +37,8 @@
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="blue" indentationWidth="10" reuseIdentifier="MoviesTableCellSoft" rowHeight="78" id="ees-f9-d6I">
                                         <rect key="frame" x="0.0" y="22" width="320" height="78"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                                            <rect key="frame" x="0.0" y="0.0" width="320" height="77"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="ees-f9-d6I" id="bcS-Ni-abt">
+                                            <rect key="frame" x="0.0" y="0.0" width="322" height="77"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="100" contentMode="left" text="Label" lineBreakMode="tailTruncation" numberOfLines="2" minimumFontSize="10" adjustsFontSizeToFit="NO" id="wX0-Gp-UE8">
@@ -67,8 +68,7 @@
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 </imageView>
                                             </subviews>
-                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                        </view>
+                                        </tableViewCellContentView>
                                         <connections>
                                             <segue destination="hEG-vR-tpH" kind="push" identifier="MovieDetailSegue" id="05f-kv-Jji"/>
                                         </connections>
@@ -85,7 +85,7 @@
                     <navigationItem key="navigationItem" id="LFE-3Y-IEn">
                         <nil key="title"/>
                         <segmentedControl key="titleView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="bar" selectedSegmentIndex="0" id="p6I-ry-VOo">
-                            <rect key="frame" x="6" y="7" width="262" height="30"/>
+                            <rect key="frame" x="8" y="7" width="260" height="30"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <segments>
                                 <segment title="All Movies"/>
@@ -117,27 +117,26 @@
             <objects>
                 <tableViewController id="vIw-Rh-SoE" customClass="SettingsTableViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="singleLineEtched" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="u12-lN-6Ii">
-                        <rect key="frame" x="0.0" y="64" width="320" height="416"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <prototypes>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="SettingsTableViewCellSwitch" id="DdJ-N3-eVH" customClass="MJCustomTableViewCell">
-                                <rect key="frame" x="0.0" y="46" width="320" height="46"/>
+                                <rect key="frame" x="0.0" y="119" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                                    <rect key="frame" x="10" y="1" width="300" height="43"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="DdJ-N3-eVH" id="5DQ-Rr-ihp">
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <switch opaque="NO" tag="4853" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" id="P8m-2R-SCu">
-                                            <rect key="frame" x="212" y="8" width="79" height="27"/>
+                                            <rect key="frame" x="212" y="8" width="51" height="31"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <connections>
                                                 <action selector="optOutSwitchToggled:" destination="vIw-Rh-SoE" eventType="valueChanged" id="4sV-WM-DA4"/>
                                             </connections>
                                         </switch>
                                     </subviews>
-                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                </view>
+                                </tableViewCellContentView>
                             </tableViewCell>
                         </prototypes>
                     </tableView>
@@ -177,7 +176,7 @@
             <objects>
                 <viewController id="hEG-vR-tpH" customClass="MovieDetailViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="mGF-xa-Kk3">
-                        <rect key="frame" x="0.0" y="64" width="320" height="416"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
@@ -206,11 +205,11 @@
             <objects>
                 <viewController id="hjq-mA-Ll1" customClass="ThumbnailPickerViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="SOu-ra-wqb">
-                        <rect key="frame" x="0.0" y="64" width="320" height="416"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="lM5-SV-JxH" customClass="GMGridView">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="416"/>
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             </scrollView>
                         </subviews>
@@ -230,11 +229,11 @@
             <objects>
                 <viewController id="pqS-3R-9IU" customClass="MovieNoteViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="APS-Xh-eFR">
-                        <rect key="frame" x="0.0" y="20" width="320" height="460"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="jLZ-ge-01M">
-                                <rect key="frame" x="0.0" y="44" width="320" height="200"/>
+                                <rect key="frame" x="0.0" y="44" width="320" height="220"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <inset key="contentInset" minX="1" minY="0.0" maxX="-1" maxY="48"/>
                                 <inset key="scrollIndicatorInsets" minX="0.0" minY="0.0" maxX="0.0" maxY="24"/>
@@ -261,7 +260,7 @@
                                 </items>
                             </navigationBar>
                             <view contentMode="scaleToFill" id="VuL-NH-cCK">
-                                <rect key="frame" x="0.0" y="221" width="320" height="239"/>
+                                <rect key="frame" x="0.0" y="241" width="320" height="239"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                 <subviews>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="nv_bg_title.png" id="xIR-c6-ICh">
@@ -310,11 +309,11 @@
             <objects>
                 <viewController id="AXP-EI-tZd" customClass="WatchedLocalWebBrowser" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="r8t-BV-CJm">
-                        <rect key="frame" x="0.0" y="64" width="320" height="416"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <webView contentMode="scaleToFill" scalesPageToFit="YES" id="2Je-Qx-lat">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="416"/>
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <dataDetectorType key="dataDetectorTypes"/>
@@ -336,15 +335,15 @@
             <objects>
                 <tableViewController id="jmZ-jw-Paz" customClass="SettingsAboutTableViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="singleLineEtched" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="dc1-TV-NAs">
-                        <rect key="frame" x="0.0" y="64" width="320" height="416"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <prototypes>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="SettingsTableViewCell" textLabel="JNN-eG-HBI" detailTextLabel="lBD-8R-bGg" style="IBUITableViewCellStyleValue1" id="GYG-gr-xD3" customClass="MJCustomTableViewCell">
                                 <rect key="frame" x="0.0" y="46" width="320" height="45"/>
                                 <autoresizingMask key="autoresizingMask"/>
-                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                                    <rect key="frame" x="10" y="1" width="300" height="43"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="GYG-gr-xD3" id="ixv-eS-twP">
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="45"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="JNN-eG-HBI">
@@ -362,14 +361,13 @@
                                             <color key="highlightedColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                         </label>
                                     </subviews>
-                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                </view>
+                                </tableViewCellContentView>
                             </tableViewCell>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="blue" indentationWidth="10" reuseIdentifier="AboutCreatorTableCell" id="pUF-0R-XEg" customClass="MJCustomTableViewCell">
                                 <rect key="frame" x="0.0" y="91" width="320" height="45"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                                    <rect key="frame" x="10" y="0.0" width="300" height="43"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="pUF-0R-XEg" id="48y-UE-BpY">
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="45"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="64827" contentMode="left" text="Martin Juhasz" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" adjustsFontSizeToFit="NO" id="Pxi-z4-zDm">
@@ -386,8 +384,7 @@
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         </imageView>
                                     </subviews>
-                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                </view>
+                                </tableViewCellContentView>
                             </tableViewCell>
                         </prototypes>
                         <connections>
@@ -602,15 +599,15 @@
             <objects>
                 <tableViewController id="aIh-ZM-gS8" customClass="MovieCastsTableViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="singleLineEtched" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="0lR-9h-twr">
-                        <rect key="frame" x="0.0" y="64" width="320" height="416"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <prototypes>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="MovieCastsActorCell" rowHeight="54" id="Kjm-7u-67c" customClass="MovieCastTableViewCell">
                                 <rect key="frame" x="0.0" y="46" width="320" height="56"/>
                                 <autoresizingMask key="autoresizingMask"/>
-                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                                    <rect key="frame" x="10" y="1" width="280" height="53"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Kjm-7u-67c" id="rNb-n7-zmT">
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="56"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="101" contentMode="left" text="Martin Juhasz" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" adjustsFontSizeToFit="NO" id="wDx-qg-KRN">
@@ -638,8 +635,7 @@
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         </imageView>
                                     </subviews>
-                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                </view>
+                                </tableViewCellContentView>
                             </tableViewCell>
                         </prototypes>
                         <connections>
@@ -661,16 +657,16 @@
             <objects>
                 <viewController id="YNR-hM-njU" customClass="WatchedWebBrowser" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="3cj-CD-rnL">
-                        <rect key="frame" x="0.0" y="64" width="320" height="416"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="8hC-E3-LX2">
-                                <rect key="frame" x="0.0" y="372" width="320" height="44"/>
+                                <rect key="frame" x="0.0" y="436" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                 <items/>
                             </toolbar>
                             <webView contentMode="scaleToFill" scalesPageToFit="YES" id="MYs-bx-828">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="372"/>
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="436"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                             </webView>
@@ -706,7 +702,7 @@
             <objects>
                 <tableViewController id="WYc-aO-Ggw" customClass="SimilarMoviesTableViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="h4O-PQ-CTL">
-                        <rect key="frame" x="0.0" y="64" width="320" height="416"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </tableView>
@@ -786,139 +782,16 @@
         <image name="pv_error.png" width="52" height="46"/>
         <image name="pv_mask-bottom.png" width="20" height="10"/>
         <image name="pv_mask-top.png" width="20" height="10"/>
-        <image name="sv_bg_meta_small.png" width="278" height="50"/>
+        <image name="sv_bg_meta_small.png" width="278.07723999023438" height="50"/>
         <image name="sv_error.png" width="18" height="20"/>
     </resources>
-    <classes>
-        <class className="AddMovieViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/AddMovieViewController.h"/>
-            <relationships>
-                <relationship kind="action" name="cancelButtonClicked:"/>
-                <relationship kind="outlet" name="backgroundImageView" candidateClass="UIImageView"/>
-                <relationship kind="outlet" name="displayView" candidateClass="UIView"/>
-                <relationship kind="outlet" name="errorLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="imageView" candidateClass="UIImageView"/>
-                <relationship kind="outlet" name="infoLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="infoView" candidateClass="UIView"/>
-                <relationship kind="outlet" name="loadingView" candidateClass="UIView"/>
-                <relationship kind="outlet" name="nameLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="navBar" candidateClass="UINavigationBar"/>
-                <relationship kind="outlet" name="overviewLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="overviewTitleLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="retryButton" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="saveButton" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="scrollBottomFadeView" candidateClass="UIImageView"/>
-                <relationship kind="outlet" name="scrollTopFadeView" candidateClass="UIImageView"/>
-                <relationship kind="outlet" name="scrollView" candidateClass="UIScrollView"/>
-                <relationship kind="outlet" name="yearLabel" candidateClass="UILabel"/>
-            </relationships>
-        </class>
-        <class className="GMGridView" superclassName="UIScrollView">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/GMGridView.h"/>
-            <relationships>
-                <relationship kind="outlet" name="actionDelegate" candidateClass="NSObject"/>
-                <relationship kind="outlet" name="dataSource" candidateClass="NSObject"/>
-                <relationship kind="outlet" name="layoutStrategy"/>
-                <relationship kind="outlet" name="mainSuperView" candidateClass="UIView"/>
-                <relationship kind="outlet" name="sortingDelegate" candidateClass="NSObject"/>
-                <relationship kind="outlet" name="transformDelegate" candidateClass="NSObject"/>
-            </relationships>
-        </class>
-        <class className="LoadingPopupViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/LoadingPopupViewController.h"/>
-            <relationships>
-                <relationship kind="outlet" name="titleLabel" candidateClass="UILabel"/>
-            </relationships>
-        </class>
-        <class className="MJCustomTableViewCell" superclassName="UITableViewCell">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/MJCustomTableViewCell.h"/>
-        </class>
-        <class className="MJWatchedNavigationBar" superclassName="UINavigationBar">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/MJWatchedNavigationBar.h"/>
-        </class>
-        <class className="MJWatchedNavigationController" superclassName="UINavigationController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/MJWatchedNavigationController.h"/>
-        </class>
-        <class className="MovieCastTableViewCell" superclassName="MJCustomTableViewCell">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/MovieCastTableViewCell.h"/>
-        </class>
-        <class className="MovieCastsTableViewController" superclassName="UITableViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/MovieCastsTableViewController.h"/>
-        </class>
-        <class className="MovieDetailViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/MovieDetailViewController.h"/>
-            <relationships>
-                <relationship kind="outlet" name="shareButton" candidateClass="UIBarButtonItem"/>
-            </relationships>
-        </class>
-        <class className="MovieNoteViewController" superclassName="WatchedStyledViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/MovieNoteViewController.h"/>
-            <relationships>
-                <relationship kind="outlet" name="navBar" candidateClass="UINavigationBar"/>
-                <relationship kind="outlet" name="starImageView" candidateClass="UIImageView"/>
-                <relationship kind="outlet" name="textView" candidateClass="UITextView"/>
-                <relationship kind="outlet" name="titleLabel" candidateClass="UILabel"/>
-            </relationships>
-        </class>
-        <class className="MoviesTableViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/MoviesTableViewController.h"/>
-            <relationships>
-                <relationship kind="outlet" name="sortControl" candidateClass="UISegmentedControl"/>
-                <relationship kind="outlet" name="tableView" candidateClass="UITableView"/>
-            </relationships>
-        </class>
-        <class className="PopupLoadingView" superclassName="UIView">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/PopupLoadingView.h"/>
-            <relationships>
-                <relationship kind="outlet" name="detailLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="imageView" candidateClass="UIImageView"/>
-                <relationship kind="outlet" name="titleLabel" candidateClass="UILabel"/>
-            </relationships>
-        </class>
-        <class className="SettingsAboutTableViewController" superclassName="UITableViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/SettingsAboutTableViewController.h"/>
-        </class>
-        <class className="SettingsTableViewController" superclassName="UITableViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/SettingsTableViewController.h"/>
-            <relationships>
-                <relationship kind="action" name="doneButtonClicked:"/>
-                <relationship kind="action" name="optOutSwitchToggled:"/>
-            </relationships>
-        </class>
-        <class className="SimilarMoviesTableViewController" superclassName="UITableViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/SimilarMoviesTableViewController.h"/>
-        </class>
-        <class className="ThumbnailPickerViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/ThumbnailPickerViewController.h"/>
-            <relationships>
-                <relationship kind="outlet" name="gridView" candidateClass="GMGridView"/>
-            </relationships>
-        </class>
-        <class className="WatchedLocalWebBrowser" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/WatchedLocalWebBrowser.h"/>
-            <relationships>
-                <relationship kind="outlet" name="webView" candidateClass="UIWebView"/>
-            </relationships>
-        </class>
-        <class className="WatchedStyledViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/WatchedStyledViewController.h"/>
-        </class>
-        <class className="WatchedWebBrowser" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/WatchedWebBrowser.h"/>
-            <relationships>
-                <relationship kind="outlet" name="activityIndicator" candidateClass="UIActivityIndicatorView"/>
-                <relationship kind="outlet" name="toolbar" candidateClass="UIToolbar"/>
-                <relationship kind="outlet" name="webView" candidateClass="UIWebView"/>
-            </relationships>
-        </class>
-    </classes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
-        <simulatedStatusBarMetrics key="statusBar" statusBarStyle="blackTranslucent"/>
+        <simulatedStatusBarMetrics key="statusBar" statusBarStyle="blackOpaque"/>
         <simulatedOrientationMetrics key="orientation"/>
         <simulatedScreenMetrics key="destination"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
+        <segue reference="dp1-K0-eya"/>
         <segue reference="05f-kv-Jji"/>
-        <segue reference="w8V-Ip-ajx"/>
     </inferredMetricsTieBreakers>
 </document>

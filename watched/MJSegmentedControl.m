@@ -10,12 +10,12 @@
 
 @implementation MJSegmentedControl
 
-- (void)layoutSubviews
-{
-    [super layoutSubviews];
-    NSInteger cachedIndex = self.selectedSegmentIndex;
-    self.selectedSegmentIndex = 0;
-    self.selectedSegmentIndex = cachedIndex;
-}
+//- (void)layoutSubviews
+//{
+////    [super layoutSubviews];
+////    NSInteger cachedIndex = self.selectedSegmentIndex;
+////    self.selectedSegmentIndex = 0;
+////    self.selectedSegmentIndex = cachedIndex;
+//}
 
 @end

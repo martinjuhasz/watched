@@ -78,20 +78,21 @@ const int kMovieTableAddingCellTag = 2004;
     self.tableView.tableFooterView = emptyTable;
     
     // Search View
-    _searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, 44.0f)];
+    _searchBar = [[UISearchBar alloc] initWithFrame:CGRectZero];
     _searchBar.backgroundColor = [UIColor clearColor];
     _searchBar.delegate = self;
     _searchBar.placeholder = NSLocalizedString(@"SEARCHBAR_PLACEHOLDER", nil);
-    UIView *headerView = [[UISearchBar alloc] initWithFrame:_searchBar.frame];
-    headerView.hidden = YES;
-    self.tableView.tableHeaderView = headerView;
-    [self.tableView addSubview:self.searchBar];
+//    UIView *headerView = [[UISearchBar alloc] initWithFrame:_searchBar.frame];
+//    headerView.hidden = YES;
+//    self.tableView.tableHeaderView = headerView;
+//    [self.tableView addSubview:self.searchBar];
     
     _searchController = [[UISearchDisplayController alloc] initWithSearchBar:_searchBar contentsController:self];
     _searchController.delegate = self;
     _searchController.searchResultsDelegate = self;
     _searchController.searchResultsDataSource = self;
     _searchController.searchResultsTableView.delegate = self;
+    _searchController.displaysSearchBarInNavigationBar = YES;
     self.searchOperations = [[NSOperationQueue alloc] init];
     [_searchOperations setMaxConcurrentOperationCount:1];
     
@@ -392,6 +393,7 @@ const int kMovieTableAddingCellTag = 2004;
 
 - (void)tableView:(UITableView *)aTableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    
     MovieCellType cellType = [self cellTypeForTableView:aTableView indexPath:indexPath];
     if(cellType == MovieCellTypeLoading) return;
     
@@ -865,6 +867,7 @@ const int kMovieTableAddingCellTag = 2004;
     isError = NO;
     [_searchOperations cancelAllOperations];
     [self.searchResults removeAllObjects];
+    
 }
 
 - (void)startSearch

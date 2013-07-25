@@ -16,7 +16,7 @@ UISS has the power to:
 
 UISS do not enforce any dependencies on your app. You can generate Objective-C code for your UISS style so you do not even have to link with UISS library in your production build.
 
-# But how does it really look like?
+# But how does it really look?
 
 Assuming you're familiar with UIAppearance proxy you probably wrote a piece of code similar to this one:
 
@@ -114,7 +114,7 @@ Tapping on UISS status bar will present console view where:
 * you can get info about errors in your style
 * you can generate UIAppearance code for your style
 
-# Sytax
+# Syntax
 
 ## Axis parameters
 
@@ -271,13 +271,13 @@ Here are some examples and eqivalent values in _Objective-C_ code.
 
 | JSON | Objective-C |
 -------|--------------
-| ```[1, 2, 3, 4]``` | ```CGRectMake(1, 2)``` |
+| ```[1, 2, 3, 4]``` | ```CGRectMake(1, 2, 3, 4)``` |
 
 #### UIEdgeInsets
 
 | JSON | Objective-C |
 -------|--------------
-| ```[1, 2, 3, 4]``` | ```UIEdgeInsetsMake(1, 2)``` |
+| ```[1, 2, 3, 4]``` | ```UIEdgeInsetsMake(1, 2, 3, 4)``` |
 
 #### UIOffset
 

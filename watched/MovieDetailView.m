@@ -115,7 +115,7 @@
     self.mainScrollView.autoresizingMask = UIViewAutoresizingFlexibleHeight;
     self.mainScrollView.delegate = self;
     [self addSubview:self.mainScrollView];
-    
+
     self.backdropImageView = [[UIImageView alloc] init];
     self.backdropImageView.contentMode = UIViewContentModeScaleAspectFill;
     self.backdropImageView.clipsToBounds = YES;
@@ -166,7 +166,7 @@
     self.titleLabel.shadowColor = [UIColor colorWithRed:255.0f green:255.0f blue:255.0f alpha:0.33f];
     self.titleLabel.shadowOffset = CGSizeMake(0.0f, 1.0f);
     [self.mainScrollView addSubview:self.titleLabel];
-    
+
     self.yearLabel = [[UILabel alloc] init];
     [self setDefaultStylesForLabels:self.yearLabel];
     self.yearLabel.font = [UIFont systemFontOfSize:14.0f];
@@ -196,7 +196,7 @@
     directorTitleLabel.shadowColor = [UIColor colorWithRed:0.0f green:0.0f blue:0.0f alpha:0.8f];
     directorTitleLabel.shadowOffset = CGSizeMake(0.0f, 1.0f);
     [self.mainScrollView addSubview:directorTitleLabel];
-    
+
     UILabel *starringTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(10.0f, 343.0f, 165.0f, 20.0f)];
     starringTitleLabel.text = [NSLocalizedString(@"DETAIL_STARRING_TITLE", nil) uppercaseString];
     [self setDefaultStylesForLabels:starringTitleLabel];
@@ -206,17 +206,17 @@
     starringTitleLabel.shadowColor = [UIColor colorWithRed:0.0f green:0.0f blue:0.0f alpha:0.8f];
     starringTitleLabel.shadowOffset = CGSizeMake(0.0f, 1.0f);
     [self.mainScrollView addSubview:starringTitleLabel];
-    
+
     self.watchedControl = [[MJSegmentedControl alloc] initWithItems:[NSArray arrayWithObjects:
                                                                      NSLocalizedString(@"DV_CONTROL_WATCHED", nil),
                                                                      NSLocalizedString(@"DV_CONTROL_UNWATCHED", nil), nil]];
-    
+
     UIImage *segmentedControlBgImage = [[UIImage imageNamed:@"dv_watched.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 4, 0, 4)];
     UIImage *segmentedControlBgImageActive = [[UIImage imageNamed:@"dv_watched-highlighted.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 14, 0, 14)];
     UIImage *segmentedDividerNN = [UIImage imageNamed:@"dv_watched-dv-nn.png"];
     UIImage *segmentedDividerAN = [UIImage imageNamed:@"dv_watched-dv-an.png"];
     UIImage *segmentedDividerNA = [UIImage imageNamed:@"dv_watched-dv-na.png"];
-    
+
     
     [self.watchedControl setBackgroundImage:segmentedControlBgImage forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
     [self.watchedControl setBackgroundImage:segmentedControlBgImageActive forState:UIControlStateSelected barMetrics:UIBarMetricsDefault];
@@ -225,7 +225,7 @@
     [self.watchedControl setDividerImage:segmentedDividerNA forLeftSegmentState:UIControlStateNormal rightSegmentState:UIControlStateSelected barMetrics:UIBarMetricsDefault];
     
     [self.mainScrollView addSubview:self.watchedControl];
-    
+
     self.ratingView =[[DLStarRatingControl alloc] initWithFrame:CGRectMake(0.0f, 251.0f, 320.0f, 55.0f) andStars:5 isFractional:NO];
     self.ratingView.star = [UIImage imageNamed:@"dv_star.png"];
     self.ratingView.highlightedStar = [UIImage imageNamed:@"dv_star-highlighted.png"];

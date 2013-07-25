@@ -1,5 +1,8 @@
 #!/bin/sh
 
+RESOURCES_TO_COPY=${PODS_ROOT}/resources-to-copy.txt
+touch "$RESOURCES_TO_COPY"
+
 install_resource()
 {
   case $1 in
@@ -20,8 +23,8 @@ install_resource()
       xcrun momc "${PODS_ROOT}/$1" "${CONFIGURATION_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/`basename $1 .xcdatamodeld`.momd"
       ;;
     *)
-      echo "cp -R ${PODS_ROOT}/$1 ${CONFIGURATION_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}"
-      cp -R "${PODS_ROOT}/$1" "${CONFIGURATION_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}"
+      echo "${PODS_ROOT}/$1"
+      echo "${PODS_ROOT}/$1" >> "$RESOURCES_TO_COPY"
       ;;
   esac
 }
@@ -62,3 +65,6 @@ install_resource 'MJStarRating/DLStarRating/images/star_highlighted-darker@2x.pn
 install_resource 'MJStarRating/DLStarRating/images/star_highlighted.png'
 install_resource 'MJStarRating/DLStarRating/images/star_highlighted@2x.png'
 install_resource 'UISS/Project/UISSResources.bundle'
+
+rsync -avr --no-relative --exclude '*/.svn/*' --files-from="$RESOURCES_TO_COPY" / "${CONFIGURATION_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}"
+rm "$RESOURCES_TO_COPY"

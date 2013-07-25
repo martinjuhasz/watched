@@ -18,11 +18,12 @@
 #import "UISSBarMetricsValueConverter.h"
 #import "UISSControlStateValueConverter.h"
 #import "UISSSegmentedControlSegmentValueConverter.h"
-#import "UISSToolbarPositionConverter.h"
+#import "UISSToolbarPositionValueConverter.h"
 #import "UISSSearchBarIconValueConverter.h"
 #import "UISSUserInterfaceIdiomPreprocessor.h"
 #import "UISSVariablesPreprocessor.h"
 #import "UISSDisabledKeysPreprocessor.h"
+#import "UISSTextAlignmentValueConverter.h"
 
 @implementation UISSConfig
 
@@ -50,6 +51,8 @@
                             [[UISSEdgeInsetsValueConverter alloc] init],
                             [[UISSRectValueConverter alloc] init],
                             [[UISSOffsetValueConverter alloc] init],
+            
+                            [[UISSTextAlignmentValueConverter alloc] init],
 
                             [[UISSIntegerValueConverter alloc] init],
                             [[UISSUIntegerValueConverter alloc] init],
@@ -63,7 +66,7 @@
                             [[UISSBarMetricsValueConverter alloc] init],
                             [[UISSControlStateValueConverter alloc] init],
                             [[UISSSegmentedControlSegmentValueConverter alloc] init],
-                            [[UISSToolbarPositionConverter alloc] init],
+                            [[UISSToolbarPositionValueConverter alloc] init],
                             [[UISSSearchBarIconValueConverter alloc] init],
 
                             [[UISSIntegerValueConverter alloc] init],

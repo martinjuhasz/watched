@@ -58,7 +58,7 @@
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        // Custom initializatio
+        // Custom initializati
     }
     return self;
 }
@@ -69,9 +69,7 @@
 	// Do any additional setup after loading the view.
     
     // add detail view
-    CGRect detailRect = self.view.bounds;
-    detailRect.size.height = detailRect.size.height - 44.0f;
-    self.detailView = [[MovieDetailView alloc] initWithFrame:detailRect];
+    self.detailView = [[MovieDetailView alloc] initWithFrame:self.view.bounds];
     [self.view addSubview:self.detailView];
     
     self.detailView.ratingView.delegate = self;
