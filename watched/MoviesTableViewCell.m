@@ -19,15 +19,15 @@
     if (self) {
 
         // appearance
-        UIView *tableCellBackgroundView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, 78.0f)];
-        tableCellBackgroundView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"g_bg-table.png"]];
-        UIView *tableCellBackgroundViewSelected = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, 78.0f)];
-        tableCellBackgroundViewSelected.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"g_bg-table_active.png"]];
-        MJCustomAccessoryControl *accessoryView = [MJCustomAccessoryControl accessory];
-        
-        [self setBackgroundView:tableCellBackgroundView];
-        [self setSelectedBackgroundView:tableCellBackgroundViewSelected];
-        [self setAccessoryView:accessoryView];
+//        UIView *tableCellBackgroundView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, 78.0f)];
+//        tableCellBackgroundView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"g_bg-table.png"]];
+//        UIView *tableCellBackgroundViewSelected = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, 78.0f)];
+//        tableCellBackgroundViewSelected.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"g_bg-table_active.png"]];
+//        MJCustomAccessoryControl *accessoryView = [MJCustomAccessoryControl accessory];
+//        
+//        [self setBackgroundView:tableCellBackgroundView];
+//        [self setSelectedBackgroundView:tableCellBackgroundViewSelected];
+//        [self setAccessoryView:accessoryView];
         
         // content
         [self setupContent];

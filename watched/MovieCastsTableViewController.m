@@ -138,15 +138,15 @@ const int kMovieCastCellProfileImageView = 200;
 - (UITableViewCell*)defaultCellAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *CellIdentifier = @"MovieCastsActorCell";
-    MovieCastTableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
-        cell = [[MovieCastTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     }
     
     MJCustomAccessoryControl *accessoryView = [MJCustomAccessoryControl accessory];
     [cell setAccessoryView:accessoryView];
     // Configure the cell...
-    [cell configureForTableView:self.tableView indexPath:indexPath];
+//    [cell configureForTableView:self.tableView indexPath:indexPath];
     
     return cell;
 }

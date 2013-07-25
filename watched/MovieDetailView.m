@@ -207,22 +207,22 @@
     starringTitleLabel.shadowOffset = CGSizeMake(0.0f, 1.0f);
     [self.mainScrollView addSubview:starringTitleLabel];
 
-    self.watchedControl = [[MJSegmentedControl alloc] initWithItems:[NSArray arrayWithObjects:
+    self.watchedControl = [[UISegmentedControl alloc] initWithItems:[NSArray arrayWithObjects:
                                                                      NSLocalizedString(@"DV_CONTROL_WATCHED", nil),
                                                                      NSLocalizedString(@"DV_CONTROL_UNWATCHED", nil), nil]];
 
-    UIImage *segmentedControlBgImage = [[UIImage imageNamed:@"dv_watched.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 4, 0, 4)];
-    UIImage *segmentedControlBgImageActive = [[UIImage imageNamed:@"dv_watched-highlighted.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 14, 0, 14)];
-    UIImage *segmentedDividerNN = [UIImage imageNamed:@"dv_watched-dv-nn.png"];
-    UIImage *segmentedDividerAN = [UIImage imageNamed:@"dv_watched-dv-an.png"];
-    UIImage *segmentedDividerNA = [UIImage imageNamed:@"dv_watched-dv-na.png"];
+//    UIImage *segmentedControlBgImage = [[UIImage imageNamed:@"dv_watched.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 4, 0, 4)];
+//    UIImage *segmentedControlBgImageActive = [[UIImage imageNamed:@"dv_watched-highlighted.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 14, 0, 14)];
+//    UIImage *segmentedDividerNN = [UIImage imageNamed:@"dv_watched-dv-nn.png"];
+//    UIImage *segmentedDividerAN = [UIImage imageNamed:@"dv_watched-dv-an.png"];
+//    UIImage *segmentedDividerNA = [UIImage imageNamed:@"dv_watched-dv-na.png"];
 
     
-    [self.watchedControl setBackgroundImage:segmentedControlBgImage forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
-    [self.watchedControl setBackgroundImage:segmentedControlBgImageActive forState:UIControlStateSelected barMetrics:UIBarMetricsDefault];
-    [self.watchedControl setDividerImage:segmentedDividerNN forLeftSegmentState:UIControlStateNormal rightSegmentState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
-    [self.watchedControl setDividerImage:segmentedDividerAN forLeftSegmentState:UIControlStateSelected rightSegmentState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
-    [self.watchedControl setDividerImage:segmentedDividerNA forLeftSegmentState:UIControlStateNormal rightSegmentState:UIControlStateSelected barMetrics:UIBarMetricsDefault];
+//    [self.watchedControl setBackgroundImage:segmentedControlBgImage forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
+//    [self.watchedControl setBackgroundImage:segmentedControlBgImageActive forState:UIControlStateSelected barMetrics:UIBarMetricsDefault];
+//    [self.watchedControl setDividerImage:segmentedDividerNN forLeftSegmentState:UIControlStateNormal rightSegmentState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
+//    [self.watchedControl setDividerImage:segmentedDividerAN forLeftSegmentState:UIControlStateSelected rightSegmentState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
+//    [self.watchedControl setDividerImage:segmentedDividerNA forLeftSegmentState:UIControlStateNormal rightSegmentState:UIControlStateSelected barMetrics:UIBarMetricsDefault];
     
     [self.mainScrollView addSubview:self.watchedControl];
 
@@ -240,7 +240,7 @@
     self.metaTableView.scrollEnabled = NO;
     self.metaTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.metaTableView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"g_bg-grp_table.png"]];
-    self.metaTableView.contentInset = UIEdgeInsetsMake(10.0f, 0.0f, 15.0f, 0.0f);
+    self.metaTableView.contentInset = UIEdgeInsetsMake(-15.0f, 0.0f, 0.0f, 0.0f);
     [self.mainScrollView addSubview:self.metaTableView];
     
     

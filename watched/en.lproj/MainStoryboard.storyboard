@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4471.1" systemVersion="12E55" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="Xfi-OZ-djB">
     <dependencies>
-        <deployment defaultVersion="1536" identifier="iOS"/>
+        <deployment defaultVersion="1792" identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3697.3"/>
     </dependencies>
     <scenes>
@@ -603,11 +603,11 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="MovieCastsActorCell" rowHeight="54" id="Kjm-7u-67c" customClass="MovieCastTableViewCell">
-                                <rect key="frame" x="0.0" y="46" width="320" height="56"/>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="MovieCastsActorCell" rowHeight="54" id="Kjm-7u-67c">
+                                <rect key="frame" x="0.0" y="119" width="320" height="54"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Kjm-7u-67c" id="rNb-n7-zmT">
-                                    <rect key="frame" x="0.0" y="0.0" width="320" height="56"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="287" height="53"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="101" contentMode="left" text="Martin Juhasz" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" adjustsFontSizeToFit="NO" id="wDx-qg-KRN">
@@ -676,7 +676,7 @@
                     <navigationItem key="navigationItem" id="uSe-Fb-R0v">
                         <barButtonItem key="rightBarButtonItem" id="UwL-q6-h3B">
                             <view key="customView" contentMode="scaleToFill" id="BDZ-xA-BoA">
-                                <rect key="frame" x="285" y="5" width="30" height="33"/>
+                                <rect key="frame" x="274" y="5" width="30" height="33"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
                                     <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" hidesWhenStopped="YES" style="white" id="VkH-J0-UNL">
@@ -785,13 +785,14 @@
         <image name="sv_bg_meta_small.png" width="278.07723999023438" height="50"/>
         <image name="sv_error.png" width="18" height="20"/>
     </resources>
+    <color key="tintColor" red="0.94117647058823528" green="0.14901960784313725" blue="0.1764705882352941" alpha="1" colorSpace="calibratedRGB"/>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar" statusBarStyle="blackOpaque"/>
         <simulatedOrientationMetrics key="orientation"/>
         <simulatedScreenMetrics key="destination"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="dp1-K0-eya"/>
+        <segue reference="atQ-Ey-PSb"/>
         <segue reference="05f-kv-Jji"/>
     </inferredMetricsTieBreakers>
 </document>

@@ -751,9 +751,9 @@
 - (UITableViewCell *)tableView:(UITableView *)aTableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *CellIdentifier = @"MetaTableCell";
-    MJCustomTableViewCell *cell = [aTableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    UITableViewCell *cell = [aTableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
-        cell = [[MJCustomTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     }
     
     MJCustomAccessoryControl *accessoryView = [MJCustomAccessoryControl accessory];
@@ -766,7 +766,7 @@
             // trailer
             cell.textLabel.text = NSLocalizedString(@"BUTTON_WATCH_TRAILER", nil);
             if(!self.movie.bestTrailer) {
-                cell.activated = NO;
+//                cell.activated = NO;
                 cell.userInteractionEnabled = NO;
                 accessoryView.controlImageView.image = [UIImage imageNamed:@"g_table-accessory_disabled.png"];
                 cell.imageView.image = [UIImage imageNamed:@"dv_icon_trailer_disabled.png"];
@@ -777,7 +777,7 @@
             // cast
             cell.textLabel.text = NSLocalizedString(@"BUTTON_SHOW_CAST", nil);
             if(self.movie.casts.count <= 0) {
-                cell.activated = NO;
+//                cell.activated = NO;
                 cell.userInteractionEnabled = NO;
                 accessoryView.controlImageView.image = [UIImage imageNamed:@"g_table-accessory_disabled.png"];
                 cell.imageView.image = [UIImage imageNamed:@"dv_icon_cast_disabled.png"];
@@ -800,7 +800,7 @@
     
     
     // Configure the cell...
-    [cell configureForTableView:aTableView indexPath:indexPath];
+//    [cell configureForTableView:aTableView indexPath:indexPath];
     
     return cell;
 }

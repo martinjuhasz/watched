@@ -40,7 +40,7 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    self.uiss = [UISS configureWithDefaultJSONFile];
+//    self.uiss = [UISS configureWithDefaultJSONFile];
     //self.uiss.statusWindowEnabled = YES;
     
     [MJInternetConnection sharedInternetConnection];
