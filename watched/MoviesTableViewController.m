@@ -23,6 +23,7 @@
 #import "MoviesTableViewOnlineCell.h"
 #import "MJLoadingAccessoryControl.h"
 #import "MJReloadAccessoryControl.h"
+#import "UIColor+Additions.h"
 
 #define kSectionHeaderHeight 24.0f
 
@@ -78,21 +79,21 @@ const int kMovieTableAddingCellTag = 2004;
     self.tableView.tableFooterView = emptyTable;
     
     // Search View
-    _searchBar = [[UISearchBar alloc] initWithFrame:CGRectZero];
-    _searchBar.backgroundColor = [UIColor clearColor];
+    _searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, 44.0f)];
     _searchBar.delegate = self;
     _searchBar.placeholder = NSLocalizedString(@"SEARCHBAR_PLACEHOLDER", nil);
-//    UIView *headerView = [[UISearchBar alloc] initWithFrame:_searchBar.frame];
-//    headerView.hidden = YES;
-//    self.tableView.tableHeaderView = headerView;
-//    [self.tableView addSubview:self.searchBar];
+
+    UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, 44.0f)];
+    [headerView addSubview:_searchBar];
+    self.tableView.tableHeaderView = headerView;
+    
     
     _searchController = [[UISearchDisplayController alloc] initWithSearchBar:_searchBar contentsController:self];
     _searchController.delegate = self;
     _searchController.searchResultsDelegate = self;
     _searchController.searchResultsDataSource = self;
     _searchController.searchResultsTableView.delegate = self;
-    _searchController.displaysSearchBarInNavigationBar = YES;
+    
     self.searchOperations = [[NSOperationQueue alloc] init];
     [_searchOperations setMaxConcurrentOperationCount:1];
     
@@ -351,7 +352,7 @@ const int kMovieTableAddingCellTag = 2004;
     
     UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0.0f, 320, kSectionHeaderHeight)];
     UIView *backgroundView = [[UIView alloc] initWithFrame:CGRectMake(0, -1.0f, 320, kSectionHeaderHeight)];
-    backgroundView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"mv_sectionheader.png"]];
+    backgroundView.backgroundColor = [UIColor colorWithHexString:@"F0F0F0"];
     
     if(rating > 0) {
         UIView *starView = [[UIView alloc] initWithFrame:CGRectMake(10.0f, 5.0f, 18.0f*rating, 14.0f)];
@@ -360,10 +361,8 @@ const int kMovieTableAddingCellTag = 2004;
     } else {
         UILabel *unratedLabel = [[UILabel alloc] initWithFrame:CGRectMake(10.0f, 0.0f, 320.0f, kSectionHeaderHeight-1.0f)];
         unratedLabel.backgroundColor = [UIColor clearColor];
-        unratedLabel.textColor = [UIColor whiteColor];
-        unratedLabel.shadowColor = [UIColor colorWithRed:0.0f green:0.0f blue:0.0f alpha:0.44f];
-        unratedLabel.shadowOffset = CGSizeMake(0.0f, 1.0f);
-        unratedLabel.font = [UIFont fontWithName:@"HelveticaNeue-Bold" size:12.0f];
+        unratedLabel.textColor = [UIColor grayColor];
+        unratedLabel.font = [UIFont fontWithName:@"HelveticaNeue" size:12.0f];
         unratedLabel.text = sectionTitle;
         [backgroundView addSubview:unratedLabel];
     }
@@ -542,18 +541,19 @@ const int kMovieTableAddingCellTag = 2004;
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
-    if(self.searchController.active) return;
-
-    if (scrollView.contentOffset.y < 44) {
-        self.tableView.scrollIndicatorInsets = UIEdgeInsetsMake(CGRectGetHeight(self.searchBar.bounds) - MAX(scrollView.contentOffset.y, 0), 0, 0, 0);
-    } else {
-        self.tableView.scrollIndicatorInsets = UIEdgeInsetsZero;
-    }
-
-    CGRect searchBarFrame = self.searchBar.frame;
-    searchBarFrame.origin.y = MIN(scrollView.contentOffset.y, 0);
-
-    self.searchBar.frame = searchBarFrame;
+//    if(self.searchController.active) return;
+//    NSLog(@"scrollView.contentOffset.y: %f", scrollView.contentOffset.y);
+//    
+//    if (scrollView.contentOffset.y < 44) {
+//        self.tableView.scrollIndicatorInsets = UIEdgeInsetsMake(CGRectGetHeight(self.searchBar.bounds) - MAX(scrollView.contentOffset.y, 0), 0, 0, 0);
+//    } else {
+//        self.tableView.scrollIndicatorInsets = UIEdgeInsetsZero;
+//    }
+//
+//    CGRect searchBarFrame = self.searchBar.frame;
+//    searchBarFrame.origin.y = MIN(scrollView.contentOffset.y, 0);
+//
+//    self.searchBar.frame = searchBarFrame;
 }
 
 

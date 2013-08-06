@@ -280,6 +280,23 @@ static NSString *databaseURL = @"http://api.themoviedb.org/3";
     return operation;   
 }
 
+- (AFJSONRequestOperation*)getCastDetailsWithPersonID:(NSNumber*)value completion:(MovieCastDetailCompletionBlock)callback failure:(OnlineMovieDatabaseErrorBlock)failure
+{
+    // http://api.themoviedb.org/3/person/{id}
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/person/%d?api_key=%@",databaseURL, [value intValue], apiKey]];
+    NSLog(@"Searching at URL: %@", url);
+    NSURLRequest *request = [NSURLRequest requestWithURL:url];
+    
+    AFJSONRequestOperation *operation;
+    operation = [AFJSONRequestOperation JSONRequestOperationWithRequest:request success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
+        callback(JSON);
+    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
+        failure(error);
+    }];
+    
+    return operation;
+}
+
 - (AFJSONRequestOperation*)getMovieTrailersForMovieID:(NSNumber *)movieID completion:(MovieTrailersCompletionBlock)callback failure:(OnlineMovieDatabaseErrorBlock)failure
 {
     // http://api.themoviedb.org/3/movie/11/casts

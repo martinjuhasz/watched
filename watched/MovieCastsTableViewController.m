@@ -15,6 +15,7 @@
 #import "WatchedWebBrowser.h"
 #import "MovieCastTableViewCell.h"
 #import "MJCustomAccessoryControl.h"
+#import "MJUCastDetailViewController.h"
 
 @interface MovieCastsTableViewController ()
 @end
@@ -71,7 +72,7 @@ const int kMovieCastCellProfileImageView = 200;
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    [self performSegueWithIdentifier:@"CastWebViewSegue" sender:indexPath];
+    [self performSegueWithIdentifier:@"CastDetailSegue" sender:indexPath];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -204,25 +205,41 @@ const int kMovieCastCellProfileImageView = 200;
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-    if([segue.identifier isEqualToString:@"CastWebViewSegue"] && [sender isKindOfClass:[NSIndexPath class]]) {
+//    if([segue.identifier isEqualToString:@"CastWebViewSegue"] && [sender isKindOfClass:[NSIndexPath class]]) {
+//        
+//        NSIndexPath *selectedPath = (NSIndexPath*)sender;
+//        NSString *encodedName = @"";
+//        
+//        // get cast or crew
+//        if(selectedPath.section == 0) {
+//            Cast *currentCast = [self.movie.sortedCasts objectAtIndex:selectedPath.row];
+//            encodedName = [currentCast.name stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+//        } else {
+//            Crew *currentCrew = [self.movie.sortedCrews objectAtIndex:selectedPath.row];
+//            encodedName = [currentCrew.name stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+//        }
+//
+//        NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"http://m.imdb.com/find?q=%@", encodedName]];
+//
+//        WatchedWebBrowser *webBrowser = (WatchedWebBrowser*)segue.destinationViewController;
+//        webBrowser.url = url;
+//        
+//    } else
+    if([segue.identifier isEqualToString:@"CastDetailSegue"]) {
         
         NSIndexPath *selectedPath = (NSIndexPath*)sender;
-        NSString *encodedName = @"";
+        NSNumber *personID = nil;
         
         // get cast or crew
         if(selectedPath.section == 0) {
             Cast *currentCast = [self.movie.sortedCasts objectAtIndex:selectedPath.row];
-            encodedName = [currentCast.name stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+            personID = currentCast.castID;
         } else {
             Crew *currentCrew = [self.movie.sortedCrews objectAtIndex:selectedPath.row];
-            encodedName = [currentCrew.name stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+            personID = currentCrew.crewID;
         }
         
-        NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"http://m.imdb.com/find?q=%@", encodedName]];
-
-        WatchedWebBrowser *webBrowser = (WatchedWebBrowser*)segue.destinationViewController;
-        webBrowser.url = url;
-        
+        ((MJUCastDetailViewController*)segue.destinationViewController).personID = personID;
     }
 }
 

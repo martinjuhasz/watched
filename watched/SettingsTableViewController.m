@@ -101,12 +101,12 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    MJCustomTableViewCell *cell;
+    UITableViewCell *cell;
     
     static NSString *CellIdentifier = @"SettingsTableViewCellCustom";
     cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
-        cell = [[MJCustomTableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier];
     }
     
 //    if(indexPath.section != 2) {
@@ -123,9 +123,9 @@
 //        }
 //    }
     
-    cell.activated = YES;
+//    cell.activated = YES;
     
-    [cell configureForTableView:tableView indexPath:indexPath];
+//    [cell configureForTableView:tableView indexPath:indexPath];
     
     
     // Configure the cell...

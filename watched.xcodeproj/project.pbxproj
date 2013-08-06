@@ -78,7 +78,6 @@
 		7A00F88A172529C0008A9E0F /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A584CF9154877A600A548EE /* Foundation.framework */; };
 		7A00F88B172529C0008A9E0F /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A584CFB154877A600A548EE /* CoreGraphics.framework */; };
 		7A00F88C172529C0008A9E0F /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 61811A39E2A3494C9E929164 /* libPods.a */; };
-		7A00F88D172529C0008A9E0F /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A49ECAA16EBFE1300B05388 /* Crashlytics.framework */; };
 		7A00F88F172529C0008A9E0F /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 7A584D00154877A600A548EE /* InfoPlist.strings */; };
 		7A00F890172529C0008A9E0F /* MainStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7A584D09154877A700A548EE /* MainStoryboard.storyboard */; };
 		7A00F891172529C0008A9E0F /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 7A8DC67D157D109A00F6EACA /* Localizable.strings */; };
@@ -534,7 +533,6 @@
 		7A41638315F0032D00AA5D0F /* cv_thumbnail-overlay@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7A41638115F0032C00AA5D0F /* cv_thumbnail-overlay@2x.png */; };
 		7A42F19A15974AE6003413E7 /* g_bg-table_active.png in Resources */ = {isa = PBXBuildFile; fileRef = 7A42F19815974AE6003413E7 /* g_bg-table_active.png */; };
 		7A42F19B15974AE6003413E7 /* g_bg-table_active@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7A42F19915974AE6003413E7 /* g_bg-table_active@2x.png */; };
-		7A49ECAB16EBFE1300B05388 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A49ECAA16EBFE1300B05388 /* Crashlytics.framework */; };
 		7A4D12B41605105A00D471DF /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7A4D12B31605105A00D471DF /* Default-568h@2x.png */; };
 		7A4D679915F7F6AD0003BB82 /* yv_barbutton_active.png in Resources */ = {isa = PBXBuildFile; fileRef = 7A4D679115F7F6AD0003BB82 /* yv_barbutton_active.png */; };
 		7A4D679A15F7F6AD0003BB82 /* yv_barbutton_active@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7A4D679215F7F6AD0003BB82 /* yv_barbutton_active@2x.png */; };
@@ -654,6 +652,8 @@
 		7A97380D15F4C5A1007CF4D4 /* av_thumbnail-martin.png in Resources */ = {isa = PBXBuildFile; fileRef = 7A97380915F4C5A1007CF4D4 /* av_thumbnail-martin.png */; };
 		7A97380E15F4C5A1007CF4D4 /* av_thumbnail-martin@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7A97380A15F4C5A1007CF4D4 /* av_thumbnail-martin@2x.png */; };
 		7A99CCAF157C12BC0097F8E1 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A99CCAE157C12BC0097F8E1 /* MessageUI.framework */; };
+		7A9B9D6017B0FDDD00C245F4 /* MJUCastDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A9B9D5F17B0FDDD00C245F4 /* MJUCastDetailViewController.m */; };
+		7A9B9D6117B102FD00C245F4 /* MJUCastDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A9B9D5F17B0FDDD00C245F4 /* MJUCastDetailViewController.m */; };
 		7A9D383016EB96B200D34870 /* settings.css in Resources */ = {isa = PBXBuildFile; fileRef = 7A9D382216EB96B200D34870 /* settings.css */; };
 		7A9D383116EB96B200D34870 /* settings_afnetworking.html in Resources */ = {isa = PBXBuildFile; fileRef = 7A9D382316EB96B200D34870 /* settings_afnetworking.html */; };
 		7A9D383216EB96B200D34870 /* settings_blockalerts.html in Resources */ = {isa = PBXBuildFile; fileRef = 7A9D382416EB96B200D34870 /* settings_blockalerts.html */; };
@@ -929,7 +929,6 @@
 		7A41638115F0032C00AA5D0F /* cv_thumbnail-overlay@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "cv_thumbnail-overlay@2x.png"; sourceTree = "<group>"; };
 		7A42F19815974AE6003413E7 /* g_bg-table_active.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "g_bg-table_active.png"; sourceTree = "<group>"; };
 		7A42F19915974AE6003413E7 /* g_bg-table_active@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "g_bg-table_active@2x.png"; sourceTree = "<group>"; };
-		7A49ECAA16EBFE1300B05388 /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
 		7A4D12B31605105A00D471DF /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default-568h@2x.png"; path = "../../../../Dropbox/Arbeit/iOS/watched/assets/images/Default-568h@2x.png"; sourceTree = "<group>"; };
 		7A4D679115F7F6AD0003BB82 /* yv_barbutton_active.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = yv_barbutton_active.png; sourceTree = "<group>"; };
 		7A4D679215F7F6AD0003BB82 /* yv_barbutton_active@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "yv_barbutton_active@2x.png"; sourceTree = "<group>"; };
@@ -1069,6 +1068,8 @@
 		7A97380A15F4C5A1007CF4D4 /* av_thumbnail-martin@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "av_thumbnail-martin@2x.png"; sourceTree = "<group>"; };
 		7A99CCAC157C123D0097F8E1 /* Twitter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Twitter.framework; path = System/Library/Frameworks/Twitter.framework; sourceTree = SDKROOT; };
 		7A99CCAE157C12BC0097F8E1 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
+		7A9B9D5E17B0FDDD00C245F4 /* MJUCastDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MJUCastDetailViewController.h; sourceTree = "<group>"; };
+		7A9B9D5F17B0FDDD00C245F4 /* MJUCastDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MJUCastDetailViewController.m; sourceTree = "<group>"; };
 		7A9D382216EB96B200D34870 /* settings.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = settings.css; sourceTree = "<group>"; };
 		7A9D382316EB96B200D34870 /* settings_afnetworking.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = settings_afnetworking.html; sourceTree = "<group>"; };
 		7A9D382416EB96B200D34870 /* settings_blockalerts.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = settings_blockalerts.html; sourceTree = "<group>"; };
@@ -1173,7 +1174,6 @@
 				7A00F88A172529C0008A9E0F /* Foundation.framework in Frameworks */,
 				7A00F88B172529C0008A9E0F /* CoreGraphics.framework in Frameworks */,
 				7A00F88C172529C0008A9E0F /* libPods.a in Frameworks */,
-				7A00F88D172529C0008A9E0F /* Crashlytics.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1191,7 +1191,6 @@
 				7A584CFA154877A600A548EE /* Foundation.framework in Frameworks */,
 				7A584CFC154877A600A548EE /* CoreGraphics.framework in Frameworks */,
 				AFB44DD682834673B44EF4EE /* libPods.a in Frameworks */,
-				7A49ECAB16EBFE1300B05388 /* Crashlytics.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1653,7 +1652,6 @@
 		7A584CF6154877A600A548EE /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				7A49ECAA16EBFE1300B05388 /* Crashlytics.framework */,
 				7A1EB08B1609026700A29EB2 /* Social.framework */,
 				7A0DCA0015F4173500A09F36 /* SystemConfiguration.framework */,
 				7AED8E791582B4FD009F0416 /* QuartzCore.framework */,
@@ -1774,6 +1772,8 @@
 				7A41635715EFF9E600AA5D0F /* MovieCastTableViewCell.m */,
 				7A41635915EFF9F800AA5D0F /* MovieCastCellBackgroundView.h */,
 				7A41635A15EFF9F800AA5D0F /* MovieCastCellBackgroundView.m */,
+				7A9B9D5E17B0FDDD00C245F4 /* MJUCastDetailViewController.h */,
+				7A9B9D5F17B0FDDD00C245F4 /* MJUCastDetailViewController.m */,
 			);
 			name = Cast;
 			sourceTree = "<group>";
@@ -1874,7 +1874,6 @@
 				7A00F88E172529C0008A9E0F /* Resources */,
 				7A00F9AD172529C0008A9E0F /* Copy Pods Resources */,
 				7A00F9AE172529C0008A9E0F /* Run Mogenerator */,
-				7A00F9AF172529C0008A9E0F /* Crashlytics */,
 				7A00F9B0172529C0008A9E0F /* Copy CocoaPods to AdHoc Build Config */,
 				7A08D5781726E36D0014F364 /* Increase Build Number */,
 			);
@@ -1896,7 +1895,6 @@
 				7A584CF1154877A600A548EE /* Resources */,
 				DD328CA9800A4564A5A90DCB /* Copy Pods Resources */,
 				7A2CBBAC1559B56D009ADFFB /* Run Mogenerator */,
-				7A49ECA916EBFDDE00B05388 /* Crashlytics */,
 				7A8ADAC2171188FF00234914 /* Copy CocoaPods to AdHoc Build Config */,
 				7A08D5771726E35A0014F364 /* Increase Build Number */,
 			);
@@ -2554,20 +2552,6 @@
 			shellPath = /bin/sh;
 			shellScript = "";
 		};
-		7A00F9AF172529C0008A9E0F /* Crashlytics */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = Crashlytics;
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "./Crashlytics.framework/run 145e624fa03124a3e4abe820c9bf1a8a9fe96274";
-		};
 		7A00F9B0172529C0008A9E0F /* Copy CocoaPods to AdHoc Build Config */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -2624,20 +2608,6 @@
 			shellPath = /bin/sh;
 			shellScript = "";
 		};
-		7A49ECA916EBFDDE00B05388 /* Crashlytics */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = Crashlytics;
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "./Crashlytics.framework/run 145e624fa03124a3e4abe820c9bf1a8a9fe96274";
-		};
 		7A8ADAC2171188FF00234914 /* Copy CocoaPods to AdHoc Build Config */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -2673,6 +2643,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7A9B9D6117B102FD00C245F4 /* MJUCastDetailViewController.m in Sources */,
 				7A00F845172529C0008A9E0F /* main.m in Sources */,
 				7A00F846172529C0008A9E0F /* WatchedAppDelegate.m in Sources */,
 				7A00F847172529C0008A9E0F /* SearchMovieViewController.m in Sources */,
@@ -2767,6 +2738,7 @@
 				7AF540F8157783C10018530A /* MovieCastsTableViewController.m in Sources */,
 				7A353256157953DB008F4F58 /* MovieNoteViewController.m in Sources */,
 				7A8DC678157CFDDD00F6EACA /* SettingsTableViewController.m in Sources */,
+				7A9B9D6017B0FDDD00C245F4 /* MJUCastDetailViewController.m in Sources */,
 				7A7EEF85157D56F300EAEE01 /* ThumbnailPickerViewController.m in Sources */,
 				7AED8E731582800F009F0416 /* OnlineDatabaseBridge.m in Sources */,
 				7A2F43DD158420FB00667E76 /* WatchedWebBrowser.m in Sources */,

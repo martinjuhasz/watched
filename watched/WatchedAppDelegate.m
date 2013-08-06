@@ -17,15 +17,14 @@
 #import "WatchedWebBrowser.h"
 #import "MJWatchedNavigationBar.h"
 #import <MessageUI/MessageUI.h>
-#import "TestFlight.h"
 #import "UIResponder+KeyboardCache.h"
 #import <Social/Social.h>
 #import "MJWatchedNavigationController.h"
 #import "WatchedStyledViewController.h"
 #import "UISS.h"
-#import <Crashlytics/Crashlytics.h>
 #import "OnlineDatabaseBridge.h"
 #import "AFJSONRequestOperation.h"
+#import <HockeySDK/HockeySDK.h>
 
 @interface WatchedAppDelegate ()<AddMovieViewDelegate> {
 }
@@ -43,11 +42,11 @@
 //    self.uiss = [UISS configureWithDefaultJSONFile];
     //self.uiss.statusWindowEnabled = YES;
     
+    [[BITHockeyManager sharedHockeyManager] configureWithIdentifier:@"a6619c8d0d092c150c4a5555ae7f14cb" delegate:self];
+    [[BITHockeyManager sharedHockeyManager] startManager];
+    
     [MJInternetConnection sharedInternetConnection];
     [UIResponder cacheKeyboard:YES];
-    
-    [Crashlytics startWithAPIKey:@"145e624fa03124a3e4abe820c9bf1a8a9fe96274"];
-    [self startTestFlight];
     
     [[OnlineMovieDatabase sharedMovieDatabase] setApiKey:@"d518563ee67cb6d475d2440d3e663e93"];
     [[OnlineMovieDatabase sharedMovieDatabase] setPreferredLanguage:[self appLanguage]];
@@ -62,17 +61,6 @@
         return @"de";
 
     return @"en";
-}
-
-- (void)startTestFlight
-{
-    [TestFlight setOptions:[NSDictionary dictionaryWithObject:[NSNumber numberWithBool:NO] forKey:@"logToConsole"]];
-    [TestFlight setOptions:[NSDictionary dictionaryWithObject:[NSNumber numberWithBool:NO] forKey:@"logToSTDERR"]];
-    NSString *token = @"b4bbe6c9-dd95-4a5b-98b9-1c24baf90bae";
-#ifdef DEBUG_MODE
-    [TestFlight setDeviceIdentifier:[[UIDevice currentDevice] uniqueIdentifier]];
-#endif
-    [TestFlight takeOff:token];
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application

@@ -97,7 +97,7 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    MJCustomTableViewCell *cell;
+    UITableViewCell *cell;
     
     if(indexPath.section == 0) {
         cell = [self creatorCellForIndexPath:indexPath];
@@ -105,18 +105,18 @@
         cell = [self defaultCellForIndexPath:indexPath];
     }
     
-    [cell configureForTableView:tableView indexPath:indexPath];
+//    [cell configureForTableView:tableView indexPath:indexPath];
     
     return cell;
 }
 
-- (MJCustomTableViewCell*)defaultCellForIndexPath:(NSIndexPath*)indexPath
+- (UITableViewCell*)defaultCellForIndexPath:(NSIndexPath*)indexPath
 {
     static NSString *CellIdentifier = @"SettingsTableViewCellCustom";
     
-    MJCustomTableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
-        cell = [[MJCustomTableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier];
     }
     
     MJCustomAccessoryControl *accessoryView = [MJCustomAccessoryControl accessory];
@@ -128,13 +128,13 @@
     return cell;
 }
 
-- (MJCustomTableViewCell*)creatorCellForIndexPath:(NSIndexPath*)indexPath
+- (UITableViewCell*)creatorCellForIndexPath:(NSIndexPath*)indexPath
 {
     static NSString *CellIdentifier = @"AboutCreatorTableCell";
     
-    MJCustomTableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
-        cell = [[MJCustomTableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier];
     }
     
     MJCustomAccessoryControl *accessoryView = [MJCustomAccessoryControl accessory];

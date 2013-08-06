@@ -24,6 +24,12 @@
 #define COCOAPODS_VERSION_MINOR_GMGridView 1
 #define COCOAPODS_VERSION_PATCH_GMGridView 1
 
+// HockeySDK
+#define COCOAPODS_POD_AVAILABLE_HockeySDK
+#define COCOAPODS_VERSION_MAJOR_HockeySDK 3
+#define COCOAPODS_VERSION_MINOR_HockeySDK 0
+#define COCOAPODS_VERSION_PATCH_HockeySDK 0
+
 // KSReachability
 #define COCOAPODS_POD_AVAILABLE_KSReachability
 #define COCOAPODS_VERSION_MAJOR_KSReachability 0
@@ -41,12 +47,6 @@
 #define COCOAPODS_VERSION_MAJOR_OBGradientView 1
 #define COCOAPODS_VERSION_MINOR_OBGradientView 0
 #define COCOAPODS_VERSION_PATCH_OBGradientView 0
-
-// TestFlightSDK
-#define COCOAPODS_POD_AVAILABLE_TestFlightSDK
-#define COCOAPODS_VERSION_MAJOR_TestFlightSDK 1
-#define COCOAPODS_VERSION_MINOR_TestFlightSDK 2
-#define COCOAPODS_VERSION_PATCH_TestFlightSDK 0
 
 // UIResponder+KeyboardCache
 #define COCOAPODS_POD_AVAILABLE_UIResponder_KeyboardCache
