@@ -25,6 +25,7 @@
 #import "OnlineDatabaseBridge.h"
 #import "AFJSONRequestOperation.h"
 #import <HockeySDK/HockeySDK.h>
+#import "MJUWatchedStyle.h"
 
 @interface WatchedAppDelegate ()<AddMovieViewDelegate> {
 }
@@ -39,6 +40,7 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    [MJUWatchedStyle setupDefaultStyle];
 //    self.uiss = [UISS configureWithDefaultJSONFile];
     //self.uiss.statusWindowEnabled = YES;
     

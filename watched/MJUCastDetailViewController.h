@@ -7,10 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "MJUPerson.h"
 
 @interface MJUCastDetailViewController : UIViewController
 
-@property (strong, nonatomic) NSNumber *personID;
+@property (strong, nonatomic) MJUPerson *person;
 @property (weak, nonatomic) IBOutlet UILabel *biographyLabel;
 
 @end

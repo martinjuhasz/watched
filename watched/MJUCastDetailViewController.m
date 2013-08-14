@@ -29,7 +29,7 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
-    AFJSONRequestOperation *operation = [[OnlineMovieDatabase sharedMovieDatabase] getCastDetailsWithPersonID:self.personID completion:^(NSDictionary *personDetails) {
+    AFJSONRequestOperation *operation = [[OnlineMovieDatabase sharedMovieDatabase] getCastDetailsWithPersonID:self.person.personID completion:^(NSDictionary *personDetails) {
         NSLog(@"%@", personDetails);
         
         self.biographyLabel.text = [personDetails objectForKey:@"biography"];

@@ -25,14 +25,14 @@
 
 
 
-#define DEFAULT_COLOR_BG 0x5A5A5A
+#define DEFAULT_COLOR_BG 0xF8F8F8
 #define OPTOUT_SETTINGS @"WATCHED_OPT_OUT_SETTINGS"
 
 /* ======================================================================================== */
 /* ======================================================================================== */
 
 
-//#define DEBUG_MODE 1
+#define DEBUG_MODE 1
 
 #ifdef DEBUG_MODE
 #define DebugLog(fmt, ...) NSLog(@"%s " fmt, __PRETTY_FUNCTION__, ##__VA_ARGS__)

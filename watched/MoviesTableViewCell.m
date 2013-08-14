@@ -10,6 +10,7 @@
 #import "MJCustomAccessoryControl.h"
 #import "UILabel+Additions.h"
 #import "UIView+Additions.h"
+#import "UIColor+Additions.h"
 
 @implementation MoviesTableViewCell
 
@@ -37,29 +38,25 @@
 
 - (void)setupContent
 {
-    _titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(68.0f, 9.0f, 200.0f, 39.0f)];
-    [_titleLabel setFont:[UIFont boldSystemFontOfSize:17.0f]];
+    _titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(74.0f, 19.0f, 200.0f, 39.0f)];
+    [_titleLabel setFont:[UIFont fontWithName:@"AvenirNext-DemiBold" size:17.0f]];
     [_titleLabel setTextColor:[UIColor blackColor]];
-    [_titleLabel setShadowColor:[UIColor colorWithRed:255.0f green:255.0f blue:255.0f alpha:0.33f]];
-    [_titleLabel setShadowOffset:CGSizeMake(0.0f, 1.0f)];
     [_titleLabel setBackgroundColor:[UIColor clearColor]];
     [self addSubview:_titleLabel];
     
-    _yearLabel = [[UILabel alloc] initWithFrame:CGRectMake(68.0f, 50.0f, 153.0f, 21.0f)];
-    [_yearLabel setFont:[UIFont systemFontOfSize:14.0f]];
-    [_yearLabel setTextColor:RGBColor(91, 91, 91)];
-    [_yearLabel setShadowColor:[UIColor colorWithRed:255.0f green:255.0f blue:255.0f alpha:0.33f]];
-    [_yearLabel setShadowOffset:CGSizeMake(0.0f, 1.0f)];
+    _yearLabel = [[UILabel alloc] initWithFrame:CGRectMake(74.0f, 60.0f, 153.0f, 21.0f)];
+    [_yearLabel setFont:[UIFont fontWithName:@"AvenirNext-Regular" size:14.0f]];
+    [_yearLabel setTextColor:[UIColor colorWithHexString:@"C8C8C8"]];
     [_yearLabel setBackgroundColor:[UIColor clearColor]];
     [self addSubview:_yearLabel];
     
     
-    _coverImageView = [[UIImageView alloc] initWithFrame:CGRectMake(11.0f, 9.0f, 43.0f, 60.0f)];
+    _coverImageView = [[UIImageView alloc] initWithFrame:CGRectMake(15.0f, 15.0f, 43.0f, 60.0f)];
     [_coverImageView setContentMode:UIViewContentModeScaleToFill];
     [self addSubview:_coverImageView];
     
-    UIImageView *coverArtView = [[UIImageView alloc] initWithFrame:CGRectMake(9.0f, 7.0f, 47.0f, 64.0f)];
-    [coverArtView setImage:[UIImage imageNamed:@"g_cover-overlay.png"]];
+    UIImageView *coverArtView = [[UIImageView alloc] initWithFrame:CGRectMake(15.0f, 15.0f, 43.0f, 60.0f)];
+    [coverArtView setImage:[UIImage imageNamed:@"cover-overlay"]];
     [self addSubview:coverArtView];
 
     

@@ -9,7 +9,10 @@
 #import "OnlineMovieDatabase.h"
 #import "AFJSONRequestOperation.h"
 #import "AFImageRequestOperation.h"
-
+#import "MJUTrailer.h"
+#import "MJUCast.h"
+#import "MJUCrew.h"
+#import "MTLJSONAdapter.h"
 
 @interface OnlineMovieDatabase () {
     NSString *configurationPath;
@@ -263,7 +266,7 @@ static NSString *databaseURL = @"http://api.themoviedb.org/3";
     return operation;
 }
 
-- (AFJSONRequestOperation*)getMovieCastsForMovieID:(NSNumber *)movieID completion:(MovieCastsCompletionBlock)callback failure:(OnlineMovieDatabaseErrorBlock)failure
+- (AFJSONRequestOperation*)getPersonsForMovieID:(NSNumber *)movieID completion:(PersonsCompletionBlock)callback failure:(OnlineMovieDatabaseErrorBlock)failure
 {
     // http://api.themoviedb.org/3/movie/11/casts
     NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/movie/%d/casts?api_key=%@",databaseURL, [movieID intValue], apiKey]];
@@ -272,7 +275,31 @@ static NSString *databaseURL = @"http://api.themoviedb.org/3";
     
     AFJSONRequestOperation *operation;
     operation = [AFJSONRequestOperation JSONRequestOperationWithRequest:request success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
-        callback(JSON);
+        
+        if(!JSON) {
+            callback(nil,nil);
+            return;
+        }
+        if(![JSON isKindOfClass:[NSDictionary class]]) {
+            callback(nil,nil);
+            return;
+        }
+        
+        NSDictionary *personsDict = (NSDictionary*)JSON;
+        NSMutableArray *castsArray = [NSMutableArray array];
+        NSMutableArray *crewsArray = [NSMutableArray array];
+        
+        for (NSDictionary *personDict in [personsDict objectForKey:@"cast"]) {
+            MJUCast *aCast = [MJUCast personFromJSONDictionary:personDict];
+            [castsArray addObject:aCast];
+        }
+        for (NSDictionary *personDict in [personsDict objectForKey:@"crew"]) {
+            MJUCrew *aCrew = [MJUCrew personFromJSONDictionary:personDict];
+            [crewsArray addObject:aCrew];
+        }
+        
+        callback([NSArray arrayWithArray:castsArray], [NSArray arrayWithArray:crewsArray]);
+    
     } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
         failure(error);
     }];
@@ -309,6 +336,7 @@ static NSString *databaseURL = @"http://api.themoviedb.org/3";
         if([JSON isKindOfClass:[NSDictionary class]]) {
             NSDictionary *trailers = (NSDictionary*)JSON;
             __block BOOL firstTry = YES;
+            
             // in case there dont exist trailers for a specific language, grab the english ones
             if([[trailers objectForKey:@"quicktime"] count] == 0 && [[trailers objectForKey:@"youtube"] count] == 0 && ![self.preferredLanguage isEqualToString:@"en"] && firstTry) {
                 
@@ -319,23 +347,43 @@ static NSString *databaseURL = @"http://api.themoviedb.org/3";
                 NSURLRequest *secondRequest = [NSURLRequest requestWithURL:secondUrl];
                 AFJSONRequestOperation *secondOperation;
                 secondOperation = [AFJSONRequestOperation JSONRequestOperationWithRequest:secondRequest success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
-                    callback(JSON);
+                    NSDictionary *jsonDict = (NSDictionary*)JSON;
+                    NSArray *trailers = [self getTrailersForDictionary:jsonDict];
+                    callback(trailers);
                 } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
                     DebugLog("%@", [error localizedDescription]);
                     failure(error);
                 }];
                 [secondOperation start];
             } else {
-                callback(JSON);
+                
+                NSDictionary *jsonDict = (NSDictionary*)JSON;
+                NSArray *trailers = [self getTrailersForDictionary:jsonDict];
+                callback(trailers);
             }
         } else {
-            callback(JSON);
+            callback(nil);
         }
     } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
         failure(error);
     }];
-    
-    return operation;   
+    return operation;
+}
+
+- (NSMutableArray*)getTrailersForDictionary:(NSDictionary*)trailersDict
+{
+    NSMutableArray *trailers = [NSMutableArray array];
+    for (NSDictionary *trailerDict in [trailersDict objectForKey:@"youtube"]) {
+        MJUTrailer *trailer = [MJUTrailer trailerFromJSONDictionary:trailerDict];
+        trailer.type = MJUTrailerTypeYoutube;
+        [trailers addObject:trailer];
+    }
+    for (NSDictionary *trailerDict in [trailersDict objectForKey:@"quicktime"]) {
+        MJUTrailer *trailer = [MJUTrailer trailerFromJSONDictionary:trailerDict];
+        trailer.type = MJUTrailerTypeQuicktime;
+        [trailers addObject:trailer];
+    }
+    return trailers;
 }
 
 @end

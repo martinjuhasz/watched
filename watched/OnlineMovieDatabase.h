@@ -15,9 +15,9 @@
 typedef void (^MovieSearchCompletionBlock)(NSDictionary *);
 typedef void (^MovieImageComppletionBlock)(UIImage *);
 typedef void (^MovieDetailCompletionBlock)(NSDictionary *);
-typedef void (^MovieCastsCompletionBlock)(NSDictionary *);
+typedef void (^PersonsCompletionBlock)(NSArray *casts, NSArray *crews);
 typedef void (^MovieCastDetailCompletionBlock)(NSDictionary *);
-typedef void (^MovieTrailersCompletionBlock)(NSDictionary *);
+typedef void (^MovieTrailersCompletionBlock)(NSArray *);
 typedef void (^MovieImagesCompletionBlock)(NSDictionary *);
 typedef void (^OnlineMovieDatabaseErrorBlock)(NSError *);
 
@@ -44,7 +44,7 @@ typedef enum {
 - (AFJSONRequestOperation*)getImagesForMovie:(NSNumber *)movieID completion:(MovieImagesCompletionBlock)callback failure:(OnlineMovieDatabaseErrorBlock)failure;
 
 - (AFJSONRequestOperation*)getMovieDetailsForMovieID:(NSNumber *)movieID completion:(MovieDetailCompletionBlock)callback failure:(OnlineMovieDatabaseErrorBlock)failure;
-- (AFJSONRequestOperation*)getMovieCastsForMovieID:(NSNumber *)movieID completion:(MovieCastsCompletionBlock)callback failure:(OnlineMovieDatabaseErrorBlock)failure;
+- (AFJSONRequestOperation*)getPersonsForMovieID:(NSNumber *)movieID completion:(PersonsCompletionBlock)callback failure:(OnlineMovieDatabaseErrorBlock)failure;
 - (AFJSONRequestOperation*)getMovieTrailersForMovieID:(NSNumber *)movieID completion:(MovieTrailersCompletionBlock)callback failure:(OnlineMovieDatabaseErrorBlock)failure;
 - (AFJSONRequestOperation*)getCastDetailsWithPersonID:(NSNumber*)value completion:(MovieCastDetailCompletionBlock)callback failure:(OnlineMovieDatabaseErrorBlock)failure;
 
