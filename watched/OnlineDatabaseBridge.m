@@ -14,9 +14,6 @@
 #import "NSDictionary+ObjectForKeyOrNil.h"
 #import "SearchResult.h"
 #import "Movie.h"
-#import "Cast.h"
-#import "Crew.h"
-#import "Trailer.h"
 #import "AFJSONRequestOperation.h"
 
 
@@ -70,25 +67,6 @@
             } failure:^(NSError *aError) {
                 dispatch_group_leave(group);
             }];
-            
-            // Casts
-            dispatch_group_enter(group);
-            [self setCastsToMovie:movie success:^{
-                dispatch_group_leave(group);
-            } failure:^(NSError *aError) {
-                runtimeError = aError;
-                dispatch_group_leave(group);
-            }];
-            
-            // Trailers
-            dispatch_group_enter(group);
-            [self setTrailersToMovie:movie success:^{
-                dispatch_group_leave(group);
-            } failure:^(NSError *aError) {
-                runtimeError = aError;
-                dispatch_group_leave(group);
-            }];
-            
             
             dispatch_group_wait(group, DISPATCH_TIME_FOREVER);
             
@@ -161,38 +139,10 @@
 
 - (AFJSONRequestOperation*)updateMovieMetadata:(Movie*)aMovie inContext:(NSManagedObjectContext*)aContext completion:(OnlineBridgeCompletionBlock)aCompletionBlock failure:(OnlineBridgeFailureBlock)aFailureBlock
 {
-    NSSet *oldCasts = aMovie.casts;
-    NSSet *oldCrew = aMovie.crews;
-    NSSet *oldTrailers = aMovie.trailers;
-    
     AFJSONRequestOperation *operation = nil;
-//    
-//    for (Cast *aCast in oldCasts) {
-//        [aMovie.managedObjectContext deleteObject:aCast];
-//    }
-//    
-//    for (Crew *aCrew in oldCrew) {
-//        [aMovie.managedObjectContext deleteObject:aCrew];
-//    }
-//    
-//    for (Trailer *aTrailer in oldTrailers) {
-//        [aMovie.managedObjectContext deleteObject:aTrailer];
-//    }
-//    aCompletionBlock(aMovie);
     
     operation = [[OnlineMovieDatabase sharedMovieDatabase] getMovieDetailsForMovieID:aMovie.movieID completion:^(NSDictionary *movieDict) {
         [self updateMovie:aMovie withSearchResultDict:movieDict completion:^(Movie *returnedMovie) {
-            for (Cast *aCast in oldCasts) {
-                [aContext deleteObject:aCast];
-            }
-            
-            for (Crew *aCrew in oldCrew) {
-                [aContext deleteObject:aCrew];
-            }
-            
-            for (Trailer *aTrailer in oldTrailers) {
-                [aContext deleteObject:aTrailer];
-            }
             aCompletionBlock(returnedMovie);
         } failure:^(NSError *anError) {
             aFailureBlock(anError);
@@ -218,24 +168,6 @@
             
             // Movie
             [movie updateAttributes:movieDict];
-            
-            // Casts
-            dispatch_group_enter(group);
-            [self setCastsToMovie:movie success:^{
-                dispatch_group_leave(group);
-            } failure:^(NSError *aError) {
-                runtimeError = aError;
-                dispatch_group_leave(group);
-            }];
-            
-            // Trailers
-            dispatch_group_enter(group);
-            [self setTrailersToMovie:movie success:^{
-                dispatch_group_leave(group);
-            } failure:^(NSError *aError) {
-                runtimeError = aError;
-                dispatch_group_leave(group);
-            }];
             
             // wait until everything is finished
             dispatch_group_wait(group, DISPATCH_TIME_FOREVER);
@@ -336,87 +268,6 @@
         aFailureBlock(error);
     }];
     [backdropOperation start];
-}
-
-- (void)setCastsToMovie:(Movie*)aMovie success:(void (^)(void))successBlock failure:(OnlineBridgeFailureBlock)aFailureBlock
-{
-    AFJSONRequestOperation *operation = [[OnlineMovieDatabase sharedMovieDatabase] getMovieCastsForMovieID:aMovie.movieID completion:^(NSDictionary *returnArray) {
-        
-        NSArray *casts = [returnArray objectForKeyOrNil:@"cast"];
-        NSArray *crew = [returnArray objectForKeyOrNil:@"crew"];
-        NSMutableSet *castsSet = [NSMutableSet set];
-        NSMutableSet *crewSet = [NSMutableSet set];
-        
-        for (NSDictionary *castDict in casts) {
-            Cast *newCast = [Cast insertInManagedObjectContext:aMovie.managedObjectContext];
-            newCast.character = [castDict objectForKeyOrNil:@"character"];
-            newCast.castID = [NSNumber numberWithInt:[[castDict objectForKeyOrNil:@"id"] intValue]];
-            newCast.name = [castDict objectForKeyOrNil:@"name"];
-            newCast.order = [NSNumber numberWithInt:[[castDict objectForKeyOrNil:@"order"] intValue]];
-            newCast.profilePath = [castDict objectForKeyOrNil:@"profile_path"];
-            [castsSet addObject:newCast];
-        }
-        
-        for (NSDictionary *crewDict in crew) {
-            Crew *newCrew = [Crew insertInManagedObjectContext:aMovie.managedObjectContext];
-            newCrew.crewID = [NSNumber numberWithInt:[[crewDict objectForKeyOrNil:@"id"] intValue]];
-            newCrew.name = [crewDict objectForKeyOrNil:@"name"];
-            newCrew.department = [crewDict objectForKeyOrNil:@"department"];
-            newCrew.job = [crewDict objectForKeyOrNil:@"job"];
-            newCrew.profilePath = [crewDict objectForKeyOrNil:@"profile_path"];
-            [crewSet addObject:newCrew];
-        }
-        
-        aMovie.casts = castsSet;
-        aMovie.crews = crewSet;
-        successBlock();
-    } failure:^(NSError *aError) {
-        aFailureBlock(aError);
-    }];
-    [operation start];
-}
-
-- (void)setTrailersToMovie:(Movie*)aMovie success:(void (^)(void))successBlock failure:(OnlineBridgeFailureBlock)aFailureBlock
-{
-    AFJSONRequestOperation *operation = [[OnlineMovieDatabase sharedMovieDatabase] getMovieTrailersForMovieID:aMovie.movieID completion:^(NSDictionary *returnArray) {
-        
-        NSArray *quicktime = [returnArray objectForKeyOrNil:@"quicktime"];
-        NSArray *youtube = [returnArray objectForKeyOrNil:@"youtube"];
-        NSMutableSet *trailerSet = [NSMutableSet set];
-        
-        for (NSDictionary *qtTrailer in quicktime) {
-            Trailer *newTrailer = [Trailer insertInManagedObjectContext:aMovie.managedObjectContext];
-            newTrailer.name = [qtTrailer objectForKeyOrNil:@"name"];
-            newTrailer.source = @"quicktime";
-            NSString *storedSize = nil;
-            for (NSDictionary *newTrailerSource in [qtTrailer objectForKeyOrNil:@"sources"]) {
-                
-                if(!storedSize || ([storedSize isEqualToString:@"480p"] && [[newTrailerSource objectForKeyOrNil:@"size"] isEqualToString:@"720p"])) {
-                    newTrailer.url = [newTrailerSource objectForKeyOrNil:@"source"];
-                    newTrailer.quality = [newTrailerSource objectForKeyOrNil:@"size"];
-                } else {
-                    break;
-                }
-                storedSize = [newTrailerSource objectForKeyOrNil:@"size"];
-            }
-            [trailerSet addObject:newTrailer];
-        }
-        
-        for (NSDictionary *ytTrailer in youtube) {
-            Trailer *newTrailer = [Trailer insertInManagedObjectContext:aMovie.managedObjectContext];
-            newTrailer.name = [ytTrailer objectForKeyOrNil:@"name"];
-            newTrailer.source = @"youtube";
-            newTrailer.quality = [ytTrailer objectForKeyOrNil:@"size"];
-            newTrailer.url = [ytTrailer objectForKeyOrNil:@"source"];
-            [trailerSet addObject:newTrailer];
-        }
-        
-        aMovie.trailers = trailerSet;
-        successBlock();
-    } failure:^(NSError *aError) {
-        aFailureBlock(aError);
-    }];
-    [operation start];
 }
 
 

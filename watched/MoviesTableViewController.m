@@ -277,7 +277,9 @@ const int kMovieTableAddingCellTag = 2004;
     Movie *movie = [aFetchedResultsController objectAtIndexPath:indexPath];
     cell.titleLabel.text = movie.title;
     [cell.titleLabel sizeToFitWithWith:200.0f andMaximumNumberOfLines:2];
+    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     
+    cell.backgroundColor = [UIColor whiteColor];
     // get year
     [cell setYear:movie.releaseDate];
     [cell setCoverImage:movie.posterThumbnail];
@@ -309,16 +311,21 @@ const int kMovieTableAddingCellTag = 2004;
     if(movie.added) {
         [cell setYear:movie.releaseDate];
         cell.selectionStyle = UITableViewCellSelectionStyleGray;
-        cell.accessoryView = [MJCustomAccessoryControl accessory];
+//        cell.accessoryView = [MJCustomAccessoryControl accessory];
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     } else if(movie.failed) {
         [cell setDetailText:NSLocalizedString(@"MOVIE_RESULT_FAILED", nil)];
         cell.selectionStyle = UITableViewCellSelectionStyleGray;
-        cell.accessoryView = [MJReloadAccessoryControl accessory];
+//        cell.accessoryView = [MJReloadAccessoryControl accessory];
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     } else {
         [cell setDetailText:NSLocalizedString(@"MOVIE_RESULT_ADDING", nil)];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        cell.accessoryView = [MJLoadingAccessoryControl accessory];
+//        cell.accessoryView = [MJLoadingAccessoryControl accessory];
+        
     }
+    
+    
     
     UIImage *placeholder = [UIImage imageNamed:@"g_placeholder-cover.png"];
     NSURL *imageURL = [[OnlineMovieDatabase sharedMovieDatabase] getImageURLForImagePath:movie.posterPath imageType:ImageTypePoster nearWidth:70.0f*2];
@@ -351,18 +358,18 @@ const int kMovieTableAddingCellTag = 2004;
     int rating = [sectionTitle intValue];
     
     UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0.0f, 320, kSectionHeaderHeight)];
-    UIView *backgroundView = [[UIView alloc] initWithFrame:CGRectMake(0, -1.0f, 320, kSectionHeaderHeight)];
+    UIView *backgroundView = [[UIView alloc] initWithFrame:CGRectMake(0, -1, 320, kSectionHeaderHeight)];
     backgroundView.backgroundColor = [UIColor colorWithHexString:@"F0F0F0"];
     
     if(rating > 0) {
-        UIView *starView = [[UIView alloc] initWithFrame:CGRectMake(10.0f, 5.0f, 18.0f*rating, 14.0f)];
-        [starView setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"mv_sectionheader-star.png"]]];
+        UIView *starView = [[UIView alloc] initWithFrame:CGRectMake(10.0f, 6.0f, 20.0f*rating, 13.0f)];
+        [starView setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"divider-star"]]];
         [backgroundView addSubview:starView];
     } else {
-        UILabel *unratedLabel = [[UILabel alloc] initWithFrame:CGRectMake(10.0f, 0.0f, 320.0f, kSectionHeaderHeight-1.0f)];
+        UILabel *unratedLabel = [[UILabel alloc] initWithFrame:CGRectMake(10.0f, 0.0f, 320.0f, kSectionHeaderHeight-1)];
         unratedLabel.backgroundColor = [UIColor clearColor];
         unratedLabel.textColor = [UIColor grayColor];
-        unratedLabel.font = [UIFont fontWithName:@"HelveticaNeue" size:12.0f];
+        unratedLabel.font = [UIFont fontWithName:@"AvenirNext-Regular" size:12.0f];
         unratedLabel.text = sectionTitle;
         [backgroundView addSubview:unratedLabel];
     }
@@ -419,7 +426,7 @@ const int kMovieTableAddingCellTag = 2004;
     } else if(cellType == MovieCellTypeOnline) {
         return 56.0f;
     }
-    return 79.0f;
+    return 90.0f;
 }
 
 - (void)tableView:(UITableView *)aTableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
@@ -850,7 +857,7 @@ const int kMovieTableAddingCellTag = 2004;
     
     // make sure the tableview is empty
     UIView *emptyTable = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, 1.0f)];
-    [emptyTable setBackgroundColor:[UIColor clearColor]];
+//    [emptyTable setBackgroundColor:[UIColor clearColor]];
     _searchController.searchResultsTableView.tableFooterView = emptyTable;
 }
 

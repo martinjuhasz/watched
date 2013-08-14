@@ -1,13 +1,17 @@
 #import "Movie.h"
-#import "Trailer.h"
-#import "Crew.h"
+#import "MJUTrailer.h"
 #import "NSDictionary+ObjectForKeyOrNil.h"
+#import "OnlineMovieDatabase.h"
+#import "AFJSONRequestOperation.h"
 
 #define kBackdropFolder @"backdrops"
 #define kPosterFolder @"posters"
 #define kPosterThumbnailFolder @"thumbnailPosters"
 
-@interface Movie()
+@interface Movie() {
+    BOOL trailersQueried;
+    BOOL personsQueried;
+}
 
 @end
 
@@ -18,7 +22,9 @@
 @synthesize poster;
 @synthesize releaseDateFormatted;
 @synthesize runtimeFormatted;
-@synthesize director;
+@synthesize trailers;
+@synthesize casts;
+@synthesize crews;
 
 
 
@@ -275,48 +281,152 @@
     return returnString;
 }
 
-- (Trailer*)bestTrailer
+- (NSArray*)trailers
 {
-    // try to get a quicktime one
-    NSPredicate *qtPredicate = [NSPredicate predicateWithFormat:@"source == %@", @"quicktime"];
-    NSArray *quicktimeTrailers = [[self.trailers allObjects] filteredArrayUsingPredicate:qtPredicate];
-    if(quicktimeTrailers.count > 0) {
-        return [quicktimeTrailers objectAtIndex:0];
+    if(!trailersQueried) {
+        [self getTrailersWithCompletion:nil error:nil];
     }
+    return trailers;
+}
+
+- (void)getTrailersWithCompletion:(MJUTrailersCompletionBlock)completion error:(MJUMovieErrorBlock)error
+{
+    if(trailersQueried) {
+        completion(trailers);
+        return;
+    }
+    trailersQueried = YES;
     
-    // sort HD before SD
-    NSSortDescriptor *ytSortDestcriptor = [NSSortDescriptor sortDescriptorWithKey:@"quality" ascending:YES];
-    NSArray *youtubeTrailers = [[self.trailers allObjects] sortedArrayUsingDescriptors:[NSArray arrayWithObject:ytSortDestcriptor]];
-    if(youtubeTrailers.count > 0) {
-        return [youtubeTrailers objectAtIndex:0];
+    AFJSONRequestOperation *operation = [[OnlineMovieDatabase sharedMovieDatabase] getMovieTrailersForMovieID:self.movieID completion:^(NSArray *trailerArray) {
+        trailers = trailerArray;
+        completion(trailers);
+    } failure:^(NSError *aError) {
+        trailersQueried = NO;
+        error(aError);
+    }];
+    [operation start];
+}
+
+- (void)getBestTrailerWithCompletion:(MJUTrailerCompletionBlock)completion error:(MJUMovieErrorBlock)error
+{
+    [self getTrailersWithCompletion:^(NSArray *trailerArray) {
+        MJUTrailer *bestTrailer = nil;
+        for (MJUTrailer *aTrailer in trailerArray) {
+            if(aTrailer.type == MJUTrailerTypeQuicktime) {
+                if(!bestTrailer || (bestTrailer.size == MJUTrailerQualitySD && aTrailer.size == MJUTrailerQualityHD)) {
+                    bestTrailer = aTrailer;
+                }
+            }
+        }
+        
+        if(!bestTrailer) {
+            for (MJUTrailer *aTrailer in trailerArray) {
+                if(!bestTrailer || (bestTrailer.size == MJUTrailerQualitySD && aTrailer.size == MJUTrailerQualityHD)) {
+                    bestTrailer = aTrailer;
+                }
+            }
+        }
+        completion(bestTrailer);
+    } error:^(NSError *aError) {
+        error(aError);
+    }];
+}
+
+
+//- (NSArray*)casts
+//{
+//    if(!personsQueried) {
+//        [self getPersonsWithCompletion:nil error:nil];
+//    }
+//    return casts;
+//}
+//
+//- (NSArray*)crews
+//{
+//    if(!personsQueried) {
+//        [self getPersonsWithCompletion:nil error:nil];
+//    }
+//    return crews;
+//}
+
+-(void)getPersonsWithCompletion:(MJUPersonsCompletionBlock)completion error:(MJUMovieErrorBlock)error
+{
+    if(personsQueried) {
+        completion(casts,crews);
+        return;
     }
-    return nil;
+    personsQueried = YES;
+    
+    AFJSONRequestOperation *operation = [[OnlineMovieDatabase sharedMovieDatabase] getPersonsForMovieID:self.movieID completion:^(NSArray *castsArray, NSArray *crewsArray) {
+        
+        NSSortDescriptor *sortCastDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"order" ascending:YES];
+        NSArray *sortedCastsArray = [castsArray sortedArrayUsingDescriptors:[NSArray arrayWithObject:sortCastDescriptor]];
+        casts = sortedCastsArray;
+        
+        NSSortDescriptor *sortCrewDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES];
+        NSArray *sortedCrewArray = [crewsArray sortedArrayUsingDescriptors:[NSArray arrayWithObject:sortCrewDescriptor]];
+        crews = sortedCrewArray;
+        
+        completion(casts,crews);
+        
+    } failure:^(NSError *aError) {
+        personsQueried = NO;
+        error(aError);
+    }];
+    [operation start];
 }
 
-- (NSArray*)sortedCasts
-{
-    NSSortDescriptor *sortCastDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"order" ascending:YES];
-    NSArray *sortedCastsArray = [[self.casts allObjects] sortedArrayUsingDescriptors:[NSArray arrayWithObject:sortCastDescriptor]];
-    return sortedCastsArray;
-}
 
-- (NSArray*)sortedCrews
-{
-    NSSortDescriptor *sortCrewDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES];
-    NSArray *sortedCrewArray = [[self.crews allObjects] sortedArrayUsingDescriptors:[NSArray arrayWithObject:sortCrewDescriptor]];
-    return sortedCrewArray;
-}
-
-- (Crew*)director
-{
-    // try to get a quicktime one
-    NSPredicate *dirPredicate = [NSPredicate predicateWithFormat:@"job ==[c] %@", @"Director"];
-    NSArray *directors = [[self.crews allObjects] filteredArrayUsingPredicate:dirPredicate];
-    if(directors.count > 0) {
-        return [directors objectAtIndex:0];
-    }
-    return nil;
-}
+//- (MJUTrailer*)bestTrailer
+//{
+//    [self getTrailersWithCompletion:^(NSArray *) {
+//        
+//        
+//    } error:^(NSError *error) {
+//        return nil;
+//    }];
+//    
+//    
+//    // try to get a quicktime one
+//    NSPredicate *qtPredicate = [NSPredicate predicateWithFormat:@"source == %@", @"quicktime"];
+//    NSArray *quicktimeTrailers = [[self.trailers allObjects] filteredArrayUsingPredicate:qtPredicate];
+//    if(quicktimeTrailers.count > 0) {
+//        return [quicktimeTrailers objectAtIndex:0];
+//    }
+//    
+//    // sort HD before SD
+//    NSSortDescriptor *ytSortDestcriptor = [NSSortDescriptor sortDescriptorWithKey:@"quality" ascending:YES];
+//    NSArray *youtubeTrailers = [[self.trailers allObjects] sortedArrayUsingDescriptors:[NSArray arrayWithObject:ytSortDestcriptor]];
+//    if(youtubeTrailers.count > 0) {
+//        return [youtubeTrailers objectAtIndex:0];
+//    }
+//    return nil;
+//}
+//
+//- (NSArray*)sortedCasts
+//{
+//    NSSortDescriptor *sortCastDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"order" ascending:YES];
+//    NSArray *sortedCastsArray = [[self.casts allObjects] sortedArrayUsingDescriptors:[NSArray arrayWithObject:sortCastDescriptor]];
+//    return sortedCastsArray;
+//}
+//
+//- (NSArray*)sortedCrews
+//{
+//    NSSortDescriptor *sortCrewDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES];
+//    NSArray *sortedCrewArray = [[self.crews allObjects] sortedArrayUsingDescriptors:[NSArray arrayWithObject:sortCrewDescriptor]];
+//    return sortedCrewArray;
+//}
+//
+//- (Crew*)director
+//{
+//    // try to get a quicktime one
+//    NSPredicate *dirPredicate = [NSPredicate predicateWithFormat:@"job ==[c] %@", @"Director"];
+//    NSArray *directors = [[self.crews allObjects] filteredArrayUsingPredicate:dirPredicate];
+//    if(directors.count > 0) {
+//        return [directors objectAtIndex:0];
+//    }
+//    return nil;
+//}
 
 
 @end

@@ -27,18 +27,10 @@ extern const struct MovieAttributes {
 	__unsafe_unretained NSString *watchedOn;
 } MovieAttributes;
 
-extern const struct MovieRelationships {
-	__unsafe_unretained NSString *casts;
-	__unsafe_unretained NSString *crews;
-	__unsafe_unretained NSString *trailers;
-} MovieRelationships;
 
 extern const struct MovieFetchedProperties {
 } MovieFetchedProperties;
 
-@class Cast;
-@class Crew;
-@class Trailer;
 
 
 
@@ -262,46 +254,12 @@ extern const struct MovieFetchedProperties {
 
 
 
-@property (nonatomic, strong) NSSet* casts;
-
-- (NSMutableSet*)castsSet;
-
-
-
-
-@property (nonatomic, strong) NSSet* crews;
-
-- (NSMutableSet*)crewsSet;
-
-
-
-
-@property (nonatomic, strong) NSSet* trailers;
-
-- (NSMutableSet*)trailersSet;
-
-
-
-
 
 @end
 
 @interface _Movie (CoreDataGeneratedAccessors)
 
-- (void)addCasts:(NSSet*)value_;
-- (void)removeCasts:(NSSet*)value_;
-- (void)addCastsObject:(Cast*)value_;
-- (void)removeCastsObject:(Cast*)value_;
 
-- (void)addCrews:(NSSet*)value_;
-- (void)removeCrews:(NSSet*)value_;
-- (void)addCrewsObject:(Crew*)value_;
-- (void)removeCrewsObject:(Crew*)value_;
-
-- (void)addTrailers:(NSSet*)value_;
-- (void)removeTrailers:(NSSet*)value_;
-- (void)addTrailersObject:(Trailer*)value_;
-- (void)removeTrailersObject:(Trailer*)value_;
 
 @end
 
@@ -447,21 +405,6 @@ extern const struct MovieFetchedProperties {
 - (void)setPrimitiveWatchedOn:(NSDate*)value;
 
 
-
-
-
-- (NSMutableSet*)primitiveCasts;
-- (void)setPrimitiveCasts:(NSMutableSet*)value;
-
-
-
-- (NSMutableSet*)primitiveCrews;
-- (void)setPrimitiveCrews:(NSMutableSet*)value;
-
-
-
-- (NSMutableSet*)primitiveTrailers;
-- (void)setPrimitiveTrailers:(NSMutableSet*)value;
 
 
 @end

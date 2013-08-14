@@ -20,6 +20,7 @@
 #import "LoadingPopupViewController.h"
 #import "PopupLoadingView.h"
 #import "UILabel+Additions.h"
+#import "UIColor+Additions.h"
 
 #define kOptOutSwitchTag 4853
 
@@ -41,6 +42,11 @@
     UIView *backgroundView = [[UIView alloc] init];
     backgroundView.backgroundColor = HEXColor(DEFAULT_COLOR_BG);
     self.tableView.backgroundView = backgroundView;
+    
+    // make sure the tableview is empty
+    UIView *emptyTable = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, 1.0f)];
+    [emptyTable setBackgroundColor:[UIColor clearColor]];
+    self.tableView.tableFooterView = emptyTable;
     
     
     [self loadStatistics];
@@ -65,11 +71,6 @@
 #endif
                  nil];
     
-    
-    [self addHeaderView];
-    [self addFooterView];
-    
-    [self.tableView setContentInset:UIEdgeInsetsMake(-1.0f,0,0,0)];
     
 }
 
@@ -146,14 +147,15 @@
 //    } else {
 //        aCell.selectionStyle = UITableViewCellSelectionStyleBlue;
 //    }
-    aCell.selectionStyle = UITableViewCellSelectionStyleBlue;
+    aCell.selectionStyle = UITableViewCellSelectionStyleGray;
     
     // Accecory Type
     if(indexPath.section == 0) { // || indexPath.section == 2) {
         aCell.accessoryType = UITableViewCellAccessoryNone;
     } else {
-        MJCustomAccessoryControl *accessoryView = [MJCustomAccessoryControl accessory];
-        [aCell setAccessoryView:accessoryView];
+//        MJCustomAccessoryControl *accessoryView = [MJCustomAccessoryControl accessory];
+//        [aCell setAccessoryView:accessoryView];
+        aCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     }
     
     aCell.detailTextLabel.text = @"";
@@ -190,38 +192,36 @@
 	tableView.sectionHeaderHeight = headerView.frame.size.height;
 	UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(11.0f, 10.0f, headerView.frame.size.width - 20.0f, 22.0f)];
 	label.text = [self tableView:tableView titleForHeaderInSection:section];
-	label.font = [UIFont boldSystemFontOfSize:17.0f];
-	label.shadowOffset = CGSizeMake(0.0f, -1.0f);
-    label.textColor = [UIColor whiteColor];
-	label.shadowColor = [UIColor colorWithRed:0.0f green:0.0f blue:0.0f alpha:0.22f];
+	label.font = [UIFont fontWithName:@"AvenirNext-Regular" size:14.0f];
+    label.textColor = [UIColor colorWithHexString:@"8C8C8C"];
 	label.backgroundColor = [UIColor clearColor];
     
 	[headerView addSubview:label];
 	return headerView;
 }
 
-- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
-{
-    UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, tableView.bounds.size.width, 100.0f)];
-	tableView.sectionHeaderHeight = headerView.frame.size.height;
-	UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(20.0f, 10.0f, headerView.frame.size.width - 40.0f, 100.0f)];
-	label.text = [self tableView:tableView titleForFooterInSection:section];
-    label.numberOfLines = 3;
-    label.textAlignment = NSTextAlignmentCenter;
-	label.font = [UIFont systemFontOfSize:13.0f];
-	label.shadowOffset = CGSizeMake(0.0f, 1.0f);
-    label.textColor = [UIColor whiteColor];
-	label.shadowColor = [UIColor colorWithRed:0.0f green:0.0f blue:0.0f alpha:0.44f];
-	label.backgroundColor = [UIColor clearColor];
-    
-    [label sizeToFitWithWith:headerView.frame.size.width - 40.0f andMaximumNumberOfLines:3];
-    CGRect viewRect = headerView.frame;
-    viewRect.size.height = label.frame.size.height;
-    headerView.frame = viewRect;
-    
-	[headerView addSubview:label];
-	return headerView;
-}
+//- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
+//{
+//    UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, tableView.bounds.size.width, 100.0f)];
+//	tableView.sectionHeaderHeight = headerView.frame.size.height;
+//	UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(20.0f, 10.0f, headerView.frame.size.width - 40.0f, 100.0f)];
+//	label.text = [self tableView:tableView titleForFooterInSection:section];
+//    label.numberOfLines = 3;
+//    label.textAlignment = NSTextAlignmentCenter;
+//	label.font = [UIFont systemFontOfSize:13.0f];
+//	label.shadowOffset = CGSizeMake(0.0f, 1.0f);
+//    label.textColor = [UIColor whiteColor];
+//	label.shadowColor = [UIColor colorWithRed:0.0f green:0.0f blue:0.0f alpha:0.44f];
+//	label.backgroundColor = [UIColor clearColor];
+//    
+//    [label sizeToFitWithWith:headerView.frame.size.width - 40.0f andMaximumNumberOfLines:3];
+//    CGRect viewRect = headerView.frame;
+//    viewRect.size.height = label.frame.size.height;
+//    headerView.frame = viewRect;
+//    
+//	[headerView addSubview:label];
+//	return headerView;
+//}
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {

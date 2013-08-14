@@ -1,7 +1,11 @@
 #import "_Movie.h"
 
-@class Trailer;
-@class Crew;
+@class MJUTrailer;
+
+typedef void (^MJUTrailersCompletionBlock)(NSArray *);
+typedef void (^MJUTrailerCompletionBlock)(MJUTrailer *);
+typedef void (^MJUPersonsCompletionBlock)(NSArray *casts, NSArray *crews);
+typedef void (^MJUMovieErrorBlock)(NSError *);
 
 @interface Movie : _Movie {}
 
@@ -10,13 +14,15 @@
 @property (nonatomic, strong) UIImage *posterThumbnail;
 @property (readonly, nonatomic) NSString *releaseDateFormatted;
 @property (readonly, nonatomic) NSString *runtimeFormatted;
-@property (readonly, nonatomic) Trailer *bestTrailer;
-@property (readonly, nonatomic) NSArray *sortedCasts;
-@property (readonly, nonatomic) NSArray *sortedCrews;
-@property (readonly, nonatomic) Crew *director;
+@property (nonatomic, strong)  NSArray *trailers;
+@property (nonatomic, strong)  NSArray *casts;
+@property (nonatomic, strong)  NSArray *crews;
 
 + (Movie *)movieWithServerId:(NSInteger)serverId usingManagedObjectContext:(NSManagedObjectContext *)moc;
 + (BOOL)movieWithServerIDExists:(NSInteger)serverID usingManagedObjectContext:(NSManagedObjectContext *)moc;
 - (void)updateAttributes:(NSDictionary *)attributes;
+- (void)getTrailersWithCompletion:(MJUTrailersCompletionBlock)completion error:(MJUMovieErrorBlock)error;
+- (void)getBestTrailerWithCompletion:(MJUTrailerCompletionBlock)completion error:(MJUMovieErrorBlock)error;
+-(void)getPersonsWithCompletion:(MJUPersonsCompletionBlock)completion error:(MJUMovieErrorBlock)error;
 
 @end

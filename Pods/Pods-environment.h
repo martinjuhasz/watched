@@ -8,9 +8,9 @@
 
 // AFNetworking
 #define COCOAPODS_POD_AVAILABLE_AFNetworking
-#define COCOAPODS_VERSION_MAJOR_AFNetworking 0
-#define COCOAPODS_VERSION_MINOR_AFNetworking 10
-#define COCOAPODS_VERSION_PATCH_AFNetworking 0
+#define COCOAPODS_VERSION_MAJOR_AFNetworking 1
+#define COCOAPODS_VERSION_MINOR_AFNetworking 3
+#define COCOAPODS_VERSION_PATCH_AFNetworking 2
 
 // BlockAlertsAnd-ActionSheets
 #define COCOAPODS_POD_AVAILABLE_BlockAlertsAnd_ActionSheets
@@ -41,6 +41,18 @@
 #define COCOAPODS_VERSION_MAJOR_MJStarRating 1
 #define COCOAPODS_VERSION_MINOR_MJStarRating 0
 #define COCOAPODS_VERSION_PATCH_MJStarRating 0
+
+// Mantle
+#define COCOAPODS_POD_AVAILABLE_Mantle
+#define COCOAPODS_VERSION_MAJOR_Mantle 1
+#define COCOAPODS_VERSION_MINOR_Mantle 2
+#define COCOAPODS_VERSION_PATCH_Mantle 0
+
+// Mantle/extobjc
+#define COCOAPODS_POD_AVAILABLE_Mantle_extobjc
+#define COCOAPODS_VERSION_MAJOR_Mantle_extobjc 1
+#define COCOAPODS_VERSION_MINOR_Mantle_extobjc 2
+#define COCOAPODS_VERSION_PATCH_Mantle_extobjc 0
 
 // OBGradientView
 #define COCOAPODS_POD_AVAILABLE_OBGradientView

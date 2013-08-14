@@ -8,9 +8,6 @@
 
 #import "MovieDetailViewController.h"
 #import "Movie.h"
-#import "Cast.h"
-#import "Crew.h"
-#import "Trailer.h"
 #import <CoreData/CoreData.h>
 #import "MoviesDataModel.h"
 #import "MovieDetailView.h"
@@ -34,6 +31,7 @@
 #import "MJInternetConnection.h"
 #import "SimilarMoviesTableViewController.h"
 #import "MovieShareButtonView.h"
+#import "MJUTrailer.h"
 
 #define kImageFadeDelay 0.0f
 
@@ -118,11 +116,7 @@
     self.detailView.ratingView.rating = [self.movie.rating floatValue];
     
     // Director
-    if(self.movie.director) {
-        self.detailView.directorLabel.text = self.movie.director.name;
-    } else {
-        self.detailView.directorLabel.text = @"-";
-    }
+    self.detailView.directorLabel.text = @"-";
     
     // Overview
     if (self.movie.overview) {
@@ -167,30 +161,6 @@
         NSDateComponents *components = [[NSCalendar currentCalendar] components:componentFlags fromDate:self.movie.releaseDate];
         NSInteger year = [components year];
         self.detailView.yearLabel.text = [NSString stringWithFormat:@"%d", year];
-    }
-    
-    // actors
-    NSSortDescriptor *actorSort = [[NSSortDescriptor alloc] initWithKey:@"order" ascending:YES];
-    NSArray *sortedCast = [[self.movie.casts allObjects] sortedArrayUsingDescriptors:[NSArray arrayWithObject:actorSort]];
-    if(sortedCast.count <= 0) {
-        self.detailView.actor1Label.text = @"-";
-    }
-    if(sortedCast.count >= 1) {
-        Cast *cast1 = (Cast*)[sortedCast objectAtIndex:0];
-        self.detailView.actor1Label.text = cast1.name;
-    }
-    if(sortedCast.count >= 2) {
-        Cast *cast2 = (Cast*)[sortedCast objectAtIndex:1];
-        self.detailView.actor2Label.text = cast2.name;
-    }
-    if(sortedCast.count >= 3) {
-        Cast *cast3 = (Cast*)[sortedCast objectAtIndex:2];
-        self.detailView.actor3Label.text = cast3.name;
-    }
-    
-    if(sortedCast.count >= 4) {
-        Cast *cast4 = (Cast*)[sortedCast objectAtIndex:3];
-        self.detailView.actor4Label.text = cast4.name;
     }
 }
 
@@ -308,6 +278,13 @@
 
 - (void)trailerRowClicked
 {
+    [self.movie getBestTrailerWithCompletion:^(MJUTrailer *aTrailer) {
+        if(!aTrailer) return;
+        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:aTrailer.source]];
+    } error:^(NSError *aError) {
+        
+    }];
+    
     // default code
 //    if(!self.movie.bestTrailer) return;
 //    NSURL *videoURL = nil;
@@ -323,15 +300,15 @@
     
     // opening web view
     
-    if(!self.movie.bestTrailer) return;
-    NSURL *videoURL = nil;
-    
-    if([self.movie.bestTrailer.source isEqualToString:@"quicktime"]) {
-        videoURL = [NSURL URLWithString:self.movie.bestTrailer.url];
-    } else {
-        videoURL = [NSURL URLWithString:[NSString stringWithFormat:@"http://m.youtube.com/watch?v=%@",self.movie.bestTrailer.url]];
-    }
-    [[UIApplication sharedApplication] openURL:videoURL];
+//    if(!self.movie.bestTrailer) return;
+//    NSURL *videoURL = nil;
+//    
+//    if([self.movie.bestTrailer.source isEqualToString:@"quicktime"]) {
+//        videoURL = [NSURL URLWithString:self.movie.bestTrailer.url];
+//    } else {
+//        videoURL = [NSURL URLWithString:[NSString stringWithFormat:@"http://m.youtube.com/watch?v=%@",self.movie.bestTrailer.url]];
+//    }
+//    [[UIApplication sharedApplication] openURL:videoURL];
 }
 
 - (void)castsRowClicked
@@ -765,25 +742,27 @@
         if(indexPath.row == 0) {
             // trailer
             cell.textLabel.text = NSLocalizedString(@"BUTTON_WATCH_TRAILER", nil);
-            if(!self.movie.bestTrailer) {
-//                cell.activated = NO;
-                cell.userInteractionEnabled = NO;
-                accessoryView.controlImageView.image = [UIImage imageNamed:@"g_table-accessory_disabled.png"];
-                cell.imageView.image = [UIImage imageNamed:@"dv_icon_trailer_disabled.png"];
-            } else {
-                cell.imageView.image = [UIImage imageNamed:@"dv_icon_trailer.png"];
-            }
+//            if(!self.movie.bestTrailer) {
+////                cell.activated = NO;
+//                cell.userInteractionEnabled = NO;
+//                accessoryView.controlImageView.image = [UIImage imageNamed:@"g_table-accessory_disabled.png"];
+//                cell.imageView.image = [UIImage imageNamed:@"dv_icon_trailer_disabled.png"];
+//            } else {
+//                cell.imageView.image = [UIImage imageNamed:@"dv_icon_trailer.png"];
+//            }
+            cell.imageView.image = [UIImage imageNamed:@"dv_icon_trailer.png"];
         } else if (indexPath.row == 1) {
             // cast
             cell.textLabel.text = NSLocalizedString(@"BUTTON_SHOW_CAST", nil);
-            if(self.movie.casts.count <= 0) {
-//                cell.activated = NO;
-                cell.userInteractionEnabled = NO;
-                accessoryView.controlImageView.image = [UIImage imageNamed:@"g_table-accessory_disabled.png"];
-                cell.imageView.image = [UIImage imageNamed:@"dv_icon_cast_disabled.png"];
-            } else {
-                cell.imageView.image = [UIImage imageNamed:@"dv_icon_cast.png"];
-            }
+//            if(self.movie.casts.count <= 0) {
+////                cell.activated = NO;
+//                cell.userInteractionEnabled = NO;
+//                accessoryView.controlImageView.image = [UIImage imageNamed:@"g_table-accessory_disabled.png"];
+//                cell.imageView.image = [UIImage imageNamed:@"dv_icon_cast_disabled.png"];
+//            } else {
+//                cell.imageView.image = [UIImage imageNamed:@"dv_icon_cast.png"];
+//            }
+            cell.imageView.image = [UIImage imageNamed:@"dv_icon_cast.png"];
         } else {
             // Similar Movies
             cell.textLabel.text = NSLocalizedString(@"BUTTON_SIMILAR", nil);
