@@ -21,8 +21,6 @@
 @property (strong, nonatomic) UIButton *backdropButton;
 @property (strong, nonatomic) UIButton *posterButton;
 @property (strong, nonatomic) UILabel *titleLabel;
-@property (strong, nonatomic) UILabel *yearLabel;
-@property (strong, nonatomic) UISegmentedControl *watchedControl;
 @property (strong, nonatomic) UILabel *directorLabel;
 @property (strong, nonatomic) UIButton *releaseDateButton;
 @property (strong, nonatomic) UIButton *runtimeButton;
@@ -35,12 +33,6 @@
 @property (strong, nonatomic) UILabel *overviewLabel;
 @property (strong, nonatomic) UILabel *overviewTitleLabel;
 @property (strong, nonatomic) DLStarRatingControl *ratingView;
-@property (strong, nonatomic) UIButton *deleteButton;
-@property (strong, nonatomic) MJGradientView *movieDetailsBackgroundView;
-@property (strong, nonatomic) MJGradientView *overviewBackgroundView;
-@property (strong, nonatomic) MJGradientView *overviewBottomDividerView;
-@property (strong, nonatomic) MJGradientView *overviewBottomDividerDropshadowView;
-@property (strong, nonatomic) UIView *bottomBackgroundView;
 @property (strong, nonatomic) UITableView *metaTableView;
 
 - (void)toggleLoadingViewForPosterType:(ImageType)aImageType;

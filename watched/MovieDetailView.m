@@ -60,7 +60,6 @@
     self.posterImageView.frame = CGRectMake(11.0f, 136.0f, 71.0f, 99.0f);
     self.backdropButton.frame = CGRectMake(0.0f, 0.0f, 320.0f, 120.0f);
     self.posterButton.frame = CGRectMake(11.0f, 136.0f, 71.0f, 99.0f);
-    self.watchedControl.frame = CGRectMake(101.0f, 207.0f, 209.0f, 30.0f);
     self.ratingView.frame = CGRectMake(0.0f, 251.0f, 320.0f, 55.0f);
     self.directorLabel.frame = CGRectMake(100.0f, 318.0f, 165.0f, 20.0f);
     self.actor1Label.frame = CGRectMake(100.0f, 343.0f, 165.0f, 20.0f);
@@ -74,7 +73,6 @@
     [super layoutSubviews];
     [self.titleLabel sizeToFitWithWith:165.0f andMaximumNumberOfLines:2];
     self.titleLabel.frame = CGRectMake(101.0f, 137.0f, 165.0f, self.titleLabel.frame.size.height);
-    self.yearLabel.frame = CGRectMake(101.0f, self.titleLabel.bottom + 3.0f, 165.0f, 20.0f);
     CGFloat lastPostition = 343.0f;
     
     if(self.actor1Label.text) lastPostition += 20.0f;
@@ -85,7 +83,6 @@
     // add extra space for time and release date
     lastPostition += 47.0f;
     
-    self.movieDetailsBackgroundView.height = lastPostition - self.movieDetailsBackgroundView.top;
     self.releaseDateButton.frame = CGRectMake(165.0f, lastPostition - 40.0f, 145.0f, 25.0f);
     self.runtimeButton.frame = CGRectMake(10.0f, lastPostition - 40.0f, 145.0f, 25.0f);
     self.runtimeTitleLabel.frame = CGRectMake(20.0f, lastPostition - 40.0f, 145.0f, 25.0f);
@@ -94,17 +91,9 @@
     self.overviewTitleLabel.frame = CGRectMake(10.0f, lastPostition + 12.0f, 300.0f, 15.0f);
     self.overviewLabel.frame = CGRectMake(10.0f, lastPostition + 28.0f, 294.0f, 0.0f);
     [self.overviewLabel sizeToFit];
-    self.overviewBackgroundView.frame = CGRectMake(0.0f, lastPostition, 320.0f, self.overviewLabel.bottom - lastPostition + 16.0f);
-    
-    self.overviewBottomDividerView.frame = CGRectMake(0.0f, self.overviewBackgroundView.bottom, 320.0f, 10.0f);
-    self.overviewBottomDividerDropshadowView.frame = CGRectMake(0.0f, self.overviewBottomDividerView.bottom, 320.0f, 3.0f);
-    self.metaTableView.frame = CGRectMake(0.0f, self.overviewBottomDividerDropshadowView.top, 320.0f, 233.0f);
-    
-    self.bottomBackgroundView.frame = CGRectMake(0.0f, self.metaTableView.bottom, 320.0f, 70.0f);
-    
-    self.deleteButton.frame = CGRectMake(10.0f, self.metaTableView.bottom + 16.0f, 300.0f, 40.0f);
-    
-    [self.mainScrollView setContentSize:CGSizeMake(320.0f, self.bottomBackgroundView.bottom)];
+
+
+    [self.mainScrollView setContentSize:CGSizeMake(320.0f, 2000)];
 }
 
 - (void)setupContent
@@ -128,10 +117,6 @@
     
     self.backdropButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [self.mainScrollView addSubview:self.backdropButton];
-    
-    UIImageView *titleOverlayImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"dv_title-overlay.png"]];
-    titleOverlayImageView.frame = CGRectMake(0.0f, 119.0f, 320.0f, 132.0f);
-    [self.mainScrollView addSubview:titleOverlayImageView];
     
     self.posterImageView = [[UIImageView alloc] init];
     self.posterImageView.contentMode = UIViewContentModeScaleAspectFill;
@@ -166,26 +151,6 @@
     self.titleLabel.shadowColor = [UIColor colorWithRed:255.0f green:255.0f blue:255.0f alpha:0.33f];
     self.titleLabel.shadowOffset = CGSizeMake(0.0f, 1.0f);
     [self.mainScrollView addSubview:self.titleLabel];
-
-    self.yearLabel = [[UILabel alloc] init];
-    [self setDefaultStylesForLabels:self.yearLabel];
-    self.yearLabel.font = [UIFont systemFontOfSize:14.0f];
-    self.yearLabel.adjustsFontSizeToFitWidth = NO;
-    self.yearLabel.textColor = HEXColor(0x919191);
-    self.yearLabel.shadowColor = [UIColor colorWithRed:255.0f green:255.0f blue:255.0f alpha:0.33f];
-    self.yearLabel.shadowOffset = CGSizeMake(0.0f, 1.0f);
-    [self.mainScrollView addSubview:self.yearLabel];
-    
-    UIView *divider = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 306.0f, 320.0f, 1.0f)];
-    divider.backgroundColor = [UIColor blackColor];
-    [self.mainScrollView addSubview:divider];
-    
-    self.movieDetailsBackgroundView = [[MJGradientView alloc] initWithFrame:CGRectMake(0.0f, 307.0f, 320.0f, 100.0f)];
-    self.movieDetailsBackgroundView.startColor = HEXColor(0x5A5A5A);
-    self.movieDetailsBackgroundView.stopColor = HEXColor(0x464646);
-    self.movieDetailsBackgroundView.topColor = HEXColor(0x757575);
-    self.movieDetailsBackgroundView.bottomColor = HEXColor(0x000000);
-    [self.mainScrollView addSubview:self.movieDetailsBackgroundView];
     
     UILabel *directorTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(10.0f, 318.0f, 165.0f, 20.0f)];
     directorTitleLabel.text = [ NSLocalizedString(@"DETAIL_DIRECTOR_TITLE", nil) uppercaseString];
@@ -207,25 +172,6 @@
     starringTitleLabel.shadowOffset = CGSizeMake(0.0f, 1.0f);
     [self.mainScrollView addSubview:starringTitleLabel];
 
-    self.watchedControl = [[UISegmentedControl alloc] initWithItems:[NSArray arrayWithObjects:
-                                                                     NSLocalizedString(@"DV_CONTROL_WATCHED", nil),
-                                                                     NSLocalizedString(@"DV_CONTROL_UNWATCHED", nil), nil]];
-
-//    UIImage *segmentedControlBgImage = [[UIImage imageNamed:@"dv_watched.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 4, 0, 4)];
-//    UIImage *segmentedControlBgImageActive = [[UIImage imageNamed:@"dv_watched-highlighted.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 14, 0, 14)];
-//    UIImage *segmentedDividerNN = [UIImage imageNamed:@"dv_watched-dv-nn.png"];
-//    UIImage *segmentedDividerAN = [UIImage imageNamed:@"dv_watched-dv-an.png"];
-//    UIImage *segmentedDividerNA = [UIImage imageNamed:@"dv_watched-dv-na.png"];
-
-    
-//    [self.watchedControl setBackgroundImage:segmentedControlBgImage forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
-//    [self.watchedControl setBackgroundImage:segmentedControlBgImageActive forState:UIControlStateSelected barMetrics:UIBarMetricsDefault];
-//    [self.watchedControl setDividerImage:segmentedDividerNN forLeftSegmentState:UIControlStateNormal rightSegmentState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
-//    [self.watchedControl setDividerImage:segmentedDividerAN forLeftSegmentState:UIControlStateSelected rightSegmentState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
-//    [self.watchedControl setDividerImage:segmentedDividerNA forLeftSegmentState:UIControlStateNormal rightSegmentState:UIControlStateSelected barMetrics:UIBarMetricsDefault];
-    
-    [self.mainScrollView addSubview:self.watchedControl];
-
     self.ratingView =[[DLStarRatingControl alloc] initWithFrame:CGRectMake(0.0f, 251.0f, 320.0f, 55.0f) andStars:5 isFractional:NO];
     self.ratingView.star = [UIImage imageNamed:@"dv_star.png"];
     self.ratingView.highlightedStar = [UIImage imageNamed:@"dv_star-highlighted.png"];
@@ -246,14 +192,7 @@
     
     
     
-    
-    
-    
-    
-    
-    
-    
-     
+
     self.directorLabel = [[UILabel alloc] init];
     [self setDefaultStylesForLabels:self.directorLabel];
     self.directorLabel.font = [UIFont fontWithName:kContentFont size:12.0f];
@@ -263,8 +202,6 @@
     self.directorLabel.shadowOffset = CGSizeMake(0.0f, 1.0f);
     [self.mainScrollView addSubview:self.directorLabel];
 
-    UIImage *metaBackground = [[UIImage imageNamed:@"dv_bg-meta.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(8, 8, 8, 8)];
-    
     self.releaseDateButton = [UIButton buttonWithType:UIButtonTypeCustom];
     self.releaseDateButton.titleLabel.font = [UIFont fontWithName:kContentFont size:10.0f];
     self.releaseDateButton.titleLabel.shadowColor = [UIColor colorWithRed:0.0f green:0.0f blue:0.0f alpha:0.8f];
@@ -273,7 +210,6 @@
     [self.releaseDateButton setTitleColor:HEXColor(0xD1D1D1)];
     self.releaseDateButton.contentHorizontalAlignment = NSTextAlignmentRight;
     self.releaseDateButton.titleEdgeInsets = UIEdgeInsetsMake(1.0f, 10.0f, 0.0f, 10.0f);
-    [self.releaseDateButton setBackgroundImage:metaBackground];
     [self.mainScrollView addSubview:self.releaseDateButton];
     
     self.runtimeButton = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -284,7 +220,6 @@
     [self.runtimeButton setTitleColor:HEXColor(0xD1D1D1)];
     self.runtimeButton.contentHorizontalAlignment = NSTextAlignmentRight;
     self.runtimeButton.titleEdgeInsets = UIEdgeInsetsMake(1.0f, 10.0f, 0.0f, 10.0f);
-    [self.runtimeButton setBackgroundImage:metaBackground];
     [self.mainScrollView addSubview:self.runtimeButton];
 
     self.releaseDateTitleLabel = [[UILabel alloc] init];
@@ -348,15 +283,7 @@
     [self.mainScrollView addSubview:self.actor4Label];
     
     
-    
-    
-    
-    self.overviewBackgroundView = [[MJGradientView alloc] initWithFrame:CGRectMake(0.0f, 308.0f, 320.0f, 100.0f)];
-    self.overviewBackgroundView.startColor = HEXColor(0xE6E6E6);
-    self.overviewBackgroundView.stopColor = HEXColor(0xC9C9C9);
-    self.overviewBackgroundView.topColor = HEXColor(0xFCFCFC);
-    self.overviewBackgroundView.bottomColor = HEXColor(0x2C2C2C);
-    [self.mainScrollView addSubview:self.overviewBackgroundView];
+
     
     self.overviewTitleLabel = [[UILabel alloc] initWithFrame:CGRectZero];
     self.overviewTitleLabel.text = [NSLocalizedString(@"DETAIL_DESCRIPTION_TITLE", nil) uppercaseString];
@@ -377,39 +304,6 @@
     self.overviewLabel.shadowOffset = CGSizeMake(0.0f, 1.0f);
     [self.mainScrollView addSubview:self.overviewLabel];
     
-    
-    self.overviewBottomDividerView = [[MJGradientView alloc] initWithFrame:CGRectMake(0.0f, 308.0f, 320.0f, 10.0f)];
-    self.overviewBottomDividerView.startColor = HEXColor(0x949494);
-    self.overviewBottomDividerView.stopColor = HEXColor(0x828282);
-    self.overviewBottomDividerView.topColor = HEXColor(0xA7A7A7);
-    self.overviewBottomDividerView.bottomColor = HEXColor(0x2C2C2C);
-    [self.mainScrollView addSubview:self.overviewBottomDividerView];
-    
-    self.overviewBottomDividerDropshadowView = [[MJGradientView alloc] initWithFrame:CGRectMake(0.0f, 308.0f, 320.0f, 3.0f)];
-    self.overviewBottomDividerDropshadowView.startColor = [UIColor colorWithRed:0.0f green:0.0f blue:0.0f alpha:0.2f];
-    self.overviewBottomDividerDropshadowView.stopColor = [UIColor clearColor];
-    [self.mainScrollView addSubview:self.overviewBottomDividerDropshadowView];
-    
-    
-    
-    self.bottomBackgroundView = [[UIView alloc] initWithFrame:CGRectZero];
-    self.bottomBackgroundView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"dv_bg-delete.png"]];
-    [self.mainScrollView addSubview:self.bottomBackgroundView];
-    
-    self.deleteButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    self.deleteButton.titleLabel.font = [UIFont boldSystemFontOfSize:14.0f];
-    self.deleteButton.titleLabel.adjustsFontSizeToFitWidth = NO;
-    self.deleteButton.titleColor = HEXColor(0xFFFFFF);
-    self.deleteButton.titleLabel.shadowColor = [UIColor colorWithRed:0.0f green:0.0f blue:0.0f alpha:0.44f];
-    self.deleteButton.titleLabel.shadowOffset = CGSizeMake(0.0f, 1.0f);
-    [self.deleteButton setTitle:[NSLocalizedString(@"BUTTON_DELETE_MOVIE", nil) uppercaseString]];
-    
-    UIImage *deleteBg = [[UIImage imageNamed:@"dv_button-delete.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(4, 4, 4, 4)];
-    UIImage *deleteBgActive = [[UIImage imageNamed:@"dv_button-delete-selected.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(4, 4, 4, 4)];
-    
-    [self.deleteButton setBackgroundImage:deleteBg];
-    [self.deleteButton setBackgroundImage:deleteBgActive forState:UIControlStateHighlighted];
-    [self.mainScrollView addSubview:self.deleteButton];
 }
 
 - (void)setDefaultStylesForLabels:(UILabel*)label

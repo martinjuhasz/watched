@@ -78,8 +78,6 @@
 
     [self.detailView.backdropButton addTarget:self action:@selector(posterButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
     [self.detailView.posterButton addTarget:self action:@selector(posterButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
-    [self.detailView.watchedControl addTarget:self action:@selector(watchedControlChanged:) forControlEvents:UIControlEventValueChanged];
-    [self.detailView.deleteButton addTarget:self action:@selector(deleteButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
 }
 
 
@@ -153,15 +151,7 @@
         self.detailView.backdropImageView.image = [UIImage imageNamed:@"dv_placeholder-backdrop.png"];
     }
     
-    self.detailView.watchedControl.selectedSegmentIndex = (self.movie.watchedOn) ? 0 : 1;
-    
-    // year
-    if(self.movie.releaseDate) {
-        NSUInteger componentFlags = NSYearCalendarUnit;
-        NSDateComponents *components = [[NSCalendar currentCalendar] components:componentFlags fromDate:self.movie.releaseDate];
-        NSInteger year = [components year];
-        self.detailView.yearLabel.text = [NSString stringWithFormat:@"%d", year];
-    }
+   
 }
 
 
@@ -248,12 +238,6 @@
 
 - (void)newRating:(DLStarRatingControl *)control :(float)newRating
 {
-    // toggle to seen
-    bool toggleWatched = ([self.movie.rating intValue] == 0 && newRating > 0 && self.detailView.watchedControl.selectedSegmentIndex != 0);
-    if(toggleWatched) {
-        self.detailView.watchedControl.selectedSegmentIndex = 0;
-    }
-    
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
         
         //NSManagedObjectContext *context = [[MoviesDataModel sharedDataModel] mainContext];
@@ -265,7 +249,6 @@
         if(!toSaveMovie) return;
         
         toSaveMovie.rating = [NSNumber numberWithFloat:newRating];
-        if(toggleWatched) toSaveMovie.watchedOn = [NSDate date];
         
         NSError *error;
         [context save:&error];
@@ -327,16 +310,6 @@
 - (IBAction)noteRowClicked
 {
     [self performSegueWithIdentifier:@"MovieNoteSegue" sender:self];
-}
-
-- (IBAction)watchedControlChanged:(id)sender
-{
-    NSInteger selectedIndex = self.detailView.watchedControl.selectedSegmentIndex;
-    if(selectedIndex == 0) {
-        [self setWatchedStateToSeen:YES];
-    } else {
-        [self setWatchedStateToSeen:NO];
-    }
 }
 
 - (void)setWatchedStateToSeen:(BOOL)seen
