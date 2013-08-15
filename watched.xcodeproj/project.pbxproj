@@ -422,6 +422,8 @@
 		7A2F43DD158420FB00667E76 /* WatchedWebBrowser.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A2F43DC158420FB00667E76 /* WatchedWebBrowser.m */; };
 		7A2F43EB1584D93A00667E76 /* UIViewController+MJPopupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A2F43EA1584D93A00667E76 /* UIViewController+MJPopupViewController.m */; };
 		7A2F43EF1584DBBA00667E76 /* AddMovieViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A2F43EE1584DBBA00667E76 /* AddMovieViewController.m */; };
+		7A34B02B17BCD9B500DB30DB /* MJUBaseMovie.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A34B02A17BCD9B500DB30DB /* MJUBaseMovie.m */; };
+		7A34B02C17BCD9B500DB30DB /* MJUBaseMovie.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A34B02A17BCD9B500DB30DB /* MJUBaseMovie.m */; };
 		7A353256157953DB008F4F58 /* MovieNoteViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A353255157953DB008F4F58 /* MovieNoteViewController.m */; };
 		7A3F80CB1635F0FF00FF8349 /* sv_bg_meta_small.png in Resources */ = {isa = PBXBuildFile; fileRef = 7A3F80C91635F0FF00FF8349 /* sv_bg_meta_small.png */; };
 		7A3F80CC1635F0FF00FF8349 /* sv_bg_meta_small@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7A3F80CA1635F0FF00FF8349 /* sv_bg_meta_small@2x.png */; };
@@ -831,6 +833,8 @@
 		7A2F43EA1584D93A00667E76 /* UIViewController+MJPopupViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+MJPopupViewController.m"; sourceTree = "<group>"; };
 		7A2F43ED1584DBBA00667E76 /* AddMovieViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddMovieViewController.h; sourceTree = "<group>"; };
 		7A2F43EE1584DBBA00667E76 /* AddMovieViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddMovieViewController.m; sourceTree = "<group>"; };
+		7A34B02917BCD9B500DB30DB /* MJUBaseMovie.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MJUBaseMovie.h; sourceTree = "<group>"; };
+		7A34B02A17BCD9B500DB30DB /* MJUBaseMovie.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MJUBaseMovie.m; sourceTree = "<group>"; };
 		7A353254157953DB008F4F58 /* MovieNoteViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MovieNoteViewController.h; sourceTree = "<group>"; };
 		7A353255157953DB008F4F58 /* MovieNoteViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MovieNoteViewController.m; sourceTree = "<group>"; };
 		7A3F80C91635F0FF00FF8349 /* sv_bg_meta_small.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sv_bg_meta_small.png; sourceTree = "<group>"; };
@@ -1725,6 +1729,8 @@
 				7ACE445517B906C8007AA6E4 /* MJUCrew.m */,
 				7ACE445817B906D5007AA6E4 /* MJUCast.h */,
 				7ACE445917B906D5007AA6E4 /* MJUCast.m */,
+				7A34B02917BCD9B500DB30DB /* MJUBaseMovie.h */,
+				7A34B02A17BCD9B500DB30DB /* MJUBaseMovie.m */,
 			);
 			name = WebModels;
 			sourceTree = "<group>";
@@ -2721,6 +2727,7 @@
 				7A00F850172529C0008A9E0F /* UISearchBar+Additions.m in Sources */,
 				7A00F851172529C0008A9E0F /* MovieDetailViewController.m in Sources */,
 				7A00F854172529C0008A9E0F /* MovieDetailView.m in Sources */,
+				7A34B02C17BCD9B500DB30DB /* MJUBaseMovie.m in Sources */,
 				7ACE445717B906C8007AA6E4 /* MJUCrew.m in Sources */,
 				7A00F855172529C0008A9E0F /* UILabel+Additions.m in Sources */,
 				7A00F856172529C0008A9E0F /* UIView+Additions.m in Sources */,
@@ -2791,6 +2798,7 @@
 				7AEEA3411573F697003F06E1 /* MovieDetailViewController.m in Sources */,
 				7A0A426B1574DDD00019DD5E /* MovieDetailView.m in Sources */,
 				7A0A426F1574E4F50019DD5E /* UILabel+Additions.m in Sources */,
+				7A34B02B17BCD9B500DB30DB /* MJUBaseMovie.m in Sources */,
 				7ACE445617B906C8007AA6E4 /* MJUCrew.m in Sources */,
 				7A0A42731574F7690019DD5E /* UIView+Additions.m in Sources */,
 				7A0A42761574FA390019DD5E /* UIButton+Additions.m in Sources */,
