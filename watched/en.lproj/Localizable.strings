@@ -11,6 +11,13 @@
 "ALERT_NOINTERNET_TITLE_CONTENT"        = "Sorry. You need an internet connection for this.";
 "ALERT_NOINTERNET_TITLE_OK"             = "Ok";
 
+/*================================================
+ Collections
+ ================================================*/
+
+"COLLECTIONS_TITE_ALL"          = "All Movies";
+"COLLECTIONS_TITE_UNWATCHED"    = "Unwatched";
+"COLLECTIONS_TITE_UNRATED"      = "Unrated";
 
 /*================================================
  Search
@@ -37,7 +44,7 @@
 "CONTROL_SORTMOVIES_TITLE_UNRATED"      = "Unrated ";
 "HEADER_TITLE_ZERORATING"               = "Unrated";
 "OVERVIEW_TITLE"                        = "My Movies";
-"SEARCHBAR_PLACEHOLDER"                 = "Search or add Movie";
+"SEARCHBAR_PLACEHOLDER"                 = "Search";
 "MOVIE_RESULT_ADDED"                    = "added";
 "MOVIE_RESULT_ADDING"                   = "adding...";
 "MOVIE_RESULT_FAILED"                   = "failed";

@@ -10,7 +10,7 @@
 
 @interface MoviesTableViewLoadingCell : UITableViewCell
 
-@property (strong, nonatomic) UIImageView *loadingView;
+@property (strong, nonatomic) UIActivityIndicatorView *activityIndicator;
 @property (strong, nonatomic) UILabel *titleLabel;
 
 @end

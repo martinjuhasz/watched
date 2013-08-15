@@ -12,6 +12,14 @@
 "ALERT_NOINTERNET_TITLE_OK"             = "Ok";
 
 /*================================================
+ Collections
+ ================================================*/
+
+"COLLECTIONS_TITE_ALL"          = "Alle Filme";
+"COLLECTIONS_TITE_UNWATCHED"    = "Ungesehen";
+"COLLECTIONS_TITE_UNRATED"      = "Nicht bewertet";
+
+/*================================================
  Search
  ================================================*/
 
@@ -36,7 +44,7 @@
 "CONTROL_SORTMOVIES_TITLE_UNRATED"      = "Unbewertet ";
 "HEADER_TITLE_ZERORATING"               = "Unbewertet";
 "OVERVIEW_TITLE"                        = "Meine Filme";
-"SEARCHBAR_PLACEHOLDER"                 = "Suchen oder Film hinzufügen";
+"SEARCHBAR_PLACEHOLDER"                 = "Suchen";
 "MOVIE_RESULT_ADDED"                    = "hinzugefügt";
 "MOVIE_RESULT_ADDING"                   = "laden...";
 "MOVIE_RESULT_FAILED"                   = "fehlgeschlagen";
