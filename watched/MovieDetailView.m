@@ -77,15 +77,17 @@
     [self.overviewTitleLabel sizeToFitWithWith:290.0f andMaximumNumberOfLines:3];
     
     CGFloat lastPostition = 400.0f;
-    if(self.overviewTitleLabel.text) lastPostition += 30.0f;
+    if([self.overviewTitleLabel.text length] > 0) lastPostition += 30.0f;
     
-    DebugLog(@"%d", [self.overviewTitleLabel.text length]);
     
     self.overviewLabel.frame = CGRectMake(15.0f, lastPostition, 290.0f, 0.0f);
     [self.overviewLabel sizeToFit];
     
+    self.informationView.frame = CGRectMake(0.0f, self.overviewLabel.bottom + 25.0f, 320.0f, 300.0f);
     
-    lastPostition += 30.0f;
+    
+    
+    lastPostition += 1300.0f;
     
     self.directorLabel.frame = CGRectMake(100.0f, lastPostition, 165.0f, 20.0f);
     self.directorTitleLabel.frame = CGRectMake(10.0f, lastPostition, 165.0f, 20.0f);
@@ -203,6 +205,43 @@
     self.overviewLabel.adjustsFontSizeToFitWidth = NO;
     self.overviewLabel.textColor = [UIColor colorWithHexString:@"787878"];
     [self.mainScrollView addSubview:self.overviewLabel];
+    
+    self.informationView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, 320.0f)];
+    CALayer *informationViewtableBorderTop = [CALayer layer];
+    informationViewtableBorderTop.frame = CGRectMake(15.0f, 0.0f, self.informationView.frame.size.width - 15, 0.5f);
+    informationViewtableBorderTop.backgroundColor = [UIColor colorWithHexString:@"c7c7cb"].CGColor;
+    [self.informationView.layer addSublayer:informationViewtableBorderTop];
+    CALayer *informationViewtableBorderBottom = [CALayer layer];
+    informationViewtableBorderBottom.frame = CGRectMake(15.0f, 128.0f, self.informationView.frame.size.width - 15, 0.5f);
+    informationViewtableBorderBottom.backgroundColor = [UIColor colorWithHexString:@"c7c7cb"].CGColor;
+    [self.informationView.layer addSublayer:informationViewtableBorderBottom];
+    [self.mainScrollView addSubview:self.informationView];
+    
+    self.informationContentView = [[UIView alloc] init];
+    [self.informationView addSubview:self.informationContentView];
+    
+    UILabel *informationTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(15.0f, 15.0f, 305.0f, 20.0f)];
+    informationTitleLabel.text = NSLocalizedString(@"DETAIL_INFORMATION_TITLE", nil);
+    [self setDefaultStylesForLabels:informationTitleLabel];
+    informationTitleLabel.font = [UIFont fontWithName:@"AvenirNext-Medium" size:14.0f];
+    informationTitleLabel.adjustsFontSizeToFitWidth = NO;
+    informationTitleLabel.textColor = [UIColor colorWithHexString:@"191919"];
+    [self.informationView addSubview:informationTitleLabel];
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
     
     

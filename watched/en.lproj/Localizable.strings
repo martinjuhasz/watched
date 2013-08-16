@@ -71,6 +71,7 @@
 "DETAIL_RUNTIME_TITLE"          = "RUNTIME";
 "DETAIL_RELEASEDATE_TITLE"      = "RELEASE";
 "OVERVIEW_NO-CONTENT"           = "No description available";
+"DETAIL_INFORMATION_TITLE"      = "Information";
 
 "DV_CONTROL_WATCHED"            = "WATCHED";
 "DV_CONTROL_UNWATCHED"          = "UNWATCHED";

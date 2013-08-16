@@ -71,6 +71,7 @@
 "DETAIL_RUNTIME_TITLE"          = "LAUFZEIT";
 "DETAIL_RELEASEDATE_TITLE"      = "RELEASE";
 "OVERVIEW_NO-CONTENT"           = "Keine Beschreibung verfügbar";
+"DETAIL_INFORMATION_TITLE"      = "Informationen";
 
 "DV_CONTROL_WATCHED"            = "GESEHEN";
 "DV_CONTROL_UNWATCHED"          = "UNGESEHEN";
