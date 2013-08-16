@@ -9,7 +9,7 @@
         <scene sceneID="MJt-dT-9Fw">
             <objects>
                 <navigationController definesPresentationContext="YES" id="Xfi-OZ-djB" customClass="MJWatchedNavigationController" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Collection" id="29x-TV-idx"/>
+                    <tabBarItem key="tabBarItem" title="Collection" image="icon-collection-highlighted.png" id="29x-TV-idx"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" translucent="NO" id="HBi-4I-X75" customClass="MJWatchedNavigationBar">
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -187,7 +187,7 @@
         <scene sceneID="gaP-52-im9">
             <objects>
                 <navigationController definesPresentationContext="YES" id="iSK-MC-BYY" customClass="MJWatchedNavigationController" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Settings" id="ePY-9a-39Z"/>
+                    <tabBarItem key="tabBarItem" title="Settings" image="icon-setting-highlighted.png" id="ePY-9a-39Z"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" translucent="NO" id="5wJ-Qm-lzH" customClass="MJWatchedNavigationBar">
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -402,7 +402,7 @@
         <scene sceneID="s90-ye-eeK">
             <objects>
                 <navigationController definesPresentationContext="YES" id="yH6-u0-VCy" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Discover" id="Bxg-Vh-fOc"/>
+                    <tabBarItem key="tabBarItem" title="Discover" image="icon-discover-highlighted.png" id="Bxg-Vh-fOc"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="wdv-wb-qdr">
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -889,6 +889,9 @@
         <image name="dv_icon_share.png" width="23" height="23"/>
         <image name="g_button_popover_add.png" width="16" height="35"/>
         <image name="g_cover-overlay.png" width="47" height="64"/>
+        <image name="icon-collection-highlighted.png" width="25" height="21.5"/>
+        <image name="icon-discover-highlighted.png" width="25" height="21.5"/>
+        <image name="icon-setting-highlighted.png" width="25" height="21.5"/>
         <image name="nv_bg_title.png" width="320" height="24"/>
         <image name="pv_error.png" width="52" height="46"/>
         <image name="pv_mask-bottom.png" width="20" height="10"/>

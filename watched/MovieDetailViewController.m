@@ -113,6 +113,9 @@
     self.detailView.titleLabel.text = self.movie.title;
     self.detailView.ratingView.rating = [self.movie.rating floatValue];
     
+    // Tagline
+    self.detailView.overviewTitleLabel.text = self.movie.tagline;
+    
     // Director
     self.detailView.directorLabel.text = @"-";
     
@@ -689,13 +692,12 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 2;
+    return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if(section == 0) return 3;
-    return 1;
+    return 3;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)aTableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -710,50 +712,23 @@
     [cell setAccessoryView:accessoryView];
     
     cell.userInteractionEnabled = YES;
+    cell.textLabel.font = [UIFont fontWithName:@"AvenirNext-Medium" size:17.0f];
     
     if(indexPath.section == 0) {
         if(indexPath.row == 0) {
             // trailer
             cell.textLabel.text = NSLocalizedString(@"BUTTON_WATCH_TRAILER", nil);
-//            if(!self.movie.bestTrailer) {
-////                cell.activated = NO;
-//                cell.userInteractionEnabled = NO;
-//                accessoryView.controlImageView.image = [UIImage imageNamed:@"g_table-accessory_disabled.png"];
-//                cell.imageView.image = [UIImage imageNamed:@"dv_icon_trailer_disabled.png"];
-//            } else {
-//                cell.imageView.image = [UIImage imageNamed:@"dv_icon_trailer.png"];
-//            }
-            cell.imageView.image = [UIImage imageNamed:@"dv_icon_trailer.png"];
+            cell.imageView.image = [UIImage imageNamed:@"icon-trailer"];
         } else if (indexPath.row == 1) {
             // cast
             cell.textLabel.text = NSLocalizedString(@"BUTTON_SHOW_CAST", nil);
-//            if(self.movie.casts.count <= 0) {
-////                cell.activated = NO;
-//                cell.userInteractionEnabled = NO;
-//                accessoryView.controlImageView.image = [UIImage imageNamed:@"g_table-accessory_disabled.png"];
-//                cell.imageView.image = [UIImage imageNamed:@"dv_icon_cast_disabled.png"];
-//            } else {
-//                cell.imageView.image = [UIImage imageNamed:@"dv_icon_cast.png"];
-//            }
-            cell.imageView.image = [UIImage imageNamed:@"dv_icon_cast.png"];
+            cell.imageView.image = [UIImage imageNamed:@"icon-cast"];
         } else {
             // Similar Movies
             cell.textLabel.text = NSLocalizedString(@"BUTTON_SIMILAR", nil);
-            cell.imageView.image = [UIImage imageNamed:@"dv_icon_similar.png"];
+            cell.imageView.image = [UIImage imageNamed:@"icon-similiar"];
         }
-    } else if (indexPath.section == 1) {
-        if(indexPath.row == 0) {
-            // Note
-            cell.textLabel.text = NSLocalizedString(@"BUTTON_ADD_NOTE", nil);
-            cell.imageView.image = [UIImage imageNamed:@"dv_icon_notes.png"];
-        }
-        [cell setAccessoryView:nil];
     }
-    
-    
-    // Configure the cell...
-//    [cell configureForTableView:aTableView indexPath:indexPath];
-    
     return cell;
 }
 
@@ -785,13 +760,7 @@
             // Similar Movies
             [self similarRowClicked];
         }
-    } else if (indexPath.section == 1) {
-        if(indexPath.row == 0) {
-            // Notes
-            [self noteRowClicked];
-        }
     }
-    
 }
 
 

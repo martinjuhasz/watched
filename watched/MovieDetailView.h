@@ -34,6 +34,8 @@
 @property (strong, nonatomic) UILabel *overviewTitleLabel;
 @property (strong, nonatomic) DLStarRatingControl *ratingView;
 @property (strong, nonatomic) UITableView *metaTableView;
+@property (strong, nonatomic) UILabel *directorTitleLabel;
+@property (strong, nonatomic) UILabel *starringTitleLabel;
 
 - (void)toggleLoadingViewForPosterType:(ImageType)aImageType;
 

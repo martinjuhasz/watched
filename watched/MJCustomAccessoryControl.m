@@ -14,7 +14,7 @@
     if ((self = [super initWithFrame:frame])) {
 		self.backgroundColor = [UIColor clearColor];
         _controlImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 9.0f, 14.0f)];
-        _controlImageView.image = [UIImage imageNamed:@"g_table-accessory.png"];
+        _controlImageView.image = [UIImage imageNamed:@"table-accessory"];
         highlightedImageSetted = NO;
         [self addSubview:_controlImageView];
     }
@@ -32,10 +32,10 @@
 	[super setHighlighted:highlighted];
     if(highlighted && !highlightedImageSetted) {
         highlightedImageSetted = YES;
-        _controlImageView.image = [UIImage imageNamed:@"g_table-accessory_active.png"];
+        _controlImageView.image = [UIImage imageNamed:@"table-accessory-highlighted"];
     } else if(!highlighted && highlightedImageSetted) {
         highlightedImageSetted = NO;
-        _controlImageView.image = [UIImage imageNamed:@"g_table-accessory.png"];
+        _controlImageView.image = [UIImage imageNamed:@"table-accessory"];
     }
 }
 
