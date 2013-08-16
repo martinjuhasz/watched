@@ -64,12 +64,12 @@
 "BUTTON_ADD_NOTE"               = "Meine Notizen";
 "BUTTON_SIMILAR"                = "Ähnliche Filme";
 "DETAIL_DESCRIPTION_TITLE"      = "Zusammenfassung";
-"DETAIL_DIRECTOR_TITLE"         = "REGISSEUR";
-"DETAIL_STARRING_TITLE"         = "HAUPTROLLEN";
+"DETAIL_DIRECTOR_TITLE"         = "Regisseur";
+"DETAIL_STARRING_TITLE"         = "Schauspieler";
 "BUTTON_WATCHED_WATCHED"        = "gesehen";
 "BUTTON_WATCHED_UNWATCHED"      = "nicht gesehen";
-"DETAIL_RUNTIME_TITLE"          = "LAUFZEIT";
-"DETAIL_RELEASEDATE_TITLE"      = "RELEASE";
+"DETAIL_RUNTIME_TITLE"          = "Laufzeit";
+"DETAIL_RELEASEDATE_TITLE"      = "Release";
 "OVERVIEW_NO-CONTENT"           = "Keine Beschreibung verfügbar";
 "DETAIL_INFORMATION_TITLE"      = "Informationen";
 

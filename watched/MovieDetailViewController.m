@@ -128,16 +128,16 @@
     
     // Release Date
     if (self.movie.releaseDate) {
-        [self.detailView.releaseDateButton setTitle:self.movie.releaseDateFormatted];
+        self.detailView.releaseLabel.text = self.movie.releaseDateFormatted;
     } else {
-        [self.detailView.releaseDateButton setTitle:@"-"];
+        self.detailView.releaseLabel.text = @"-";
     }
     
     // RUNTIME
     if([self.movie.runtime floatValue] > 0) {
-        [self.detailView.runtimeButton setTitle:self.movie.runtimeFormatted];
+        self.detailView.runtimeLabel.text = self.movie.runtimeFormatted;
     } else {
-        [self.detailView.runtimeButton setTitle:@"-"];
+        self.detailView.runtimeLabel.text = @"-";
     }
     
     // Poster
@@ -153,6 +153,14 @@
     } else {
         self.detailView.backdropImageView.image = [UIImage imageNamed:@"dv_placeholder-backdrop.png"];
     }
+    
+    
+    // DEBUG
+    self.detailView.directorLabel.text = @"Marius Scheel";
+    self.detailView.actor1Label.text = @"Marius Scheel";
+    self.detailView.actor2Label.text = @"Marius Scheel";
+    self.detailView.actor3Label.text = @"Marius Scheel";
+    self.detailView.actor4Label.text = @"Marius Scheel";
     
    
 }

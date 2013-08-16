@@ -64,12 +64,12 @@
 "BUTTON_ADD_NOTE"               = "My Notes";
 "BUTTON_SIMILAR"                = "Similar Movies";
 "DETAIL_DESCRIPTION_TITLE"      = "Overview";
-"DETAIL_DIRECTOR_TITLE"         = "DIRECTOR";
-"DETAIL_STARRING_TITLE"         = "STARRING";
+"DETAIL_DIRECTOR_TITLE"         = "Director";
+"DETAIL_STARRING_TITLE"         = "Actors";
 "BUTTON_WATCHED_WATCHED"        = "watched";
 "BUTTON_WATCHED_UNWATCHED"      = "unwatched";
-"DETAIL_RUNTIME_TITLE"          = "RUNTIME";
-"DETAIL_RELEASEDATE_TITLE"      = "RELEASE";
+"DETAIL_RUNTIME_TITLE"          = "Runtime";
+"DETAIL_RELEASEDATE_TITLE"      = "Release";
 "OVERVIEW_NO-CONTENT"           = "No description available";
 "DETAIL_INFORMATION_TITLE"      = "Information";
 

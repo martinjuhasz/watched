@@ -22,14 +22,14 @@
 @property (strong, nonatomic) UIButton *posterButton;
 @property (strong, nonatomic) UILabel *titleLabel;
 @property (strong, nonatomic) UILabel *directorLabel;
-@property (strong, nonatomic) UIButton *releaseDateButton;
-@property (strong, nonatomic) UIButton *runtimeButton;
 @property (strong, nonatomic) UILabel *releaseDateTitleLabel;
 @property (strong, nonatomic) UILabel *runtimeTitleLabel;
 @property (strong, nonatomic) UILabel *actor1Label;
 @property (strong, nonatomic) UILabel *actor2Label;
 @property (strong, nonatomic) UILabel *actor3Label;
 @property (strong, nonatomic) UILabel *actor4Label;
+@property (strong, nonatomic) UILabel *releaseLabel;
+@property (strong, nonatomic) UILabel *runtimeLabel;
 @property (strong, nonatomic) UILabel *overviewLabel;
 @property (strong, nonatomic) UILabel *overviewTitleLabel;
 @property (strong, nonatomic) DLStarRatingControl *ratingView;
@@ -38,7 +38,6 @@
 @property (strong, nonatomic) UILabel *starringTitleLabel;
 
 @property (strong, nonatomic) UIView *informationView;
-@property (strong, nonatomic) UIView *informationContentView;
 
 - (void)toggleLoadingViewForPosterType:(ImageType)aImageType;
 

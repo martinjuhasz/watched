@@ -83,37 +83,34 @@
     self.overviewLabel.frame = CGRectMake(15.0f, lastPostition, 290.0f, 0.0f);
     [self.overviewLabel sizeToFit];
     
-    self.informationView.frame = CGRectMake(0.0f, self.overviewLabel.bottom + 25.0f, 320.0f, 300.0f);
+    CGFloat lastPostitionInformationView = 70.0f;
+    self.directorTitleLabel.frame = CGRectMake(15.0f, 40.0f, 165.0f, 20.0f);
+    self.starringTitleLabel.frame = CGRectMake(15.0f, 70.0f, 165.0f, 20.0f);
+    self.directorLabel.frame = CGRectMake(100.0f, 40.0f, 165.0f, 20.0f);
+    self.actor1Label.frame = CGRectMake(100.0f, 70.0f, 165.0f, 20.0f);
+    self.actor2Label.frame = CGRectMake(100.0f, 90.0f, 165.0f, 20.0f);
+    self.actor3Label.frame = CGRectMake(100.0f, 110.0f, 165.0f, 20.0f);
+    self.actor4Label.frame = CGRectMake(100.0f, 130.0f, 165.0f, 20.0f);
     
+    if([self.actor2Label.text length] > 0) lastPostitionInformationView += 20.0f;
+    if([self.actor3Label.text length] > 0) lastPostitionInformationView += 20.0f;
+    if([self.actor4Label.text length] > 0) lastPostitionInformationView += 20.0f;
+    lastPostitionInformationView += 30.0f;
     
+    self.releaseDateTitleLabel.frame = CGRectMake(15.0f, lastPostitionInformationView, 165.0f, 20.0f);
+    self.releaseLabel.frame = CGRectMake(100.0f, lastPostitionInformationView, 165.0f, 20.0f);
+    lastPostitionInformationView += 30.0f;
+    self.runtimeTitleLabel.frame = CGRectMake(15.0f, lastPostitionInformationView, 165.0f, 20.0f);
+    self.runtimeLabel.frame = CGRectMake(100.0f, lastPostitionInformationView, 165.0f, 20.0f);
     
-    lastPostition += 1300.0f;
-    
-    self.directorLabel.frame = CGRectMake(100.0f, lastPostition, 165.0f, 20.0f);
-    self.directorTitleLabel.frame = CGRectMake(10.0f, lastPostition, 165.0f, 20.0f);
-    
-    self.starringTitleLabel.frame = CGRectMake(10.0f, lastPostition, 165.0f, 20.0f);
-    
-    self.actor1Label.frame = CGRectMake(100.0f, lastPostition, 165.0f, 20.0f);
-    self.actor2Label.frame = CGRectMake(100.0f, lastPostition, 165.0f, 20.0f);
-    self.actor3Label.frame = CGRectMake(100.0f, lastPostition, 165.0f, 20.0f);
-    self.actor4Label.frame = CGRectMake(100.0f, lastPostition, 165.0f, 20.0f);
-    
-    if(self.actor1Label.text) lastPostition += 20.0f;
-    if(self.actor2Label.text) lastPostition += 20.0f;
-    if(self.actor3Label.text) lastPostition += 20.0f;
-    if(self.actor4Label.text) lastPostition += 20.0f;
-    
-    // add extra space for time and release date
-    lastPostition += 47.0f;
-    
-    self.releaseDateButton.frame = CGRectMake(165.0f, lastPostition - 40.0f, 145.0f, 25.0f);
-    self.runtimeButton.frame = CGRectMake(10.0f, lastPostition - 40.0f, 145.0f, 25.0f);
-    self.runtimeTitleLabel.frame = CGRectMake(20.0f, lastPostition - 40.0f, 145.0f, 25.0f);
-    self.releaseDateTitleLabel.frame = CGRectMake(175.0f, lastPostition - 40.0f, 145.0f, 25.0f);
-    
+    self.informationView.frame = CGRectMake(0.0f, self.overviewLabel.bottom + 25.0f, 320.0f, self.runtimeLabel.bottom + 30.0f);
+    CALayer *informationViewtableBorderBottom = [CALayer layer];
+    informationViewtableBorderBottom.frame = CGRectMake(15.0f, self.informationView.height-1.0f, self.informationView.frame.size.width - 15, 0.5f);
+    informationViewtableBorderBottom.backgroundColor = [UIColor colorWithHexString:@"c7c7cb"].CGColor;
+    [self.informationView.layer addSublayer:informationViewtableBorderBottom];
 
-    [self.mainScrollView setContentSize:CGSizeMake(320.0f, 2000)];
+
+    [self.mainScrollView setContentSize:CGSizeMake(320.0f, self.informationView.bottom + 30.0f)];
 }
 
 - (void)setupContent
@@ -123,6 +120,8 @@
     self.mainScrollView = [[UIScrollView alloc] initWithFrame:self.frame];
     self.mainScrollView.autoresizingMask = UIViewAutoresizingFlexibleHeight;
     self.mainScrollView.delegate = self;
+    [self.mainScrollView setContentInset:UIEdgeInsetsMake(0.0f, 0.0f, 50.0f, 0.0f)];
+    [self.mainScrollView setScrollIndicatorInsets:UIEdgeInsetsMake(0.0f, 0.0f, 65.0f, 0.0f)];
     [self addSubview:self.mainScrollView];
 
     self.backdropImageView = [[UIImageView alloc] init];
@@ -211,14 +210,7 @@
     informationViewtableBorderTop.frame = CGRectMake(15.0f, 0.0f, self.informationView.frame.size.width - 15, 0.5f);
     informationViewtableBorderTop.backgroundColor = [UIColor colorWithHexString:@"c7c7cb"].CGColor;
     [self.informationView.layer addSublayer:informationViewtableBorderTop];
-    CALayer *informationViewtableBorderBottom = [CALayer layer];
-    informationViewtableBorderBottom.frame = CGRectMake(15.0f, 128.0f, self.informationView.frame.size.width - 15, 0.5f);
-    informationViewtableBorderBottom.backgroundColor = [UIColor colorWithHexString:@"c7c7cb"].CGColor;
-    [self.informationView.layer addSublayer:informationViewtableBorderBottom];
     [self.mainScrollView addSubview:self.informationView];
-    
-    self.informationContentView = [[UIView alloc] init];
-    [self.informationView addSubview:self.informationContentView];
     
     UILabel *informationTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(15.0f, 15.0f, 305.0f, 20.0f)];
     informationTitleLabel.text = NSLocalizedString(@"DETAIL_INFORMATION_TITLE", nil);
@@ -228,120 +220,91 @@
     informationTitleLabel.textColor = [UIColor colorWithHexString:@"191919"];
     [self.informationView addSubview:informationTitleLabel];
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     self.directorTitleLabel = [[UILabel alloc] init];
-    self.directorTitleLabel.text = [ NSLocalizedString(@"DETAIL_DIRECTOR_TITLE", nil) uppercaseString];
+    self.directorTitleLabel.text = NSLocalizedString(@"DETAIL_DIRECTOR_TITLE", nil);
     [self setDefaultStylesForLabels:self.directorTitleLabel];
-    self.directorTitleLabel.font = [UIFont fontWithName:@"HelveticaNeue-Bold" size:10.0f];
+    self.directorTitleLabel.font = [UIFont fontWithName:@"AvenirNext-Medium" size:13.0f];
     self.directorTitleLabel.adjustsFontSizeToFitWidth = NO;
-    self.directorTitleLabel.textColor = HEXColor(0x000000);
-    [self.mainScrollView addSubview:self.directorTitleLabel];
+    self.directorTitleLabel.textColor = [UIColor colorWithHexString:@"787878"];
+    [self.informationView addSubview:self.directorTitleLabel];
 
     self.starringTitleLabel = [[UILabel alloc] init];
-    self.starringTitleLabel.text = [NSLocalizedString(@"DETAIL_STARRING_TITLE", nil) uppercaseString];
+    self.starringTitleLabel.text = NSLocalizedString(@"DETAIL_STARRING_TITLE", nil);
     [self setDefaultStylesForLabels:self.starringTitleLabel];
-    self.starringTitleLabel.font = [UIFont fontWithName:@"HelveticaNeue-Bold" size:10.0f];
+    self.starringTitleLabel.font = [UIFont fontWithName:@"AvenirNext-Medium" size:13.0f];
     self.starringTitleLabel.adjustsFontSizeToFitWidth = NO;
-    self.starringTitleLabel.textColor = HEXColor(0x000000);
-    [self.mainScrollView addSubview:self.starringTitleLabel];
+    self.starringTitleLabel.textColor = [UIColor colorWithHexString:@"787878"];
+    [self.informationView addSubview:self.starringTitleLabel];
     
+    self.releaseDateTitleLabel = [[UILabel alloc] init];
+    [self setDefaultStylesForLabels:self.releaseDateTitleLabel];
+    self.releaseDateTitleLabel.font = [UIFont fontWithName:@"AvenirNext-Medium" size:13.0f];
+    self.releaseDateTitleLabel.adjustsFontSizeToFitWidth = NO;
+    self.releaseDateTitleLabel.textColor = [UIColor colorWithHexString:@"787878"];
+    self.releaseDateTitleLabel.text = NSLocalizedString(@"DETAIL_RELEASEDATE_TITLE", nil);
+    [self.informationView addSubview:self.releaseDateTitleLabel];
     
-    
-    
-    
-    
-    
-    
-    
-    
+    self.runtimeTitleLabel = [[UILabel alloc] init];
+    [self setDefaultStylesForLabels:self.runtimeTitleLabel];
+    self.runtimeTitleLabel.font = [UIFont fontWithName:@"AvenirNext-Medium" size:13.0f];
+    self.runtimeTitleLabel.adjustsFontSizeToFitWidth = NO;
+    self.runtimeTitleLabel.textColor = [UIColor colorWithHexString:@"787878"];
+    self.runtimeTitleLabel.text = NSLocalizedString(@"DETAIL_RUNTIME_TITLE", nil);
+    [self.informationView addSubview:self.runtimeTitleLabel];
 
     self.directorLabel = [[UILabel alloc] init];
     [self setDefaultStylesForLabels:self.directorLabel];
-    self.directorLabel.font = [UIFont fontWithName:kContentFont size:12.0f];
+    self.directorLabel.font = [UIFont fontWithName:@"AvenirNext-Regular" size:13.0f];
     self.directorLabel.adjustsFontSizeToFitWidth = NO;
-    self.directorLabel.textColor = HEXColor(0x000000);
-    [self.mainScrollView addSubview:self.directorLabel];
-
-    self.releaseDateButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    self.releaseDateButton.titleLabel.font = [UIFont fontWithName:kContentFont size:10.0f];
-    self.releaseDateButton.titleLabel.adjustsFontSizeToFitWidth = NO;
-    [self.releaseDateButton setTitleColor:HEXColor(0x000000)];
-    self.releaseDateButton.contentHorizontalAlignment = NSTextAlignmentRight;
-    self.releaseDateButton.titleEdgeInsets = UIEdgeInsetsMake(1.0f, 10.0f, 0.0f, 10.0f);
-    [self.mainScrollView addSubview:self.releaseDateButton];
-    
-    self.runtimeButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    self.runtimeButton.titleLabel.font = [UIFont fontWithName:kContentFont size:10.0f];
-    self.runtimeButton.titleLabel.adjustsFontSizeToFitWidth = NO;
-    [self.runtimeButton setTitleColor:HEXColor(0x000000)];
-    self.runtimeButton.contentHorizontalAlignment = NSTextAlignmentRight;
-    self.runtimeButton.titleEdgeInsets = UIEdgeInsetsMake(1.0f, 10.0f, 0.0f, 10.0f);
-    [self.mainScrollView addSubview:self.runtimeButton];
-
-    self.releaseDateTitleLabel = [[UILabel alloc] init];
-    [self setDefaultStylesForLabels:self.releaseDateTitleLabel];
-    self.releaseDateTitleLabel.font = [UIFont fontWithName:@"HelveticaNeue-Bold" size:10.0f];
-    self.releaseDateTitleLabel.adjustsFontSizeToFitWidth = NO;
-    self.releaseDateTitleLabel.textColor = HEXColor(0x000000);
-    self.releaseDateTitleLabel.text = [NSLocalizedString(@"DETAIL_RELEASEDATE_TITLE", nil) uppercaseString];
-    [self.mainScrollView addSubview:self.releaseDateTitleLabel];
-
-    self.runtimeTitleLabel = [[UILabel alloc] init];
-    [self setDefaultStylesForLabels:self.runtimeTitleLabel];
-    self.runtimeTitleLabel.font = [UIFont fontWithName:@"HelveticaNeue-Bold" size:10.0f];
-    self.runtimeTitleLabel.adjustsFontSizeToFitWidth = NO;
-    self.runtimeTitleLabel.textColor = HEXColor(0x000000);
-    self.runtimeTitleLabel.text = [NSLocalizedString(@"DETAIL_RUNTIME_TITLE", nil) uppercaseString];
-    [self.mainScrollView addSubview:self.runtimeTitleLabel];
-    
-    
-    
-
+    self.directorLabel.textColor = [UIColor colorWithHexString:@"787878"];
+    [self.informationView addSubview:self.directorLabel];
     
     self.actor1Label = [[UILabel alloc] init];
     self.actor1Label.backgroundColor = [UIColor clearColor];
-    self.actor1Label.font = [UIFont fontWithName:kContentFont size:12.0f];
+    self.actor1Label.font = [UIFont fontWithName:@"AvenirNext-Regular" size:13.0f];
     self.actor1Label.adjustsFontSizeToFitWidth = NO;
-    self.actor1Label.textColor = HEXColor(0x000000);
-    [self.mainScrollView addSubview:self.actor1Label];
+    self.actor1Label.textColor = [UIColor colorWithHexString:@"787878"];
+    [self.informationView addSubview:self.actor1Label];
     
     self.actor2Label = [[UILabel alloc] init];
     self.actor2Label.backgroundColor = [UIColor clearColor];
-    self.actor2Label.font = [UIFont fontWithName:kContentFont size:12.0f];
+    self.actor2Label.font = [UIFont fontWithName:@"AvenirNext-Regular" size:13.0f];
     self.actor2Label.adjustsFontSizeToFitWidth = NO;
-    self.actor2Label.textColor = HEXColor(0x000000);
-    [self.mainScrollView addSubview:self.actor2Label];
+    self.actor2Label.textColor = [UIColor colorWithHexString:@"787878"];
+    [self.informationView addSubview:self.actor2Label];
     
     self.actor3Label = [[UILabel alloc] init];
     self.actor3Label.backgroundColor = [UIColor clearColor];
-    self.actor3Label.font = [UIFont fontWithName:kContentFont size:12.0f];
+    self.actor3Label.font = [UIFont fontWithName:@"AvenirNext-Regular" size:13.0f];
     self.actor3Label.adjustsFontSizeToFitWidth = NO;
-    self.actor3Label.textColor = HEXColor(0x000000);
-    [self.mainScrollView addSubview:self.actor3Label];
+    self.actor3Label.textColor = [UIColor colorWithHexString:@"787878"];
+    [self.informationView addSubview:self.actor3Label];
     
     self.actor4Label = [[UILabel alloc] init];
     self.actor4Label.backgroundColor = [UIColor clearColor];
-    self.actor4Label.font = [UIFont fontWithName:kContentFont size:12.0f];
+    self.actor4Label.font = [UIFont fontWithName:@"AvenirNext-Regular" size:13.0f];
     self.actor4Label.adjustsFontSizeToFitWidth = NO;
-    self.actor4Label.textColor = HEXColor(0x000000);
-    [self.mainScrollView addSubview:self.actor4Label];
+    self.actor4Label.textColor = [UIColor colorWithHexString:@"787878"];
+    [self.informationView addSubview:self.actor4Label];
+    
+    self.releaseLabel = [[UILabel alloc] init];
+    self.releaseLabel.backgroundColor = [UIColor clearColor];
+    self.releaseLabel.font = [UIFont fontWithName:@"AvenirNext-Regular" size:13.0f];
+    self.releaseLabel.adjustsFontSizeToFitWidth = NO;
+    self.releaseLabel.textColor = [UIColor colorWithHexString:@"787878"];
+    [self.informationView addSubview:self.releaseLabel];
+    
+    self.runtimeLabel = [[UILabel alloc] init];
+    self.runtimeLabel.backgroundColor = [UIColor clearColor];
+    self.runtimeLabel.font = [UIFont fontWithName:@"AvenirNext-Regular" size:13.0f];
+    self.runtimeLabel.adjustsFontSizeToFitWidth = NO;
+    self.runtimeLabel.textColor = [UIColor colorWithHexString:@"787878"];
+    [self.informationView addSubview:self.runtimeLabel];
+    
+    
+
+    
+   
     
     
 
