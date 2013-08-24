@@ -25,7 +25,7 @@
 #import "MJReloadAccessoryControl.h"
 #import "UIColor+Additions.h"
 
-#define kSectionHeaderHeight 24.0f
+#define kSectionHeaderHeight 22.0f
 
 #define kMovieTableDefaultCell @"kMovieTableDefaultCell"
 
@@ -184,17 +184,17 @@
     
     UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0.0f, 320, kSectionHeaderHeight)];
     UIView *backgroundView = [[UIView alloc] initWithFrame:CGRectMake(0, -1, 320, kSectionHeaderHeight)];
-    backgroundView.backgroundColor = [UIColor colorWithHexString:@"F0F0F0"];
+    backgroundView.backgroundColor = [UIColor colorWithHexString:@"F3F3F3"];
     
     if(rating > 0) {
-        UIView *starView = [[UIView alloc] initWithFrame:CGRectMake(10.0f, 6.0f, 20.0f*rating, 13.0f)];
+        UIView *starView = [[UIView alloc] initWithFrame:CGRectMake(15.0f, 4.0f, 20.0f*rating, 15.0f)];
         [starView setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"divider-star"]]];
         [backgroundView addSubview:starView];
     } else {
-        UILabel *unratedLabel = [[UILabel alloc] initWithFrame:CGRectMake(10.0f, 0.0f, 320.0f, kSectionHeaderHeight-1)];
+        UILabel *unratedLabel = [[UILabel alloc] initWithFrame:CGRectMake(15.0f, 1.0f, 320.0f, kSectionHeaderHeight-1)];
         unratedLabel.backgroundColor = [UIColor clearColor];
         unratedLabel.textColor = [UIColor grayColor];
-        unratedLabel.font = [UIFont fontWithName:@"AvenirNext-Regular" size:12.0f];
+        unratedLabel.font = [UIFont fontWithName:@"AvenirNext-Demibold" size:14.0f];
         unratedLabel.text = sectionTitle;
         [backgroundView addSubview:unratedLabel];
     }
@@ -222,7 +222,7 @@
 
 - (CGFloat)tableView:(UITableView *)aTableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 90.0f;
+    return 95.0f;
 }
 
 - (void)tableView:(UITableView *)aTableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath

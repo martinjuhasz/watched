@@ -20,6 +20,7 @@
 #import "OnlineDatabaseBridge.h"
 #import <QuartzCore/QuartzCore.h>
 #import "WatchedWebBrowser.h"
+#import "SearchMovieViewController.h"
 #import "AFImageRequestOperation.h"
 #import "AFJSONRequestOperation.h"
 #import "UIButton+Additions.h"
@@ -757,6 +758,7 @@
     
     cell.userInteractionEnabled = YES;
     cell.textLabel.font = [UIFont fontWithName:@"AvenirNext-Medium" size:17.0f];
+    cell.textLabel.textColor = [UIColor colorWithHexString:@"191919"];
     
     if(indexPath.section == 0) {
         if(indexPath.row == 0) {

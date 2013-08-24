@@ -38,24 +38,24 @@
 
 - (void)setupContent
 {
-    _titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(74.0f, 19.0f, 200.0f, 39.0f)];
+    _titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(75.0f, 17.0f, 200.0f, 39.0f)];
     [_titleLabel setFont:[UIFont fontWithName:@"AvenirNext-DemiBold" size:17.0f]];
     [_titleLabel setTextColor:[UIColor blackColor]];
     [_titleLabel setBackgroundColor:[UIColor clearColor]];
     [self addSubview:_titleLabel];
     
-    _yearLabel = [[UILabel alloc] initWithFrame:CGRectMake(74.0f, 60.0f, 153.0f, 21.0f)];
+    _yearLabel = [[UILabel alloc] initWithFrame:CGRectMake(75.0f, 58.0f, 153.0f, 21.0f)];
     [_yearLabel setFont:[UIFont fontWithName:@"AvenirNext-Regular" size:14.0f]];
     [_yearLabel setTextColor:[UIColor colorWithHexString:@"C8C8C8"]];
     [_yearLabel setBackgroundColor:[UIColor clearColor]];
     [self addSubview:_yearLabel];
     
     
-    _coverImageView = [[UIImageView alloc] initWithFrame:CGRectMake(15.0f, 15.0f, 43.0f, 60.0f)];
+    _coverImageView = [[UIImageView alloc] initWithFrame:CGRectMake(16.0f, 16.0f, 43.0f, 60.0f)];
     [_coverImageView setContentMode:UIViewContentModeScaleToFill];
     [self addSubview:_coverImageView];
     
-    UIImageView *coverArtView = [[UIImageView alloc] initWithFrame:CGRectMake(15.0f, 15.0f, 43.0f, 60.0f)];
+    UIImageView *coverArtView = [[UIImageView alloc] initWithFrame:CGRectMake(16.0f, 16.0f, 43.0f, 60.0f)];
     [coverArtView setImage:[UIImage imageNamed:@"cover-overlay"]];
     [self addSubview:coverArtView];
 
