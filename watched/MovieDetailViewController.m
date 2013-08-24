@@ -25,8 +25,6 @@
 #import "UIButton+Additions.h"
 #import "MJCustomTableViewCell.h"
 #import "MJCustomAccessoryControl.h"
-#import "BlockActionSheet.h"
-#import "BlockAlertView.h"
 #import "MJInternetConnection.h"
 #import "SimilarMoviesTableViewController.h"
 #import "MovieShareButtonView.h"
@@ -35,6 +33,7 @@
 #import "MJUCrew.h"
 #import "UIImageView+AFNetworking.h"
 #import "UIColor+Additions.h"
+#import <BlocksKit/BlocksKit.h>
 
 #define kImageFadeDelay 0.0f
 
@@ -79,8 +78,7 @@
     // set contents and enable buttone
     [self setContent];
 
-    [self.detailView.backdropButton addTarget:self action:@selector(posterButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
-    [self.detailView.posterButton addTarget:self action:@selector(posterButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+    [self setNavigationBarItems];
     [self.detailView.notesEditButton addTarget:self action:@selector(notesEditButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
 }
 
@@ -115,6 +113,13 @@
         movie = aMovie;
         self.currentContext = [aMovie managedObjectContext];
     }
+}
+
+- (void)setNavigationBarItems
+{
+    UIBarButtonItem *moreButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(moreButtonClicked:)];
+    UIBarButtonItem *shareButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(shareButtonClicked:)];
+    self.navigationItem.rightBarButtonItems = @[moreButton,shareButton];
 }
 
 
@@ -249,7 +254,7 @@
 #pragma mark -
 #pragma mark Button Actions
 
-- (IBAction)posterButtonClicked:(id)sender
+- (void)posterButtonClicked:(ImageType)selectedType
 {
     if(![[MJInternetConnection sharedInternetConnection] internetAvailable]) {
         [[MJInternetConnection sharedInternetConnection] displayAlert];
@@ -259,7 +264,6 @@
     if(isLoadingImages) return;
     isLoadingImages = YES;
     
-    ImageType selectedType = ((UIButton*)sender == self.detailView.posterButton) ? ImageTypePoster : ImageTypeBackdrop;
     [self.detailView toggleLoadingViewForPosterType:selectedType];
     
     AFJSONRequestOperation *operation = [[OnlineMovieDatabase sharedMovieDatabase] getImagesForMovie:self.movie.movieID completion:^(NSDictionary *imageDict) {
@@ -390,49 +394,99 @@
 
 - (IBAction)shareButtonClicked:(id)sender
 {
-    BlockActionSheet *sheet = [BlockActionSheet sheetWithTitle:NSLocalizedString(@"SHARE_BUTTON_TITLE",nil)];
+
+    UIActionSheet *actionSheet = [[UIActionSheet alloc] init];
     
     // E-Mail
     if([MFMailComposeViewController canSendMail]) {
-        [sheet addButtonWithTitle:NSLocalizedString(@"SHARE_BUTTON_EMAIL",nil) block:^{
+        [actionSheet addButtonWithTitle:NSLocalizedString(@"SHARE_BUTTON_EMAIL",nil) handler:^{
             [self shareWithEmail];
         }];
     }
     
     // iMessage
     if([MFMessageComposeViewController canSendText]) {
-        [sheet addButtonWithTitle:NSLocalizedString(@"SHARE_BUTTON_TEXT",nil) block:^{
+        [actionSheet addButtonWithTitle:NSLocalizedString(@"SHARE_BUTTON_TEXT",nil) handler:^{
             [self shareWithMessage];
         }];
     }
     
     // Twitter
-    [sheet addButtonWithTitle:NSLocalizedString(@"SHARE_BUTTON_TWITTER",nil) block:^{
+    [actionSheet addButtonWithTitle:NSLocalizedString(@"SHARE_BUTTON_TWITTER",nil) handler:^{
         [self shareWithService:SLServiceTypeTwitter];
     }];
     
     // Facebook
-    [sheet addButtonWithTitle:NSLocalizedString(@"SHARE_BUTTON_FACEBOOK",nil) block:^{
+    [actionSheet addButtonWithTitle:NSLocalizedString(@"SHARE_BUTTON_FACEBOOK",nil) handler:^{
         [self shareWithService:SLServiceTypeFacebook];
     }];
-    
+
     // Cancel Button
-    [sheet setCancelButtonWithTitle:NSLocalizedString(@"SHARE_BUTTON_CANCEL",nil) block:nil];
-    
-    [sheet showInView:[UIApplication sharedApplication].keyWindow];
+    [actionSheet addButtonWithTitle:NSLocalizedString(@"SHARE_BUTTON_CANCEL",nil)];
+    [actionSheet setCancelButtonIndex:actionSheet.numberOfButtons-1];
+
+    actionSheet.delegate = self;
+    [actionSheet showFromTabBar:self.tabBarController.tabBar];
     
 }
 
-- (IBAction)deleteButtonClicked:(id)sender
+- (IBAction)moreButtonClicked:(id)sender
 {
-    BlockAlertView *alert = [BlockAlertView alertWithTitle:NSLocalizedString(@"DETAIL_POP_DELETE_TITLE", nil)
-                                                   message:NSLocalizedString(@"DETAIL_POP_DELETE_CONTENT", nil)];
     
-    [alert setCancelButtonWithTitle:NSLocalizedString(@"DETAIL_POP_DELETE_CANCEL", nil) block:nil];
-    [alert setDestructiveButtonWithTitle:NSLocalizedString(@"DETAIL_POP_DELETE_OK", nil) block:^{
+    UIActionSheet *actionSheet = [[UIActionSheet alloc] init];
+    
+    if(self.movie.watchedOn) {
+        [actionSheet addButtonWithTitle:NSLocalizedString(@"MORE_UNWATCHED",nil) handler:^{
+            [self setWatchedStateToSeen:NO];
+        }];
+    } else {
+        [actionSheet addButtonWithTitle:NSLocalizedString(@"MORE_WACHED",nil) handler:^{
+            [self setWatchedStateToSeen:YES];
+        }];
+    }
+    
+    [actionSheet addButtonWithTitle:NSLocalizedString(@"MORE_CHANGE_COVER",nil) handler:^{
+        [self posterButtonClicked:ImageTypePoster];
+    }];
+    
+    [actionSheet addButtonWithTitle:NSLocalizedString(@"MORE_CHANGE_BACKDROP",nil) handler:^{
+        [self posterButtonClicked:ImageTypeBackdrop];
+    }];
+    
+    [actionSheet addButtonWithTitle:NSLocalizedString(@"MORE_REMOVE",nil) handler:^{
+        [self deleteButtonClicked];
+    }];
+    
+    // Cancel Button
+    [actionSheet addButtonWithTitle:NSLocalizedString(@"SHARE_BUTTON_CANCEL",nil)];
+    [actionSheet setCancelButtonIndex:actionSheet.numberOfButtons-1];
+    
+    actionSheet.delegate = self;
+    [actionSheet showFromTabBar:self.tabBarController.tabBar];
+    
+}
+
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+
+}
+
+- (void)deleteButtonClicked
+{
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"DETAIL_POP_DELETE_TITLE", nil) message:NSLocalizedString(@"DETAIL_POP_DELETE_CONTENT", nil)];
+    [alertView setCancelButtonWithTitle:NSLocalizedString(@"DETAIL_POP_DELETE_CANCEL", nil) handler:nil];
+    [alertView addButtonWithTitle:NSLocalizedString(@"DETAIL_POP_DELETE_OK", nil) handler:^{
         [self deleteMovie];
     }];
-    [alert show];
+    [alertView show];
+//    BlockAlertView *alert = [BlockAlertView alertWithTitle:
+//                                                   message:NSLocalizedString(@"DETAIL_POP_DELETE_CONTENT", nil)];
+//    
+//    [alert setCancelButtonWithTitle:NSLocalizedString(@"DETAIL_POP_DELETE_CANCEL", nil) block:nil];
+//    [alert setDestructiveButtonWithTitle:NSLocalizedString(@"DETAIL_POP_DELETE_OK", nil) block:^{
+//        [self deleteMovie];
+//    }];
+//    [alert show];
     
 }
 
@@ -491,9 +545,9 @@
         NSString *title = [NSString stringWithFormat:NSLocalizedString(@"DETAIL_POP_NOACCOUNT_TITLE", nil), accountName];
         NSString *message = [NSString stringWithFormat:NSLocalizedString(@"DETAIL_POP_NOACCOUNT_CONTENT", nil), accountName, accountName];
         
-        BlockAlertView *alert = [BlockAlertView alertWithTitle:title message:message];
-        [alert setCancelButtonWithTitle:NSLocalizedString(@"DETAIL_POP_NOACCOUNT_OK", nil) block:nil];
-        [alert show];
+//        BlockAlertView *alert = [BlockAlertView alertWithTitle:title message:message];
+//        [alert setCancelButtonWithTitle:NSLocalizedString(@"DETAIL_POP_NOACCOUNT_OK", nil) block:nil];
+//        [alert show];
         
         return;
     }
@@ -663,11 +717,11 @@
         [self performSegueWithIdentifier:@"ThumbnailPickerSegue" sender:returnDict];
     } else {
         
-        BlockAlertView *alert = [BlockAlertView alertWithTitle:NSLocalizedString(@"PICKER_POP_NOPOSTER_TITLE", nil)
-                                                       message:NSLocalizedString(@"PICKER_POP_NOPOSTER_CONTENT", nil)];
-        
-        [alert setCancelButtonWithTitle:NSLocalizedString(@"PICKER_POP_NOPOSTER_OK", nil) block:nil];
-        [alert show];
+//        BlockAlertView *alert = [BlockAlertView alertWithTitle:NSLocalizedString(@"PICKER_POP_NOPOSTER_TITLE", nil)
+//                                                       message:NSLocalizedString(@"PICKER_POP_NOPOSTER_CONTENT", nil)];
+//        
+//        [alert setCancelButtonWithTitle:NSLocalizedString(@"PICKER_POP_NOPOSTER_OK", nil) block:nil];
+//        [alert show];
     }
     
 }

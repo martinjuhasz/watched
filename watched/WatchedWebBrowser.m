@@ -9,7 +9,6 @@
 #import "WatchedWebBrowser.h"
 #import <MessageUI/MessageUI.h>
 #import "BrowserBarButtonItem.h"
-#import "BlockActionSheet.h"
 #import "MJInternetConnection.h"
 #import "MJWatchedNavigationController.h"
 
@@ -215,30 +214,30 @@
 
 - (IBAction)actionButtonClicked:(id)sender
 {
-    BlockActionSheet *sheet = [BlockActionSheet sheetWithTitle:[self.webView.request.URL absoluteString]];
-    
-    // E-Mail
-    if([MFMailComposeViewController canSendMail]) {
-        [sheet addButtonWithTitle:NSLocalizedString(@"SHARE_BUTTON_EMAIL",nil) block:^{
-            [self shareWithEmail];
-        }];
-    }
-
-    // Open in Safari
-    [sheet addButtonWithTitle:NSLocalizedString(@"SHARE_BUTTON_OPENSAFARI",nil) block:^{
-        [[UIApplication sharedApplication] openURL:self.webView.request.URL];
-    }];
-    
-    // Copy URL
-    [sheet addButtonWithTitle:NSLocalizedString(@"SHARE_BUTTON_COPYURL",nil) block:^{
-        UIPasteboard *pb = [UIPasteboard generalPasteboard];
-        pb.string = [self.webView.request.URL absoluteString];
-    }];
-    
-    // Cancel Button
-    [sheet setCancelButtonWithTitle:NSLocalizedString(@"SHARE_BUTTON_CANCEL",nil) block:nil];
-    
-    [sheet showInView:[UIApplication sharedApplication].keyWindow];
+//    BlockActionSheet *sheet = [BlockActionSheet sheetWithTitle:[self.webView.request.URL absoluteString]];
+//    
+//    // E-Mail
+//    if([MFMailComposeViewController canSendMail]) {
+//        [sheet addButtonWithTitle:NSLocalizedString(@"SHARE_BUTTON_EMAIL",nil) block:^{
+//            [self shareWithEmail];
+//        }];
+//    }
+//
+//    // Open in Safari
+//    [sheet addButtonWithTitle:NSLocalizedString(@"SHARE_BUTTON_OPENSAFARI",nil) block:^{
+//        [[UIApplication sharedApplication] openURL:self.webView.request.URL];
+//    }];
+//    
+//    // Copy URL
+//    [sheet addButtonWithTitle:NSLocalizedString(@"SHARE_BUTTON_COPYURL",nil) block:^{
+//        UIPasteboard *pb = [UIPasteboard generalPasteboard];
+//        pb.string = [self.webView.request.URL absoluteString];
+//    }];
+//    
+//    // Cancel Button
+//    [sheet setCancelButtonWithTitle:NSLocalizedString(@"SHARE_BUTTON_CANCEL",nil) block:nil];
+//    
+//    [sheet showInView:[UIApplication sharedApplication].keyWindow];
 }
 
 - (UIBarButtonItem*)buttonItemForToolbarWithImageName:(NSString*)imageName target:(SEL)target

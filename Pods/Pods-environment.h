@@ -12,11 +12,11 @@
 #define COCOAPODS_VERSION_MINOR_AFNetworking 3
 #define COCOAPODS_VERSION_PATCH_AFNetworking 2
 
-// BlockAlertsAnd-ActionSheets
-#define COCOAPODS_POD_AVAILABLE_BlockAlertsAnd_ActionSheets
-#define COCOAPODS_VERSION_MAJOR_BlockAlertsAnd_ActionSheets 1
-#define COCOAPODS_VERSION_MINOR_BlockAlertsAnd_ActionSheets 0
-#define COCOAPODS_VERSION_PATCH_BlockAlertsAnd_ActionSheets 0
+// BlocksKit
+#define COCOAPODS_POD_AVAILABLE_BlocksKit
+#define COCOAPODS_VERSION_MAJOR_BlocksKit 1
+#define COCOAPODS_VERSION_MINOR_BlocksKit 8
+#define COCOAPODS_VERSION_PATCH_BlocksKit 2
 
 // GMGridView
 #define COCOAPODS_POD_AVAILABLE_GMGridView
@@ -54,21 +54,15 @@
 #define COCOAPODS_VERSION_MINOR_Mantle_extobjc 2
 #define COCOAPODS_VERSION_PATCH_Mantle_extobjc 0
 
-// OBGradientView
-#define COCOAPODS_POD_AVAILABLE_OBGradientView
-#define COCOAPODS_VERSION_MAJOR_OBGradientView 1
-#define COCOAPODS_VERSION_MINOR_OBGradientView 0
-#define COCOAPODS_VERSION_PATCH_OBGradientView 0
-
 // UIResponder+KeyboardCache
 #define COCOAPODS_POD_AVAILABLE_UIResponder_KeyboardCache
 #define COCOAPODS_VERSION_MAJOR_UIResponder_KeyboardCache 0
 #define COCOAPODS_VERSION_MINOR_UIResponder_KeyboardCache 1
 #define COCOAPODS_VERSION_PATCH_UIResponder_KeyboardCache 0
 
-// UISS
-#define COCOAPODS_POD_AVAILABLE_UISS
-#define COCOAPODS_VERSION_MAJOR_UISS 1
-#define COCOAPODS_VERSION_MINOR_UISS 1
-#define COCOAPODS_VERSION_PATCH_UISS 1
+// libffi
+#define COCOAPODS_POD_AVAILABLE_libffi
+#define COCOAPODS_VERSION_MAJOR_libffi 3
+#define COCOAPODS_VERSION_MINOR_libffi 0
+#define COCOAPODS_VERSION_PATCH_libffi 13
 

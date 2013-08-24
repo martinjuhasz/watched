@@ -20,7 +20,6 @@
 #import <Social/Social.h>
 #import "MJWatchedNavigationController.h"
 #import "WatchedStyledViewController.h"
-#import "UISS.h"
 #import "OnlineDatabaseBridge.h"
 #import "AFJSONRequestOperation.h"
 #import <HockeySDK/HockeySDK.h>
@@ -29,7 +28,6 @@
 @interface WatchedAppDelegate () {
 }
 
-@property (strong, nonatomic) UISS *uiss;
 
 @end
 
@@ -42,6 +40,13 @@
     [MJUWatchedStyle setupDefaultStyle];
 //    self.uiss = [UISS configureWithDefaultJSONFile];
     //self.uiss.statusWindowEnabled = YES;
+    
+//    [[NSNotificationCenter defaultCenter] addObserverForName:AFNetworkingOperationDidStartNotification
+//                                                      object:nil
+//                             i                          queue:nil
+//                                                  usingBlock:^(NSNotification *note) {
+//                                                      NSLog(@"Operation Started: %@", [note object]);
+//                                                  }];
     
     [[BITHockeyManager sharedHockeyManager] configureWithIdentifier:@"a6619c8d0d092c150c4a5555ae7f14cb" delegate:self];
     [[BITHockeyManager sharedHockeyManager] startManager];

@@ -5,6 +5,7 @@
 #import "AFJSONRequestOperation.h"
 #import "MJUPerson.h"
 #import "SearchResult.h"
+#import "NSManagedObject+Additions.h"
 
 #define kBackdropFolder @"backdrops"
 #define kPosterFolder @"posters"
@@ -258,6 +259,12 @@
 #pragma mark -
 #pragma mark Ghost Attributes
 
+-(MJUMovieState)movieState
+{
+    if([self isNew]) return MJUMovieStateNotAdded;
+    return MJUMovieStateAdded;
+}
+
 -(NSString*)releaseDateFormatted
 {
     [NSDateFormatter setDefaultFormatterBehavior:NSDateFormatterBehavior10_4];
@@ -352,6 +359,7 @@
 
 -(void)getPersonsWithCompletion:(MJUPersonsCompletionBlock)completion error:(MJUMovieErrorBlock)error
 {
+    
     if(personsQueried) {
         completion(casts,crews);
         return;
@@ -386,6 +394,7 @@
         personsQueried = NO;
         error(aError);
     }];
+    DebugLog(@"%@", operation);
     [operation start];
 }
 

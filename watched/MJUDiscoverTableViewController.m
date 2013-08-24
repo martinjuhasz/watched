@@ -185,7 +185,7 @@ const int kMovieTableLoadingCellTag = 2001;
     if(indexPath.row > [self.searchResults count]) return;
     
     MoviesTableViewCell *cell = (MoviesTableViewCell*)aCell;
-    
+    DebugLog(@"%d - %d", indexPath.row, self.searchResults.count);
     SearchResult *movie = [self.searchResults objectAtIndex:(NSUInteger)indexPath.row];
     cell.titleLabel.text = movie.title;
     [cell.titleLabel sizeToFitWithWith:200.0f andMaximumNumberOfLines:2];
@@ -208,6 +208,7 @@ const int kMovieTableLoadingCellTag = 2001;
 - (BOOL)needsLoadingCell
 {
     if(isError) return NO;
+    if(_searchBar.text.length < 1) return NO;
     if(currentPage < totalPages || isLoading) {
         return YES;
     }

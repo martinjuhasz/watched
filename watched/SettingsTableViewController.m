@@ -15,7 +15,6 @@
 #import "AFJSONRequestOperation.h"
 #import "MJCustomTableViewCell.h"
 #import "MJCustomAccessoryControl.h"
-#import "BlockAlertView.h"
 #import "UIViewController+MJPopupViewController.h"
 #import "LoadingPopupViewController.h"
 #import "PopupLoadingView.h"
@@ -246,14 +245,14 @@
         if(indexPath.row == 0)
         {
             
-            BlockAlertView *alert = [BlockAlertView alertWithTitle:NSLocalizedString(@"SETTINGS_POP_RESET_TITLE", nil)
-                                                           message:NSLocalizedString(@"SETTINGS_POP_RESET_CONTENT", nil)];
-            
-            [alert setCancelButtonWithTitle:NSLocalizedString(@"SETTINGS_POP_RESET_CANCEL", nil) block:nil];
-            [alert setDestructiveButtonWithTitle:NSLocalizedString(@"SETTINGS_POP_RESET_OK", nil) block:^{
-                [self removeAllMovies];
-            }];
-            [alert show];
+//            BlockAlertView *alert = [BlockAlertView alertWithTitle:NSLocalizedString(@"SETTINGS_POP_RESET_TITLE", nil)
+//                                                           message:NSLocalizedString(@"SETTINGS_POP_RESET_CONTENT", nil)];
+//            
+//            [alert setCancelButtonWithTitle:NSLocalizedString(@"SETTINGS_POP_RESET_CANCEL", nil) block:nil];
+//            [alert setDestructiveButtonWithTitle:NSLocalizedString(@"SETTINGS_POP_RESET_OK", nil) block:^{
+//                [self removeAllMovies];
+//            }];
+//            [alert show];
             
         } else if (indexPath.row == 1) {
             [self refreshAllMovies];
@@ -364,11 +363,11 @@
     [standardUserDefaults synchronize];
 
     if(!aSwitch.on) {
-        BlockAlertView *alert = [BlockAlertView alertWithTitle:NSLocalizedString(@"SETTINGS_POP_OPTOUT_TITLE", nil)
-                                                       message:NSLocalizedString(@"SETTINGS_POP_OPTOUT_CONTENT", nil)];
-        
-        [alert setCancelButtonWithTitle:NSLocalizedString(@"SETTINGS_POP_OPTOUT_CANCEL", nil) block:nil];
-        [alert show];
+//        BlockAlertView *alert = [BlockAlertView alertWithTitle:NSLocalizedString(@"SETTINGS_POP_OPTOUT_TITLE", nil)
+//                                                       message:NSLocalizedString(@"SETTINGS_POP_OPTOUT_CONTENT", nil)];
+//        
+//        [alert setCancelButtonWithTitle:NSLocalizedString(@"SETTINGS_POP_OPTOUT_CANCEL", nil) block:nil];
+//        [alert show];
     }
     
     

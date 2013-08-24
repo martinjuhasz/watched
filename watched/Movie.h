@@ -3,6 +3,11 @@
 @class MJUTrailer;
 @class SearchResult;
 
+typedef NS_ENUM(NSInteger, MJUMovieState) {
+    MJUMovieStateAdded,
+    MJUMovieStateNotAdded
+};
+
 typedef void (^MJUTrailersCompletionBlock)(NSArray *);
 typedef void (^MJUTrailerCompletionBlock)(MJUTrailer *);
 typedef void (^MJUPersonsCompletionBlock)(NSArray *casts, NSArray *crews);
@@ -18,6 +23,7 @@ typedef void (^MJUMovieErrorBlock)(NSError *);
 @property (nonatomic, strong)  NSArray *trailers;
 @property (nonatomic, strong)  NSArray *casts;
 @property (nonatomic, strong)  NSArray *crews;
+@property (nonatomic, assign, readonly) MJUMovieState movieState;
 
 + (Movie *)movieWithMovieID:(NSNumber*)movieID usingManagedObjectContext:(NSManagedObjectContext *)moc;
 + (BOOL)movieWithServerIDExists:(NSInteger)serverID usingManagedObjectContext:(NSManagedObjectContext *)moc;
