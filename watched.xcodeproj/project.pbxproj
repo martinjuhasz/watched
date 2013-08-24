@@ -85,6 +85,8 @@
 		1406D9E917C9572000D082BA /* actor-thumb-detail-placeholder@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1406D9E617C9572000D082BA /* actor-thumb-detail-placeholder@2x.png */; };
 		1406D9EA17C9572000D082BA /* actor-thumb-placeholder@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1406D9E717C9572000D082BA /* actor-thumb-placeholder@2x.png */; };
 		1406D9EB17C9572000D082BA /* actor-thumb-placeholder@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1406D9E717C9572000D082BA /* actor-thumb-placeholder@2x.png */; };
+		1406D9ED17C9590900D082BA /* table-tick@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1406D9EC17C9590900D082BA /* table-tick@2x.png */; };
+		1406D9EE17C9590900D082BA /* table-tick@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1406D9EC17C9590900D082BA /* table-tick@2x.png */; };
 		7A00F845172529C0008A9E0F /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A584D03154877A600A548EE /* main.m */; };
 		7A00F846172529C0008A9E0F /* WatchedAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A584D07154877A600A548EE /* WatchedAppDelegate.m */; };
 		7A00F848172529C0008A9E0F /* SearchResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A6478BA1549963F00C95237 /* SearchResult.m */; };
@@ -919,6 +921,7 @@
 		1406D9E117C9523900D082BA /* cover-placeholder@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "cover-placeholder@2x.png"; sourceTree = "<group>"; };
 		1406D9E617C9572000D082BA /* actor-thumb-detail-placeholder@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "actor-thumb-detail-placeholder@2x.png"; sourceTree = "<group>"; };
 		1406D9E717C9572000D082BA /* actor-thumb-placeholder@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "actor-thumb-placeholder@2x.png"; sourceTree = "<group>"; };
+		1406D9EC17C9590900D082BA /* table-tick@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "table-tick@2x.png"; sourceTree = "<group>"; };
 		61811A39E2A3494C9E929164 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		7A00F9B4172529C0008A9E0F /* watched Beta.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "watched Beta.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7A00F9B5172529C0008A9E0F /* watched beta-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "watched beta-Info.plist"; path = "/Users/martinjuhasz/Arbeit/iOS/watched/watched beta-Info.plist"; sourceTree = "<absolute>"; };
@@ -2136,6 +2139,7 @@
 				1406D9DB17C922C300D082BA /* table-accessory-highlighted@2x.png */,
 				1406D9E617C9572000D082BA /* actor-thumb-detail-placeholder@2x.png */,
 				1406D9E717C9572000D082BA /* actor-thumb-placeholder@2x.png */,
+				1406D9EC17C9590900D082BA /* table-tick@2x.png */,
 			);
 			name = "Images-ios7";
 			sourceTree = "<group>";
@@ -2408,6 +2412,7 @@
 				7A13C34B17C8B5ED007ACD89 /* g_searchbutton_active.png in Resources */,
 				7A13C2F517C8B5ED007ACD89 /* g_bg-table_online_active@2x.png in Resources */,
 				7A13C1F717C8B5ED007ACD89 /* cv_bg-grp_table_bottom.png in Resources */,
+				1406D9EE17C9590900D082BA /* table-tick@2x.png in Resources */,
 				7A13C2F317C8B5ED007ACD89 /* g_bg-table_online_active.png in Resources */,
 				7A13C29317C8B5ED007ACD89 /* fpo_icon-fail.png in Resources */,
 				7A13C20F17C8B5ED007ACD89 /* cv_bg-grp_table_topbottom.png in Resources */,
@@ -2924,6 +2929,7 @@
 				7A13C27E17C8B5ED007ACD89 /* dv_watched-dv-na.png in Resources */,
 				7A13C26817C8B5ED007ACD89 /* dv_placeholder-poster@2x.png in Resources */,
 				7A13C33A17C8B5ED007ACD89 /* g_button-delete.png in Resources */,
+				1406D9ED17C9590900D082BA /* table-tick@2x.png in Resources */,
 				7A13C30E17C8B5ED007ACD89 /* g_browser_forward_disabled.png in Resources */,
 				7A13C22617C8B5ED007ACD89 /* dv_button-delete.png in Resources */,
 				7A13C26A17C8B5ED007ACD89 /* dv_poster-overlay.png in Resources */,
