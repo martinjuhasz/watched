@@ -117,9 +117,16 @@
 
 - (void)setNavigationBarItems
 {
+    NSMutableArray *buttonArray = [NSMutableArray array];
+    if(self.movie.movieState == MJUMovieStateAdded) {
     UIBarButtonItem *moreButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(moreButtonClicked:)];
+        [buttonArray addObject:moreButton];
+    }
+    
     UIBarButtonItem *shareButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(shareButtonClicked:)];
-    self.navigationItem.rightBarButtonItems = @[moreButton,shareButton];
+    [buttonArray addObject:shareButton];
+    
+    self.navigationItem.rightBarButtonItems = [NSArray arrayWithArray:buttonArray];
 }
 
 
