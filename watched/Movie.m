@@ -3,6 +3,7 @@
 #import "NSDictionary+ObjectForKeyOrNil.h"
 #import "OnlineMovieDatabase.h"
 #import "AFJSONRequestOperation.h"
+#import "MJUPerson.h"
 
 #define kBackdropFolder @"backdrops"
 #define kPosterFolder @"posters"
@@ -417,16 +418,16 @@
 //    return sortedCrewArray;
 //}
 //
-//- (Crew*)director
-//{
-//    // try to get a quicktime one
-//    NSPredicate *dirPredicate = [NSPredicate predicateWithFormat:@"job ==[c] %@", @"Director"];
-//    NSArray *directors = [[self.crews allObjects] filteredArrayUsingPredicate:dirPredicate];
-//    if(directors.count > 0) {
-//        return [directors objectAtIndex:0];
-//    }
-//    return nil;
-//}
+- (MJUPerson*)director
+{
+    // try to get a quicktime one
+    NSPredicate *dirPredicate = [NSPredicate predicateWithFormat:@"job ==[c] %@", @"Director"];
+    NSArray *directors = [self.crews filteredArrayUsingPredicate:dirPredicate];
+    if(directors.count > 0) {
+        return [directors objectAtIndex:0];
+    }
+    return nil;
+}
 
 
 @end
