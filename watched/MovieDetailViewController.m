@@ -157,19 +157,17 @@
     if (self.movie.poster) {
         self.detailView.posterImageView.image = self.movie.poster;
     } else if(self.movie.posterURL) {
-        [self.detailView.posterImageView setImageWithURL:[NSURL URLWithString:self.movie.posterURL] placeholderImage:[UIImage imageNamed:@"dv_placeholder-cover.png"]];
+        [self.detailView.posterImageView setImageWithURL:[NSURL URLWithString:self.movie.posterURL] placeholderImage:[UIImage imageNamed:@"cover-placeholder-detailview.png"]];
     }
     else {
-        self.detailView.posterImageView.image = [UIImage imageNamed:@"dv_placeholder-cover.png"];
+        self.detailView.posterImageView.image = [UIImage imageNamed:@"cover-placeholder-detailview.png"];
     }
     
     // Backdrop
     if (self.movie.backdrop) {
          self.detailView.backdropImageView.image = self.movie.backdrop;
     } else if(self.movie.backdropURL) {
-        [self.detailView.backdropImageView setImageWithURL:[NSURL URLWithString:self.movie.backdropURL] placeholderImage:[UIImage imageNamed:@"dv_placeholder-backdrop.png"]];
-    } else {
-        self.detailView.backdropImageView.image = [UIImage imageNamed:@"dv_placeholder-backdrop.png"];
+        [self.detailView.backdropImageView setImageWithURL:[NSURL URLWithString:self.movie.backdropURL] placeholderImage:nil];
     }
     
     // Notes

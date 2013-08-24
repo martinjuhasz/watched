@@ -90,7 +90,7 @@
     if(aImage) {
         self.coverImageView.image = aImage;
     } else {
-        self.coverImageView.image = [UIImage imageNamed:@"g_placeholder-cover.png"];
+        self.coverImageView.image = [UIImage imageNamed:@"cover-placeholder.png"];
     }
 }
 

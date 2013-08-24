@@ -192,7 +192,7 @@ const int kMovieTableLoadingCellTag = 2001;
     
     // get year
     [cell setYear:movie.releaseDate];
-    UIImage *placeholder = [UIImage imageNamed:@"g_placeholder-cover.png"];
+    UIImage *placeholder = [UIImage imageNamed:@"cover-placeholder.png"];
     NSURL *imageURL = [[OnlineMovieDatabase sharedMovieDatabase] getImageURLForImagePath:movie.posterPath imageType:ImageTypePoster nearWidth:70.0f*2];
     [cell.coverImageView setImageWithURL:imageURL placeholderImage:placeholder];
 }
