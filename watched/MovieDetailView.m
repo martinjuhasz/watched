@@ -74,18 +74,23 @@
     
     self.ratingView.frame = CGRectMake(100.0f, self.titleLabel.bottom+10.0f, 168.0f, 35.0f);
     
-    self.overviewTitleLabel.frame = CGRectMake(15.0f, 400.0f, 290.0f, 20.0f);
+    self.overviewTitleLabel.frame = CGRectMake(15.0f, 392.0f, 290.0f, 20.0f);
     [self.overviewTitleLabel sizeToFitWithWith:290.0f andMaximumNumberOfLines:3];
     
-    CGFloat lastPostition = 400.0f;
-    if([self.overviewTitleLabel.text length] > 0) lastPostition += 30.0f;
+    CGFloat lastPosition = 400.0f;
+    if([self.overviewTitleLabel.text length] <= 0) {
+        lastPosition = 392.0f;
+    }
+    else {
+        lastPosition = self.overviewTitleLabel.bottom+6.0f;
+    }
     
     
-    self.overviewLabel.frame = CGRectMake(15.0f, lastPostition, 290.0f, 0.0f);
+    self.overviewLabel.frame = CGRectMake(15.0f, lastPosition, 290.0f, 0.0f);
     [self.overviewLabel sizeToFit];
     
-    CGFloat lastPostitionInformationView = 70.0f;
-    self.directorTitleLabel.frame = CGRectMake(15.0f, 40.0f, 165.0f, 20.0f);
+    CGFloat lastPositionInformationView = 70.0f;
+    self.directorTitleLabel.frame = CGRectMake(15.0f, 0, 165.0f, 20.0f);
     self.starringTitleLabel.frame = CGRectMake(15.0f, 70.0f, 165.0f, 20.0f);
     self.directorLabel.frame = CGRectMake(100.0f, 40.0f, 165.0f, 20.0f);
     self.actor1Label.frame = CGRectMake(100.0f, 70.0f, 165.0f, 20.0f);
@@ -93,18 +98,18 @@
     self.actor3Label.frame = CGRectMake(100.0f, 110.0f, 165.0f, 20.0f);
     self.actor4Label.frame = CGRectMake(100.0f, 130.0f, 165.0f, 20.0f);
     
-    if([self.actor2Label.text length] > 0) lastPostitionInformationView += 20.0f;
-    if([self.actor3Label.text length] > 0) lastPostitionInformationView += 20.0f;
-    if([self.actor4Label.text length] > 0) lastPostitionInformationView += 20.0f;
-    lastPostitionInformationView += 30.0f;
+    if([self.actor2Label.text length] > 0) lastPositionInformationView += 20.0f;
+    if([self.actor3Label.text length] > 0) lastPositionInformationView += 20.0f;
+    if([self.actor4Label.text length] > 0) lastPositionInformationView += 20.0f;
+    lastPositionInformationView += 30.0f;
     
-    self.releaseDateTitleLabel.frame = CGRectMake(15.0f, lastPostitionInformationView, 165.0f, 20.0f);
-    self.releaseLabel.frame = CGRectMake(100.0f, lastPostitionInformationView, 165.0f, 20.0f);
-    lastPostitionInformationView += 30.0f;
-    self.runtimeTitleLabel.frame = CGRectMake(15.0f, lastPostitionInformationView, 165.0f, 20.0f);
-    self.runtimeLabel.frame = CGRectMake(100.0f, lastPostitionInformationView, 165.0f, 20.0f);
+    self.releaseDateTitleLabel.frame = CGRectMake(15.0f, lastPositionInformationView, 165.0f, 20.0f);
+    self.releaseLabel.frame = CGRectMake(100.0f, lastPositionInformationView, 165.0f, 20.0f);
+    lastPositionInformationView += 30.0f;
+    self.runtimeTitleLabel.frame = CGRectMake(15.0f, lastPositionInformationView, 165.0f, 20.0f);
+    self.runtimeLabel.frame = CGRectMake(100.0f, lastPositionInformationView, 165.0f, 20.0f);
     
-    self.informationView.frame = CGRectMake(0.0f, self.overviewLabel.bottom + 25.0f, 320.0f, self.runtimeLabel.bottom + 30.0f);
+    self.informationView.frame = CGRectMake(0.0f, self.overviewLabel.bottom + 20.0f, 320.0f, self.runtimeLabel.bottom + 30.0f);
     CALayer *informationViewtableBorderBottom = [CALayer layer];
     informationViewtableBorderBottom.frame = CGRectMake(15.0f, self.informationView.height-1.0f, self.informationView.frame.size.width - 15, 0.5f);
     informationViewtableBorderBottom.backgroundColor = [UIColor colorWithHexString:@"cccccc"].CGColor;
@@ -216,7 +221,7 @@
     [self.informationView.layer addSublayer:informationViewtableBorderTop];
     [self.mainScrollView addSubview:self.informationView];
     
-    UILabel *informationTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(15.0f, 15.0f, 305.0f, 20.0f)];
+    UILabel *informationTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(15.0f, 22.0f, 305.0f, 20.0f)];
     informationTitleLabel.text = NSLocalizedString(@"DETAIL_INFORMATION_TITLE", nil);
     [self setDefaultStylesForLabels:informationTitleLabel];
     informationTitleLabel.font = [UIFont fontWithName:@"AvenirNext-Medium" size:14.0f];
