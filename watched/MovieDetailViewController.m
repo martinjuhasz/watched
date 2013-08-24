@@ -117,9 +117,9 @@
 
 - (void)setNavigationBarItems
 {
-    UIBarButtonItem *moreButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(moreButtonClicked:)];
-    UIBarButtonItem *shareButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(shareButtonClicked:)];
-    self.navigationItem.rightBarButtonItems = @[moreButton,shareButton];
+    UIBarButtonItem *moreButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"icon-more.png"] style:UIBarButtonItemStylePlain target:self action:@selector(moreButtonClicked:)];
+    UIBarButtonItem *shareButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"icon-share.png"] style:UIBarButtonItemStylePlain target:self action:@selector(shareButtonClicked:)];
+    self.navigationItem.rightBarButtonItems = @[shareButton,moreButton];
 }
 
 
