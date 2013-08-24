@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model name="" userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="2061" systemVersion="12E55" minimumToolsVersion="Xcode 4.1" macOSVersion="Automatic" iOSVersion="Automatic">
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="3394" systemVersion="12E55" minimumToolsVersion="Xcode 4.1" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="Movie" representedClassName="Movie" syncable="YES">
+        <attribute name="actors" optional="YES" attributeType="Binary" syncable="YES"/>
         <attribute name="adult" optional="YES" attributeType="Boolean" defaultValueString="YES" syncable="YES"/>
         <attribute name="backdropPath" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="backdropURL" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="budget" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="director" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="homepage" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="imdbID" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="movieID" attributeType="Integer 32" indexed="YES" syncable="YES"/>
@@ -23,6 +25,6 @@
         <attribute name="watchedOn" optional="YES" attributeType="Date" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Movie" positionX="187" positionY="225" width="128" height="343"/>
+        <element name="Movie" positionX="0" positionY="0" width="0" height="0"/>
     </elements>
 </model>

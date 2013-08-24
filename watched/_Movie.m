@@ -4,10 +4,12 @@
 #import "_Movie.h"
 
 const struct MovieAttributes MovieAttributes = {
+	.actors = @"actors",
 	.adult = @"adult",
 	.backdropPath = @"backdropPath",
 	.backdropURL = @"backdropURL",
 	.budget = @"budget",
+	.director = @"director",
 	.homepage = @"homepage",
 	.imdbID = @"imdbID",
 	.movieID = @"movieID",
@@ -24,6 +26,9 @@ const struct MovieAttributes MovieAttributes = {
 	.tagline = @"tagline",
 	.title = @"title",
 	.watchedOn = @"watchedOn",
+};
+
+const struct MovieRelationships MovieRelationships = {
 };
 
 const struct MovieFetchedProperties MovieFetchedProperties = {
@@ -52,40 +57,54 @@ const struct MovieFetchedProperties MovieFetchedProperties = {
 	return (MovieID*)[super objectID];
 }
 
-+ (NSSet *)keyPathsForValuesAffectingValueForKey:(NSString *)key {
++ (NSSet*)keyPathsForValuesAffectingValueForKey:(NSString*)key {
 	NSSet *keyPaths = [super keyPathsForValuesAffectingValueForKey:key];
 	
 	if ([key isEqualToString:@"adultValue"]) {
 		NSSet *affectingKey = [NSSet setWithObject:@"adult"];
 		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
+		return keyPaths;
 	}
 	if ([key isEqualToString:@"budgetValue"]) {
 		NSSet *affectingKey = [NSSet setWithObject:@"budget"];
 		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
+		return keyPaths;
 	}
 	if ([key isEqualToString:@"movieIDValue"]) {
 		NSSet *affectingKey = [NSSet setWithObject:@"movieID"];
 		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
+		return keyPaths;
 	}
 	if ([key isEqualToString:@"popularityValue"]) {
 		NSSet *affectingKey = [NSSet setWithObject:@"popularity"];
 		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
+		return keyPaths;
 	}
 	if ([key isEqualToString:@"ratingValue"]) {
 		NSSet *affectingKey = [NSSet setWithObject:@"rating"];
 		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
+		return keyPaths;
 	}
 	if ([key isEqualToString:@"revenueValue"]) {
 		NSSet *affectingKey = [NSSet setWithObject:@"revenue"];
 		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
+		return keyPaths;
 	}
 	if ([key isEqualToString:@"runtimeValue"]) {
 		NSSet *affectingKey = [NSSet setWithObject:@"runtime"];
 		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
+		return keyPaths;
 	}
 
 	return keyPaths;
 }
+
+
+
+
+@dynamic actors;
+
+
 
 
 
@@ -151,6 +170,13 @@ const struct MovieFetchedProperties MovieFetchedProperties = {
 - (void)setPrimitiveBudgetValue:(float)value_ {
 	[self setPrimitiveBudget:[NSNumber numberWithFloat:value_]];
 }
+
+
+
+
+
+@dynamic director;
+
 
 
 
@@ -357,6 +383,7 @@ const struct MovieFetchedProperties MovieFetchedProperties = {
 
 
 @dynamic watchedOn;
+
 
 
 

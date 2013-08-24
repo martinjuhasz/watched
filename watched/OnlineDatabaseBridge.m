@@ -68,6 +68,16 @@
                 dispatch_group_leave(group);
             }];
             
+            // director and casts
+            dispatch_group_enter(group);
+            [movie getPersonsWithCompletion:^(NSArray *casts, NSArray *crews) {
+                
+            } error:^(NSError *error) {
+                
+            }];
+            
+            
+            
             dispatch_group_wait(group, DISPATCH_TIME_FOREVER);
             
             if(!runtimeError) {
