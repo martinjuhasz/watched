@@ -187,7 +187,7 @@
         <scene sceneID="gaP-52-im9">
             <objects>
                 <navigationController definesPresentationContext="YES" id="iSK-MC-BYY" customClass="MJWatchedNavigationController" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Settings" image="icon-setting-highlighted.png" id="ePY-9a-39Z"/>
+                    <tabBarItem key="tabBarItem" title="Settings" image="icon-settings-highlighted.png" id="ePY-9a-39Z"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" translucent="NO" id="5wJ-Qm-lzH" customClass="MJWatchedNavigationBar">
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -769,16 +769,16 @@
             <objects>
                 <viewController id="YNR-hM-njU" customClass="WatchedWebBrowser" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="3cj-CD-rnL">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                        <rect key="frame" x="0.0" y="64" width="320" height="416"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="8hC-E3-LX2">
-                                <rect key="frame" x="0.0" y="436" width="320" height="44"/>
+                                <rect key="frame" x="0.0" y="372" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                 <items/>
                             </toolbar>
                             <webView contentMode="scaleToFill" scalesPageToFit="YES" id="MYs-bx-828">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="436"/>
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="372"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                             </webView>
@@ -891,7 +891,7 @@
         <image name="g_cover-overlay.png" width="47" height="64"/>
         <image name="icon-collection-highlighted.png" width="30" height="30"/>
         <image name="icon-discover-highlighted.png" width="30" height="30"/>
-        <image name="icon-setting-highlighted.png" width="25" height="21"/>
+        <image name="icon-settings-highlighted.png" width="30" height="30"/>
         <image name="nv_bg_title.png" width="320" height="24"/>
         <image name="pv_error.png" width="52" height="46"/>
         <image name="pv_mask-bottom.png" width="20" height="10"/>
@@ -907,6 +907,6 @@
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
         <segue reference="QTD-zJ-yeP"/>
-        <segue reference="dp1-K0-eya"/>
+        <segue reference="1Bi-Fz-U7p"/>
     </inferredMetricsTieBreakers>
 </document>

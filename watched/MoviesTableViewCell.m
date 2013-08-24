@@ -51,11 +51,11 @@
     [self addSubview:_yearLabel];
     
     
-    _coverImageView = [[UIImageView alloc] initWithFrame:CGRectMake(16.0f, 16.0f, 43.0f, 60.0f)];
+    _coverImageView = [[UIImageView alloc] initWithFrame:CGRectMake(15.0f, 15.0f, 43.0f, 60.0f)];
     [_coverImageView setContentMode:UIViewContentModeScaleToFill];
     [self addSubview:_coverImageView];
     
-    UIImageView *coverArtView = [[UIImageView alloc] initWithFrame:CGRectMake(16.0f, 16.0f, 43.0f, 60.0f)];
+    UIImageView *coverArtView = [[UIImageView alloc] initWithFrame:CGRectMake(15.0f, 15.0f, 43.0f, 60.0f)];
     [coverArtView setImage:[UIImage imageNamed:@"cover-overlay"]];
     [self addSubview:coverArtView];
 
@@ -90,7 +90,7 @@
     if(aImage) {
         self.coverImageView.image = aImage;
     } else {
-        self.coverImageView.image = [UIImage imageNamed:@"g_placeholder-cover.png"];
+        self.coverImageView.image = [UIImage imageNamed:@"cover-placeholder.png"];
     }
 }
 
