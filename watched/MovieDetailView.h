@@ -37,6 +37,11 @@
 @property (strong, nonatomic) UILabel *directorTitleLabel;
 @property (strong, nonatomic) UILabel *starringTitleLabel;
 
+@property (strong, nonatomic) UIView *notesView;
+@property (strong, nonatomic) UILabel *notesTitleLabel;
+@property (strong, nonatomic) UILabel *notesLabel;
+@property (strong, nonatomic) UIButton *notesEditButton;
+
 @property (strong, nonatomic) UIView *informationView;
 
 - (void)toggleLoadingViewForPosterType:(ImageType)aImageType;

@@ -2015,7 +2015,6 @@
 				7A00F9AD172529C0008A9E0F /* Copy Pods Resources */,
 				7A00F9AE172529C0008A9E0F /* Run Mogenerator */,
 				7A00F9B0172529C0008A9E0F /* Copy CocoaPods to AdHoc Build Config */,
-				7A08D5781726E36D0014F364 /* Increase Build Number */,
 			);
 			buildRules = (
 			);
@@ -2036,7 +2035,6 @@
 				DD328CA9800A4564A5A90DCB /* Copy Pods Resources */,
 				7A2CBBAC1559B56D009ADFFB /* Run Mogenerator */,
 				7A8ADAC2171188FF00234914 /* Copy CocoaPods to AdHoc Build Config */,
-				7A08D5771726E35A0014F364 /* Increase Build Number */,
 			);
 			buildRules = (
 			);
@@ -2752,34 +2750,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "if [ \"$CONFIGURATION\" = \"AdHoc\" ]; then\necho \"=====================================\"\necho \"Copying libPods Release into the Adhoc product build dir!\"\necho \"=====================================\"\ncp \"$BUILT_PRODUCTS_DIR/../Release-$PLATFORM_NAME/libPods.a\" \"$BUILT_PRODUCTS_DIR\"\nelse\necho \"No manual lib copy.\"\nfi";
-		};
-		7A08D5771726E35A0014F364 /* Increase Build Number */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Increase Build Number";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "#!/bin/bash\nbN=$(/usr/libexec/PlistBuddy -c \"Print CFBundleVersion\" \"$INFOPLIST_FILE\")\nbN=$((0x$bN))\nbN=$(($bN + 1))\nbN=$(printf \"%X\" $bN)\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $bN\" \"$INFOPLIST_FILE\"";
-		};
-		7A08D5781726E36D0014F364 /* Increase Build Number */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Increase Build Number";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "#!/bin/bash\nbN=$(/usr/libexec/PlistBuddy -c \"Print CFBundleVersion\" \"$INFOPLIST_FILE\")\nbN=$((0x$bN))\nbN=$(($bN + 1))\nbN=$(printf \"%X\" $bN)\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $bN\" \"$INFOPLIST_FILE\"";
 		};
 		7A2CBBAC1559B56D009ADFFB /* Run Mogenerator */ = {
 			isa = PBXShellScriptBuildPhase;

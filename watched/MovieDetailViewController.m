@@ -78,6 +78,7 @@
 
     [self.detailView.backdropButton addTarget:self action:@selector(posterButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
     [self.detailView.posterButton addTarget:self action:@selector(posterButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+    [self.detailView.notesEditButton addTarget:self action:@selector(notesEditButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
 }
 
 
@@ -152,6 +153,11 @@
          self.detailView.backdropImageView.image = self.movie.backdrop;
     } else {
         self.detailView.backdropImageView.image = [UIImage imageNamed:@"dv_placeholder-backdrop.png"];
+    }
+    
+    // Notes
+    if(self.movie.note) {
+        self.detailView.notesLabel.text = self.movie.note;
     }
     
     
@@ -247,6 +253,11 @@
     [operation start];
 }
 
+- (IBAction)notesEditButtonClicked:(id)sender
+{
+    [self performSegueWithIdentifier:@"MovieNoteSegue" sender:self];
+}
+
 - (void)newRating:(DLStarRatingControl *)control :(float)newRating
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
@@ -316,11 +327,6 @@
         NSURL *url = [NSURL URLWithString:self.movie.homepage];
         [self performSegueWithIdentifier:@"DetailWebViewSegue" sender:url];
     }
-}
-
-- (IBAction)noteRowClicked
-{
-    [self performSegueWithIdentifier:@"MovieNoteSegue" sender:self];
 }
 
 - (void)setWatchedStateToSeen:(BOOL)seen

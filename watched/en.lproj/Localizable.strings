@@ -94,7 +94,8 @@
 "HOURS_MIN"                     = "h";
 "MINUTES_MIN"                   = "min";
 
-"NOTES_TITLE"                   = "Notes";
+"NOTES_TITLE"                   = "Your Notes";
+"NOTES_EDIT_TITLE"              = "Edit";
 
 "DETAIL_POP_DELETE_TITLE"       = "Really?";
 "DETAIL_POP_DELETE_CONTENT"     = "Are you sure you want to delete this movie?";

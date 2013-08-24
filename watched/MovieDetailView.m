@@ -108,9 +108,12 @@
     informationViewtableBorderBottom.frame = CGRectMake(15.0f, self.informationView.height-1.0f, self.informationView.frame.size.width - 15, 0.5f);
     informationViewtableBorderBottom.backgroundColor = [UIColor colorWithHexString:@"c7c7cb"].CGColor;
     [self.informationView.layer addSublayer:informationViewtableBorderBottom];
-
-
-    [self.mainScrollView setContentSize:CGSizeMake(320.0f, self.informationView.bottom + 30.0f)];
+    
+    self.notesLabel.frame = CGRectMake(15.0f, 40.0f, 290.0f, 0.0f);
+    [self.notesLabel sizeToFit];
+    self.notesView.frame = CGRectMake(0.0f, self.informationView.bottom, 320.0f, self.notesLabel.bottom + 15.0f);
+    
+    [self.mainScrollView setContentSize:CGSizeMake(320.0f, self.notesView.bottom + 30.0f)];
 }
 
 - (void)setupContent
@@ -302,15 +305,32 @@
     [self.informationView addSubview:self.runtimeLabel];
     
     
+    self.notesView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, 320.0f)];
+    [self.mainScrollView addSubview:self.notesView];
+    
+    self.notesTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(15.0f, 15.0f, 305.0f, 20.0f)];
+    self.notesTitleLabel.text = NSLocalizedString(@"NOTES_TITLE", nil);
+    [self setDefaultStylesForLabels:self.notesTitleLabel];
+    self.notesTitleLabel.font = [UIFont fontWithName:@"AvenirNext-Medium" size:14.0f];
+    self.notesTitleLabel.adjustsFontSizeToFitWidth = NO;
+    self.notesTitleLabel.textColor = [UIColor colorWithHexString:@"191919"];
+    [self.notesView addSubview:self.notesTitleLabel];
+    
+    self.notesLabel = [[UILabel alloc] init];
+    [self setDefaultStylesForLabels:self.notesLabel];
+    self.notesLabel.font = [UIFont fontWithName:@"AvenirNext-Regular" size:13.0f];
+    self.notesLabel.adjustsFontSizeToFitWidth = NO;
+    self.notesLabel.textColor = [UIColor colorWithHexString:@"787878"];
+    [self.notesView addSubview:self.notesLabel];
+    
+    self.notesEditButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    self.notesEditButton.frame = CGRectMake(0.0f, 15.0f, 305.0f, 20.0f);
+    self.notesEditButton.titleLabel.font = [UIFont fontWithName:@"AvenirNext-Medium" size:13.0f];
+    [self.notesEditButton setTitleColor:[UIColor colorWithHexString:@"787878"]];
+    self.notesEditButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
+    [self.notesEditButton setTitle:NSLocalizedString(@"NOTES_EDIT_TITLE", nil)];
+    [self.notesView addSubview:self.notesEditButton];
 
-    
-   
-    
-    
-
-    
-    
-    
     
     
 }
