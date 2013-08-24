@@ -71,6 +71,7 @@
             // director and casts
             dispatch_group_enter(group);
             [movie getPersonsWithCompletion:^(NSArray *casts, NSArray *crews) {
+                
                 dispatch_group_leave(group);
             } error:^(NSError *error) {
                 dispatch_group_leave(group);

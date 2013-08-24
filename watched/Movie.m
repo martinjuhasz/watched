@@ -368,6 +368,18 @@
         NSArray *sortedCrewArray = [crewsArray sortedArrayUsingDescriptors:[NSArray arrayWithObject:sortCrewDescriptor]];
         crews = sortedCrewArray;
         
+        // Direcor
+        self.director = [self getDirectorFromCrew].name;
+        
+       
+        // Actors
+        NSMutableArray *actors = [NSMutableArray array];
+        NSUInteger maxSize = 4;
+        for (int i = 0; i<[casts count] && i < maxSize; i++) {
+            [actors addObject:[casts objectAtIndex:i]];
+        }
+        self.actors = [NSKeyedArchiver archivedDataWithRootObject:actors];
+        
         completion(casts,crews);
         
     } failure:^(NSError *aError) {
@@ -418,7 +430,7 @@
 //    return sortedCrewArray;
 //}
 //
-- (MJUPerson*)director
+- (MJUPerson*)getDirectorFromCrew
 {
     // try to get a quicktime one
     NSPredicate *dirPredicate = [NSPredicate predicateWithFormat:@"job ==[c] %@", @"Director"];

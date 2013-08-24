@@ -32,6 +32,8 @@
 #import "SimilarMoviesTableViewController.h"
 #import "MovieShareButtonView.h"
 #import "MJUTrailer.h"
+#import "MJUCast.h"
+#import "MJUCrew.h"
 
 #define kImageFadeDelay 0.0f
 
@@ -162,13 +164,27 @@
     
     
     // DEBUG
-    self.detailView.directorLabel.text = @"Marius Scheel";
-    self.detailView.actor1Label.text = @"Marius Scheel";
-    self.detailView.actor2Label.text = @"Marius Scheel";
-    self.detailView.actor3Label.text = @"Marius Scheel";
-    self.detailView.actor4Label.text = @"Marius Scheel";
+    if(self.movie.director) {
+        self.detailView.directorLabel.text = self.movie.director;
+    } else {
+        self.detailView.directorLabel.text = @"-";
+    }
     
-   
+    NSArray *actors = [NSKeyedUnarchiver unarchiveObjectWithData:self.movie.actors];
+    if(actors.count > 0) {
+        self.detailView.actor1Label.text = ((MJUCast*)[actors objectAtIndex:0]).name;
+    } else {
+        self.detailView.actor1Label.text = @"-";
+    }
+    if(actors.count > 1) {
+        self.detailView.actor2Label.text = ((MJUCast*)[actors objectAtIndex:1]).name;
+    }
+    if(actors.count > 2) {
+        self.detailView.actor3Label.text = ((MJUCast*)[actors objectAtIndex:2]).name;
+    }
+    if(actors.count > 3) {
+        self.detailView.actor4Label.text = ((MJUCast*)[actors objectAtIndex:3]).name;
+    }
 }
 
 
