@@ -187,7 +187,7 @@
         <scene sceneID="gaP-52-im9">
             <objects>
                 <navigationController definesPresentationContext="YES" id="iSK-MC-BYY" customClass="MJWatchedNavigationController" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Settings" image="icon-setting-highlighted.png" id="ePY-9a-39Z"/>
+                    <tabBarItem key="tabBarItem" title="Settings" image="icon-settings-highlighted.png" id="ePY-9a-39Z"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" translucent="NO" id="5wJ-Qm-lzH" customClass="MJWatchedNavigationBar">
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -889,9 +889,9 @@
         <image name="dv_icon_share.png" width="23" height="23"/>
         <image name="g_button_popover_add.png" width="16" height="35"/>
         <image name="g_cover-overlay.png" width="47" height="64"/>
-        <image name="icon-collection-highlighted.png" width="25" height="21"/>
-        <image name="icon-discover-highlighted.png" width="25" height="21"/>
-        <image name="icon-setting-highlighted.png" width="25" height="21"/>
+        <image name="icon-collection-highlighted.png" width="30" height="30"/>
+        <image name="icon-discover-highlighted.png" width="30" height="30"/>
+        <image name="icon-settings-highlighted.png" width="30" height="30"/>
         <image name="nv_bg_title.png" width="320" height="24"/>
         <image name="pv_error.png" width="52" height="46"/>
         <image name="pv_mask-bottom.png" width="20" height="10"/>
