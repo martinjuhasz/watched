@@ -33,8 +33,11 @@
 #import "MJUTrailer.h"
 #import "MJUCast.h"
 #import "MJUCrew.h"
+<<<<<<< HEAD
 #import "UIImageView+AFNetworking.h"
+=======
 #import "UIColor+Additions.h"
+>>>>>>> c18822b662706a215d855a06e561608f71f4c6a0
 
 #define kImageFadeDelay 0.0f
 
