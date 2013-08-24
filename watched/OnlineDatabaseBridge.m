@@ -29,64 +29,82 @@
 #pragma mark Initial Creation
 
 
-- (void)saveSearchResultDictAsMovie:(NSDictionary *)movieDict completion:(OnlineBridgeCompletionBlock)aCompletionBlock failure:(OnlineBridgeFailureBlock)aFailureBlock
-{
+- (void)getMovieFromMovieID:(NSNumber*)movieID completion:(OnlineBridgeCompletionBlock)completionBlock failure:(OnlineBridgeFailureBlock)aFailureBlock {
+    
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
-
+        
         // Setup Core Data with extra Context for Background Process
         __block NSError *runtimeError = nil;
-        NSManagedObjectContext *context = [[NSManagedObjectContext alloc] init];
+        __block NSManagedObjectContext *context = [[NSManagedObjectContext alloc] init];
+//        __block NSManagedObjectContext *context = [[MoviesDataModel sharedDataModel] mainContext];
         [context setPersistentStoreCoordinator:[[MoviesDataModel sharedDataModel] persistentStoreCoordinator]];
         
-        NSInteger serverId = [[movieDict objectForKey:@"id"] intValue];
-        Movie *movie = [Movie movieWithServerId:serverId usingManagedObjectContext:context];
+        __block Movie *movie = [Movie movieWithMovieID:movieID usingManagedObjectContext:context];
         
         if(movie == nil) {
             
-            // dispatch it
-            dispatch_group_t group = dispatch_group_create();
-            
-            // Movie
-            movie = [Movie insertInManagedObjectContext:context];
-            [movie updateAttributes:movieDict];
-            
-            // Backdrop
-            NSString *backdropString = [movieDict objectForKey:@"backdrop_path"];
-            dispatch_group_enter(group);
-            [self setBackdropWithImagePath:backdropString toMovie:movie success:^{
-                dispatch_group_leave(group);
-            } failure:^(NSError *aError) {
-                dispatch_group_leave(group);
-            }];
-            
-            // Poster
-            NSString *posterString = [movieDict objectForKey:@"poster_path"];
-            dispatch_group_enter(group);
-            [self setPosterWithImagePath:posterString toMovie:movie success:^{
-                dispatch_group_leave(group);
-            } failure:^(NSError *aError) {
-                dispatch_group_leave(group);
-            }];
-            
-            // director and casts
-            dispatch_group_enter(group);
-            [movie getPersonsWithCompletion:^(NSArray *casts, NSArray *crews) {
+            AFJSONRequestOperation *operation = nil;
+            operation = [[OnlineMovieDatabase sharedMovieDatabase] getMovieDetailsForMovieID:movieID completion:^(NSDictionary *movieDict) {
                 
-                dispatch_group_leave(group);
-            } error:^(NSError *error) {
-                dispatch_group_leave(group);
+                // dispatch it
+                dispatch_group_t group = dispatch_group_create();
+                
+                // Movie
+                movie = [Movie insertInManagedObjectContext:context];
+                [movie updateAttributes:movieDict];
+                
+                // Backdrop
+                NSString *backdropString = [movieDict objectForKey:@"backdrop_path"];
+                NSURL *backdropURL = [[OnlineMovieDatabase sharedMovieDatabase] getImageURLForImagePath:backdropString imageType:ImageTypeBackdrop nearWidth:800.0f];
+                movie.backdropURL = [backdropURL absoluteString];
+                
+                // Poster
+                NSString *posterString = [movieDict objectForKey:@"poster_path"];
+                NSURL *posterURL = [[OnlineMovieDatabase sharedMovieDatabase] getImageURLForImagePath:posterString imageType:ImageTypePoster nearWidth:260.0f];
+                movie.posterURL = [posterURL absoluteString];
+                
+//                // Backdrop
+//                NSString *backdropString = [movieDict objectForKey:@"backdrop_path"];
+//                dispatch_group_enter(group);
+//                [self setBackdropWithImagePath:backdropString toMovie:movie success:^{
+//                    dispatch_group_leave(group);
+//                } failure:^(NSError *aError) {
+//                    dispatch_group_leave(group);
+//                }];
+//                
+//                // Poster
+//                NSString *posterString = [movieDict objectForKey:@"poster_path"];
+//                dispatch_group_enter(group);
+//                [self setPosterWithImagePath:posterString toMovie:movie success:^{
+//                    dispatch_group_leave(group);
+//                } failure:^(NSError *aError) {
+//                    dispatch_group_leave(group);
+//                }];
+                
+                // director and casts
+//                dispatch_group_enter(group);
+//                [movie getPersonsWithCompletion:^(NSArray *casts, NSArray *crews) {
+//                    DebugLog(@"yay");
+//                    dispatch_group_leave(group);
+//                } error:^(NSError *error) {
+//                    DebugLog(@"nay");
+//                    dispatch_group_leave(group);
+//                }];
+                
+
+                dispatch_group_wait(group, DISPATCH_TIME_FOREVER);
+                
+                if(!runtimeError) {
+                    completionBlock(movie);
+                } else {
+                    aFailureBlock(runtimeError);
+                }
+                
+                
+            } failure:^(NSError *aError) {
+                aFailureBlock(aError);
             }];
-            
-            
-            
-            dispatch_group_wait(group, DISPATCH_TIME_FOREVER);
-            
-            if(!runtimeError) {
-                [context save:nil];
-                aCompletionBlock(movie);
-            } else {
-                aFailureBlock(runtimeError);
-            }    
+            [operation start];
             
         } else {
             NSError *existsError = [[NSError alloc] initWithDomain:kBridgeErrorDomain code:BridgeErrorMovieExists userInfo:[NSDictionary dictionaryWithObjectsAndKeys:@"Movie with this ID already exists", NSLocalizedDescriptionKey, nil]];
@@ -95,51 +113,119 @@
         
     });
 }
-
-- (AFJSONRequestOperation*)saveSearchResultAsMovie:(SearchResult*)result completion:(OnlineBridgeCompletionBlock)aCompletionBlock failure:(OnlineBridgeFailureBlock)aFailureBlock
-{
-    AFJSONRequestOperation *operation = nil;
-    operation = [self saveMovieForID:result.searchResultId completion:^(Movie *aMovie) {
-        aCompletionBlock(aMovie);
-    } failure:^(NSError *anError) {
-        aFailureBlock(anError);
-    }];
-    return operation;
-    
-//    [[OnlineMovieDatabase sharedMovieDatabase] getMovieDetailsForMovieID:result.searchResultId completion:^(NSDictionary *movieDict) {
-//        [self saveSearchResultDictAsMovie:movieDict completion:^(Movie *aMovie) {
-//            aCompletionBlock(aMovie);
-//        } failure:^(NSError *aError) {
-//            aFailureBlock(aFailureBlock);
-//        }];
-//    } failure:^(NSError *aError) {
-//        aFailureBlock(aError);
+//
+//
+//- (void)saveSearchResultDictAsMovie:(NSDictionary *)movieDict completion:(OnlineBridgeCompletionBlock)aCompletionBlock failure:(OnlineBridgeFailureBlock)aFailureBlock
+//{
+//    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+//
+//        // Setup Core Data with extra Context for Background Process
+//        __block NSError *runtimeError = nil;
+//        NSManagedObjectContext *context = [[NSManagedObjectContext alloc] init];
+//        [context setPersistentStoreCoordinator:[[MoviesDataModel sharedDataModel] persistentStoreCoordinator]];
+//        
+//        NSInteger serverId = [[movieDict objectForKey:@"id"] intValue];
+//        Movie *movie = [Movie movieWithServerId:serverId usingManagedObjectContext:context];
+//        
+//        if(movie == nil) {
+//            
+//            // dispatch it
+//            dispatch_group_t group = dispatch_group_create();
+//            
+//            // Movie
+//            movie = [Movie insertInManagedObjectContext:context];
+//            [movie updateAttributes:movieDict];
+//            
+//            // Backdrop
+//            NSString *backdropString = [movieDict objectForKey:@"backdrop_path"];
+//            dispatch_group_enter(group);
+//            [self setBackdropWithImagePath:backdropString toMovie:movie success:^{
+//                dispatch_group_leave(group);
+//            } failure:^(NSError *aError) {
+//                dispatch_group_leave(group);
+//            }];
+//            
+//            // Poster
+//            NSString *posterString = [movieDict objectForKey:@"poster_path"];
+//            dispatch_group_enter(group);
+//            [self setPosterWithImagePath:posterString toMovie:movie success:^{
+//                dispatch_group_leave(group);
+//            } failure:^(NSError *aError) {
+//                dispatch_group_leave(group);
+//            }];
+//            
+//            // director and casts
+//            dispatch_group_enter(group);
+//            [movie getPersonsWithCompletion:^(NSArray *casts, NSArray *crews) {
+//                
+//                dispatch_group_leave(group);
+//            } error:^(NSError *error) {
+//                dispatch_group_leave(group);
+//            }];
+//            
+//            
+//            
+//            dispatch_group_wait(group, DISPATCH_TIME_FOREVER);
+//            
+//            if(!runtimeError) {
+//                [context save:nil];
+//                aCompletionBlock(movie);
+//            } else {
+//                aFailureBlock(runtimeError);
+//            }    
+//            
+//        } else {
+//            NSError *existsError = [[NSError alloc] initWithDomain:kBridgeErrorDomain code:BridgeErrorMovieExists userInfo:[NSDictionary dictionaryWithObjectsAndKeys:@"Movie with this ID already exists", NSLocalizedDescriptionKey, nil]];
+//            aFailureBlock(existsError);
+//        }
+//        
+//    });
+//}
+//
+//- (AFJSONRequestOperation*)saveSearchResultAsMovie:(SearchResult*)result completion:(OnlineBridgeCompletionBlock)aCompletionBlock failure:(OnlineBridgeFailureBlock)aFailureBlock
+//{
+//    AFJSONRequestOperation *operation = nil;
+//    operation = [self saveMovieForID:result.searchResultId completion:^(Movie *aMovie) {
+//        aCompletionBlock(aMovie);
+//    } failure:^(NSError *anError) {
+//        aFailureBlock(anError);
 //    }];
-}
-
-- (AFJSONRequestOperation*)saveMovieForID:(NSNumber*)movieID completion:(OnlineBridgeCompletionBlock)aCompletionBlock failure:(OnlineBridgeFailureBlock)aFailureBlock
-{
-    AFJSONRequestOperation *operation = nil;
-    NSManagedObjectContext *context = [[NSManagedObjectContext alloc] init];
-    [context setPersistentStoreCoordinator:[[MoviesDataModel sharedDataModel] persistentStoreCoordinator]];
-    Movie *movie = [Movie movieWithServerId:[movieID intValue] usingManagedObjectContext:context];
-    if (!movie) {
-        operation = [[OnlineMovieDatabase sharedMovieDatabase] getMovieDetailsForMovieID:movieID completion:^(NSDictionary *movieDict) {
-            [self saveSearchResultDictAsMovie:movieDict completion:^(Movie *aMovie) {
-                aCompletionBlock(aMovie);
-            } failure:^(NSError *aError) {
-                aFailureBlock(aFailureBlock);
-            }];
-        } failure:^(NSError *aError) {
-            aFailureBlock(aError);
-        }];
-    } else {
-        NSError *existsError = [[NSError alloc] initWithDomain:kBridgeErrorDomain code:BridgeErrorMovieExists userInfo:[NSDictionary dictionaryWithObjectsAndKeys:@"Movie with this ID already exists", NSLocalizedDescriptionKey, nil]];
-        aFailureBlock(existsError);
-//            aFailureBlock(nil);
-    }
-    return operation;
-}
+//    return operation;
+//    
+////    [[OnlineMovieDatabase sharedMovieDatabase] getMovieDetailsForMovieID:result.searchResultId completion:^(NSDictionary *movieDict) {
+////        [self saveSearchResultDictAsMovie:movieDict completion:^(Movie *aMovie) {
+////            aCompletionBlock(aMovie);
+////        } failure:^(NSError *aError) {
+////            aFailureBlock(aFailureBlock);
+////        }];
+////    } failure:^(NSError *aError) {
+////        aFailureBlock(aError);
+////    }];
+//}
+//
+//- (AFJSONRequestOperation*)saveMovieForID:(NSNumber*)movieID completion:(OnlineBridgeCompletionBlock)aCompletionBlock failure:(OnlineBridgeFailureBlock)aFailureBlock
+//{
+//    AFJSONRequestOperation *operation = nil;
+//    NSManagedObjectContext *context = [[NSManagedObjectContext alloc] init];
+//    [context setPersistentStoreCoordinator:[[MoviesDataModel sharedDataModel] persistentStoreCoordinator]];
+//    Movie *movie = [Movie movieWithServerId:[movieID intValue] usingManagedObjectContext:context];
+//    if (!movie) {
+//        operation = [[OnlineMovieDatabase sharedMovieDatabase] getMovieDetailsForMovieID:movieID completion:^(NSDictionary *movieDict) {
+//            [self saveSearchResultDictAsMovie:movieDict completion:^(Movie *aMovie) {
+//                aCompletionBlock(aMovie);
+//            } failure:^(NSError *aError) {
+//                aFailureBlock(aFailureBlock);
+//            }];
+//        } failure:^(NSError *aError) {
+//            aFailureBlock(aError);
+//        }];
+//    } else {
+//        NSError *existsError = [[NSError alloc] initWithDomain:kBridgeErrorDomain code:BridgeErrorMovieExists userInfo:[NSDictionary dictionaryWithObjectsAndKeys:@"Movie with this ID already exists", NSLocalizedDescriptionKey, nil]];
+//        aFailureBlock(existsError);
+////            aFailureBlock(nil);
+//    }
+//    return operation;
+//}
 
 
 

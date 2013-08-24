@@ -6,25 +6,25 @@
 //  Copyright (c) 2012. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "MTLModel.h"
+#import "MTLJSONAdapter.h"
 
-@interface SearchResult : NSObject
+@interface SearchResult : MTLModel<MTLJSONSerializing>
 
 @property (nonatomic, assign) BOOL adult;
 @property (nonatomic, assign) BOOL added;
-@property (nonatomic, assign) BOOL failed;
-@property (nonatomic, strong) NSString *backdropPath;
-@property (nonatomic, strong) NSNumber *searchResultId;
-@property (nonatomic, strong) NSString *originalTitle;
-@property (nonatomic, strong) NSNumber *popularity;
-@property (nonatomic, strong) NSString *posterPath;
-@property (nonatomic, strong) NSDate *releaseDate;
-@property (nonatomic, strong) NSString *title;
-@property (nonatomic, strong) NSNumber *voteAverage;
-@property (nonatomic, strong) NSNumber *voteCount;
+@property (nonatomic, copy) NSString *backdropPath;
+@property (nonatomic, copy) NSNumber *searchResultId;
+@property (nonatomic, copy) NSString *originalTitle;
+@property (nonatomic, copy) NSNumber *popularity;
+@property (nonatomic, copy) NSString *posterPath;
+@property (nonatomic, copy) NSDate *releaseDate;
+@property (nonatomic, copy) NSString *title;
+@property (nonatomic, copy) NSNumber *voteAverage;
+@property (nonatomic, copy) NSNumber *voteCount;
 
-+ (SearchResult *)instanceFromDictionary:(NSDictionary *)aDictionary;
-- (void)setAttributesFromDictionary:(NSDictionary *)aDictionary;
++ (id)searchResultFromJSONDictionary:(NSDictionary*)aDictionary;
+
 - (NSString *)releaseYear;
 
 @end

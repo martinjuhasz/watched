@@ -17,6 +17,8 @@
 #import "UIImageView+AFNetworking.h"
 #import "UILabel+Additions.h"
 #import "MoviesTableViewLoadingCell.h"
+#import "OnlineDatabaseBridge.h"
+#import "MovieDetailViewController.h"
 
 const int kMovieTableLoadingCellTag = 2001;
 
@@ -106,6 +108,15 @@ const int kMovieTableLoadingCellTag = 2001;
     return cell;
 }
 
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    if([segue.identifier isEqualToString:@"MovieDiscoverDetailSegue"] && [sender isKindOfClass:[Movie class]]) {
+        Movie *currentMovie = (Movie*)sender;
+        MovieDetailViewController *detailViewController = (MovieDetailViewController*)segue.destinationViewController;
+        detailViewController.movie = currentMovie;
+    }
+}
+
 
 
 ////////////////////////////////////////////////////////////////////////////
@@ -125,7 +136,14 @@ const int kMovieTableLoadingCellTag = 2001;
     if([self isSearchIndexPathAtRow:indexPath.row]) return;
     
     SearchResult *result = [self.searchResults objectAtIndex:indexPath.row];
-    [self performSegueWithIdentifier:@"MovieDiscoverDetailSegue" sender:result];
+    OnlineDatabaseBridge *bridge = [[OnlineDatabaseBridge alloc] init];
+    [bridge getMovieFromMovieID:result.searchResultId completion:^(Movie *aMovie) {
+        [self performSegueWithIdentifier:@"MovieDiscoverDetailSegue" sender:aMovie];
+    } failure:^(NSError *error) {
+        
+    }];
+    
+    
 }
 
 - (void)tableView:(UITableView *)aTableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -230,7 +248,7 @@ const int kMovieTableLoadingCellTag = 2001;
         totalPages = [[results objectForKey:@"total_pages"] intValue];
         
         for (NSDictionary *movie in movies) {
-            SearchResult *aResult = [SearchResult instanceFromDictionary:movie];
+            SearchResult *aResult = [SearchResult searchResultFromJSONDictionary:movie];
             
             BOOL isAdded = [Movie movieWithServerIDExists:[aResult.searchResultId integerValue] usingManagedObjectContext:[[MoviesDataModel sharedDataModel] mainContext]];
             if(!isAdded) {

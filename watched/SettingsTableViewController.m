@@ -615,36 +615,36 @@
                              [NSNumber numberWithInt:96313],
                              nil];
         
-        dispatch_group_t group = dispatch_group_create();
-        
-        float total = movieIDS.count; 
-        __block int current = 0;
-        
-        for (NSNumber *currentMovie in movieIDS) {
-            dispatch_group_enter(group);
-            AFJSONRequestOperation *operation = [bridge saveMovieForID:currentMovie completion:^(Movie *returnedMovie) {
-                current++;
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    NSString *progress = [NSString stringWithFormat:@"%d / %.0f", current, total];
-                    _loadingController.titleLabel.text = progress;
-                });
-                dispatch_group_leave(group);
-            } failure:^(NSError *anError) {
-                current++;
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    NSString *progress = [NSString stringWithFormat:@"%d / %.0f", current, total];
-                    _loadingController.titleLabel.text = progress;
-                });
-                //DebugLog("%@",[anError localizedDescription]);
-                dispatch_group_leave(group);
-            }];
-            [queue addOperation:operation];
-            
-        }
-        [queue setSuspended:NO];
-        
-        // wait until everything is finished
-        dispatch_group_wait(group, DISPATCH_TIME_FOREVER);
+//        dispatch_group_t group = dispatch_group_create();
+//        
+//        float total = movieIDS.count; 
+//        __block int current = 0;
+//        
+//        for (NSNumber *currentMovie in movieIDS) {
+//            dispatch_group_enter(group);
+//            AFJSONRequestOperation *operation = [bridge saveMovieForID:currentMovie completion:^(Movie *returnedMovie) {
+//                current++;
+//                dispatch_async(dispatch_get_main_queue(), ^{
+//                    NSString *progress = [NSString stringWithFormat:@"%d / %.0f", current, total];
+//                    _loadingController.titleLabel.text = progress;
+//                });
+//                dispatch_group_leave(group);
+//            } failure:^(NSError *anError) {
+//                current++;
+//                dispatch_async(dispatch_get_main_queue(), ^{
+//                    NSString *progress = [NSString stringWithFormat:@"%d / %.0f", current, total];
+//                    _loadingController.titleLabel.text = progress;
+//                });
+//                //DebugLog("%@",[anError localizedDescription]);
+//                dispatch_group_leave(group);
+//            }];
+//            [queue addOperation:operation];
+//            
+//        }
+//        [queue setSuspended:NO];
+//        
+//        // wait until everything is finished
+//        dispatch_group_wait(group, DISPATCH_TIME_FOREVER);
         //dispatch_release(group);
         dispatch_async(dispatch_get_main_queue(), ^{
             [self closeLoadingController];

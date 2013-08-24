@@ -1,6 +1,7 @@
 #import "_Movie.h"
 
 @class MJUTrailer;
+@class SearchResult;
 
 typedef void (^MJUTrailersCompletionBlock)(NSArray *);
 typedef void (^MJUTrailerCompletionBlock)(MJUTrailer *);
@@ -18,7 +19,7 @@ typedef void (^MJUMovieErrorBlock)(NSError *);
 @property (nonatomic, strong)  NSArray *casts;
 @property (nonatomic, strong)  NSArray *crews;
 
-+ (Movie *)movieWithServerId:(NSInteger)serverId usingManagedObjectContext:(NSManagedObjectContext *)moc;
++ (Movie *)movieWithMovieID:(NSNumber*)movieID usingManagedObjectContext:(NSManagedObjectContext *)moc;
 + (BOOL)movieWithServerIDExists:(NSInteger)serverID usingManagedObjectContext:(NSManagedObjectContext *)moc;
 - (void)updateAttributes:(NSDictionary *)attributes;
 - (void)getTrailersWithCompletion:(MJUTrailersCompletionBlock)completion error:(MJUMovieErrorBlock)error;

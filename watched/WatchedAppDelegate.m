@@ -12,7 +12,6 @@
 #import "UIViewController+MJPopupViewController.h"
 #import "MJCustomTableViewCell.h"
 #import "WatchedWebBrowser.h"
-#import "AddMovieViewController.h"
 #import "MJInternetConnection.h"
 #import "WatchedWebBrowser.h"
 #import "MJWatchedNavigationBar.h"
@@ -27,7 +26,7 @@
 #import <HockeySDK/HockeySDK.h>
 #import "MJUWatchedStyle.h"
 
-@interface WatchedAppDelegate ()<AddMovieViewDelegate> {
+@interface WatchedAppDelegate () {
 }
 
 @property (strong, nonatomic) UISS *uiss;
@@ -106,21 +105,21 @@
 
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
 {
-    NSString *serverIDString = [url host];
-    if(!serverIDString) return NO;
-    
-    int serverID = [serverIDString intValue];
-    if(!serverID || serverID <= 0) return NO;
-    
-    OnlineDatabaseBridge *bridge = [[OnlineDatabaseBridge alloc] init];
-    AFJSONRequestOperation *operation = [bridge saveMovieForID:[NSNumber numberWithInt:serverID] completion:^(Movie *movie) {
-        
-    } failure:^(NSError *error) {
-        DebugLog("%@", [error localizedDescription]);
-    }];
-    [operation start];
-    
-    return YES;
+//    NSString *serverIDString = [url host];
+//    if(!serverIDString) return NO;
+//    
+//    int serverID = [serverIDString intValue];
+//    if(!serverID || serverID <= 0) return NO;
+//    
+//    OnlineDatabaseBridge *bridge = [[OnlineDatabaseBridge alloc] init];
+//    AFJSONRequestOperation *operation = [bridge saveMovieForID:[NSNumber numberWithInt:serverID] completion:^(Movie *movie) {
+//        
+//    } failure:^(NSError *error) {
+//        DebugLog("%@", [error localizedDescription]);
+//    }];
+//    [operation start];
+//    
+//    return YES;
 }
 
 @end

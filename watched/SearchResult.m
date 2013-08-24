@@ -7,76 +7,44 @@
 //
 
 #import "SearchResult.h"
+#import "MTLValueTransformer.h"
 
 @implementation SearchResult
 
-@synthesize adult;
-@synthesize backdropPath;
-@synthesize searchResultId;
-@synthesize originalTitle;
-@synthesize popularity;
-@synthesize posterPath;
-@synthesize releaseDate;
-@synthesize title;
-@synthesize voteAverage;
-@synthesize voteCount;
-
-+ (SearchResult *)instanceFromDictionary:(NSDictionary *)aDictionary
++ (NSDictionary *)JSONKeyPathsByPropertyKey
 {
-
-    SearchResult *instance = [[SearchResult alloc] init];
-    [instance setAttributesFromDictionary:aDictionary];
-    return instance;
-
+    return @{
+             @"backdropPath" : @"backdrop_path",
+             @"searchResultId" : @"id" ,
+             @"originalTitle" : @"original_title",
+             @"posterPath" : @"poster_path",
+             @"releaseDate" : @"release_date",
+             @"voteAverage" : @"vote_average",
+             @"voteCount" : @"vote_count"
+             };
 }
 
-- (void)setAttributesFromDictionary:(NSDictionary *)aDictionary
++ (id)searchResultFromJSONDictionary:(NSDictionary*)aDictionary
 {
-
-    if (![aDictionary isKindOfClass:[NSDictionary class]]) {
-        return;
+    NSError *error = nil;
+    MTLJSONAdapter *modelAdapter = [[MTLJSONAdapter alloc] initWithJSONDictionary:aDictionary modelClass:[SearchResult class] error:&error];
+    if(!error && [modelAdapter.model isKindOfClass:[SearchResult class]]) {
+        return(SearchResult*)modelAdapter.model;
     }
-    
-    self.added = NO;
-    self.failed = NO;
-    self.adult = [(NSNumber *)[aDictionary objectForKey:@"adult"] boolValue];
-    self.backdropPath = [aDictionary objectForKey:@"backdrop_path"];
-    self.searchResultId = [aDictionary objectForKey:@"id"];
-    self.originalTitle = [aDictionary objectForKey:@"original_title"];
-    self.popularity = [aDictionary objectForKey:@"popularity"];
-    self.posterPath = [aDictionary objectForKey:@"poster_path"];
-    self.releaseDate = [aDictionary objectForKey:@"release_date"];
-    self.title = [aDictionary objectForKey:@"title"];
-    self.voteAverage = [aDictionary objectForKey:@"vote_average"];
-    self.voteCount = [aDictionary objectForKey:@"vote_count"];
-
+    return nil;
 }
 
-- (void)setAdded:(BOOL)newAdded
++ (NSValueTransformer *)releaseDateJSONTransformer
 {
-    _added = newAdded;
-    if(newAdded == YES) {
-        _failed = NO;
-    }
-}
-
-- (void)setFailed:(BOOL)newFailed
-{
-    _failed = newFailed;
-    if(newFailed == YES) {
-        _added = NO;
-    }
-}
-
-- (void)setReleaseDate:(id)aReleaseDate
-{
-    if([aReleaseDate isKindOfClass:[NSString class]]) {
+    return [MTLValueTransformer reversibleTransformerWithForwardBlock:^(NSString *str) {
         NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
         [dateFormatter setDateFormat:@"YYYY-MM-DD"];
-        releaseDate = [dateFormatter dateFromString:aReleaseDate];
-        return;
-    }
-    releaseDate = nil;
+        return [dateFormatter dateFromString:str];
+    } reverseBlock:^(NSDate *aDate) {
+        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setDateFormat:@"YYYY-MM-DD"];
+        return [dateFormatter stringFromDate:aDate];
+    }];
 }
 
 - (NSString *)releaseYear

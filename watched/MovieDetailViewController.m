@@ -20,7 +20,6 @@
 #import "OnlineDatabaseBridge.h"
 #import <QuartzCore/QuartzCore.h>
 #import "WatchedWebBrowser.h"
-#import "SearchMovieViewController.h"
 #import "AFImageRequestOperation.h"
 #import "AFJSONRequestOperation.h"
 #import "UIButton+Additions.h"
@@ -34,6 +33,7 @@
 #import "MJUTrailer.h"
 #import "MJUCast.h"
 #import "MJUCrew.h"
+#import "UIImageView+AFNetworking.h"
 
 #define kImageFadeDelay 0.0f
 
@@ -108,6 +108,15 @@
 #pragma mark -
 #pragma mark Content Management
 
+- (void)setMovie:(Movie*)aMovie
+{
+    if(aMovie) {
+        movie = aMovie;
+        self.currentContext = [aMovie managedObjectContext];
+    }
+}
+
+
 - (void)setContent
 {
     self.title = self.movie.title;
@@ -146,13 +155,18 @@
     // Poster
     if (self.movie.poster) {
         self.detailView.posterImageView.image = self.movie.poster;
-    } else {
+    } else if(self.movie.posterURL) {
+        [self.detailView.posterImageView setImageWithURL:[NSURL URLWithString:self.movie.posterURL] placeholderImage:[UIImage imageNamed:@"dv_placeholder-cover.png"]];
+    }
+    else {
         self.detailView.posterImageView.image = [UIImage imageNamed:@"dv_placeholder-cover.png"];
     }
     
     // Backdrop
     if (self.movie.backdrop) {
          self.detailView.backdropImageView.image = self.movie.backdrop;
+    } else if(self.movie.backdropURL) {
+        [self.detailView.backdropImageView setImageWithURL:[NSURL URLWithString:self.movie.backdropURL] placeholderImage:[UIImage imageNamed:@"dv_placeholder-backdrop.png"]];
     } else {
         self.detailView.backdropImageView.image = [UIImage imageNamed:@"dv_placeholder-backdrop.png"];
     }
