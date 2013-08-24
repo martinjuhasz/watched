@@ -804,8 +804,6 @@
 		7AF5ADDA17BB699100C2472A /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 7AF5ADD717BB699100C2472A /* Icon.png */; };
 		7AF5ADDB17BB699100C2472A /* Icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7AF5ADD817BB699100C2472A /* Icon@2x.png */; };
 		7AF5ADDC17BB699100C2472A /* Icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7AF5ADD817BB699100C2472A /* Icon@2x.png */; };
-		7AF5ADDF17BB6AA500C2472A /* divider-star.png in Resources */ = {isa = PBXBuildFile; fileRef = 7AF5ADDD17BB6AA500C2472A /* divider-star.png */; };
-		7AF5ADE017BB6AA500C2472A /* divider-star.png in Resources */ = {isa = PBXBuildFile; fileRef = 7AF5ADDD17BB6AA500C2472A /* divider-star.png */; };
 		7AF5ADE117BB6AA500C2472A /* divider-star@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7AF5ADDE17BB6AA500C2472A /* divider-star@2x.png */; };
 		7AF5ADE217BB6AA500C2472A /* divider-star@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7AF5ADDE17BB6AA500C2472A /* divider-star@2x.png */; };
 		7AF9A72D1587EDE00016EC63 /* SettingsAboutTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AF9A72C1587EDE00016EC63 /* SettingsAboutTableViewController.m */; };
@@ -1314,7 +1312,6 @@
 		7AF5ADD517BB690A00C2472A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = "watched beta/Images.xcassets"; sourceTree = SOURCE_ROOT; };
 		7AF5ADD717BB699100C2472A /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon.png; sourceTree = "<group>"; };
 		7AF5ADD817BB699100C2472A /* Icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon@2x.png"; sourceTree = "<group>"; };
-		7AF5ADDD17BB6AA500C2472A /* divider-star.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "divider-star.png"; sourceTree = "<group>"; };
 		7AF5ADDE17BB6AA500C2472A /* divider-star@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "divider-star@2x.png"; sourceTree = "<group>"; };
 		7AF9A72B1587EDE00016EC63 /* SettingsAboutTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsAboutTableViewController.h; sourceTree = "<group>"; };
 		7AF9A72C1587EDE00016EC63 /* SettingsAboutTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsAboutTableViewController.m; sourceTree = "<group>"; };
@@ -2065,7 +2062,6 @@
 				7AF5ADC017BB667600C2472A /* navigationbar_bg.png */,
 				7AF5ADC917BB68ED00C2472A /* cover-overlay.png */,
 				7AF5ADCA17BB68ED00C2472A /* cover-overlay@2x.png */,
-				7AF5ADDD17BB6AA500C2472A /* divider-star.png */,
 				7AF5ADDE17BB6AA500C2472A /* divider-star@2x.png */,
 				7AEEC6D617BE430A002E92A2 /* icon-cast-highlighted@2x.png */,
 				7AEEC6D717BE430A002E92A2 /* icon-cast@2x.png */,
@@ -2456,7 +2452,6 @@
 				7AF5ADCE17BB68ED00C2472A /* cover-overlay.png in Resources */,
 				7A13C41317C8B5ED007ACD89 /* sv_spinner6@2x.png in Resources */,
 				7A13C37917C8B5ED007ACD89 /* mv_addbutton@2x.png in Resources */,
-				7AF5ADE017BB6AA500C2472A /* divider-star.png in Resources */,
 				7AF5ADD017BB68ED00C2472A /* cover-overlay@2x.png in Resources */,
 				7A13C39317C8B5ED007ACD89 /* mv_segmented-dv-na.png in Resources */,
 				7A13C36717C8B5ED007ACD89 /* g_uiswitch_bg_on.png in Resources */,
@@ -2707,7 +2702,6 @@
 				7A13C2BA17C8B5ED007ACD89 /* g_barbutton.png in Resources */,
 				7A13C24A17C8B5ED007ACD89 /* dv_icon_trailer_disabled.png in Resources */,
 				7A13C3BE17C8B5ED007ACD89 /* pv_bg_content_bottom.png in Resources */,
-				7AF5ADDF17BB6AA500C2472A /* divider-star.png in Resources */,
 				7AEEC6EC17BE430A002E92A2 /* icon-discover-highlighted@2x.png in Resources */,
 				7A13C2F217C8B5ED007ACD89 /* g_bg-table_online_active.png in Resources */,
 				7A13C2E217C8B5ED007ACD89 /* g_bg-grp_table_topbottom_highlighted.png in Resources */,
