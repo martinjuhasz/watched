@@ -122,7 +122,7 @@ const int kMovieCastCellProfileImageView = 200;
     UIImageView *profileImageView = (UIImageView *)[cell viewWithTag:kMovieCastCellProfileImageView];
     
     NSURL *imageURL = [[OnlineMovieDatabase sharedMovieDatabase] getImageURLForImagePath:currentPerson.profilePath imageType:ImageTypeProfile nearWidth:200.0f];
-    [profileImageView setImageWithURL:imageURL placeholderImage:[UIImage imageNamed:@"cv_actor-placeholder.png"]];
+    [profileImageView setImageWithURL:imageURL placeholderImage:[UIImage imageNamed:@"actor-thumb-placeholder.png"]];
     characterLabel.text = currentPerson.job;
     nameLabel.text = currentPerson.name;
     
