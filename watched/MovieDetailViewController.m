@@ -86,6 +86,9 @@
     [self setNavigationBarItems];
     [self.detailView.notesEditButton addTarget:self action:@selector(notesEditButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
     [self.detailView.addToCollectionButton addTarget:self action:@selector(addToCollectionButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(contextDidChange:) name:NSManagedObjectContextObjectsDidChangeNotification object:[self.movie managedObjectContext]];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(contextDidSave:) name:NSManagedObjectContextDidSaveNotification object:[self.movie managedObjectContext]];
+    
 }
 
 
@@ -119,6 +122,22 @@
         movie = aMovie;
         self.currentContext = [aMovie managedObjectContext];
     }
+}
+
+- (void)contextDidChange:(NSNotification *)notification
+{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self setContent];
+    });
+}
+
+- (void)contextDidSave:(NSNotification *)notification
+{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.detailView switchToAddedState];
+        [self setNavigationBarItems];
+    });
+    
 }
 
 - (void)setNavigationBarItems
@@ -310,10 +329,7 @@
     [self.detailView.addToCollectionButton setState:MJUAddButtonStateLoading];
     OnlineDatabaseBridge *bridge = [[OnlineDatabaseBridge alloc] init];
     [bridge saveMovie:self.movie completion:^(Movie *aMovie) {
-        if (![[NSThread currentThread] isMainThread]) {
-            DebugLog(@"adsasdsa");
-        }
-        [self.detailView switchToAddedState];
+
     } failure:^(NSError *error) {
         ErrorLog(@"%@", [error localizedDescription]);
     }];

@@ -79,14 +79,14 @@
 
 - (void)switchToAddedState
 {
-    [UIView animateWithDuration:1.0f animations:^{
+    [UIView animateWithDuration:0.5f animations:^{
         self.addToCollectionButton.alpha = 0.0f;
     } completion:^(BOOL finished) {
         self.addToCollectionButton.hidden = YES;
         self.addToCollectionButton.alpha = 1.0f;
         self.ratingView.alpha = 0.0f;
         self.ratingView.hidden = NO;
-        [UIView animateWithDuration:1.0f animations:^{
+        [UIView animateWithDuration:0.5f animations:^{
             self.ratingView.alpha = 1.0f;
         } completion:^(BOOL finished) {
             
@@ -404,6 +404,10 @@
         CGRect shadowRect = self.backdropBottomShadow.frame;
         shadowRect.size.height = kMBackdropHeight - (minVal + kMBackdropScrollStop);
         shadowRect.origin.y = minVal + kMBackdropScrollStop;
+        
+        DebugLog(@"offset: %f", scrollViewOffset);
+        DebugLog(@"shadow: %@", NSStringFromCGRect(shadowRect));
+        DebugLog(@"backdrop: %@", NSStringFromCGRect(imageViewRect));
         
         // Loading Button
         if(self.imageLoadingView.frame.size.width >= 320.0f && self.imageLoadingView.alpha > 0.0f) {
