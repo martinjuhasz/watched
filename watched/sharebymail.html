@@ -1,3 +1,22 @@
+<!-- 
+	available insert tags
+	
+	###MOVIE_NOTE###
+
+	###IMAGE_URL###
+	###IMAGE_DISPLAY###
+
+	###MOVIE_TITLE###
+	###MOVIE_TAGLINE### 
+	###MOVIE_DESCRIPTION###
+	
+	###MOVIE_RATING_DISPLAY###
+	###MOVIE_RATING_RATED###
+	###MOVIE_RATING_UNRATED###
+	
+	###MOVIE_ID###
+-->
+
 <!doctype html>
 <html lang="en">
 <head>
@@ -6,46 +25,48 @@
  	<style type="text/css">
  	
  	* { -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box; }
-	
-	.movie-poster { position: relative; }
-	.movie-poster:before { position: absolute; top: 0; right: 0; bottom: 0; left: 0; content: ""; box-shadow: 0 0 1px rgba(255, 255, 255, 0.3) inset; background-image: -webkit-gradient(linear, left bottom, right 150%, color-stop(0.01, rgba(255, 255, 255, 0.3)), color-stop(0.011, rgba(255, 255, 255, 0))); -webkit-background-clip: padding-box;
-	}
-	
+
  	</style>
 </head>
 
 <body>
-    <br />
-	<div style="border-top: 1px solid #CCCCCC; width: 93.75%; margin: 20px auto 0; padding: 20px 0 0; font-size: 12px; line-height: 16px; font-family: 'Helvetica Neue', sans-serif; font-weight: bold; color: #666666;">
-        
-        <div class="movie" style="overflow: hidden;">
-        	<div class="movie-poster" style="float: left; margin: 0 20px 14px 0; border-radius: 4px; border: 1px solid #3E3E3E; overflow: hidden; display:###IMAGE_DISPLAY###" >
-		        <img style="float: left;" src="###IMAGE_URL###" width="71" />
-	        </div>
-	        
-	        <div class="movie-data" style="float: left; width: 265px;">
-		        <h1 style="font-size: 18px; color: #000; margin: 0;">###MOVIE_TITLE###</h1>
-		        <p style="font-size: 14px; font-weight: normal; margin: 8px 0 18px;">2011</p>
-		        <div class="rating" style="font-size: 20px; margin: 0;">
-			        <span class="rated" style="color: #5E5E5E;">###MOVIE_RATING_RATED###</span><span style="color: #CACACA;">###MOVIE_RATING_UNRATED###</span>
-		        </div>
-	        </div>	       
-        </div>
-        
-       <div class="movie-desc" style="margin-top: 28px;">
-       <p style="font-weight: normal;">###MOVIE_DESCRIPTION###</p>
-       </div> 
-        
-      <p class="addmovie" style="color: #BFBEBF; margin-top: 20px;">Already using watched?</p>
-      <a class="addmoviebutton" style="color: #fff; text-decoration: none; display: block; width: 100%;" href="watched://###MOVIE_ID###"><p style="width: 100%;line-height: 36px; box-shadow: 0 0 1px rgba(255, 255, 255, 0.3) inset; height: 36px; background: #525252; text-align: center; border-radius: 4px; background-image: -webkit-linear-gradient(-90deg, #636363 0%, #323232 71%, #434343 100%); background-image: linear-gradient(-90deg, #636363 0%, #323232 71%, #434343 100%); border: 1px solid #232323; font-size: 14px;">ADD THIS MOVIE</a>
-        
-        <div class="app-store" style="font-weight: normal; margin-top: 18px;">
-		<p style="color: #989898;">Use watched to <em>track, rate and share</em> all the movies you watch. watched is available in the <a style="color: #000;text-decoration: none;font-weight: bold;" href="https://itunes.apple.com/us/app/watched-track-rate-share-all/id477043677?l=de&ls=1&mt=8">App Store</a>.</p>
-        </div>  
+	<div style="max-width: 300px; margin: 0 auto;">
 
-        <ul class="contact" style="border-top: 1px solid #E0E0E0;list-style: none;padding: 10px 0 0;margin: 20px 0 0;">
-        	<li style="display: inline-block;margin-right: 12px;"><a style="color: #B2B2B2; text-decoration: none;" href="http://watchedforios.com">watchedforios.com</a></li>
-        </ul>
-    </div>
+		###MOVIE_NOTE###
+	    <br>
+	    <br>
+	    <br>
+		
+		<div style="font-family: 'Avenir Next', sans-serif; color: #787878; line-height: 18px; text-align: center; border-top: 1px solid #CCCCCC; border-bottom: 1px solid #CCCCCC; padding: 24px 0;">
+			
+			<div style="max-width: 250px; margin: 0 auto;">
+		    <img style="background: grey; border: 1px solid rgba(0,0,0,.4); display: ###IMAGE_DISPLAY###; margin-bottom: 12px;" src="###IMAGE_URL###" alt="movie poster" width="50" height="70" />
+
+			<h1 style="font-size: 18px; font-weight: 600; color: #191919; margin: 0 0 18px;">###MOVIE_TITLE###</h1>
+
+			<div class="rating" style="font-size: 22px; margin: 0 0 24px; display: ###MOVIE_RATING_DISPLAY###;">
+				<span class="rated" style="color: #5E5E5E;">###MOVIE_RATING_RATED###</span><span style="color: #CACACA;">###MOVIE_RATING_UNRATED###</span>		
+			</div>
+			
+			<div style="font-size: 13px;">
+
+				<h2 style="font-size: 13px; font-weight: 500; margin: 0 0 12px;">###MOVIE_TAGLINE###</h2>
+
+				<p style="margin: 0;">###MOVIE_DESCRIPTION###</p>
+			</div>
+
+			<a style="margin-top: 24px; border: 1px solid #F42832; font-size: 14px; padding: 0 20px; text-decoration: none; border-radius: 40px; color: #F42832; display: inline-block; line-height: 27px; font-weight: 500;" href="watched://###MOVIE_ID###">Open in watched</a>
+			</div>
+		</div>
+		
+		<div style="font-family: 'Avenir Next', sans-serif; color: #787878; line-height: 18px; font-size: 12px; text-align: center; max-width: 250px; margin: 0 auto;">
+		<p>Use watched to track, rate and share all the movies you watch.</p>
+		
+
+		<p><a style="text-decoration: none; color: #787878; font-weight: 500;" href="https://itunes.apple.com/us/app/watched-track-rate-share-all/id477043677?l=de&ls=1&mt=8">Get watched now</a> and start building your personal collection</p>
+
+		<p><a style="text-decoration: none; color: #787878; font-weight: 500;" href="http://watchedforios.com/">watchedforios.com</a></p>
+		</div>
+	</div>
 </body>
 </html>
