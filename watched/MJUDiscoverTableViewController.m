@@ -199,7 +199,7 @@ const int kMovieTableLoadingCellTag = 2001;
 
 - (BOOL)isSearchIndexPathAtRow:(NSUInteger)row
 {
-    if(isLoading || isError) return NO;
+    if(isError) return NO;
     if(currentPage >= totalPages) return NO;
     if(row < [self.searchResults count]) return NO;
     return YES;

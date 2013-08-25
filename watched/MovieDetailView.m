@@ -61,7 +61,6 @@
     self.posterImageView.frame = CGRectMake(15.0f, 126.0f, 71.0f, 99.0f);
     self.posterButton.frame = CGRectMake(15.0f, 126.0f, 71.0f, 99.0f);
     self.backdropButton.frame = CGRectMake(0.0f, 0.0f, 320.0f, 120.0f);
-    
     self.metaTableView.frame = CGRectMake(15.0f, 247.0f, 305.0f, 129.0f);
 }
 
@@ -73,6 +72,7 @@
     [self.titleLabel sizeToFitWithWith:200.0f andMaximumNumberOfLines:2];
     
     self.ratingView.frame = CGRectMake(100.0f, self.titleLabel.bottom+10.0f, 168.0f, 35.0f);
+    self.addToCollectionButton.frame = CGRectMake(100.0f, self.titleLabel.bottom+10.0f, 168.0f, 26.0f);
     
     self.overviewTitleLabel.frame = CGRectMake(15.0f, 392.0f, 290.0f, 20.0f);
     [self.overviewTitleLabel sizeToFitWithWith:290.0f andMaximumNumberOfLines:3];
@@ -177,6 +177,12 @@
     self.titleLabel.adjustsFontSizeToFitWidth = NO;
     self.titleLabel.textColor = HEXColor(0x191919);
     [self.mainScrollView addSubview:self.titleLabel];
+    
+    self.addToCollectionButton = [[MJUAddButton alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 168.0f, 26.0f)];
+    [self.addToCollectionButton setTitle:NSLocalizedString(@"DETAIL_ADDTOCOLLECTION_TITLE", nil)];
+    [self.addToCollectionButton setTitleColor:[UIColor colorWithHexString:@"F42832"]];
+    [self.addToCollectionButton.titleLabel setFont:[UIFont fontWithName:@"AvenirNext-Medium" size:14.0f]];
+    [self.mainScrollView addSubview:self.addToCollectionButton];
     
     self.ratingView =[[DLStarRatingControl alloc] initWithFrame:CGRectMake(0.0f, 251.0f, 320.0f, 55.0f) andStars:5 isFractional:NO];
     self.ratingView.star = [UIImage imageNamed:@"rating-star"];
