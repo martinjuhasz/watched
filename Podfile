@@ -8,6 +8,7 @@ pod 'UIResponder+KeyboardCache'
 pod 'HockeySDK'
 pod 'Mantle'
 pod 'BlocksKit'
+pod "Reveal-iOS-SDK"
 
 #pod 'TestFlightSDK'
 #pod 'iOS-Hierarchy-Viewer'
