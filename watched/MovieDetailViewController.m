@@ -636,7 +636,7 @@
     if(rating > 0) {
         
         NSString *starEntidy = @"&#9733;";
-        NSString *starEntidyUnrated = @"&#9734;";
+        NSString *starEntidyUnrated = @"&#9733;";
         NSString *ratedString = [@"" stringByPaddingToLength:[starEntidy length]*rating withString:starEntidy startingAtIndex:0];
         NSString *unratedString = [@"" stringByPaddingToLength:[starEntidyUnrated length]*(5-rating) withString:starEntidyUnrated startingAtIndex:0];
         
