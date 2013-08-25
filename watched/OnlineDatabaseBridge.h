@@ -30,7 +30,7 @@ typedef enum {
 //- (void)saveSearchResultDictAsMovie:(NSDictionary *)resultDict completion:(OnlineBridgeCompletionBlock)aCompletionBlock failure:(OnlineBridgeFailureBlock)aFailureBlock;
 //
 //- (AFJSONRequestOperation*)saveSearchResultAsMovie:(SearchResult*)result completion:(OnlineBridgeCompletionBlock)aCompletionBlock failure:(OnlineBridgeFailureBlock)aFailureBlock;
-
+- (void)saveMovie:(Movie*)movie completion:(OnlineBridgeCompletionBlock)completionBlock failure:(OnlineBridgeFailureBlock)aFailureBlock;
 - (void)getMovieFromMovieID:(NSNumber*)movieID completion:(OnlineBridgeCompletionBlock)completionBlock failure:(OnlineBridgeFailureBlock)aFailureBlock;
 
 - (void)setBackdropWithImagePath:(NSString*)imagePath toMovie:(Movie*)aMovie success:(void (^)(void))successBlock failure:(OnlineBridgeFailureBlock)failureBlock;

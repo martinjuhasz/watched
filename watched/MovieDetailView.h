@@ -47,5 +47,7 @@
 @property (strong, nonatomic) UIView *informationView;
 
 - (void)toggleLoadingViewForPosterType:(ImageType)aImageType;
+- (void)switchToAddedState;
+- (void)setToNonAddedState;
 
 @end

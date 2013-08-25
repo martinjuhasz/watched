@@ -48,9 +48,9 @@ const int kMovieTableLoadingCellTag = 2001;
     _searchBar.delegate = self;
     _searchBar.placeholder = NSLocalizedString(@"SEARCHBAR_PLACEHOLDER", nil);
     
-    UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, 44.0f)];
-    [headerView addSubview:_searchBar];
-    self.tableView.tableHeaderView = headerView;
+//    UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, 44.0f)];
+//    [headerView addSubview:_searchBar];
+    self.tableView.tableHeaderView = _searchBar;
     
     _searchController = [[UISearchDisplayController alloc] initWithSearchBar:_searchBar contentsController:self];
     _searchController.delegate = self;

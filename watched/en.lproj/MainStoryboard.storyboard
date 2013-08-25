@@ -268,15 +268,20 @@
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="jLZ-ge-01M">
                                 <rect key="frame" x="0.0" y="44" width="320" height="220"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                <inset key="contentInset" minX="1" minY="0.0" maxX="-1" maxY="48"/>
+                                <inset key="contentInset" minX="1" minY="0.0" maxX="-1" maxY="0.0"/>
                                 <inset key="scrollIndicatorInsets" minX="0.0" minY="0.0" maxX="0.0" maxY="24"/>
                                 <color key="textColor" red="0.22745098039215686" green="0.22745098039215686" blue="0.22745098039215686" alpha="1" colorSpace="calibratedRGB"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textView>
-                            <navigationBar contentMode="scaleToFill" id="ZlW-y5-abh" customClass="MJWatchedNavigationBar">
+                            <navigationBar contentMode="scaleToFill" translucent="NO" id="ZlW-y5-abh" customClass="MJWatchedNavigationBar">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="barTintColor" red="0.96470588239999999" green="0.26274509800000001" blue="0.26274509800000001" alpha="1" colorSpace="calibratedRGB"/>
+                                <textAttributes key="titleTextAttributes">
+                                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </textAttributes>
                                 <items>
                                     <navigationItem title="Title" id="P9S-dY-c8l">
                                         <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="GMW-aZ-ngO">
@@ -292,45 +297,13 @@
                                     </navigationItem>
                                 </items>
                             </navigationBar>
-                            <view contentMode="scaleToFill" id="VuL-NH-cCK">
-                                <rect key="frame" x="0.0" y="241" width="320" height="239"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
-                                <subviews>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="nv_bg_title.png" id="xIR-c6-ICh">
-                                        <rect key="frame" x="0.0" y="0.0" width="320" height="24"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                    </imageView>
-                                    <view contentMode="scaleToFill" id="u61-9r-Ta0">
-                                        <rect key="frame" x="0.0" y="0.0" width="320" height="24"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <subviews>
-                                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Movie" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" adjustsFontSizeToFit="NO" id="z6G-Yv-V4h">
-                                                <rect key="frame" x="9" y="2" width="204" height="21"/>
-                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                <fontDescription key="fontDescription" type="boldSystem" pointSize="12"/>
-                                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
-                                                <nil key="highlightedColor"/>
-                                                <color key="shadowColor" white="0.0" alpha="0.44" colorSpace="calibratedWhite"/>
-                                                <size key="shadowOffset" width="0.0" height="1"/>
-                                            </label>
-                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" id="fvs-gz-I4T">
-                                                <rect key="frame" x="224" y="5" width="86" height="14"/>
-                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                            </imageView>
-                                        </subviews>
-                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                    </view>
-                                </subviews>
-                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <navigationItem key="navigationItem" id="6xt-zY-ZF6"/>
                     <connections>
                         <outlet property="navBar" destination="ZlW-y5-abh" id="4VY-p5-5Ys"/>
-                        <outlet property="starImageView" destination="fvs-gz-I4T" id="DP3-71-FJP"/>
                         <outlet property="textView" destination="jLZ-ge-01M" id="hFs-DD-RPf"/>
-                        <outlet property="titleLabel" destination="z6G-Yv-V4h" id="w6i-xv-YVs"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iHm-kv-MAu" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -901,7 +874,6 @@
         <image name="icon-collection-highlighted.png" width="30" height="30"/>
         <image name="icon-discover-highlighted.png" width="30" height="30"/>
         <image name="icon-settings-highlighted.png" width="30" height="30"/>
-        <image name="nv_bg_title.png" width="320" height="24"/>
         <image name="pv_error.png" width="52" height="46"/>
         <image name="pv_mask-bottom.png" width="20" height="10"/>
         <image name="pv_mask-top.png" width="20" height="10"/>

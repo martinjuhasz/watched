@@ -73,6 +73,10 @@
     self.detailView = [[MovieDetailView alloc] initWithFrame:self.view.bounds];
     [self.view addSubview:self.detailView];
     
+    if(self.movie.movieState == MJUMovieStateNotAdded) {
+        [self.detailView setToNonAddedState];
+    }
+    
     self.detailView.ratingView.delegate = self;
     isLoadingImages = NO;
     
@@ -303,10 +307,16 @@
 
 - (IBAction)addToCollectionButtonClicked:(id)sender
 {
-    //168.0f, 26.0f
-//    [self.detailView.addToCollectionButton setBackgroundColor:[UIColor greenColor]];
     [self.detailView.addToCollectionButton setState:MJUAddButtonStateLoading];
-    
+    OnlineDatabaseBridge *bridge = [[OnlineDatabaseBridge alloc] init];
+    [bridge saveMovie:self.movie completion:^(Movie *aMovie) {
+        if (![[NSThread currentThread] isMainThread]) {
+            DebugLog(@"adsasdsa");
+        }
+        [self.detailView switchToAddedState];
+    } failure:^(NSError *error) {
+        ErrorLog(@"%@", [error localizedDescription]);
+    }];
 }
 
 - (void)newRating:(DLStarRatingControl *)control :(float)newRating

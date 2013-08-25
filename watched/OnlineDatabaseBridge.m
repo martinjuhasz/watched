@@ -29,6 +29,46 @@
 #pragma mark Initial Creation
 
 
+- (void)saveMovie:(Movie*)movie completion:(OnlineBridgeCompletionBlock)completionBlock failure:(OnlineBridgeFailureBlock)aFailureBlock
+{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+        
+        dispatch_group_t group = dispatch_group_create();
+//
+        // Backdrop
+        dispatch_group_enter(group);
+        [self setBackdropWithImagePath:movie.backdropURL toMovie:movie success:^{
+            dispatch_group_leave(group);
+        } failure:^(NSError *aError) {
+            dispatch_group_leave(group);
+        }];
+        
+        // Poster
+        dispatch_group_enter(group);
+        [self setPosterWithImagePath:movie.posterURL toMovie:movie success:^{
+            dispatch_group_leave(group);
+        } failure:^(NSError *aError) {
+            dispatch_group_leave(group);
+        }];
+        
+        dispatch_group_wait(group, DISPATCH_TIME_FOREVER);
+        
+        
+        NSError *error;
+        [[movie managedObjectContext] save:&error];
+        if(error) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                aFailureBlock(error);
+            });
+        } else {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                completionBlock(movie);
+            });
+        }
+    });
+}
+
+
 - (void)getMovieFromMovieID:(NSNumber*)movieID completion:(OnlineBridgeCompletionBlock)completionBlock failure:(OnlineBridgeFailureBlock)aFailureBlock {
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{

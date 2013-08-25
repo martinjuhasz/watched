@@ -62,6 +62,36 @@
     self.posterButton.frame = CGRectMake(15.0f, 126.0f, 71.0f, 99.0f);
     self.backdropButton.frame = CGRectMake(0.0f, 0.0f, 320.0f, 120.0f);
     self.metaTableView.frame = CGRectMake(15.0f, 247.0f, 305.0f, 129.0f);
+    
+    // default state (added)
+    self.addToCollectionButton.hidden = YES;
+    
+}
+
+- (void)setToNonAddedState
+{
+    self.ratingView.hidden = YES;
+    self.ratingView.alpha = 1.0f;
+    
+    self.addToCollectionButton.alpha = 1.0f;
+    self.addToCollectionButton.hidden = NO;
+}
+
+- (void)switchToAddedState
+{
+    [UIView animateWithDuration:1.0f animations:^{
+        self.addToCollectionButton.alpha = 0.0f;
+    } completion:^(BOOL finished) {
+        self.addToCollectionButton.hidden = YES;
+        self.addToCollectionButton.alpha = 1.0f;
+        self.ratingView.alpha = 0.0f;
+        self.ratingView.hidden = NO;
+        [UIView animateWithDuration:1.0f animations:^{
+            self.ratingView.alpha = 1.0f;
+        } completion:^(BOOL finished) {
+            
+        }];
+    }];
 }
 
 - (void)layoutSubviews
