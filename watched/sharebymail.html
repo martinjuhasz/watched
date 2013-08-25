@@ -1,6 +1,8 @@
 <!-- 
 	available insert tags
-
+	
+	###MOVIE_NOTE###
+	
 	###IMAGE_URL###
 	###IMAGE_DISPLAY###
 
@@ -8,6 +10,7 @@
 	###MOVIE_TAGLINE### 
 	###MOVIE_DESCRIPTION###
 	
+	###MOVIE_RATING_DISPLAY###
 	###MOVIE_RATING_RATED###
 	###MOVIE_RATING_UNRATED###
 	
@@ -39,27 +42,25 @@
 			<div style="max-width: 250px; margin: 0 auto;">
 		    <img style="background: grey; border: 1px solid rgba(0,0,0,.4); display: ###IMAGE_DISPLAY###; margin-bottom: 12px;" src="###IMAGE_URL###" alt="movie poster" width="50" height="70" />
 
-			<h1 style="font-size: 18px; font-weight: 600; color: #191919; margin: 0 0 18px;">Only God Forgives</h1>
+			<h1 style="font-size: 18px; font-weight: 600; color: #191919; margin: 0 0 18px;">###MOVIE_TITLE###</h1>
 
 			<div class="rating" style="font-size: 22px; margin: 0 0 24px; display: ###MOVIE_RATING_DISPLAY###;">
-				<span class="rated" style="color: #5E5E5E;">★★★</span><span style="color: #CACACA;">★★</span>		
+				<span class="rated" style="color: #5E5E5E;">###MOVIE_RATING_RATED###</span><span style="color: #CACACA;">###MOVIE_RATING_UNRATED###</span>		
 			</div>
 			
 			<div style="font-size: 13px;">
 
-				<h2 style="font-size: 13px; font-weight: 500; margin: 0 0 12px;">Time to meet the Devil</h2>
+				<h2 style="font-size: 13px; font-weight: 500; margin: 0 0 12px;">###MOVIE_TAGLINE###</h2>
 
-				<p style="margin: 0;">Julian, who runs a Thai boxing club as a front organization for his family's drug smuggling operation, is forced by his mother Jenna to find and kill the individual responsible for his brother's recent death.</p>
+				<p style="margin: 0;">###MOVIE_DESCRIPTION###</p>
 			</div>
 
-			<a style="margin-top: 24px; border: 1px solid #F42832; font-size: 14px; padding: 0 20px; text-decoration: none; border-radius: 40px; color: #F42832; display: inline-block; line-height: 27px;" href="#">Open in watched</a>
-
-			<a style="display: block; text-align: center; font-size: 12px; color: #787878; margin-top: 12px;" href="#">View Trailer</a>
+			<a style="margin-top: 24px; border: 1px solid #F42832; font-size: 14px; padding: 0 20px; text-decoration: none; border-radius: 40px; color: #F42832; display: inline-block; line-height: 27px;" href="watched://###MOVIE_ID###">Open in watched</a>
 			</div>
 		</div>
 		
-		<div style="font-size: 12px; text-align: center; max-width: 250px; margin: 0 auto;">
-		<p>Use watched to track, rate and share all the movies you watch. </p>
+		<div style="font-family: 'Avenir Next', sans-serif; color: #787878; line-height: 18px; font-size: 12px; text-align: center; max-width: 250px; margin: 0 auto;">
+		<p>Use watched to track, rate and share all the movies you watch.</p>
 		
 
 		<p><a style="text-decoration: none; color: #787878; font-weight: 500;" href="https://itunes.apple.com/us/app/watched-track-rate-share-all/id477043677?l=de&ls=1&mt=8">Get watched now</a> and start building your personal collection</p>
