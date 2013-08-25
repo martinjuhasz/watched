@@ -75,6 +75,7 @@
 
 "DV_CONTROL_WATCHED"            = "WATCHED";
 "DV_CONTROL_UNWATCHED"          = "UNWATCHED";
+"DETAIL_ADDTOCOLLECTION_TITLE"  = "Add to Collection";
 
 "SHARE_BUTTON_TITLE"            = "Share Movie";
 "SHARE_BUTTON_EMAIL"            = "E-Mail";

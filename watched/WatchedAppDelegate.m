@@ -38,8 +38,6 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     [MJUWatchedStyle setupDefaultStyle];
-//    self.uiss = [UISS configureWithDefaultJSONFile];
-    //self.uiss.statusWindowEnabled = YES;
     
 //    [[NSNotificationCenter defaultCenter] addObserverForName:AFNetworkingOperationDidStartNotification
 //                                                      object:nil

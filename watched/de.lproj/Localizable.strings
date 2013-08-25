@@ -75,6 +75,7 @@
 
 "DV_CONTROL_WATCHED"            = "GESEHEN";
 "DV_CONTROL_UNWATCHED"          = "UNGESEHEN";
+"DETAIL_ADDTOCOLLECTION_TITLE"  = "hinzufügen";
 
 "SHARE_BUTTON_TITLE"            = "Film teilen";
 "SHARE_BUTTON_EMAIL"            = "E-Mail";

@@ -34,6 +34,7 @@
 #import "UIImageView+AFNetworking.h"
 #import "UIColor+Additions.h"
 #import <BlocksKit/BlocksKit.h>
+#import <QuartzCore/QuartzCore.h>
 
 #define kImageFadeDelay 0.0f
 
@@ -80,6 +81,7 @@
 
     [self setNavigationBarItems];
     [self.detailView.notesEditButton addTarget:self action:@selector(notesEditButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+    [self.detailView.addToCollectionButton addTarget:self action:@selector(addToCollectionButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
 }
 
 
@@ -297,6 +299,14 @@
 - (IBAction)notesEditButtonClicked:(id)sender
 {
     [self performSegueWithIdentifier:@"MovieNoteSegue" sender:self];
+}
+
+- (IBAction)addToCollectionButtonClicked:(id)sender
+{
+    //168.0f, 26.0f
+//    [self.detailView.addToCollectionButton setBackgroundColor:[UIColor greenColor]];
+    [self.detailView.addToCollectionButton setState:MJUAddButtonStateLoading];
+    
 }
 
 - (void)newRating:(DLStarRatingControl *)control :(float)newRating

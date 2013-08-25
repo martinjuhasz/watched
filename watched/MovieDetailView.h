@@ -10,6 +10,7 @@
 #import "DLStarRatingControl.h"
 #import "OnlineMovieDatabase.h"
 #import "MJGradientView.h"
+#import "MJUAddButton.h"
 
 @interface MovieDetailView : UIView<UIScrollViewDelegate>
 
@@ -36,6 +37,7 @@
 @property (strong, nonatomic) UITableView *metaTableView;
 @property (strong, nonatomic) UILabel *directorTitleLabel;
 @property (strong, nonatomic) UILabel *starringTitleLabel;
+@property (strong, nonatomic) MJUAddButton *addToCollectionButton;
 
 @property (strong, nonatomic) UIView *notesView;
 @property (strong, nonatomic) UILabel *notesTitleLabel;
