@@ -18,7 +18,7 @@
 @implementation MovieDetailView
 
 #define kMBackdropHeight 110.0f
-#define kMBackdropScrollStop 100.0f
+#define kMBackdropScrollStop 120.0f
 
 //#define kContentFont @"HelveticaNeue-Bold"
 #define kContentFont @"HelveticaNeue"
@@ -168,7 +168,7 @@
     self.backdropImageView.clipsToBounds = YES;
     [self.mainScrollView addSubview:self.backdropImageView];
     
-    self.backdropBottomShadow = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"dv_mask.png"]];
+    self.backdropBottomShadow = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"movie-detail-mask.png"]];
     self.backdropBottomShadow.contentMode = UIViewContentModeTop;
     self.backdropBottomShadow.clipsToBounds = YES;
     [self.mainScrollView addSubview:self.backdropBottomShadow];
@@ -392,7 +392,7 @@
     if(scrollViewOffset < 0.0f) {
         
         // minx max
-        CGFloat minVal = MIN(scrollViewOffset,-kMBackdropScrollStop);
+        CGFloat minVal = MIN(scrollViewOffset-70,-kMBackdropScrollStop);
         CGFloat maxVal = MAX(scrollViewOffset,-kMBackdropScrollStop);
         
         // Backdrop
