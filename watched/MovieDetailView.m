@@ -90,18 +90,18 @@
     [self.overviewLabel sizeToFit];
     
     CGFloat lastPositionInformationView = 70.0f;
-    self.directorTitleLabel.frame = CGRectMake(15.0f, 0, 165.0f, 20.0f);
-    self.starringTitleLabel.frame = CGRectMake(15.0f, 70.0f, 165.0f, 20.0f);
-    self.directorLabel.frame = CGRectMake(100.0f, 40.0f, 165.0f, 20.0f);
-    self.actor1Label.frame = CGRectMake(100.0f, 70.0f, 165.0f, 20.0f);
-    self.actor2Label.frame = CGRectMake(100.0f, 90.0f, 165.0f, 20.0f);
-    self.actor3Label.frame = CGRectMake(100.0f, 110.0f, 165.0f, 20.0f);
-    self.actor4Label.frame = CGRectMake(100.0f, 130.0f, 165.0f, 20.0f);
+    self.directorTitleLabel.frame = CGRectMake(15.0f, 50.0f, 165.0f, 20.0f);
+    self.starringTitleLabel.frame = CGRectMake(15.0f, 79.0f, 165.0f, 20.0f);
+    self.directorLabel.frame = CGRectMake(100.0f, 50.0f, 165.0f, 20.0f);
+    self.actor1Label.frame = CGRectMake(100.0f, 79.0f, 165.0f, 20.0f);
+    self.actor2Label.frame = CGRectMake(100.0f, 97.0f, 165.0f, 20.0f);
+    self.actor3Label.frame = CGRectMake(100.0f, 116.0f, 165.0f, 20.0f);
+    self.actor4Label.frame = CGRectMake(100.0f, 136.0f, 165.0f, 20.0f);
     
     if([self.actor2Label.text length] > 0) lastPositionInformationView += 20.0f;
     if([self.actor3Label.text length] > 0) lastPositionInformationView += 20.0f;
     if([self.actor4Label.text length] > 0) lastPositionInformationView += 20.0f;
-    lastPositionInformationView += 30.0f;
+    lastPositionInformationView += 40.0f;
     
     self.releaseDateTitleLabel.frame = CGRectMake(15.0f, lastPositionInformationView, 165.0f, 20.0f);
     self.releaseLabel.frame = CGRectMake(100.0f, lastPositionInformationView, 165.0f, 20.0f);
