@@ -172,10 +172,10 @@
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
-    if(section == 0) return NSLocalizedString(@"SETTINGS_HEADER_SETTINGS", nil);
-    if(section == 1) return NSLocalizedString(@"SETTINGS_HEADER_CONTACT", nil);
+    if(section == 0) return [NSLocalizedString(@"SETTINGS_HEADER_SETTINGS", nil) uppercaseString];
+    if(section == 1) return [NSLocalizedString(@"SETTINGS_HEADER_CONTACT", nil) uppercaseString];
     //if(section == 2) return NSLocalizedString(@"SETTINGS_HEADER_OPTOUT", nil);
-    if(section == 2) return NSLocalizedString(@"SETTINGS_HEADER_BETA", nil);
+    if(section == 2) return [NSLocalizedString(@"SETTINGS_HEADER_BETA", nil) uppercaseString];
     return nil;
 }
 
@@ -192,7 +192,7 @@
 	UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(11.0f, 10.0f, headerView.frame.size.width - 20.0f, 22.0f)];
 	label.text = [self tableView:tableView titleForHeaderInSection:section];
 	label.font = [UIFont fontWithName:@"AvenirNext-Regular" size:14.0f];
-    label.textColor = [UIColor colorWithHexString:@"8C8C8C"];
+    label.textColor = [UIColor colorWithHexString:@"787878"];
 	label.backgroundColor = [UIColor clearColor];
     
 	[headerView addSubview:label];
@@ -224,7 +224,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    return 43.0f;
+    return 35.0f;
 }
 
 - (float)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
