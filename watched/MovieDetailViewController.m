@@ -608,7 +608,7 @@
     NSString *sharebymailString = [NSString stringWithContentsOfFile:sharebymailPath encoding:NSUTF8StringEncoding error:nil];
     
     NSString *imageURL;
-    NSString *imageDisplay = @"block";
+    NSString *imageDisplay = @"inline-block";
     if(self.movie.posterURL) {
         imageURL = [[[OnlineMovieDatabase sharedMovieDatabase] getImageURLForImagePath:self.movie.posterURL imageType:ImageTypeBackdrop nearWidth:260.0f] absoluteString];
     } else {
@@ -619,15 +619,20 @@
     NSString *mailTitle = (self.movie.title) ? self.movie.title : @"";
     NSString *mailOverview = (self.movie.overview) ? self.movie.overview : @"";
     NSString *mailID = (self.movie.movieID) ? [self.movie.movieID stringValue] : @"";
+    NSString *mailTagline = (self.movie.tagline) ? self.movie.tagline : @"";
+    NSString *mailNote = (self.movie.note) ? self.movie.note : @"";
     
     sharebymailString = [sharebymailString stringByReplacingOccurrencesOfString:@"###IMAGE_URL###" withString:imageURL];
     sharebymailString = [sharebymailString stringByReplacingOccurrencesOfString:@"###IMAGE_DISPLAY###" withString:imageDisplay];
+    sharebymailString = [sharebymailString stringByReplacingOccurrencesOfString:@"###MOVIE_NOTE###" withString:mailNote];
     sharebymailString = [sharebymailString stringByReplacingOccurrencesOfString:@"###MOVIE_TITLE###" withString:mailTitle];
+    sharebymailString = [sharebymailString stringByReplacingOccurrencesOfString:@"###MOVIE_TAGLINE###" withString:mailTagline];
     sharebymailString = [sharebymailString stringByReplacingOccurrencesOfString:@"###MOVIE_DESCRIPTION###" withString:mailOverview];
     sharebymailString = [sharebymailString stringByReplacingOccurrencesOfString:@"###MOVIE_ID###" withString:mailID];
     
     
     int rating = [self.movie.rating intValue];
+    NSString *ratingDisplay = @"block";
     if(rating > 0) {
         
         NSString *starEntidy = @"&#9733;";
@@ -640,7 +645,10 @@
     } else {
         sharebymailString = [sharebymailString stringByReplacingOccurrencesOfString:@"###MOVIE_RATING_RATED###" withString:@""];
         sharebymailString = [sharebymailString stringByReplacingOccurrencesOfString:@"###MOVIE_RATING_UNRATED###" withString:@""];
+        ratingDisplay = @"none";
     }
+    
+    sharebymailString = [sharebymailString stringByReplacingOccurrencesOfString:@"###MOVIE_RATING_DISPLAY###" withString:ratingDisplay];
     
     
     // Generate Mail Composer and View it
