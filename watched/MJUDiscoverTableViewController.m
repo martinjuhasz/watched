@@ -226,6 +226,7 @@ const int kMovieTableLoadingCellTag = 2001;
     totalPages = 1;
     currentPage = 0;
     isError = NO;
+//    DebugLog(@"%@", _searchOperatiotns);
     [_searchOperations cancelAllOperations];
     [self.searchResults removeAllObjects];
     
@@ -234,6 +235,7 @@ const int kMovieTableLoadingCellTag = 2001;
 - (void)startSearch
 {
     NSString *searchText = self.searchBar.text;
+    DebugLog(@"%@", searchText);
     [self startSearchWithQuery:searchText];
 }
 
@@ -259,7 +261,13 @@ const int kMovieTableLoadingCellTag = 2001;
         [_searchController.searchResultsTableView reloadData];
         
     } failure:^(NSError *error) {
-        DebugLog("%@", [error localizedDescription]);
+        if([error code] == NSURLErrorCancelled) {
+            isLoading = NO;
+            isError = NO;
+            return;
+        }
+        
+        ErrorLog("%@", [error localizedDescription]);
         isLoading = NO;
         isError = YES;
         [_searchController.searchResultsTableView reloadData];
