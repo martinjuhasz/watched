@@ -207,7 +207,7 @@
     starringTitleLabel.shadowOffset = CGSizeMake(0.0f, 1.0f);
     [self.mainScrollView addSubview:starringTitleLabel];
     
-    self.watchedControl = [[MJSegmentedControl alloc] initWithItems:[NSArray arrayWithObjects:
+    self.watchedControl = [[UISegmentedControl alloc] initWithItems:[NSArray arrayWithObjects:
                                                                      NSLocalizedString(@"DV_CONTROL_WATCHED", nil),
                                                                      NSLocalizedString(@"DV_CONTROL_UNWATCHED", nil), nil]];
     
