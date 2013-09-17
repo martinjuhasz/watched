@@ -26,9 +26,10 @@
 
 // HockeySDK
 #define COCOAPODS_POD_AVAILABLE_HockeySDK
-#define COCOAPODS_VERSION_MAJOR_HockeySDK 3
-#define COCOAPODS_VERSION_MINOR_HockeySDK 0
-#define COCOAPODS_VERSION_PATCH_HockeySDK 0
+// This library does not follow semantic-versioning,
+// so we were not able to define version macros.
+// Please contact the author.
+// Version: 3.5.0b2.
 
 // KSReachability
 #define COCOAPODS_POD_AVAILABLE_KSReachability
@@ -65,6 +66,12 @@
 #define COCOAPODS_VERSION_MAJOR_UIResponder_KeyboardCache 0
 #define COCOAPODS_VERSION_MINOR_UIResponder_KeyboardCache 1
 #define COCOAPODS_VERSION_PATCH_UIResponder_KeyboardCache 0
+
+// iOS-blur
+#define COCOAPODS_POD_AVAILABLE_iOS_blur
+#define COCOAPODS_VERSION_MAJOR_iOS_blur 0
+#define COCOAPODS_VERSION_MINOR_iOS_blur 0
+#define COCOAPODS_VERSION_PATCH_iOS_blur 2
 
 // libffi
 #define COCOAPODS_POD_AVAILABLE_libffi

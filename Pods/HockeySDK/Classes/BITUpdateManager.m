@@ -28,9 +28,12 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
-#import <Foundation/Foundation.h>
-#import <sys/sysctl.h>
 #import "HockeySDK.h"
+
+#if HOCKEYSDK_FEATURE_UPDATES
+
+#import <sys/sysctl.h>
+
 #import "HockeySDKPrivate.h"
 #import "BITHockeyHelper.h"
 
@@ -39,6 +42,11 @@
 #import "BITUpdateViewControllerPrivate.h"
 #import "BITAppVersionMetaInfo.h"
 
+typedef NS_ENUM(NSInteger, BITUpdateAlertViewTag) {
+  BITUpdateAlertViewTagDefaultUpdate = 0,
+  BITUpdateAlertViewTagNeverEndingAlertView = 1,
+  BITUpdateAlertViewTagMandatoryUpdate = 2,
+};
 
 @implementation BITUpdateManager {
   NSString *_currentAppVersion;
@@ -80,14 +88,14 @@
 
 
 - (void)didBecomeActiveActions {
-  if (![self isUpdateManagerDisabled]) {
-    [self checkExpiryDateReached];
-    if (![self expiryDateReached]) {
-      [self startUsage];
-      if (_checkForUpdateOnLaunch) {
-        [self checkForUpdate];
-      }
-    }
+  if ([self isUpdateManagerDisabled]) return;
+  
+  [self checkExpiryDateReached];
+  if ([self expiryDateReached]) return;
+  
+  [self startUsage];
+  if (_checkForUpdateOnLaunch) {
+    [self checkForUpdate];
   }
 }
 
@@ -96,6 +104,7 @@
     NSNotificationCenter *dnc = [NSNotificationCenter defaultCenter];
     [dnc addObserver:self selector:@selector(didBecomeActiveActions) name:UIApplicationDidBecomeActiveNotification object:nil];
     [dnc addObserver:self selector:@selector(didBecomeActiveActions) name:BITHockeyNetworkDidBecomeReachableNotification object:nil];
+    _installationIdentification = [self stringValueFromKeychainForKey:kBITUpdateInstallationIdentification];
     _didSetupDidBecomeActiveNotifications = YES;
   }
 }
@@ -104,6 +113,7 @@
   [[NSNotificationCenter defaultCenter] removeObserver:self name:BITHockeyNetworkDidBecomeReachableNotification object:nil];
   [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidBecomeActiveNotification object:nil];
 }
+
 
 #pragma mark - Expiry
 
@@ -161,9 +171,8 @@
   if (newVersion) {
     [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithDouble:[[NSDate date] timeIntervalSinceReferenceDate]] forKey:kBITUpdateDateOfVersionInstallation];
     [[NSUserDefaults standardUserDefaults] setObject:_uuid forKey:kBITUpdateUsageTimeForUUID];
-    [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithDouble:0] forKey:kBITUpdateUsageTimeOfCurrentVersion];
-    [[NSUserDefaults standardUserDefaults] synchronize];
-  }    
+    [self storeUsageTimeForCurrentVersion:[NSNumber numberWithDouble:0]];
+  }
 }
 
 - (void)stopUsage {
@@ -172,7 +181,11 @@
   double timeDifference = [[NSDate date] timeIntervalSinceReferenceDate] - [_usageStartTimestamp timeIntervalSinceReferenceDate];
   double previousTimeDifference = [(NSNumber *)[[NSUserDefaults standardUserDefaults] valueForKey:kBITUpdateUsageTimeOfCurrentVersion] doubleValue];
   
-  [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithDouble:previousTimeDifference + timeDifference] forKey:kBITUpdateUsageTimeOfCurrentVersion];
+  [self storeUsageTimeForCurrentVersion:[NSNumber numberWithDouble:previousTimeDifference + timeDifference]];
+}
+
+- (void) storeUsageTimeForCurrentVersion:(NSNumber *)usageTime {
+  [[NSUserDefaults standardUserDefaults] setObject:usageTime forKey:kBITUpdateUsageTimeOfCurrentVersion];
   [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
@@ -198,47 +211,6 @@
   }
 }
 
-#pragma mark - Device identifier
-
-- (NSString *)deviceIdentifier {
-  if ([_delegate respondsToSelector:@selector(customDeviceIdentifierForUpdateManager:)]) {
-    NSString *identifier = [_delegate performSelector:@selector(customDeviceIdentifierForUpdateManager:) withObject:self];
-    if (identifier && [identifier length] > 0) {
-      return identifier;
-    }
-  }
-  
-  return @"invalid";
-}
-
-#pragma mark - Authorization
-
-- (NSString *)authenticationToken {
-  return [BITHockeyMD5([NSString stringWithFormat:@"%@%@%@%@",
-                 _authenticationSecret,
-                 [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleVersion"],
-                 [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleIdentifier"],
-                 [self deviceIdentifier]
-                 ]
-                ) lowercaseString];
-}
-
-- (BITUpdateAuthorizationState)authorizationState {
-  NSString *version = [[NSUserDefaults standardUserDefaults] objectForKey:kBITUpdateAuthorizedVersion];
-  NSString *token = [[NSUserDefaults standardUserDefaults] objectForKey:kBITUpdateAuthorizedToken];
-  
-  if (version != nil && token != nil) {
-    if ([version compare:[[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleVersion"]] == NSOrderedSame) {
-      // if it is denied, block the screen permanently
-      if ([token compare:[self authenticationToken]] != NSOrderedSame) {
-        return BITUpdateAuthorizationDenied;
-      } else {
-        return BITUpdateAuthorizationAllowed;
-      }
-    }
-  }
-  return BITUpdateAuthorizationPending;
-}
 
 #pragma mark - Cache
 
@@ -356,8 +328,6 @@
     _lastCheckFailed = NO;
     _currentAppVersion = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleVersion"];
     _blockingView = nil;
-    _requireAuthorization = NO;
-    _authenticationSecret = nil;
     _lastCheck = nil;
     _uuid = [[self executableUUID] copy];
     _versionUUID = nil;
@@ -434,7 +404,8 @@
     return;
   }
   
-  self.barStyle = UIBarStyleBlack;
+  if ([self isPreiOS7Environment])
+    self.barStyle = UIBarStyleBlack;
   [self showView:[self hockeyViewController:YES]];
 }
 
@@ -451,7 +422,7 @@
                                                  cancelButtonTitle:BITHockeyLocalizedString(@"UpdateInstall")
                                                  otherButtonTitles:nil
                                  ];
-      [alertView setTag:2];
+      [alertView setTag:BITUpdateAlertViewTagMandatoryUpdate];
       [alertView show];
       _updateAlertShowing = YES;
     } else {
@@ -464,24 +435,11 @@
       if (self.isShowingDirectInstallOption) {
         [alertView addButtonWithTitle:BITHockeyLocalizedString(@"UpdateInstall")];
       }
-      [alertView setTag:0];
+      [alertView setTag:BITUpdateAlertViewTagDefaultUpdate];
       [alertView show];
       _updateAlertShowing = YES;
     }
   }
-}
-
-
-// nag the user with neverending alerts if we cannot find out the window for presenting the covering sheet
-- (void)alertFallback:(NSString *)message {
-  UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
-                                                       message:message
-                                                      delegate:self
-                                             cancelButtonTitle:BITHockeyLocalizedString(@"HockeyOK")
-                                             otherButtonTitles:nil
-                             ];
-  [alertView setTag:1];
-  [alertView show];    
 }
 
 
@@ -518,7 +476,7 @@
     
     UILabel *label = [[UILabel alloc] initWithFrame:frame];
     label.text = message;
-    label.textAlignment = UITextAlignmentCenter;
+    label.textAlignment = kBITTextLabelAlignmentCenter;
     label.numberOfLines = 2;
     label.backgroundColor = [UIColor clearColor];
     
@@ -528,6 +486,18 @@
   [visibleWindow addSubview:self.blockingView];
 }
 
+
+// nag the user with neverending alerts if we cannot find out the window for presenting the covering sheet
+- (void)alertFallback:(NSString *)message {
+  UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
+                                                      message:message
+                                                     delegate:self
+                                            cancelButtonTitle:BITHockeyLocalizedString(@"HockeyOK")
+                                            otherButtonTitles:nil
+                            ];
+  [alertView setTag:BITUpdateAlertViewTagNeverEndingAlertView];
+  [alertView show];
+}
 
 #pragma mark - RequestComments
 
@@ -556,87 +526,10 @@
   return checkForUpdate;
 }
 
-- (void)checkForAuthorization {
-  NSMutableString *parameter = [NSMutableString stringWithFormat:@"api/2/apps/%@", [self encodedAppIdentifier]];
-  
-  [parameter appendFormat:@"?format=json&authorize=yes&app_version=%@&udid=%@&sdk=%@&sdk_version=%@&uuid=%@",
-   bit_URLEncodedString([[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleVersion"]),
-   ([self isAppStoreEnvironment] ? @"appstore" : bit_URLEncodedString([self deviceIdentifier])),
-   BITHOCKEY_NAME,
-   BITHOCKEY_VERSION,
-   _uuid
-   ];
-  
-  // build request & send
-  NSString *url = [NSString stringWithFormat:@"%@%@", self.serverURL, parameter];
-  BITHockeyLog(@"INFO: Sending api request to %@", url);
-  
-  NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:url] cachePolicy:1 timeoutInterval:10.0];
-  [request setHTTPMethod:@"GET"];
-  [request setValue:@"Hockey/iOS" forHTTPHeaderField:@"User-Agent"];
-  
-  NSURLResponse *response = nil;
-  NSError *error = NULL;
-  BOOL failed = YES;
-  
-  NSData *responseData = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
-  
-  if ([responseData length]) {
-    NSString *responseString = [[NSString alloc] initWithBytes:[responseData bytes] length:[responseData length] encoding: NSUTF8StringEncoding];
-    
-    if (responseString && [responseString dataUsingEncoding:NSUTF8StringEncoding]) {
-      NSDictionary *feedDict = (NSDictionary *)[NSJSONSerialization JSONObjectWithData:[responseString dataUsingEncoding:NSUTF8StringEncoding] options:kNilOptions error:&error];
-      
-      // server returned empty response?
-      if (![feedDict count]) {
-        [self reportError:[NSError errorWithDomain:kBITUpdateErrorDomain
-                                              code:BITUpdateAPIServerReturnedEmptyResponse
-                                          userInfo:[NSDictionary dictionaryWithObjectsAndKeys:@"Server returned empty response.", NSLocalizedDescriptionKey, nil]]];
-        return;
-      } else {
-        BITHockeyLog(@"INFO: Received API response: %@", responseString);
-        NSString *token = [[feedDict objectForKey:@"authcode"] lowercaseString];
-        failed = NO;
-        if ([[self authenticationToken] compare:token] == NSOrderedSame) {
-          // identical token, activate this version
-          
-          // store the new data
-          [[NSUserDefaults standardUserDefaults] setObject:[[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleVersion"] forKey:kBITUpdateAuthorizedVersion];
-          [[NSUserDefaults standardUserDefaults] setObject:token forKey:kBITUpdateAuthorizedToken];
-          [[NSUserDefaults standardUserDefaults] synchronize];
-          
-          self.requireAuthorization = NO;
-          self.blockingView = nil;
-          
-          // now continue with an update check right away
-          if (self.checkForUpdateOnLaunch) {
-            [self checkForUpdate];
-          }
-        } else {
-          // different token, block this version
-          BITHockeyLog(@"INFO: AUTH FAILURE: %@", [self authenticationToken]);
-          
-          // store the new data
-          [[NSUserDefaults standardUserDefaults] setObject:[[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleVersion"] forKey:kBITUpdateAuthorizedVersion];
-          [[NSUserDefaults standardUserDefaults] setObject:token forKey:kBITUpdateAuthorizedToken];
-          [[NSUserDefaults standardUserDefaults] synchronize];
-          
-          [self showBlockingScreen:BITHockeyLocalizedString(@"UpdateAuthorizationDenied") image:@"authorize_denied.png"];
-        }
-      }
-    }
-    
-  }
-  
-  if (failed) {
-    [self showBlockingScreen:BITHockeyLocalizedString(@"UpdateAuthorizationOffline") image:@"authorize_request.png"];
-  }
-}
-
 - (void)checkForUpdate {
   if (![self isAppStoreEnvironment] && ![self isUpdateManagerDisabled]) {
     if ([self expiryDateReached]) return;
-    if (self.requireAuthorization) return;
+    if (![self installationIdentificationValidated]) return;
     
     if (self.isUpdateAvailable && [self hasNewerMandatoryVersion]) {
       [self showCheckForUpdateAlert];
@@ -661,12 +554,20 @@
     return;
   }
   
-  NSMutableString *parameter = [NSMutableString stringWithFormat:@"api/2/apps/%@?format=json&extended=true&udid=%@&sdk=%@&sdk_version=%@&uuid=%@", 
+  NSMutableString *parameter = [NSMutableString stringWithFormat:@"api/2/apps/%@?format=json&extended=true%@&sdk=%@&sdk_version=%@&uuid=%@",
                                 bit_URLEncodedString([self encodedAppIdentifier]),
-                                ([self isAppStoreEnvironment] ? @"appstore" : bit_URLEncodedString([self deviceIdentifier])),
+                                ([self isAppStoreEnvironment] ? @"&udid=appstore" : @""),
                                 BITHOCKEY_NAME,
                                 BITHOCKEY_VERSION,
                                 _uuid];
+  
+  // add installationIdentificationType and installationIdentifier if available
+  if (self.installationIdentification && self.installationIdentificationType) {
+    [parameter appendFormat:@"&%@=%@",
+     bit_URLEncodedString(self.installationIdentificationType),
+     bit_URLEncodedString(self.installationIdentification)
+     ];
+  }
   
   // add additional statistics if user didn't disable flag
   if (_sendUsageData) {
@@ -717,8 +618,11 @@
 #endif
   
   NSString *extraParameter = [NSString string];
-  if (_sendUsageData) {
-    extraParameter = [NSString stringWithFormat:@"&udid=%@", [self deviceIdentifier]];
+  if (_sendUsageData && self.installationIdentification && self.installationIdentificationType) {
+    extraParameter = [NSString stringWithFormat:@"&%@=%@",
+                      bit_URLEncodedString(self.installationIdentificationType),
+                      bit_URLEncodedString(self.installationIdentification)
+                      ];
   }
   
   NSString *hockeyAPIURL = [NSString stringWithFormat:@"%@api/2/apps/%@?format=plist%@", self.serverURL, [self encodedAppIdentifier], extraParameter];
@@ -731,63 +635,27 @@
 }
 
 
-// checks whether this app version is authorized
-- (BOOL)appVersionIsAuthorized {
-  if (self.requireAuthorization && !_authenticationSecret) {
-    [self reportError:[NSError errorWithDomain:kBITUpdateErrorDomain
-                                          code:BITUpdateAPIClientAuthorizationMissingSecret
-                                      userInfo:[NSDictionary dictionaryWithObjectsAndKeys:@"Authentication secret is not set but required.", NSLocalizedDescriptionKey, nil]]];
-    
-    return NO;
-  }
-  
-  if (!self.requireAuthorization) {
-    self.blockingView = nil;
-    return YES;
-  }
-
-#if TARGET_IPHONE_SIMULATOR
-  NSLog(@"Authentication checks only work on devices. Using the simulator will always return being authorized.");
-  return YES;
-#endif
-
-  BITUpdateAuthorizationState state = [self authorizationState];
-  if (state == BITUpdateAuthorizationDenied) {
-    [self showBlockingScreen:BITHockeyLocalizedString(@"UpdateAuthorizationDenied") image:@"authorize_denied.png"];
-  } else if (state == BITUpdateAuthorizationAllowed) {
-    self.requireAuthorization = NO;
-    return YES;
-  }
-  
-  return NO;
-}
-
-
 // begin the startup process
 - (void)startManager {
   if (![self isAppStoreEnvironment]) {
     if ([self isUpdateManagerDisabled]) return;
-
-    BITHockeyLog(@"INFO: Start UpdateManager");
-
+    
+    BITHockeyLog(@"INFO: Starting UpdateManager");
+    
     [self checkExpiryDateReached];
     if (![self expiryDateReached]) {
-      if (![self appVersionIsAuthorized]) {
-        if ([self authorizationState] == BITUpdateAuthorizationPending) {
-          [self showBlockingScreen:BITHockeyLocalizedString(@"UpdateAuthorizationProgress") image:@"authorize_request.png"];
-          
-          [self performSelector:@selector(checkForAuthorization) withObject:nil afterDelay:0.0f];
-        }
-      } else {
-        if ([self checkForTracker] || ([self isCheckForUpdateOnLaunch] && [self shouldCheckForUpdates])) {
-          [self performSelector:@selector(checkForUpdate) withObject:nil afterDelay:1.0f];
-        }
+      if ([self checkForTracker] || ([self isCheckForUpdateOnLaunch] && [self shouldCheckForUpdates])) {
+        if ([[UIApplication sharedApplication] applicationState] != UIApplicationStateActive) return;
+        
+        [self performSelector:@selector(checkForUpdate) withObject:nil afterDelay:1.0f];
       }
     }
   } else {
     if ([self checkForTracker]) {
       // if we are in the app store, make sure not to send usage information in any case for now
       _sendUsageData = NO;
+
+      if ([[UIApplication sharedApplication] applicationState] != UIApplicationStateActive) return;
       
       [self performSelector:@selector(checkForUpdate) withObject:nil afterDelay:1.0f];
     }
@@ -808,10 +676,10 @@
 
 - (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response {
   if ([response respondsToSelector:@selector(statusCode)]) {
-    int statusCode = [((NSHTTPURLResponse *)response) statusCode];
+    NSInteger statusCode = [((NSHTTPURLResponse *)response) statusCode];
     if (statusCode == 404) {
       [connection cancel];  // stop connecting; no more delegate messages
-      NSString *errorStr = [NSString stringWithFormat:@"Hockey API received HTTP Status Code %d", statusCode];
+      NSString *errorStr = [NSString stringWithFormat:@"Hockey API received HTTP Status Code %ld", (long)statusCode];
       [self reportError:[NSError errorWithDomain:kBITUpdateErrorDomain
                                             code:BITUpdateAPIServerReturnedInvalidStatus
                                         userInfo:[NSDictionary dictionaryWithObjectsAndKeys:errorStr, NSLocalizedDescriptionKey, nil]]];
@@ -878,7 +746,17 @@
       for (NSDictionary *dict in feedArray) {
         BITAppVersionMetaInfo *appVersionMetaInfo = [BITAppVersionMetaInfo appVersionMetaInfoFromDict:dict];
         if ([appVersionMetaInfo isValid]) {
-          [tmpAppVersions addObject:appVersionMetaInfo];
+          // check if minOSVersion is set and this device qualifies
+          BOOL deviceOSVersionQualifies = YES;
+          if ([appVersionMetaInfo minOSVersion]) {
+            NSComparisonResult comparissonResult = bit_versionCompare(appVersionMetaInfo.minOSVersion, [[UIDevice currentDevice] systemVersion]);
+            if (comparissonResult == NSOrderedDescending) {
+              deviceOSVersionQualifies = NO;
+            }
+          }
+          
+          if (deviceOSVersionQualifies)
+            [tmpAppVersions addObject:appVersionMetaInfo];
         } else {
           [self reportError:[NSError errorWithDomain:kBITUpdateErrorDomain
                                                 code:BITUpdateAPIServerReturnedInvalidData
@@ -996,16 +874,36 @@
   }
 }
 
+- (void)setInstallationIdentificationValidated:(BOOL)installationIdentificationValidated {
+  if (installationIdentificationValidated != _installationIdentificationValidated) {
+    _installationIdentificationValidated = installationIdentificationValidated;
+  }
+}
+
+- (void)setInstallationIdentification:(NSString *)installationIdentification {
+  if (![_installationIdentification isEqualToString:installationIdentification]) {
+    if (installationIdentification) {
+      [self addStringValueToKeychain:installationIdentification forKey:kBITUpdateInstallationIdentification];
+    } else {
+      [self removeKeyFromKeychain:kBITUpdateInstallationIdentification];
+    }
+    
+    // we need to reset the usage time, because the user/device may have changed
+    [self storeUsageTimeForCurrentVersion:[NSNumber numberWithDouble:0]];
+    self.usageStartTimestamp = [NSDate date];
+  }
+}
+
 
 #pragma mark - UIAlertViewDelegate
 
 // invoke the selected action from the action sheet for a location element
 - (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
-  if ([alertView tag] == 2) {
+  if ([alertView tag] == BITUpdateAlertViewTagMandatoryUpdate) {
     (void)[self initiateAppDownload];
     _updateAlertShowing = NO;
     return;
-  } else if ([alertView tag] == 1) {
+  } else if ([alertView tag] == BITUpdateAlertViewTagNeverEndingAlertView) {
     [self alertFallback:[alertView message]];
     return;
   }
@@ -1021,3 +919,5 @@
 }
 
 @end
+
+#endif /* HOCKEYSDK_FEATURE_UPDATES */

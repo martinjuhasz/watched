@@ -5,10 +5,11 @@ pod 'MJStarRating', :podspec => 'MJStarRating.podspec'
 pod 'GMGridView'
 pod 'KSReachability', :podspec => 'KSReachability.podspec'
 pod 'UIResponder+KeyboardCache'
-pod 'HockeySDK'
+pod 'HockeySDK', :podspec => 'https://raw.github.com/bitstadium/HockeySDK-iOS/develop/HockeySDK.podspec'
 pod 'Mantle'
 pod 'BlocksKit'
 pod "Reveal-iOS-SDK"
+pod 'iOS-blur'
 
 #pod 'TestFlightSDK'
 #pod 'iOS-Hierarchy-Viewer'
