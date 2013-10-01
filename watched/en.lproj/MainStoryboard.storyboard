@@ -217,10 +217,10 @@
                     <connections>
                         <outlet property="shareButton" destination="9Id-lP-xw8" id="Iyj-5g-ZRY"/>
                         <segue destination="aIh-ZM-gS8" kind="push" identifier="MovieCastSegue" id="uyO-M3-raF"/>
-                        <segue destination="pqS-3R-9IU" kind="modal" identifier="MovieNoteSegue" id="aGY-CZ-TGK"/>
                         <segue destination="hjq-mA-Ll1" kind="push" identifier="ThumbnailPickerSegue" id="g3C-LE-fgC"/>
                         <segue destination="YNR-hM-njU" kind="push" identifier="DetailWebViewSegue" id="dp1-K0-eya"/>
                         <segue destination="WYc-aO-Ggw" kind="push" identifier="SimilarMovieSegue" id="SVs-AI-VUn"/>
+                        <segue destination="O87-0X-8Qc" kind="modal" identifier="MovieNoteSegue" id="SnC-Jg-iam"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="haJ-dp-Bvw" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -256,11 +256,11 @@
             <objects>
                 <viewController id="pqS-3R-9IU" customClass="MovieNoteViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="APS-Xh-eFR">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                        <rect key="frame" x="0.0" y="64" width="320" height="416"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="jLZ-ge-01M">
-                                <rect key="frame" x="0.0" y="44" width="320" height="220"/>
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="156"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <inset key="contentInset" minX="1" minY="0.0" maxX="-1" maxY="0.0"/>
                                 <inset key="scrollIndicatorInsets" minX="0.0" minY="0.0" maxX="0.0" maxY="24"/>
@@ -268,41 +268,31 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textView>
-                            <navigationBar contentMode="scaleToFill" translucent="NO" id="ZlW-y5-abh" customClass="MJWatchedNavigationBar">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
-                                <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <color key="barTintColor" red="0.96470588239999999" green="0.26274509800000001" blue="0.26274509800000001" alpha="1" colorSpace="calibratedRGB"/>
-                                <textAttributes key="titleTextAttributes">
-                                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                </textAttributes>
-                                <items>
-                                    <navigationItem title="Title" id="P9S-dY-c8l">
-                                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="GMW-aZ-ngO">
-                                            <connections>
-                                                <action selector="cancelButtonClicked:" destination="pqS-3R-9IU" id="9Pe-wr-Gm9"/>
-                                            </connections>
-                                        </barButtonItem>
-                                        <barButtonItem key="rightBarButtonItem" systemItem="save" id="Pxb-Ia-Qff">
-                                            <connections>
-                                                <action selector="saveButtonClicked:" destination="pqS-3R-9IU" id="WSc-YZ-G5H"/>
-                                            </connections>
-                                        </barButtonItem>
-                                    </navigationItem>
-                                </items>
-                            </navigationBar>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
-                    <navigationItem key="navigationItem" id="6xt-zY-ZF6"/>
+                    <extendedEdge key="edgesForExtendedLayout" bottom="YES"/>
+                    <navigationItem key="navigationItem" id="6xt-zY-ZF6">
+                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="GMW-aZ-ngO">
+                            <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <connections>
+                                <action selector="cancelButtonClicked:" destination="pqS-3R-9IU" id="9Pe-wr-Gm9"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" systemItem="save" id="Pxb-Ia-Qff">
+                            <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <connections>
+                                <action selector="saveButtonClicked:" destination="pqS-3R-9IU" id="WSc-YZ-G5H"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
-                        <outlet property="navBar" destination="ZlW-y5-abh" id="4VY-p5-5Ys"/>
                         <outlet property="textView" destination="jLZ-ge-01M" id="hFs-DD-RPf"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iHm-kv-MAu" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3936" y="-468"/>
+            <point key="canvasLocation" x="4852" y="-635"/>
         </scene>
         <!--Watched Local Web Browser-->
         <scene sceneID="wuZ-s5-N02">
@@ -785,6 +775,25 @@
             </objects>
             <point key="canvasLocation" x="3522" y="1212"/>
         </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="hDU-ZL-aW1">
+            <objects>
+                <navigationController definesPresentationContext="YES" id="O87-0X-8Qc" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" translucent="NO" id="WfN-Hl-rJc">
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="barTintColor" red="0.96470588239999999" green="0.26274509800000001" blue="0.26274509800000001" alpha="1" colorSpace="calibratedRGB"/>
+                        <textAttributes key="titleTextAttributes">
+                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        </textAttributes>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="pqS-3R-9IU" kind="relationship" relationship="rootViewController" id="z5n-PP-R7E"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="N8r-q7-x6R" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4279" y="-635"/>
+        </scene>
         <!--Similar Movies Table View Controller-->
         <scene sceneID="aPS-7g-3s0">
             <objects>
@@ -882,6 +891,6 @@
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
         <segue reference="05f-kv-Jji"/>
-        <segue reference="atQ-Ey-PSb"/>
+        <segue reference="dp1-K0-eya"/>
     </inferredMetricsTieBreakers>
 </document>

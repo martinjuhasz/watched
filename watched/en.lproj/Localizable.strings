@@ -107,6 +107,12 @@
 "DETAIL_POP_NOACCOUNT_CONTENT"  = "You haven't configured a %@ account, yet. You can add or create a %@ account in your iPhone's settings.";
 "DETAIL_POP_NOACCOUNT_OK"       = "Ok";
 
+"MORE_UNWATCHED"                = "Mark as unwatched";
+"MORE_WACHED"                   = "Mark as watched";
+"MORE_CHANGE_COVER"             = "Change cover";
+"MORE_CHANGE_BACKDROP"          = "Change backdrop";
+"MORE_REMOVE"                   = "Remove from library";
+
 
 /*================================================
  CAST

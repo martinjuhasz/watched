@@ -77,6 +77,13 @@
         [self.detailView setToNonAddedState];
     }
     
+    // preload cast
+    [self.movie getPersonsWithCompletion:^(NSArray *casts, NSArray *crews) {
+        
+    } error:^(NSError *error) {
+        
+    }];
+    
     self.detailView.ratingView.delegate = self;
     isLoadingImages = NO;
     
@@ -88,7 +95,19 @@
     [self.detailView.addToCollectionButton addTarget:self action:@selector(addToCollectionButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(contextDidChange:) name:NSManagedObjectContextObjectsDidChangeNotification object:[self.movie managedObjectContext]];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(contextDidSave:) name:NSManagedObjectContextDidSaveNotification object:[self.movie managedObjectContext]];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleDataModelChange:) name:NSManagedObjectContextObjectsDidChangeNotification object:[self.movie managedObjectContext]];
     
+}
+
+- (void)handleDataModelChange:(NSNotification *)note
+{
+//    NSSet *updatedObjects = [[note userInfo] objectForKey:NSUpdatedObjectsKey];
+//    NSSet *deletedObjects = [[note userInfo] objectForKey:NSDeletedObjectsKey];
+//    NSSet *insertedObjects = [[note userInfo] objectForKey:NSInsertedObjectsKey];
+    NSSet *refreshedObjects = [[note userInfo] objectForKey:NSRefreshedObjectsKey];
+    DebugLog(@"%@", refreshedObjects);
+    
+    // Do something in response to this
 }
 
 
@@ -147,10 +166,12 @@
     UIBarButtonItem *shareButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"icon-share.png"] style:UIBarButtonItemStylePlain target:self action:@selector(shareButtonClicked:)];
     [buttonArray addObject:shareButton];
     
+    
     if(self.movie.movieState == MJUMovieStateAdded) {
         UIBarButtonItem *moreButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"icon-more.png"] style:UIBarButtonItemStylePlain target:self action:@selector(moreButtonClicked:)];
         [buttonArray addObject:moreButton];
     }
+    
     
     self.navigationItem.rightBarButtonItems = [NSArray arrayWithArray:buttonArray];
 }
@@ -236,6 +257,9 @@
     if(actors.count > 3) {
         self.detailView.actor4Label.text = ((MJUCast*)[actors objectAtIndex:3]).name;
     }
+    
+    [self.detailView setNeedsLayout];
+    [self.detailView layoutIfNeeded];
 }
 
 
@@ -250,9 +274,10 @@
         detailViewController.movie = self.movie;
     }
     if([segue.identifier isEqualToString:@"MovieNoteSegue"]) {
-        MovieNoteViewController *detailViewController = (MovieNoteViewController*)segue.destinationViewController;
-        detailViewController.movie = self.movie;
-        detailViewController.title = NSLocalizedString(@"NOTES_TITLE", nil);
+        UINavigationController *detailViewController = (UINavigationController*)segue.destinationViewController;
+        MovieNoteViewController *noteViewController = (MovieNoteViewController*)detailViewController.topViewController;
+        noteViewController.movie = self.movie;
+        noteViewController.title = NSLocalizedString(@"NOTES_TITLE", nil);
     }
     if([segue.identifier isEqualToString:@"ThumbnailPickerSegue"]) {
         NSDictionary *returnDict = (NSDictionary*)sender;

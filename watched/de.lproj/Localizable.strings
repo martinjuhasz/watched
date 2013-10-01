@@ -107,6 +107,12 @@
 "DETAIL_POP_NOACCOUNT_CONTENT"  = "Du hast noch keinen %@ Account konfiguriert. In den Einstellungen deines iPhone's kannst du einen %@ Account erstellen und hinzufügen.";
 "DETAIL_POP_NOACCOUNT_OK"       = "Ok";
 
+"MORE_UNWATCHED"                = "als ungesehen markieren";
+"MORE_WACHED"                   = "als gesehen markieren";
+"MORE_CHANGE_COVER"             = "Cover ändern";
+"MORE_CHANGE_BACKDROP"          = "Hintergrund ändern";
+"MORE_REMOVE"                   = "Film löschen";
+
 /*================================================
  CAST
  ================================================*/

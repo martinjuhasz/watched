@@ -139,14 +139,19 @@
     self.runtimeTitleLabel.frame = CGRectMake(15.0f, lastPositionInformationView, 165.0f, 20.0f);
     self.runtimeLabel.frame = CGRectMake(100.0f, lastPositionInformationView, 165.0f, 20.0f);
     
-    self.informationView.frame = CGRectMake(0.0f, self.overviewLabel.bottom + 20.0f, 320.0f, self.runtimeLabel.bottom + 30.0f);
-    CALayer *informationViewtableBorderBottom = [CALayer layer];
-    informationViewtableBorderBottom.frame = CGRectMake(15.0f, self.informationView.height-1.0f, self.informationView.frame.size.width - 15, 0.5f);
-    informationViewtableBorderBottom.backgroundColor = [UIColor colorWithHexString:@"cccccc"].CGColor;
-    [self.informationView.layer addSublayer:informationViewtableBorderBottom];
     
-    self.notesLabel.frame = CGRectMake(15.0f, 40.0f, 290.0f, 0.0f);
+    if(self.informationViewtableBorderBottom) {
+        [self.informationViewtableBorderBottom removeFromSuperlayer];
+    }
+    self.informationView.frame = CGRectMake(0.0f, self.overviewLabel.bottom + 20.0f, 320.0f, self.runtimeLabel.bottom + 30.0f);
+    self.informationViewtableBorderBottom = [CALayer layer];
+    self.informationViewtableBorderBottom.frame = CGRectMake(15.0f, self.informationView.height-1.0f, self.informationView.frame.size.width - 15, 0.5f);
+    self.informationViewtableBorderBottom.backgroundColor = [UIColor colorWithHexString:@"cccccc"].CGColor;
+    [self.informationView.layer addSublayer:self.informationViewtableBorderBottom];
+    
+    self.notesLabel.frame = CGRectMake(15.0f, 40.0f, 290.0f, 40.0f);
     [self.notesLabel sizeToFit];
+
     self.notesView.frame = CGRectMake(0.0f, self.informationView.bottom, 320.0f, self.notesLabel.bottom + 15.0f);
     
     [self.mainScrollView setContentSize:CGSizeMake(320.0f, self.notesView.bottom + 30.0f)];
@@ -404,10 +409,6 @@
         CGRect shadowRect = self.backdropBottomShadow.frame;
         shadowRect.size.height = kMBackdropHeight - (minVal + kMBackdropScrollStop);
         shadowRect.origin.y = minVal + kMBackdropScrollStop;
-        
-        DebugLog(@"offset: %f", scrollViewOffset);
-        DebugLog(@"shadow: %@", NSStringFromCGRect(shadowRect));
-        DebugLog(@"backdrop: %@", NSStringFromCGRect(imageViewRect));
         
         // Loading Button
         if(self.imageLoadingView.frame.size.width >= 320.0f && self.imageLoadingView.alpha > 0.0f) {

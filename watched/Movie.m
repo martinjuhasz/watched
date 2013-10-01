@@ -388,6 +388,14 @@
         }
         self.actors = [NSKeyedArchiver archivedDataWithRootObject:actors];
         
+        NSManagedObjectContext *context = [self managedObjectContext];
+        NSError *error;
+        [context save:&error];
+        if(error) {
+            ErrorLog("%@", [error localizedDescription]);
+        }
+        
+        
         completion(casts,crews);
         
     } failure:^(NSError *aError) {

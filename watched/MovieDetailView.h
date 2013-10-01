@@ -45,6 +45,7 @@
 @property (strong, nonatomic) UIButton *notesEditButton;
 
 @property (strong, nonatomic) UIView *informationView;
+@property (strong, nonatomic) CALayer *informationViewtableBorderBottom;
 
 - (void)toggleLoadingViewForPosterType:(ImageType)aImageType;
 - (void)switchToAddedState;

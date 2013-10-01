@@ -30,6 +30,8 @@
     [super viewDidLoad];
     self.navBar.topItem.title = self.title;
     
+    self.edgesForExtendedLayout = UIRectEdgeNone;
+    
     // adding default note
     if(self.movie.note) {
         self.textView.text = self.movie.note;
