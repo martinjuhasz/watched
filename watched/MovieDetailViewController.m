@@ -77,15 +77,6 @@
         [self.detailView setToNonAddedState];
     }
     
-    // preload cast
-    if(!self.movie.personsQueried) {
-        [self.movie getPersonsWithCompletion:^(NSArray *casts, NSArray *crews) {
-            self.movie.personsQueried = [NSNumber numberWithBool:YES];
-        } error:^(NSError *error) {
-            
-        }];
-    }
-    
     
     self.detailView.ratingView.delegate = self;
     isLoadingImages = NO;
@@ -245,21 +236,21 @@
         self.detailView.directorLabel.text = @"-";
     }
     
-    NSArray *actors = [NSKeyedUnarchiver unarchiveObjectWithData:self.movie.actors];
-    if(actors.count > 0) {
-        self.detailView.actor1Label.text = ((MJUCast*)[actors objectAtIndex:0]).name;
-    } else {
-        self.detailView.actor1Label.text = @"-";
-    }
-    if(actors.count > 1) {
-        self.detailView.actor2Label.text = ((MJUCast*)[actors objectAtIndex:1]).name;
-    }
-    if(actors.count > 2) {
-        self.detailView.actor3Label.text = ((MJUCast*)[actors objectAtIndex:2]).name;
-    }
-    if(actors.count > 3) {
-        self.detailView.actor4Label.text = ((MJUCast*)[actors objectAtIndex:3]).name;
-    }
+//    NSArray *actors = [NSKeyedUnarchiver unarchiveObjectWithData:self.movie.actors];
+//    if(actors.count > 0) {
+//        self.detailView.actor1Label.text = ((MJUCast*)[actors objectAtIndex:0]).name;
+//    } else {
+//        self.detailView.actor1Label.text = @"-";
+//    }
+//    if(actors.count > 1) {
+//        self.detailView.actor2Label.text = ((MJUCast*)[actors objectAtIndex:1]).name;
+//    }
+//    if(actors.count > 2) {
+//        self.detailView.actor3Label.text = ((MJUCast*)[actors objectAtIndex:2]).name;
+//    }
+//    if(actors.count > 3) {
+//        self.detailView.actor4Label.text = ((MJUCast*)[actors objectAtIndex:3]).name;
+//    }
     
     [self.detailView setNeedsLayout];
     [self.detailView layoutIfNeeded];
@@ -388,12 +379,12 @@
 
 - (void)trailerRowClicked
 {
-    [self.movie getBestTrailerWithCompletion:^(MJUTrailer *aTrailer) {
-        if(!aTrailer) return;
-        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:aTrailer.source]];
-    } error:^(NSError *aError) {
-        
-    }];
+//    [self.movie getBestTrailerWithCompletion:^(MJUTrailer *aTrailer) {
+//        if(!aTrailer) return;
+//        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:aTrailer.source]];
+//    } error:^(NSError *aError) {
+//        
+//    }];
     
     // default code
 //    if(!self.movie.bestTrailer) return;
