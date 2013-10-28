@@ -103,6 +103,7 @@
                 NSURL *posterURL = [[OnlineMovieDatabase sharedMovieDatabase] getImageURLForImagePath:posterString imageType:ImageTypePoster nearWidth:260.0f];
                 movie.posterURL = [posterURL absoluteString];
                 
+                
 //                // Backdrop
 //                NSString *backdropString = [movieDict objectForKey:@"backdrop_path"];
 //                dispatch_group_enter(group);

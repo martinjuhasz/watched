@@ -6,6 +6,7 @@
 const struct MovieAttributes MovieAttributes = {
 	.actors = @"actors",
 	.adult = @"adult",
+    .personsQueried = @"personsQueried",
 	.backdropPath = @"backdropPath",
 	.backdropURL = @"backdropURL",
 	.budget = @"budget",
@@ -65,6 +66,11 @@ const struct MovieFetchedProperties MovieFetchedProperties = {
 		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
 		return keyPaths;
 	}
+    if ([key isEqualToString:@"personsQueriedValue"]) {
+		NSSet *affectingKey = [NSSet setWithObject:@"personsQueried"];
+		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
+		return keyPaths;
+	}
 	if ([key isEqualToString:@"budgetValue"]) {
 		NSSet *affectingKey = [NSSet setWithObject:@"budget"];
 		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
@@ -111,8 +117,6 @@ const struct MovieFetchedProperties MovieFetchedProperties = {
 
 @dynamic adult;
 
-
-
 - (BOOL)adultValue {
 	NSNumber *result = [self adult];
 	return [result boolValue];
@@ -130,6 +134,31 @@ const struct MovieFetchedProperties MovieFetchedProperties = {
 - (void)setPrimitiveAdultValue:(BOOL)value_ {
 	[self setPrimitiveAdult:[NSNumber numberWithBool:value_]];
 }
+
+
+
+@dynamic personsQueried;
+
+- (BOOL)personsQueriedValue {
+	NSNumber *result = [self personsQueried];
+	return [result boolValue];
+}
+
+- (void)setPersonsQueriedValue:(BOOL)value_ {
+	[self setPersonsQueried:[NSNumber numberWithBool:value_]];
+}
+
+- (BOOL)primitivePersonsQueriedValue {
+	NSNumber *result = [self primitivePersonsQueried];
+	return [result boolValue];
+}
+
+- (void)setPrimitivePersonsQueriedValue:(BOOL)value_ {
+	[self setPrimitivePersonsQueried:[NSNumber numberWithBool:value_]];
+}
+
+
+
 
 
 

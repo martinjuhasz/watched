@@ -7,6 +7,7 @@
 extern const struct MovieAttributes {
 	__unsafe_unretained NSString *actors;
 	__unsafe_unretained NSString *adult;
+    __unsafe_unretained NSString *personsQueried;
 	__unsafe_unretained NSString *backdropPath;
 	__unsafe_unretained NSString *backdropURL;
 	__unsafe_unretained NSString *budget;
@@ -89,6 +90,15 @@ extern const struct MovieFetchedProperties {
 @property BOOL adultValue;
 - (BOOL)adultValue;
 - (void)setAdultValue:(BOOL)value_;
+
+//- (BOOL)validateAdult:(id*)value_ error:(NSError**)error_;
+
+
+@property (nonatomic, strong) NSNumber* personsQueried;
+
+@property BOOL personsQueriedValue;
+- (BOOL)personsQueriedValue;
+- (void)setPersonsQueriedValue:(BOOL)value_;
 
 //- (BOOL)validateAdult:(id*)value_ error:(NSError**)error_;
 
@@ -341,6 +351,13 @@ extern const struct MovieFetchedProperties {
 
 - (BOOL)primitiveAdultValue;
 - (void)setPrimitiveAdultValue:(BOOL)value_;
+
+
+- (NSNumber*)primitivePersonsQueried;
+- (void)setPrimitivePersonsQueried:(NSNumber*)value;
+
+- (BOOL)primitivePersonsQueriedValue;
+- (void)setPrimitivePersonsQueriedValue:(BOOL)value_;
 
 
 

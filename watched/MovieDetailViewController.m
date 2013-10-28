@@ -78,11 +78,14 @@
     }
     
     // preload cast
-    [self.movie getPersonsWithCompletion:^(NSArray *casts, NSArray *crews) {
-        
-    } error:^(NSError *error) {
-        
-    }];
+    if(!self.movie.personsQueried) {
+        [self.movie getPersonsWithCompletion:^(NSArray *casts, NSArray *crews) {
+            self.movie.personsQueried = [NSNumber numberWithBool:YES];
+        } error:^(NSError *error) {
+            
+        }];
+    }
+    
     
     self.detailView.ratingView.delegate = self;
     isLoadingImages = NO;

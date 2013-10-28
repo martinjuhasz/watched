@@ -1339,6 +1339,7 @@
 		7AA8697116D406A4003AC1AD /* MJLoadingAccessoryControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MJLoadingAccessoryControl.m; sourceTree = "<group>"; };
 		7AB5F853155087CC00D767E7 /* OnlineMovieDatabase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OnlineMovieDatabase.h; sourceTree = "<group>"; };
 		7AB5F854155087CC00D767E7 /* OnlineMovieDatabase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OnlineMovieDatabase.m; sourceTree = "<group>"; };
+		7AB7192F17FB09890099F374 /* Movies 4.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Movies 4.xcdatamodel"; sourceTree = "<group>"; };
 		7AC17F7E16CAF91200C1404D /* MoviesTableViewOnlineCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MoviesTableViewOnlineCell.h; sourceTree = "<group>"; };
 		7AC17F7F16CAF91200C1404D /* MoviesTableViewOnlineCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MoviesTableViewOnlineCell.m; sourceTree = "<group>"; };
 		7AC4A8331609150200349BF0 /* MJWatchedNavigationBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MJWatchedNavigationBar.h; sourceTree = "<group>"; };
@@ -3480,11 +3481,12 @@
 		7A2CBBA31559A0ED009ADFFB /* Movies.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				7AB7192F17FB09890099F374 /* Movies 4.xcdatamodel */,
 				7A8F1CAD17C8C57B00886C83 /* Movies 3.xcdatamodel */,
 				7AF2ACDE17B4DAC0003257BE /* Movies 2.xcdatamodel */,
 				7A2CBBA41559A0ED009ADFFB /* Movies.xcdatamodel */,
 			);
-			currentVersion = 7A8F1CAD17C8C57B00886C83 /* Movies 3.xcdatamodel */;
+			currentVersion = 7AB7192F17FB09890099F374 /* Movies 4.xcdatamodel */;
 			path = Movies.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
