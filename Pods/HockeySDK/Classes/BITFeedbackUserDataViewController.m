@@ -28,6 +28,9 @@
 
 
 #import "HockeySDK.h"
+
+#if HOCKEYSDK_FEATURE_FEEDBACK
+
 #import "HockeySDKPrivate.h"
 
 #import "BITFeedbackUserDataViewController.h"
@@ -71,8 +74,12 @@
   [super viewWillAppear:animated];
 
   _statusBarStyle = [[UIApplication sharedApplication] statusBarStyle];
+#if __IPHONE_OS_VERSION_MAX_ALLOWED > __IPHONE_6_1
+  [[UIApplication sharedApplication] setStatusBarStyle:(self.navigationController.navigationBar.barStyle == UIBarStyleDefault) ? UIStatusBarStyleDefault : UIStatusBarStyleLightContent];
+#else
   [[UIApplication sharedApplication] setStatusBarStyle:(self.navigationController.navigationBar.barStyle == UIBarStyleDefault) ? UIStatusBarStyleDefault : UIStatusBarStyleBlackOpaque];
-
+#endif
+  
   // Do any additional setup after loading the view.
   self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
                                                                                         target:self
@@ -106,21 +113,6 @@
 }
 
 #pragma mark - Private methods
-
-- (BOOL)validateEmail {
-  NSString *emailRegex =
-  @"(?:[a-z0-9!#$%\\&'*+/=?\\^_`{|}~-]+(?:\\.[a-z0-9!#$%\\&'*+/=?\\^_`{|}"
-  @"~-]+)*|\"(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\"
-  @"x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")@(?:(?:[a-z0-9](?:[a-"
-  @"z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\\[(?:(?:25[0-5"
-  @"]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-"
-  @"9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21"
-  @"-\\x5a\\x53-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+)\\])";
-  NSPredicate *emailTest = [NSPredicate predicateWithFormat:@"SELF MATCHES[c] %@", emailRegex];
-  
-  return [emailTest evaluateWithObject:self.email];
-}
-
 - (BOOL)allRequiredFieldsEntered {
   if ([self.manager requireUserName] == BITFeedbackUserDataElementRequired && [self.name length] == 0)
     return NO;
@@ -128,7 +120,7 @@
   if ([self.manager requireUserEmail] == BITFeedbackUserDataElementRequired && [self.email length] == 0)
     return NO;
 
-  if ([self.email length] > 0 && ![self validateEmail])
+  if ([self.email length] > 0 && !BITValidateEmail(self.email))
     return NO;
   
   return YES;
@@ -200,7 +192,10 @@
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     cell.backgroundColor = [UIColor whiteColor];
     
-    UITextField *textField = [[UITextField alloc] initWithFrame:CGRectMake(110, 10, 185, 30)];
+    UITextField *textField = [[UITextField alloc] initWithFrame:CGRectMake(110, 10, self.view.frame.size.width - 110 - 35, 30)];
+    if (UI_USER_INTERFACE_IDIOM() != UIUserInterfaceIdiomPad) {
+      textField.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+    }
     textField.adjustsFontSizeToFitWidth = YES;
     textField.textColor = [UIColor blackColor];
     textField.backgroundColor = [UIColor lightGrayColor];
@@ -230,7 +225,7 @@
     textField.backgroundColor = [UIColor whiteColor];
     textField.autocorrectionType = UITextAutocorrectionTypeNo;
     textField.autocapitalizationType = UITextAutocapitalizationTypeNone;
-    textField.textAlignment = UITextAlignmentLeft;
+    textField.textAlignment = kBITTextLabelAlignmentLeft;
     textField.delegate = self;
     textField.tag = indexPath.row;
     
@@ -271,3 +266,5 @@
 
 
 @end
+
+#endif /* HOCKEYSDK_FEATURE_FEEDBACK */

@@ -28,11 +28,16 @@
 
 
 #import "HockeySDK.h"
+
+#if HOCKEYSDK_FEATURE_FEEDBACK
+
 #import "HockeySDKPrivate.h"
 
 #import "BITFeedbackManagerPrivate.h"
 #import "BITFeedbackComposeViewController.h"
 #import "BITFeedbackUserDataViewController.h"
+
+#import "BITHockeyBaseManagerPrivate.h"
 
 #import "BITHockeyHelper.h"
 
@@ -167,7 +172,11 @@
   [super viewWillAppear:animated];
   
   _statusBarStyle = [[UIApplication sharedApplication] statusBarStyle];
+#if __IPHONE_OS_VERSION_MAX_ALLOWED > __IPHONE_6_1
+  [[UIApplication sharedApplication] setStatusBarStyle:(self.navigationController.navigationBar.barStyle == UIBarStyleDefault) ? UIStatusBarStyleDefault : UIStatusBarStyleLightContent];
+#else
   [[UIApplication sharedApplication] setStatusBarStyle:(self.navigationController.navigationBar.barStyle == UIBarStyleDefault) ? UIStatusBarStyleDefault : UIStatusBarStyleBlackOpaque];
+#endif
   
   [self.textView setFrame:self.view.frame];
 
@@ -218,28 +227,20 @@
 
 #pragma mark - Private methods
 
-- (void)dismiss {
-  if (self.delegate && [self.delegate respondsToSelector:@selector(feedbackComposeViewControllerDidFinish:)]) {
-    [self.delegate feedbackComposeViewControllerDidFinish:self];
-  } else {
-    [self dismissModalViewControllerAnimated:YES];
-  }
-}
-
 - (void)setUserDataAction {
   BITFeedbackUserDataViewController *userController = [[BITFeedbackUserDataViewController alloc] initWithStyle:UITableViewStyleGrouped];
   userController.delegate = self;
   
-  UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:userController];
-  navController.navigationBar.barStyle = [self.manager barStyle];
-  navController.navigationBar.tintColor = [self.manager tintColor];
-  navController.modalPresentationStyle = UIModalPresentationFormSheet;
+  UINavigationController *navController = [self.manager customNavigationControllerWithRootViewController:userController
+                                                                                       presentationStyle:UIModalPresentationFormSheet];
   
   [self presentViewController:navController animated:YES completion:nil];
 }
 
+#pragma mark - Actions
+
 - (void)dismissAction:(id)sender {
-  [self dismiss];
+  [self dismissWithResult:BITFeedbackComposeResultCancelled];
 }
 
 - (void)sendAction:(id)sender {
@@ -250,11 +251,23 @@
   
   [self.manager submitMessageWithText:text];
   
-  [self dismiss];
+  [self dismissWithResult:BITFeedbackComposeResultSubmitted];
 }
 
+- (void)dismissWithResult:(BITFeedbackComposeResult) result {
+  if(self.delegate && [self.delegate respondsToSelector:@selector(feedbackComposeViewController:didFinishWithResult:)]) {
+    [self.delegate feedbackComposeViewController:self didFinishWithResult:result];
+  } else if (self.delegate && [self.delegate respondsToSelector:@selector(feedbackComposeViewControllerDidFinish:)]) {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated"
+    [self.delegate feedbackComposeViewControllerDidFinish:self];
+#pragma clang diagnostic pop
+  } else {
+    [self dismissViewControllerAnimated:YES completion:nil];
+  }
+}
 
-#pragma mark - CNSFeedbackUserDataDelegate
+#pragma mark - BITFeedbackUserDataDelegate
 
 - (void)userDataUpdateCancelled {
   _blockUserDataScreen = YES;
@@ -263,21 +276,21 @@
     if ([self.navigationController respondsToSelector:@selector(dismissViewControllerAnimated:completion:)]) {
       [self.navigationController dismissViewControllerAnimated:YES
                                                     completion:^(void) {
-                                                      [self dismissModalViewControllerAnimated:YES];
+                                                      [self dismissViewControllerAnimated:YES completion:nil];
                                                     }];
     } else {
-      [self dismissModalViewControllerAnimated:YES];
+      [self dismissViewControllerAnimated:YES completion:nil];
       [self performSelector:@selector(dismissAction:) withObject:nil afterDelay:0.4];
     }
   } else {
-    [self.navigationController dismissModalViewControllerAnimated:YES];
+    [self.navigationController dismissViewControllerAnimated:YES completion:nil];
   }
 }
 
 - (void)userDataUpdateFinished {
   [self.manager saveMessages];
   
-  [self.navigationController dismissModalViewControllerAnimated:YES];
+  [self.navigationController dismissViewControllerAnimated:YES completion:nil];
 }
 
 
@@ -295,3 +308,4 @@
 
 @end
 
+#endif /* HOCKEYSDK_FEATURE_FEEDBACK */

@@ -38,13 +38,13 @@
 
 - (void)setupContent
 {
-    _titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(74.0f, 19.0f, 200.0f, 39.0f)];
+    _titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(75.0f, 17.0f, 200.0f, 39.0f)];
     [_titleLabel setFont:[UIFont fontWithName:@"AvenirNext-DemiBold" size:17.0f]];
     [_titleLabel setTextColor:[UIColor blackColor]];
     [_titleLabel setBackgroundColor:[UIColor clearColor]];
     [self addSubview:_titleLabel];
     
-    _yearLabel = [[UILabel alloc] initWithFrame:CGRectMake(74.0f, 60.0f, 153.0f, 21.0f)];
+    _yearLabel = [[UILabel alloc] initWithFrame:CGRectMake(75.0f, 58.0f, 153.0f, 21.0f)];
     [_yearLabel setFont:[UIFont fontWithName:@"AvenirNext-Regular" size:14.0f]];
     [_yearLabel setTextColor:[UIColor colorWithHexString:@"C8C8C8"]];
     [_yearLabel setBackgroundColor:[UIColor clearColor]];
@@ -90,7 +90,7 @@
     if(aImage) {
         self.coverImageView.image = aImage;
     } else {
-        self.coverImageView.image = [UIImage imageNamed:@"g_placeholder-cover.png"];
+        self.coverImageView.image = [UIImage imageNamed:@"cover-placeholder.png"];
     }
 }
 

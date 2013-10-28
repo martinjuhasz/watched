@@ -9,7 +9,6 @@
 #import "MJInternetConnection.h"
 #import <SystemConfiguration/SystemConfiguration.h>
 #import "KSReachability.h"
-#import "BlockAlertView.h"
 
 @interface MJInternetConnection () {
     KSReachability *_reachability;
@@ -50,10 +49,10 @@
 
 - (void)displayAlert
 {
-    BlockAlertView *alert = [BlockAlertView alertWithTitle:NSLocalizedString(@"ALERT_NOINTERNET_TITLE", nil)
-                                                   message:NSLocalizedString(@"ALERT_NOINTERNET_TITLE_CONTENT", nil)];
-    [alert setCancelButtonWithTitle:NSLocalizedString(@"ALERT_NOINTERNET_TITLE_OK", nil) block:nil];
-    [alert show];
+//    BlockAlertView *alert = [BlockAlertView alertWithTitle:NSLocalizedString(@"ALERT_NOINTERNET_TITLE", nil)
+//                                                   message:NSLocalizedString(@"ALERT_NOINTERNET_TITLE_CONTENT", nil)];
+//    [alert setCancelButtonWithTitle:NSLocalizedString(@"ALERT_NOINTERNET_TITLE_OK", nil) block:nil];
+//    [alert show];
 }
 
 

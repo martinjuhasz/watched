@@ -3,6 +3,9 @@
 #import "NSDictionary+ObjectForKeyOrNil.h"
 #import "OnlineMovieDatabase.h"
 #import "AFJSONRequestOperation.h"
+#import "MJUPerson.h"
+#import "SearchResult.h"
+#import "NSManagedObject+Additions.h"
 
 #define kBackdropFolder @"backdrops"
 #define kPosterFolder @"posters"
@@ -32,9 +35,9 @@
 #pragma mark -
 #pragma mark General
 
-+ (Movie *)movieWithServerId:(NSInteger)serverId usingManagedObjectContext:(NSManagedObjectContext *)moc {
++ (Movie *)movieWithMovieID:(NSNumber*)movieID usingManagedObjectContext:(NSManagedObjectContext *)moc {
     NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:[Movie entityName]];
-    [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"movieID = %d", serverId]];
+    [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"movieID = %d", [movieID integerValue]]];
     [fetchRequest setFetchLimit:1];
     
     NSError *error = nil;
@@ -130,7 +133,6 @@
 	//self.releaseDate = [attributes objectForKeyOrNil:@"adult"];
     
 }
-
 
 
 ////////////////////////////////////////////////////////////////////////////
@@ -257,6 +259,12 @@
 #pragma mark -
 #pragma mark Ghost Attributes
 
+-(MJUMovieState)movieState
+{
+    if([self isNew]) return MJUMovieStateNotAdded;
+    return MJUMovieStateAdded;
+}
+
 -(NSString*)releaseDateFormatted
 {
     [NSDateFormatter setDefaultFormatterBehavior:NSDateFormatterBehavior10_4];
@@ -351,6 +359,7 @@
 
 -(void)getPersonsWithCompletion:(MJUPersonsCompletionBlock)completion error:(MJUMovieErrorBlock)error
 {
+    
     if(personsQueried) {
         completion(casts,crews);
         return;
@@ -367,12 +376,27 @@
         NSArray *sortedCrewArray = [crewsArray sortedArrayUsingDescriptors:[NSArray arrayWithObject:sortCrewDescriptor]];
         crews = sortedCrewArray;
         
+        // Direcor
+        self.director = [self getDirectorFromCrew].name;
+        
+       
+        // Actors
+        NSMutableArray *actors = [NSMutableArray array];
+        NSUInteger maxSize = 4;
+        for (int i = 0; i<[casts count] && i < maxSize; i++) {
+            [actors addObject:[casts objectAtIndex:i]];
+        }
+        self.actors = [NSKeyedArchiver archivedDataWithRootObject:actors];
+        
+        
+        
         completion(casts,crews);
         
     } failure:^(NSError *aError) {
         personsQueried = NO;
         error(aError);
     }];
+    
     [operation start];
 }
 
@@ -417,16 +441,16 @@
 //    return sortedCrewArray;
 //}
 //
-//- (Crew*)director
-//{
-//    // try to get a quicktime one
-//    NSPredicate *dirPredicate = [NSPredicate predicateWithFormat:@"job ==[c] %@", @"Director"];
-//    NSArray *directors = [[self.crews allObjects] filteredArrayUsingPredicate:dirPredicate];
-//    if(directors.count > 0) {
-//        return [directors objectAtIndex:0];
-//    }
-//    return nil;
-//}
+- (MJUPerson*)getDirectorFromCrew
+{
+    // try to get a quicktime one
+    NSPredicate *dirPredicate = [NSPredicate predicateWithFormat:@"job ==[c] %@", @"Director"];
+    NSArray *directors = [self.crews filteredArrayUsingPredicate:dirPredicate];
+    if(directors.count > 0) {
+        return [directors objectAtIndex:0];
+    }
+    return nil;
+}
 
 
 @end

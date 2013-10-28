@@ -12,11 +12,11 @@
 #define COCOAPODS_VERSION_MINOR_AFNetworking 3
 #define COCOAPODS_VERSION_PATCH_AFNetworking 2
 
-// BlockAlertsAnd-ActionSheets
-#define COCOAPODS_POD_AVAILABLE_BlockAlertsAnd_ActionSheets
-#define COCOAPODS_VERSION_MAJOR_BlockAlertsAnd_ActionSheets 1
-#define COCOAPODS_VERSION_MINOR_BlockAlertsAnd_ActionSheets 0
-#define COCOAPODS_VERSION_PATCH_BlockAlertsAnd_ActionSheets 0
+// BlocksKit
+#define COCOAPODS_POD_AVAILABLE_BlocksKit
+#define COCOAPODS_VERSION_MAJOR_BlocksKit 1
+#define COCOAPODS_VERSION_MINOR_BlocksKit 8
+#define COCOAPODS_VERSION_PATCH_BlocksKit 2
 
 // GMGridView
 #define COCOAPODS_POD_AVAILABLE_GMGridView
@@ -26,9 +26,10 @@
 
 // HockeySDK
 #define COCOAPODS_POD_AVAILABLE_HockeySDK
-#define COCOAPODS_VERSION_MAJOR_HockeySDK 3
-#define COCOAPODS_VERSION_MINOR_HockeySDK 0
-#define COCOAPODS_VERSION_PATCH_HockeySDK 0
+// This library does not follow semantic-versioning,
+// so we were not able to define version macros.
+// Please contact the author.
+// Version: 3.5.0b2.
 
 // KSReachability
 #define COCOAPODS_POD_AVAILABLE_KSReachability
@@ -54,11 +55,11 @@
 #define COCOAPODS_VERSION_MINOR_Mantle_extobjc 2
 #define COCOAPODS_VERSION_PATCH_Mantle_extobjc 0
 
-// OBGradientView
-#define COCOAPODS_POD_AVAILABLE_OBGradientView
-#define COCOAPODS_VERSION_MAJOR_OBGradientView 1
-#define COCOAPODS_VERSION_MINOR_OBGradientView 0
-#define COCOAPODS_VERSION_PATCH_OBGradientView 0
+// Reveal-iOS-SDK
+#define COCOAPODS_POD_AVAILABLE_Reveal_iOS_SDK
+#define COCOAPODS_VERSION_MAJOR_Reveal_iOS_SDK 0
+#define COCOAPODS_VERSION_MINOR_Reveal_iOS_SDK 8
+#define COCOAPODS_VERSION_PATCH_Reveal_iOS_SDK 3
 
 // UIResponder+KeyboardCache
 #define COCOAPODS_POD_AVAILABLE_UIResponder_KeyboardCache
@@ -66,9 +67,15 @@
 #define COCOAPODS_VERSION_MINOR_UIResponder_KeyboardCache 1
 #define COCOAPODS_VERSION_PATCH_UIResponder_KeyboardCache 0
 
-// UISS
-#define COCOAPODS_POD_AVAILABLE_UISS
-#define COCOAPODS_VERSION_MAJOR_UISS 1
-#define COCOAPODS_VERSION_MINOR_UISS 1
-#define COCOAPODS_VERSION_PATCH_UISS 1
+// iOS-blur
+#define COCOAPODS_POD_AVAILABLE_iOS_blur
+#define COCOAPODS_VERSION_MAJOR_iOS_blur 0
+#define COCOAPODS_VERSION_MINOR_iOS_blur 0
+#define COCOAPODS_VERSION_PATCH_iOS_blur 2
+
+// libffi
+#define COCOAPODS_POD_AVAILABLE_libffi
+#define COCOAPODS_VERSION_MAJOR_libffi 3
+#define COCOAPODS_VERSION_MINOR_libffi 0
+#define COCOAPODS_VERSION_PATCH_libffi 13
 

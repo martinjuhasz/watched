@@ -11,6 +11,13 @@
 "ALERT_NOINTERNET_TITLE_CONTENT"        = "Sorry. You need an internet connection for this.";
 "ALERT_NOINTERNET_TITLE_OK"             = "Ok";
 
+/*================================================
+ Collections
+ ================================================*/
+
+"COLLECTIONS_TITE_ALL"          = "All Movies";
+"COLLECTIONS_TITE_UNWATCHED"    = "Unwatched";
+"COLLECTIONS_TITE_UNRATED"      = "Unrated";
 
 /*================================================
  Search
@@ -37,7 +44,7 @@
 "CONTROL_SORTMOVIES_TITLE_UNRATED"      = "Unrated ";
 "HEADER_TITLE_ZERORATING"               = "Unrated";
 "OVERVIEW_TITLE"                        = "My Movies";
-"SEARCHBAR_PLACEHOLDER"                 = "Search or add Movie";
+"SEARCHBAR_PLACEHOLDER"                 = "Search";
 "MOVIE_RESULT_ADDED"                    = "added";
 "MOVIE_RESULT_ADDING"                   = "adding...";
 "MOVIE_RESULT_FAILED"                   = "failed";
@@ -57,16 +64,18 @@
 "BUTTON_ADD_NOTE"               = "My Notes";
 "BUTTON_SIMILAR"                = "Similar Movies";
 "DETAIL_DESCRIPTION_TITLE"      = "Overview";
-"DETAIL_DIRECTOR_TITLE"         = "DIRECTOR";
-"DETAIL_STARRING_TITLE"         = "STARRING";
+"DETAIL_DIRECTOR_TITLE"         = "Director";
+"DETAIL_STARRING_TITLE"         = "Actors";
 "BUTTON_WATCHED_WATCHED"        = "watched";
 "BUTTON_WATCHED_UNWATCHED"      = "unwatched";
-"DETAIL_RUNTIME_TITLE"          = "RUNTIME";
-"DETAIL_RELEASEDATE_TITLE"      = "RELEASE";
+"DETAIL_RUNTIME_TITLE"          = "Runtime";
+"DETAIL_RELEASEDATE_TITLE"      = "Release";
 "OVERVIEW_NO-CONTENT"           = "No description available";
+"DETAIL_INFORMATION_TITLE"      = "Information";
 
 "DV_CONTROL_WATCHED"            = "WATCHED";
 "DV_CONTROL_UNWATCHED"          = "UNWATCHED";
+"DETAIL_ADDTOCOLLECTION_TITLE"  = "Add to Collection";
 
 "SHARE_BUTTON_TITLE"            = "Share Movie";
 "SHARE_BUTTON_EMAIL"            = "E-Mail";
@@ -86,7 +95,8 @@
 "HOURS_MIN"                     = "h";
 "MINUTES_MIN"                   = "min";
 
-"NOTES_TITLE"                   = "Notes";
+"NOTES_TITLE"                   = "Your Notes";
+"NOTES_EDIT_TITLE"              = "Edit";
 
 "DETAIL_POP_DELETE_TITLE"       = "Really?";
 "DETAIL_POP_DELETE_CONTENT"     = "Are you sure you want to delete this movie?";
@@ -96,6 +106,12 @@
 "DETAIL_POP_NOACCOUNT_TITLE"    = "No %@ Account";
 "DETAIL_POP_NOACCOUNT_CONTENT"  = "You haven't configured a %@ account, yet. You can add or create a %@ account in your iPhone's settings.";
 "DETAIL_POP_NOACCOUNT_OK"       = "Ok";
+
+"MORE_UNWATCHED"                = "Mark as unwatched";
+"MORE_WACHED"                   = "Mark as watched";
+"MORE_CHANGE_COVER"             = "Change cover";
+"MORE_CHANGE_BACKDROP"          = "Change backdrop";
+"MORE_REMOVE"                   = "Remove from library";
 
 
 /*================================================

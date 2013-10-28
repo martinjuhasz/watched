@@ -12,6 +12,14 @@
 "ALERT_NOINTERNET_TITLE_OK"             = "Ok";
 
 /*================================================
+ Collections
+ ================================================*/
+
+"COLLECTIONS_TITE_ALL"          = "Alle Filme";
+"COLLECTIONS_TITE_UNWATCHED"    = "Ungesehen";
+"COLLECTIONS_TITE_UNRATED"      = "Nicht bewertet";
+
+/*================================================
  Search
  ================================================*/
 
@@ -36,7 +44,7 @@
 "CONTROL_SORTMOVIES_TITLE_UNRATED"      = "Unbewertet ";
 "HEADER_TITLE_ZERORATING"               = "Unbewertet";
 "OVERVIEW_TITLE"                        = "Meine Filme";
-"SEARCHBAR_PLACEHOLDER"                 = "Suchen oder Film hinzufügen";
+"SEARCHBAR_PLACEHOLDER"                 = "Suchen";
 "MOVIE_RESULT_ADDED"                    = "hinzugefügt";
 "MOVIE_RESULT_ADDING"                   = "laden...";
 "MOVIE_RESULT_FAILED"                   = "fehlgeschlagen";
@@ -56,16 +64,18 @@
 "BUTTON_ADD_NOTE"               = "Meine Notizen";
 "BUTTON_SIMILAR"                = "Ähnliche Filme";
 "DETAIL_DESCRIPTION_TITLE"      = "Zusammenfassung";
-"DETAIL_DIRECTOR_TITLE"         = "REGISSEUR";
-"DETAIL_STARRING_TITLE"         = "HAUPTROLLEN";
+"DETAIL_DIRECTOR_TITLE"         = "Regisseur";
+"DETAIL_STARRING_TITLE"         = "Schauspieler";
 "BUTTON_WATCHED_WATCHED"        = "gesehen";
 "BUTTON_WATCHED_UNWATCHED"      = "nicht gesehen";
-"DETAIL_RUNTIME_TITLE"          = "LAUFZEIT";
-"DETAIL_RELEASEDATE_TITLE"      = "RELEASE";
+"DETAIL_RUNTIME_TITLE"          = "Laufzeit";
+"DETAIL_RELEASEDATE_TITLE"      = "Release";
 "OVERVIEW_NO-CONTENT"           = "Keine Beschreibung verfügbar";
+"DETAIL_INFORMATION_TITLE"      = "Informationen";
 
 "DV_CONTROL_WATCHED"            = "GESEHEN";
 "DV_CONTROL_UNWATCHED"          = "UNGESEHEN";
+"DETAIL_ADDTOCOLLECTION_TITLE"  = "hinzufügen";
 
 "SHARE_BUTTON_TITLE"            = "Film teilen";
 "SHARE_BUTTON_EMAIL"            = "E-Mail";
@@ -85,7 +95,8 @@
 "HOURS_MIN"                     = "h";
 "MINUTES_MIN"                   = "min";
 
-"NOTES_TITLE"                   = "Notizen";
+"NOTES_TITLE"                   = "Deine Notizen";
+"NOTES_EDIT_TITLE"              = "Bearbeiten";
 
 "DETAIL_POP_DELETE_TITLE"       = "Achtung";
 "DETAIL_POP_DELETE_CONTENT"     = "Sind sie sicher, dass sie diesen Film löschen möchten?";
@@ -95,6 +106,12 @@
 "DETAIL_POP_NOACCOUNT_TITLE"    = "kein %@ Account";
 "DETAIL_POP_NOACCOUNT_CONTENT"  = "Du hast noch keinen %@ Account konfiguriert. In den Einstellungen deines iPhone's kannst du einen %@ Account erstellen und hinzufügen.";
 "DETAIL_POP_NOACCOUNT_OK"       = "Ok";
+
+"MORE_UNWATCHED"                = "als ungesehen markieren";
+"MORE_WACHED"                   = "als gesehen markieren";
+"MORE_CHANGE_COVER"             = "Cover ändern";
+"MORE_CHANGE_BACKDROP"          = "Hintergrund ändern";
+"MORE_REMOVE"                   = "Film löschen";
 
 /*================================================
  CAST

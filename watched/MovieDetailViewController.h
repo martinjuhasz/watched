@@ -16,6 +16,7 @@
 @interface MovieDetailViewController : UIViewController<DLStarRatingDelegate, UIActionSheetDelegate, MFMailComposeViewControllerDelegate, UITableViewDataSource, UITableViewDelegate, UIAlertViewDelegate, MFMessageComposeViewControllerDelegate>
 
 @property (nonatomic, strong) Movie *movie;
+@property (nonatomic, strong) NSManagedObjectContext *currentContext;
 @property (nonatomic, strong) MovieDetailView *detailView;
 @property (nonatomic, strong) IBOutlet UIBarButtonItem *shareButton;
 

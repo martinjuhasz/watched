@@ -5,10 +5,13 @@
 
 
 extern const struct MovieAttributes {
+	__unsafe_unretained NSString *actors;
 	__unsafe_unretained NSString *adult;
+    __unsafe_unretained NSString *personsQueried;
 	__unsafe_unretained NSString *backdropPath;
 	__unsafe_unretained NSString *backdropURL;
 	__unsafe_unretained NSString *budget;
+	__unsafe_unretained NSString *director;
 	__unsafe_unretained NSString *homepage;
 	__unsafe_unretained NSString *imdbID;
 	__unsafe_unretained NSString *movieID;
@@ -27,9 +30,13 @@ extern const struct MovieAttributes {
 	__unsafe_unretained NSString *watchedOn;
 } MovieAttributes;
 
+extern const struct MovieRelationships {
+} MovieRelationships;
 
 extern const struct MovieFetchedProperties {
 } MovieFetchedProperties;
+
+
 
 
 
@@ -65,7 +72,19 @@ extern const struct MovieFetchedProperties {
 
 
 
+
+@property (nonatomic, strong) NSData* actors;
+
+
+
+//- (BOOL)validateActors:(id*)value_ error:(NSError**)error_;
+
+
+
+
+
 @property (nonatomic, strong) NSNumber* adult;
+
 
 
 @property BOOL adultValue;
@@ -75,9 +94,20 @@ extern const struct MovieFetchedProperties {
 //- (BOOL)validateAdult:(id*)value_ error:(NSError**)error_;
 
 
+@property (nonatomic, strong) NSNumber* personsQueried;
+
+@property BOOL personsQueriedValue;
+- (BOOL)personsQueriedValue;
+- (void)setPersonsQueriedValue:(BOOL)value_;
+
+//- (BOOL)validateAdult:(id*)value_ error:(NSError**)error_;
+
+
+
 
 
 @property (nonatomic, strong) NSString* backdropPath;
+
 
 
 //- (BOOL)validateBackdropPath:(id*)value_ error:(NSError**)error_;
@@ -85,7 +115,9 @@ extern const struct MovieFetchedProperties {
 
 
 
+
 @property (nonatomic, strong) NSString* backdropURL;
+
 
 
 //- (BOOL)validateBackdropURL:(id*)value_ error:(NSError**)error_;
@@ -93,7 +125,9 @@ extern const struct MovieFetchedProperties {
 
 
 
+
 @property (nonatomic, strong) NSNumber* budget;
+
 
 
 @property float budgetValue;
@@ -105,7 +139,19 @@ extern const struct MovieFetchedProperties {
 
 
 
+
+@property (nonatomic, strong) NSString* director;
+
+
+
+//- (BOOL)validateDirector:(id*)value_ error:(NSError**)error_;
+
+
+
+
+
 @property (nonatomic, strong) NSString* homepage;
+
 
 
 //- (BOOL)validateHomepage:(id*)value_ error:(NSError**)error_;
@@ -113,7 +159,9 @@ extern const struct MovieFetchedProperties {
 
 
 
+
 @property (nonatomic, strong) NSString* imdbID;
+
 
 
 //- (BOOL)validateImdbID:(id*)value_ error:(NSError**)error_;
@@ -121,7 +169,9 @@ extern const struct MovieFetchedProperties {
 
 
 
+
 @property (nonatomic, strong) NSNumber* movieID;
+
 
 
 @property int32_t movieIDValue;
@@ -133,7 +183,9 @@ extern const struct MovieFetchedProperties {
 
 
 
+
 @property (nonatomic, strong) NSString* note;
+
 
 
 //- (BOOL)validateNote:(id*)value_ error:(NSError**)error_;
@@ -141,7 +193,9 @@ extern const struct MovieFetchedProperties {
 
 
 
+
 @property (nonatomic, strong) NSString* originalTitle;
+
 
 
 //- (BOOL)validateOriginalTitle:(id*)value_ error:(NSError**)error_;
@@ -149,7 +203,9 @@ extern const struct MovieFetchedProperties {
 
 
 
+
 @property (nonatomic, strong) NSString* overview;
+
 
 
 //- (BOOL)validateOverview:(id*)value_ error:(NSError**)error_;
@@ -157,7 +213,9 @@ extern const struct MovieFetchedProperties {
 
 
 
+
 @property (nonatomic, strong) NSNumber* popularity;
+
 
 
 @property int64_t popularityValue;
@@ -169,7 +227,9 @@ extern const struct MovieFetchedProperties {
 
 
 
+
 @property (nonatomic, strong) NSString* posterPath;
+
 
 
 //- (BOOL)validatePosterPath:(id*)value_ error:(NSError**)error_;
@@ -177,7 +237,9 @@ extern const struct MovieFetchedProperties {
 
 
 
+
 @property (nonatomic, strong) NSString* posterURL;
+
 
 
 //- (BOOL)validatePosterURL:(id*)value_ error:(NSError**)error_;
@@ -185,7 +247,9 @@ extern const struct MovieFetchedProperties {
 
 
 
+
 @property (nonatomic, strong) NSNumber* rating;
+
 
 
 @property int16_t ratingValue;
@@ -197,7 +261,9 @@ extern const struct MovieFetchedProperties {
 
 
 
+
 @property (nonatomic, strong) NSDate* releaseDate;
+
 
 
 //- (BOOL)validateReleaseDate:(id*)value_ error:(NSError**)error_;
@@ -205,7 +271,9 @@ extern const struct MovieFetchedProperties {
 
 
 
+
 @property (nonatomic, strong) NSNumber* revenue;
+
 
 
 @property float revenueValue;
@@ -217,7 +285,9 @@ extern const struct MovieFetchedProperties {
 
 
 
+
 @property (nonatomic, strong) NSNumber* runtime;
+
 
 
 @property float runtimeValue;
@@ -229,7 +299,9 @@ extern const struct MovieFetchedProperties {
 
 
 
+
 @property (nonatomic, strong) NSString* tagline;
+
 
 
 //- (BOOL)validateTagline:(id*)value_ error:(NSError**)error_;
@@ -237,7 +309,9 @@ extern const struct MovieFetchedProperties {
 
 
 
+
 @property (nonatomic, strong) NSString* title;
+
 
 
 //- (BOOL)validateTitle:(id*)value_ error:(NSError**)error_;
@@ -245,7 +319,9 @@ extern const struct MovieFetchedProperties {
 
 
 
+
 @property (nonatomic, strong) NSDate* watchedOn;
+
 
 
 //- (BOOL)validateWatchedOn:(id*)value_ error:(NSError**)error_;
@@ -259,11 +335,15 @@ extern const struct MovieFetchedProperties {
 
 @interface _Movie (CoreDataGeneratedAccessors)
 
-
-
 @end
 
 @interface _Movie (CoreDataGeneratedPrimitiveAccessors)
+
+
+- (NSData*)primitiveActors;
+- (void)setPrimitiveActors:(NSData*)value;
+
+
 
 
 - (NSNumber*)primitiveAdult;
@@ -271,6 +351,13 @@ extern const struct MovieFetchedProperties {
 
 - (BOOL)primitiveAdultValue;
 - (void)setPrimitiveAdultValue:(BOOL)value_;
+
+
+- (NSNumber*)primitivePersonsQueried;
+- (void)setPrimitivePersonsQueried:(NSNumber*)value;
+
+- (BOOL)primitivePersonsQueriedValue;
+- (void)setPrimitivePersonsQueriedValue:(BOOL)value_;
 
 
 
@@ -292,6 +379,12 @@ extern const struct MovieFetchedProperties {
 
 - (float)primitiveBudgetValue;
 - (void)setPrimitiveBudgetValue:(float)value_;
+
+
+
+
+- (NSString*)primitiveDirector;
+- (void)setPrimitiveDirector:(NSString*)value;
 
 
 

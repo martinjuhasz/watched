@@ -131,7 +131,7 @@ const int kSimilarMovieTableAddingCellTag = 2004;
         totalPages = [[results objectForKey:@"total_pages"] intValue];
         
         for (NSDictionary *movie in movies) {
-            SearchResult *aResult = [SearchResult instanceFromDictionary:movie];
+            SearchResult *aResult = [SearchResult searchResultFromJSONDictionary:movie];
             [self.searchResults addObject:aResult];
         }
         [self.tableView reloadData];
@@ -159,8 +159,7 @@ const int kSimilarMovieTableAddingCellTag = 2004;
     
     // custom accecory control
     NSManagedObjectContext *mainContext = [[MoviesDataModel sharedDataModel] mainContext];
-    int movieID = [[aMovie searchResultId] intValue];
-    Movie *foundMovie = [Movie movieWithServerId:movieID usingManagedObjectContext:mainContext];
+    Movie *foundMovie = [Movie movieWithMovieID:[aMovie searchResultId] usingManagedObjectContext:mainContext];
     if([self.addedSearchResults containsObject:aMovie]) {
         cell.accessoryView = [MJLoadingAccessoryControl accessory];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -187,31 +186,31 @@ const int kSimilarMovieTableAddingCellTag = 2004;
 
 - (void)saveMovieToDatabase:(SearchResult*)aSearchResult atIndexPath:(NSIndexPath*)oldIndexPath
 {
-    [self.tableView beginUpdates];
-    [self.addedSearchResults addObject:aSearchResult];
-    [self.tableView reloadRowsAtIndexPaths:@[oldIndexPath] withRowAnimation:UITableViewRowAnimationNone];
-    [self.tableView endUpdates];
-    
- 
-    OnlineDatabaseBridge *bridge = [[OnlineDatabaseBridge alloc] init];
-    AFJSONRequestOperation *operation = [bridge saveSearchResultAsMovie:aSearchResult completion:^(Movie *movie) {
-        aSearchResult.added = YES;
-        [self.addedSearchResults removeObject:aSearchResult];
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self.tableView beginUpdates];
-            [self.tableView reloadRowsAtIndexPaths:@[oldIndexPath] withRowAnimation:UITableViewRowAnimationNone];
-            [self.tableView endUpdates];
-        });
-    } failure:^(NSError *error) {
-        DebugLog("%@", [error localizedDescription]);
-        [self.addedSearchResults removeObject:aSearchResult];
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self.tableView beginUpdates];
-            [self.tableView reloadRowsAtIndexPaths:@[oldIndexPath] withRowAnimation:UITableViewRowAnimationNone];
-            [self.tableView endUpdates];
-        });
-    }];
-    [operation start];
+//    [self.tableView beginUpdates];
+//    [self.addedSearchResults addObject:aSearchResult];
+//    [self.tableView reloadRowsAtIndexPaths:@[oldIndexPath] withRowAnimation:UITableViewRowAnimationNone];
+//    [self.tableView endUpdates];
+//    
+// 
+//    OnlineDatabaseBridge *bridge = [[OnlineDatabaseBridge alloc] init];
+//    AFJSONRequestOperation *operation = [bridge saveSearchResultAsMovie:aSearchResult completion:^(Movie *movie) {
+//        aSearchResult.added = YES;
+//        [self.addedSearchResults removeObject:aSearchResult];
+//        dispatch_async(dispatch_get_main_queue(), ^{
+//            [self.tableView beginUpdates];
+//            [self.tableView reloadRowsAtIndexPaths:@[oldIndexPath] withRowAnimation:UITableViewRowAnimationNone];
+//            [self.tableView endUpdates];
+//        });
+//    } failure:^(NSError *error) {
+//        DebugLog("%@", [error localizedDescription]);
+//        [self.addedSearchResults removeObject:aSearchResult];
+//        dispatch_async(dispatch_get_main_queue(), ^{
+//            [self.tableView beginUpdates];
+//            [self.tableView reloadRowsAtIndexPaths:@[oldIndexPath] withRowAnimation:UITableViewRowAnimationNone];
+//            [self.tableView endUpdates];
+//        });
+//    }];
+//    [operation start];
 }
 
 
@@ -239,8 +238,7 @@ const int kSimilarMovieTableAddingCellTag = 2004;
     
     SearchResult *aMovie = [self.searchResults objectAtIndex:(NSUInteger)indexPath.row];
     NSManagedObjectContext *mainContext = [[MoviesDataModel sharedDataModel] mainContext];
-    int movieID = [[aMovie searchResultId] intValue];
-    Movie *foundMovie = [Movie movieWithServerId:movieID usingManagedObjectContext:mainContext];
+    Movie *foundMovie = [Movie movieWithMovieID:[aMovie searchResultId] usingManagedObjectContext:mainContext];
     if(foundMovie == nil && ![self.addedSearchResults containsObject:aMovie]) {
         [self saveMovieToDatabase:aMovie atIndexPath:indexPath];
     } else if(foundMovie) {

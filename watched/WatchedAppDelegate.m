@@ -12,7 +12,6 @@
 #import "UIViewController+MJPopupViewController.h"
 #import "MJCustomTableViewCell.h"
 #import "WatchedWebBrowser.h"
-#import "AddMovieViewController.h"
 #import "MJInternetConnection.h"
 #import "WatchedWebBrowser.h"
 #import "MJWatchedNavigationBar.h"
@@ -21,16 +20,14 @@
 #import <Social/Social.h>
 #import "MJWatchedNavigationController.h"
 #import "WatchedStyledViewController.h"
-#import "UISS.h"
 #import "OnlineDatabaseBridge.h"
 #import "AFJSONRequestOperation.h"
 #import <HockeySDK/HockeySDK.h>
 #import "MJUWatchedStyle.h"
 
-@interface WatchedAppDelegate ()<AddMovieViewDelegate> {
+@interface WatchedAppDelegate () {
 }
 
-@property (strong, nonatomic) UISS *uiss;
 
 @end
 
@@ -41,8 +38,13 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     [MJUWatchedStyle setupDefaultStyle];
-//    self.uiss = [UISS configureWithDefaultJSONFile];
-    //self.uiss.statusWindowEnabled = YES;
+    
+//    [[NSNotificationCenter defaultCenter] addObserverForName:AFNetworkingOperationDidStartNotification
+//                                                      object:nil
+//                             i                          queue:nil
+//                                                  usingBlock:^(NSNotification *note) {
+//                                                      NSLog(@"Operation Started: %@", [note object]);
+//                                                  }];
     
     [[BITHockeyManager sharedHockeyManager] configureWithIdentifier:@"a6619c8d0d092c150c4a5555ae7f14cb" delegate:self];
     [[BITHockeyManager sharedHockeyManager] startManager];
@@ -106,21 +108,21 @@
 
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
 {
-    NSString *serverIDString = [url host];
-    if(!serverIDString) return NO;
-    
-    int serverID = [serverIDString intValue];
-    if(!serverID || serverID <= 0) return NO;
-    
-    OnlineDatabaseBridge *bridge = [[OnlineDatabaseBridge alloc] init];
-    AFJSONRequestOperation *operation = [bridge saveMovieForID:[NSNumber numberWithInt:serverID] completion:^(Movie *movie) {
-        
-    } failure:^(NSError *error) {
-        DebugLog("%@", [error localizedDescription]);
-    }];
-    [operation start];
-    
-    return YES;
+//    NSString *serverIDString = [url host];
+//    if(!serverIDString) return NO;
+//    
+//    int serverID = [serverIDString intValue];
+//    if(!serverID || serverID <= 0) return NO;
+//    
+//    OnlineDatabaseBridge *bridge = [[OnlineDatabaseBridge alloc] init];
+//    AFJSONRequestOperation *operation = [bridge saveMovieForID:[NSNumber numberWithInt:serverID] completion:^(Movie *movie) {
+//        
+//    } failure:^(NSError *error) {
+//        DebugLog("%@", [error localizedDescription]);
+//    }];
+//    [operation start];
+//    
+//    return YES;
 }
 
 @end

@@ -1,51 +1,52 @@
 PODS:
   - AFNetworking (1.3.2)
-  - BlockAlertsAnd-ActionSheets (1.0.0)
+  - BlocksKit (1.8.2):
+    - libffi
   - GMGridView (1.1.1)
-  - HockeySDK (3.0.0)
+  - HockeySDK (3.5.0b2)
+  - iOS-blur (0.0.2)
   - KSReachability (0.0.2)
+  - libffi (3.0.13)
   - Mantle (1.2):
     - Mantle/extobjc
   - Mantle/extobjc (1.2)
   - MJStarRating (1.0)
-  - OBGradientView (1.0)
+  - Reveal-iOS-SDK (0.8.3)
   - UIResponder+KeyboardCache (0.1)
-  - UISS (1.1.1)
 
 DEPENDENCIES:
   - AFNetworking (from `https://raw.github.com/AFNetworking/AFNetworking/master/AFNetworking.podspec`)
-  - BlockAlertsAnd-ActionSheets (from `BlockAlertsAnd-ActionSheets.podspec`)
+  - BlocksKit
   - GMGridView
-  - HockeySDK
+  - HockeySDK (from `https://raw.github.com/bitstadium/HockeySDK-iOS/develop/HockeySDK.podspec`)
+  - iOS-blur
   - KSReachability (from `KSReachability.podspec`)
   - Mantle
   - MJStarRating (from `MJStarRating.podspec`)
-  - OBGradientView (from `OBGradientView.podspec`)
+  - Reveal-iOS-SDK
   - UIResponder+KeyboardCache
-  - UISS
 
 EXTERNAL SOURCES:
   AFNetworking:
     :podspec: https://raw.github.com/AFNetworking/AFNetworking/master/AFNetworking.podspec
-  BlockAlertsAnd-ActionSheets:
-    :podspec: BlockAlertsAnd-ActionSheets.podspec
+  HockeySDK:
+    :podspec: https://raw.github.com/bitstadium/HockeySDK-iOS/develop/HockeySDK.podspec
   KSReachability:
     :podspec: KSReachability.podspec
   MJStarRating:
     :podspec: MJStarRating.podspec
-  OBGradientView:
-    :podspec: OBGradientView.podspec
 
 SPEC CHECKSUMS:
   AFNetworking: 63ac7e0bd43eb68897322f906babd9236e789390
-  BlockAlertsAnd-ActionSheets: c225612e8772dfc8099771300ad5d2616012e793
+  BlocksKit: 7396526b0816734103f6133fbb1a520c8b04e80c
   GMGridView: a17a31f010990eb8f802abb4cab50e6e03e993ea
-  HockeySDK: 286d86c6e89a35de7f3e4f3c2879a07185ee0918
+  HockeySDK: e69df6b9ac6e5cca254caf869e61e680629e2955
+  iOS-blur: 1f211234742ce078bf2ab78f5237a63b18b5ed0f
   KSReachability: 1571cf577fa73bd34ececf6383b617254eb9961c
+  libffi: 64ef39353e747bb2b25e1026afd96a157bf9231c
   Mantle: f5b5cba1b112273fe3bb4433cdcf1da76203c2b4
   MJStarRating: 4bb9664d7ad1497253c015e27068db51bd36cd45
-  OBGradientView: 262d7b1f392378f0072876e23fd16dee0cc45dce
+  Reveal-iOS-SDK: 0d58ea01260eb109b924a09631d9cc8dd96e12c4
   UIResponder+KeyboardCache: 4e646d140212f8ee43f1560c11614634ad6dd063
-  UISS: 21e28c8c0c2c0bc4634025b8c4484df7ffe6808d
 
-COCOAPODS: 0.20.1
+COCOAPODS: 0.25.0

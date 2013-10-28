@@ -16,6 +16,8 @@
 #import "MJUCastDetailViewController.h"
 #import "MJUCrew.h"
 #import "MJUCast.h"
+#import "UIColor+Additions.h"
+#import "AMBlurView.h"
 
 @interface MovieCastsTableViewController ()
 @end
@@ -48,9 +50,9 @@ const int kMovieCastCellProfileImageView = 200;
     
     self.title = NSLocalizedString(@"CAST_TITLE", nil);
     
-    UIView *backgroundView = [[UIView alloc] init];
-    backgroundView.backgroundColor = HEXColor(DEFAULT_COLOR_BG);
-    self.tableView.backgroundView = backgroundView;
+//    UIView *backgroundView = [[UIView alloc] init];
+//    backgroundView.backgroundColor = HEXColor(DEFAULT_COLOR_BG);
+//    self.tableView.backgroundView = backgroundView;
     
     [self.movie getPersonsWithCompletion:^(NSArray *casts, NSArray *crews) {
         [self.tableView reloadData];
@@ -122,7 +124,7 @@ const int kMovieCastCellProfileImageView = 200;
     UIImageView *profileImageView = (UIImageView *)[cell viewWithTag:kMovieCastCellProfileImageView];
     
     NSURL *imageURL = [[OnlineMovieDatabase sharedMovieDatabase] getImageURLForImagePath:currentPerson.profilePath imageType:ImageTypeProfile nearWidth:200.0f];
-    [profileImageView setImageWithURL:imageURL placeholderImage:[UIImage imageNamed:@"cv_actor-placeholder.png"]];
+    [profileImageView setImageWithURL:imageURL placeholderImage:[UIImage imageNamed:@"actor-thumb-placeholder.png"]];
     characterLabel.text = currentPerson.job;
     nameLabel.text = currentPerson.name;
     
@@ -139,15 +141,20 @@ const int kMovieCastCellProfileImageView = 200;
 
 - (UIView *) tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-	UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, tableView.bounds.size.width, 43.0f)];
+    UIView *headerView = [UIView new];
+    [headerView setBackgroundColor:[UIColor whiteColor]];
+    [headerView setFrame:CGRectMake(0.0f, 0.0f, tableView.bounds.size.width, 43.0f)];
 	tableView.sectionHeaderHeight = headerView.frame.size.height;
-	UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(20.0f, 10.0f, headerView.frame.size.width - 20.0f, 22.0f)];
+    
+	UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(15.0f, 15.0f, headerView.frame.size.width - 20.0f, 22.0f)];
 	label.text = [self tableView:tableView titleForHeaderInSection:section];
-	label.font = [UIFont boldSystemFontOfSize:17.0f];
-	label.shadowOffset = CGSizeMake(0.0f, 1.0f);
-    label.textColor = [UIColor whiteColor];
-	label.shadowColor = [UIColor colorWithRed:0.0f green:0.0f blue:0.0f alpha:0.44f];
+	label.font = [UIFont fontWithName:@"AvenirNext-DemiBold" size:17.0f];
+    label.textColor = [UIColor colorWithHexString:@"8C8C8C"];
 	label.backgroundColor = [UIColor clearColor];
+    
+//    UIView *borderView = [[UIView alloc] initWithFrame:CGRectMake(15.0f, headerView.bounds.size.height-0.5f, headerView.bounds.size.width-15.0f, 0.5f)];
+//    [borderView setBackgroundColor:[UIColor colorWithHexString:@"d2d1d5"]];
+//    [headerView addSubview:borderView];
     
 	[headerView addSubview:label];
 	return headerView;
@@ -156,6 +163,11 @@ const int kMovieCastCellProfileImageView = 200;
 - (CGFloat)tableView:(UITableView *)aTableView heightForHeaderInSection:(NSInteger)section
 {
     return 43.0f;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
+{
+    return 0.0001f;
 }
 
 - (UITableViewCell*)defaultCellAtIndexPath:(NSIndexPath *)indexPath

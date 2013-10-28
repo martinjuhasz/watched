@@ -1,0 +1,19 @@
+
+
+body {
+	background: #DCDCDC;
+	font: 14px/22px "Helvetica Neue", sans-serif;
+	color: #666666;
+	text-shadow: 0 1px 0 rgba(255,255,255,.8);
+}
+
+h1 {
+	color: #000000;
+    line-height: 32px;
+}
+
+a {
+	color: #960000;
+	border-radius: 4px;
+	text-decoration: none;
+}

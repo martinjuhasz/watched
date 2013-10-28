@@ -12,7 +12,7 @@
 @class SearchResult;
 @class AFJSONRequestOperation;
 
-typedef void (^OnlineBridgeCompletionBlock)(Movie *);
+typedef void (^OnlineBridgeCompletionBlock)(Movie *aMovie);
 typedef void (^OnlineBridgeFailureBlock)(NSError *);
 
 // Error Handling
@@ -27,9 +27,11 @@ typedef enum {
 
 @interface OnlineDatabaseBridge : NSObject
 
-- (void)saveSearchResultDictAsMovie:(NSDictionary *)resultDict completion:(OnlineBridgeCompletionBlock)aCompletionBlock failure:(OnlineBridgeFailureBlock)aFailureBlock;
-
-- (AFJSONRequestOperation*)saveSearchResultAsMovie:(SearchResult*)result completion:(OnlineBridgeCompletionBlock)aCompletionBlock failure:(OnlineBridgeFailureBlock)aFailureBlock;
+//- (void)saveSearchResultDictAsMovie:(NSDictionary *)resultDict completion:(OnlineBridgeCompletionBlock)aCompletionBlock failure:(OnlineBridgeFailureBlock)aFailureBlock;
+//
+//- (AFJSONRequestOperation*)saveSearchResultAsMovie:(SearchResult*)result completion:(OnlineBridgeCompletionBlock)aCompletionBlock failure:(OnlineBridgeFailureBlock)aFailureBlock;
+- (void)saveMovie:(Movie*)movie completion:(OnlineBridgeCompletionBlock)completionBlock failure:(OnlineBridgeFailureBlock)aFailureBlock;
+- (void)getMovieFromMovieID:(NSNumber*)movieID completion:(OnlineBridgeCompletionBlock)completionBlock failure:(OnlineBridgeFailureBlock)aFailureBlock;
 
 - (void)setBackdropWithImagePath:(NSString*)imagePath toMovie:(Movie*)aMovie success:(void (^)(void))successBlock failure:(OnlineBridgeFailureBlock)failureBlock;
 
@@ -39,5 +41,5 @@ typedef enum {
 
 - (void)updateMovie:(Movie*)movie withSearchResultDict:(NSDictionary*)movieDict completion:(OnlineBridgeCompletionBlock)aCompletionBlock failure:(OnlineBridgeFailureBlock)aFailureBlock;
 
-- (AFJSONRequestOperation*)saveMovieForID:(NSNumber*)movieID completion:(OnlineBridgeCompletionBlock)aCompletionBlock failure:(OnlineBridgeFailureBlock)aFailureBlock;
+//- (AFJSONRequestOperation*)saveMovieForID:(NSNumber*)movieID completion:(OnlineBridgeCompletionBlock)aCompletionBlock failure:(OnlineBridgeFailureBlock)aFailureBlock;
 @end

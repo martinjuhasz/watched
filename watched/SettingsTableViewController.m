@@ -15,7 +15,6 @@
 #import "AFJSONRequestOperation.h"
 #import "MJCustomTableViewCell.h"
 #import "MJCustomAccessoryControl.h"
-#import "BlockAlertView.h"
 #import "UIViewController+MJPopupViewController.h"
 #import "LoadingPopupViewController.h"
 #import "PopupLoadingView.h"
@@ -173,10 +172,10 @@
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
-    if(section == 0) return NSLocalizedString(@"SETTINGS_HEADER_SETTINGS", nil);
-    if(section == 1) return NSLocalizedString(@"SETTINGS_HEADER_CONTACT", nil);
+    if(section == 0) return [NSLocalizedString(@"SETTINGS_HEADER_SETTINGS", nil) uppercaseString];
+    if(section == 1) return [NSLocalizedString(@"SETTINGS_HEADER_CONTACT", nil) uppercaseString];
     //if(section == 2) return NSLocalizedString(@"SETTINGS_HEADER_OPTOUT", nil);
-    if(section == 2) return NSLocalizedString(@"SETTINGS_HEADER_BETA", nil);
+    if(section == 2) return [NSLocalizedString(@"SETTINGS_HEADER_BETA", nil) uppercaseString];
     return nil;
 }
 
@@ -193,7 +192,7 @@
 	UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(11.0f, 10.0f, headerView.frame.size.width - 20.0f, 22.0f)];
 	label.text = [self tableView:tableView titleForHeaderInSection:section];
 	label.font = [UIFont fontWithName:@"AvenirNext-Regular" size:14.0f];
-    label.textColor = [UIColor colorWithHexString:@"8C8C8C"];
+    label.textColor = [UIColor colorWithHexString:@"787878"];
 	label.backgroundColor = [UIColor clearColor];
     
 	[headerView addSubview:label];
@@ -225,12 +224,12 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    return 43.0f;
+    return 34.0f;
 }
 
 - (float)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 43.0f;
+    return 44.0f;
 }
 
 
@@ -246,14 +245,14 @@
         if(indexPath.row == 0)
         {
             
-            BlockAlertView *alert = [BlockAlertView alertWithTitle:NSLocalizedString(@"SETTINGS_POP_RESET_TITLE", nil)
-                                                           message:NSLocalizedString(@"SETTINGS_POP_RESET_CONTENT", nil)];
-            
-            [alert setCancelButtonWithTitle:NSLocalizedString(@"SETTINGS_POP_RESET_CANCEL", nil) block:nil];
-            [alert setDestructiveButtonWithTitle:NSLocalizedString(@"SETTINGS_POP_RESET_OK", nil) block:^{
-                [self removeAllMovies];
-            }];
-            [alert show];
+//            BlockAlertView *alert = [BlockAlertView alertWithTitle:NSLocalizedString(@"SETTINGS_POP_RESET_TITLE", nil)
+//                                                           message:NSLocalizedString(@"SETTINGS_POP_RESET_CONTENT", nil)];
+//            
+//            [alert setCancelButtonWithTitle:NSLocalizedString(@"SETTINGS_POP_RESET_CANCEL", nil) block:nil];
+//            [alert setDestructiveButtonWithTitle:NSLocalizedString(@"SETTINGS_POP_RESET_OK", nil) block:^{
+//                [self removeAllMovies];
+//            }];
+//            [alert show];
             
         } else if (indexPath.row == 1) {
             [self refreshAllMovies];
@@ -364,11 +363,11 @@
     [standardUserDefaults synchronize];
 
     if(!aSwitch.on) {
-        BlockAlertView *alert = [BlockAlertView alertWithTitle:NSLocalizedString(@"SETTINGS_POP_OPTOUT_TITLE", nil)
-                                                       message:NSLocalizedString(@"SETTINGS_POP_OPTOUT_CONTENT", nil)];
-        
-        [alert setCancelButtonWithTitle:NSLocalizedString(@"SETTINGS_POP_OPTOUT_CANCEL", nil) block:nil];
-        [alert show];
+//        BlockAlertView *alert = [BlockAlertView alertWithTitle:NSLocalizedString(@"SETTINGS_POP_OPTOUT_TITLE", nil)
+//                                                       message:NSLocalizedString(@"SETTINGS_POP_OPTOUT_CONTENT", nil)];
+//        
+//        [alert setCancelButtonWithTitle:NSLocalizedString(@"SETTINGS_POP_OPTOUT_CANCEL", nil) block:nil];
+//        [alert show];
     }
     
     
@@ -615,36 +614,36 @@
                              [NSNumber numberWithInt:96313],
                              nil];
         
-        dispatch_group_t group = dispatch_group_create();
-        
-        float total = movieIDS.count; 
-        __block int current = 0;
-        
-        for (NSNumber *currentMovie in movieIDS) {
-            dispatch_group_enter(group);
-            AFJSONRequestOperation *operation = [bridge saveMovieForID:currentMovie completion:^(Movie *returnedMovie) {
-                current++;
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    NSString *progress = [NSString stringWithFormat:@"%d / %.0f", current, total];
-                    _loadingController.titleLabel.text = progress;
-                });
-                dispatch_group_leave(group);
-            } failure:^(NSError *anError) {
-                current++;
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    NSString *progress = [NSString stringWithFormat:@"%d / %.0f", current, total];
-                    _loadingController.titleLabel.text = progress;
-                });
-                //DebugLog("%@",[anError localizedDescription]);
-                dispatch_group_leave(group);
-            }];
-            [queue addOperation:operation];
-            
-        }
-        [queue setSuspended:NO];
-        
-        // wait until everything is finished
-        dispatch_group_wait(group, DISPATCH_TIME_FOREVER);
+//        dispatch_group_t group = dispatch_group_create();
+//        
+//        float total = movieIDS.count; 
+//        __block int current = 0;
+//        
+//        for (NSNumber *currentMovie in movieIDS) {
+//            dispatch_group_enter(group);
+//            AFJSONRequestOperation *operation = [bridge saveMovieForID:currentMovie completion:^(Movie *returnedMovie) {
+//                current++;
+//                dispatch_async(dispatch_get_main_queue(), ^{
+//                    NSString *progress = [NSString stringWithFormat:@"%d / %.0f", current, total];
+//                    _loadingController.titleLabel.text = progress;
+//                });
+//                dispatch_group_leave(group);
+//            } failure:^(NSError *anError) {
+//                current++;
+//                dispatch_async(dispatch_get_main_queue(), ^{
+//                    NSString *progress = [NSString stringWithFormat:@"%d / %.0f", current, total];
+//                    _loadingController.titleLabel.text = progress;
+//                });
+//                //DebugLog("%@",[anError localizedDescription]);
+//                dispatch_group_leave(group);
+//            }];
+//            [queue addOperation:operation];
+//            
+//        }
+//        [queue setSuspended:NO];
+//        
+//        // wait until everything is finished
+//        dispatch_group_wait(group, DISPATCH_TIME_FOREVER);
         //dispatch_release(group);
         dispatch_async(dispatch_get_main_queue(), ^{
             [self closeLoadingController];
