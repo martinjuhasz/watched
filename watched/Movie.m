@@ -2,6 +2,7 @@
 #import "Trailer.h"
 #import "Crew.h"
 #import "NSDictionary+ObjectForKeyOrNil.h"
+#import "NSManagedObject+Additions.h"
 
 #define kBackdropFolder @"backdrops"
 #define kPosterFolder @"posters"
@@ -26,9 +27,9 @@
 #pragma mark -
 #pragma mark General
 
-+ (Movie *)movieWithServerId:(NSInteger)serverId usingManagedObjectContext:(NSManagedObjectContext *)moc {
++ (Movie *)movieWithMovieID:(NSNumber*)movieID usingManagedObjectContext:(NSManagedObjectContext *)moc {
     NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:[Movie entityName]];
-    [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"movieID = %d", serverId]];
+    [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"movieID = %d", [movieID integerValue]]];
     [fetchRequest setFetchLimit:1];
     
     NSError *error = nil;
@@ -250,6 +251,12 @@
 ////////////////////////////////////////////////////////////////////////////
 #pragma mark -
 #pragma mark Ghost Attributes
+
+-(MJUMovieState)movieState
+{
+    if([self isNew]) return MJUMovieStateNotAdded;
+    return MJUMovieStateAdded;
+}
 
 -(NSString*)releaseDateFormatted
 {

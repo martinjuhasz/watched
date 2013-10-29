@@ -5,6 +5,11 @@
 
 @interface Movie : _Movie {}
 
+typedef NS_ENUM(NSInteger, MJUMovieState) {
+    MJUMovieStateAdded,
+    MJUMovieStateNotAdded
+};
+
 @property (nonatomic, strong) UIImage *backdrop;
 @property (nonatomic, strong) UIImage *poster;
 @property (nonatomic, strong) UIImage *posterThumbnail;
@@ -14,8 +19,9 @@
 @property (readonly, nonatomic) NSArray *sortedCasts;
 @property (readonly, nonatomic) NSArray *sortedCrews;
 @property (readonly, nonatomic) Crew *director;
+@property (nonatomic, assign, readonly) MJUMovieState movieState;
 
-+ (Movie *)movieWithServerId:(NSInteger)serverId usingManagedObjectContext:(NSManagedObjectContext *)moc;
++ (Movie *)movieWithMovieID:(NSNumber*)movieID usingManagedObjectContext:(NSManagedObjectContext *)moc;
 + (BOOL)movieWithServerIDExists:(NSInteger)serverID usingManagedObjectContext:(NSManagedObjectContext *)moc;
 - (void)updateAttributes:(NSDictionary *)attributes;
 
