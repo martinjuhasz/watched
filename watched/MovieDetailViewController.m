@@ -230,11 +230,12 @@
     
     
     // DEBUG
-    if(self.movie.director) {
-        self.detailView.directorLabel.text = self.movie.director;
-    } else {
-        self.detailView.directorLabel.text = @"-";
-    }
+    self.detailView.directorLabel.text = @"-";
+//    if(self.movie.director) {
+//        self.detailView.directorLabel.text = self.movie.director;
+//    } else {
+//        self.detailView.directorLabel.text = @"-";
+//    }
     
 //    NSArray *actors = [NSKeyedUnarchiver unarchiveObjectWithData:self.movie.actors];
 //    if(actors.count > 0) {
