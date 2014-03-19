@@ -1,0 +1,119 @@
+{
+    "Variables": {
+        "tableBackgroundColor": "#5A5A5A",
+        "seperatorColor": "#2C2C2C",
+        "watchedNavigationBar": {
+        	"titleTextAttributes": {
+        		"font": ["HelveticaNeue-Bold", 18],
+    			"textColor": "#FFFFFF",
+    			"textShadowColor": [0, 0, 0, 0.44],
+    			"textShadowOffset": [0, -1]
+        	},
+    		"backgroundImage:normal": "g_bg_navbar.png",
+    	},
+    	"watchedSearchBar": {
+    		"backgroundImage": "g_bg_searchbar.png",
+    		"UIBarButtonItem": {
+    			"backgroundImage:normal:default": ["g_searchbutton.png", 15, 4, 15, 4],
+    			"backgroundImage:selected:default": ["g_searchbutton_active.png", 15, 4, 15, 4],
+    			"titleTextAttributes:normal": {
+    				"textShadowOffset": [0, -1],
+    			},
+    			"titlePositionAdjustment:normal": [0, 1]
+    		}
+    	},
+    	"watchedBarButtonItem": {
+    		"backButtonBackgroundImage:normal:default": ["g_backbutton.png", 0, 13, 0, 4],
+    		"backButtonBackgroundImage:highlighted:default": ["g_backbutton_active.png", 0, 13, 0, 4],
+            "backButtonTitlePositionAdjustment:default": [0, 0],
+    		"backgroundImage:normal:default": ["g_barbutton.png", 15, 4, 15, 4],
+    		"backgroundImage:selected:default": ["g_barbutton_active.png", 15, 4, 15, 4],
+    		"titleTextAttributes:normal": {
+    			"font": ["HelveticaNeue-Bold", 12],
+    			"textColor": "#FFFFFF",
+    			"textShadowColor": [0, 0, 0, 0.44],
+    			"textShadowOffset": [0, -1]
+    		},
+            "titlePositionAdjustment:default": [0, 1]
+    		
+    	}
+    },
+    
+    "UITableView": {
+        "backgroundColor": "$tableBackgroundColor",
+        "separatorColor": "$seperatorColor"
+    },
+
+    "UIToolbar": {
+    	"backgroundImage:any:normal": "g_bg_navbar.png"
+    },
+
+    "UISegmentedControl": {
+    	"backgroundImage:normal:default": ["mv_segmented.png", 0, 4, 0, 4],
+    	"backgroundImage:selected:default": ["mv_segmented_active.png", 0, 14, 0, 14],
+    	"dividerImage:normal:normal:default": "mv_segmented-dv-nn.png",
+    	"dividerImage:selected:normal:default": "mv_segmented-dv-an.png",
+    	"dividerImage:normal:selected:default": "mv_segmented-dv-na.png",
+        "titleTextAttributes:normal": {
+            "font": ["HelveticaNeue-Bold", 12],
+            "textColor": "#FFFFFF",
+            "textShadowColor": [140, 0, 0],
+            "textShadowOffset": [0, -1]
+        },
+        "titleTextAttributes:selected": {
+            "font": ["HelveticaNeue-Bold", 12],
+            "textColor": "#FFFFFF",
+            "textShadowColor": [80, 0, 0],
+            "textShadowOffset": [0, 1]
+        }
+    },
+    
+    "MovieDetailViewController": {
+        "UISegmentedControl": {
+            "titleTextAttributes:normal": {
+                "font": ["HelveticaNeue-Bold", 12],
+                "textColor": "#FFFFFF",
+                "textShadowColor": [0, 0, 0, 0.22],
+                "textShadowOffset": [0, -1]
+            },
+            "titleTextAttributes:selected": {
+                "font": ["HelveticaNeue-Bold", 12],
+                "textColor": "#FFFFFF",
+                "textShadowColor": [0, 0, 0, 0.33],
+                "textShadowOffset": [0, -1]
+            }
+        }
+    },
+
+    "UISwitch": {
+    	"onImage": "g_uiswitch_bg_on.png"
+    },
+
+    "WatchedWebBrowser": {
+    	"UIToolbar": {
+    		"backgroundImage:any:normal": "g_browser.png"
+    	}
+    },
+
+    "MJWatchedNavigationController": {
+    	"UINavigationBar": "$watchedNavigationBar",
+    	"UISearchBar": "$watchedSearchBar",
+    	"UIBarButtonItem": "$watchedBarButtonItem"
+    },
+
+    "WatchedStyledViewController": {
+    	"UINavigationBar": "$watchedNavigationBar",
+    	"UISearchBar": "$watchedSearchBar",
+    	"UIBarButtonItem": "$watchedBarButtonItem"
+    },
+
+    "AddMovieViewController": {
+    	"UINavigationBar": {
+    		"backgroundImage:normal": ["pv_bg_navbar.png", 16, 12, 7, 12]
+    	},
+    	"UIToolbar": {
+    		"backgroundImage:any:normal": ["pv_bg_navbar.png", 16, 12, 7, 12]
+    	}
+    }
+
+}
