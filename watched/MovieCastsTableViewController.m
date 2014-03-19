@@ -54,12 +54,6 @@ const int kMovieCastCellProfileImageView = 200;
 //    backgroundView.backgroundColor = HEXColor(DEFAULT_COLOR_BG);
 //    self.tableView.backgroundView = backgroundView;
     
-    [self.movie getPersonsWithCompletion:^(NSArray *casts, NSArray *crews) {
-        [self.tableView reloadData];
-    } error:^(NSError *error) {
-        
-    }];
-    
     
 }
 
@@ -110,25 +104,25 @@ const int kMovieCastCellProfileImageView = 200;
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    MJUPerson *currentPerson;
-    if (indexPath.section == 0) {
-        currentPerson = [self.movie.casts objectAtIndex:indexPath.row];
-    } else {
-        currentPerson = [self.movie.crews objectAtIndex:indexPath.row];
-    }
-    
-    UITableViewCell *cell = [self defaultCellAtIndexPath:indexPath];
-    
-    UILabel *characterLabel = (UILabel *)[cell viewWithTag:kMovieCastCellCharacterLabel];
-    UILabel *nameLabel = (UILabel *)[cell viewWithTag:kMovieCastCellNameLabel];
-    UIImageView *profileImageView = (UIImageView *)[cell viewWithTag:kMovieCastCellProfileImageView];
-    
-    NSURL *imageURL = [[OnlineMovieDatabase sharedMovieDatabase] getImageURLForImagePath:currentPerson.profilePath imageType:ImageTypeProfile nearWidth:200.0f];
-    [profileImageView setImageWithURL:imageURL placeholderImage:[UIImage imageNamed:@"actor-thumb-placeholder.png"]];
-    characterLabel.text = currentPerson.job;
-    nameLabel.text = currentPerson.name;
-    
-    return cell;
+//    MJUPerson *currentPerson;
+//    if (indexPath.section == 0) {
+//        currentPerson = [self.movie.casts objectAtIndex:indexPath.row];
+//    } else {
+//        currentPerson = [self.movie.crews objectAtIndex:indexPath.row];
+//    }
+//    
+//    UITableViewCell *cell = [self defaultCellAtIndexPath:indexPath];
+//    
+//    UILabel *characterLabel = (UILabel *)[cell viewWithTag:kMovieCastCellCharacterLabel];
+//    UILabel *nameLabel = (UILabel *)[cell viewWithTag:kMovieCastCellNameLabel];
+//    UIImageView *profileImageView = (UIImageView *)[cell viewWithTag:kMovieCastCellProfileImageView];
+//    
+//    NSURL *imageURL = [[OnlineMovieDatabase sharedMovieDatabase] getImageURLForImagePath:currentPerson.profilePath imageType:ImageTypeProfile nearWidth:200.0f];
+//    [profileImageView setImageWithURL:imageURL placeholderImage:[UIImage imageNamed:@"actor-thumb-placeholder.png"]];
+//    characterLabel.text = currentPerson.job;
+//    nameLabel.text = currentPerson.name;
+//    
+//    return cell;
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
@@ -220,14 +214,14 @@ const int kMovieCastCellProfileImageView = 200;
         NSNumber *personID = nil;
         
         // get cast or crew
-        MJUPerson *selectedPerson;
-        if(selectedPath.section == 0) {
-            selectedPerson = [self.movie.casts objectAtIndex:selectedPath.row];
-        } else {
-            selectedPerson = [self.movie.crews objectAtIndex:selectedPath.row];
-        }
-        
-        ((MJUCastDetailViewController*)segue.destinationViewController).person = selectedPerson;
+//        MJUPerson *selectedPerson;
+//        if(selectedPath.section == 0) {
+//            selectedPerson = [self.movie.casts objectAtIndex:selectedPath.row];
+//        } else {
+//            selectedPerson = [self.movie.crews objectAtIndex:selectedPath.row];
+//        }
+//        
+//        ((MJUCastDetailViewController*)segue.destinationViewController).person = selectedPerson;
     }
 }
 

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4510" systemVersion="12F37" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="LPQ-To-nDe">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5053" systemVersion="13C64" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="LPQ-To-nDe">
     <dependencies>
         <deployment defaultVersion="1792" identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3742"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
     </dependencies>
     <scenes>
         <!--Watched Navigation Controller - Collection-->
@@ -620,6 +620,7 @@
                     <nil key="simulatedBottomBarMetrics"/>
                     <simulatedOrientationMetrics key="simulatedOrientationMetrics"/>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+                    <size key="freeformSize" width="300" height="305"/>
                     <connections>
                         <outlet property="backgroundImageView" destination="TvW-sl-GU4" id="jrt-gd-TvF"/>
                         <outlet property="displayView" destination="uQY-ml-8Zd" id="rHI-H5-S45"/>
@@ -858,6 +859,7 @@
                     <nil key="simulatedBottomBarMetrics"/>
                     <simulatedOrientationMetrics key="simulatedOrientationMetrics"/>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+                    <size key="freeformSize" width="278" height="50"/>
                     <connections>
                         <outlet property="titleLabel" destination="T3x-wf-lbQ" id="BUz-Lg-C8w"/>
                     </connections>
@@ -890,7 +892,7 @@
         <simulatedScreenMetrics key="destination"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="05f-kv-Jji"/>
+        <segue reference="QTD-zJ-yeP"/>
         <segue reference="dp1-K0-eya"/>
     </inferredMetricsTieBreakers>
 </document>

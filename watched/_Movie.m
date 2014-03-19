@@ -4,13 +4,10 @@
 #import "_Movie.h"
 
 const struct MovieAttributes MovieAttributes = {
-	.actors = @"actors",
 	.adult = @"adult",
-    .personsQueried = @"personsQueried",
 	.backdropPath = @"backdropPath",
 	.backdropURL = @"backdropURL",
 	.budget = @"budget",
-	.director = @"director",
 	.homepage = @"homepage",
 	.imdbID = @"imdbID",
 	.movieID = @"movieID",
@@ -30,6 +27,9 @@ const struct MovieAttributes MovieAttributes = {
 };
 
 const struct MovieRelationships MovieRelationships = {
+	.casts = @"casts",
+	.crews = @"crews",
+	.trailers = @"trailers",
 };
 
 const struct MovieFetchedProperties MovieFetchedProperties = {
@@ -58,48 +58,36 @@ const struct MovieFetchedProperties MovieFetchedProperties = {
 	return (MovieID*)[super objectID];
 }
 
-+ (NSSet*)keyPathsForValuesAffectingValueForKey:(NSString*)key {
++ (NSSet *)keyPathsForValuesAffectingValueForKey:(NSString *)key {
 	NSSet *keyPaths = [super keyPathsForValuesAffectingValueForKey:key];
 	
 	if ([key isEqualToString:@"adultValue"]) {
 		NSSet *affectingKey = [NSSet setWithObject:@"adult"];
 		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
-		return keyPaths;
-	}
-    if ([key isEqualToString:@"personsQueriedValue"]) {
-		NSSet *affectingKey = [NSSet setWithObject:@"personsQueried"];
-		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
-		return keyPaths;
 	}
 	if ([key isEqualToString:@"budgetValue"]) {
 		NSSet *affectingKey = [NSSet setWithObject:@"budget"];
 		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
-		return keyPaths;
 	}
 	if ([key isEqualToString:@"movieIDValue"]) {
 		NSSet *affectingKey = [NSSet setWithObject:@"movieID"];
 		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
-		return keyPaths;
 	}
 	if ([key isEqualToString:@"popularityValue"]) {
 		NSSet *affectingKey = [NSSet setWithObject:@"popularity"];
 		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
-		return keyPaths;
 	}
 	if ([key isEqualToString:@"ratingValue"]) {
 		NSSet *affectingKey = [NSSet setWithObject:@"rating"];
 		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
-		return keyPaths;
 	}
 	if ([key isEqualToString:@"revenueValue"]) {
 		NSSet *affectingKey = [NSSet setWithObject:@"revenue"];
 		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
-		return keyPaths;
 	}
 	if ([key isEqualToString:@"runtimeValue"]) {
 		NSSet *affectingKey = [NSSet setWithObject:@"runtime"];
 		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
-		return keyPaths;
 	}
 
 	return keyPaths;
@@ -108,14 +96,9 @@ const struct MovieFetchedProperties MovieFetchedProperties = {
 
 
 
-@dynamic actors;
-
-
-
-
-
-
 @dynamic adult;
+
+
 
 - (BOOL)adultValue {
 	NSNumber *result = [self adult];
@@ -134,31 +117,6 @@ const struct MovieFetchedProperties MovieFetchedProperties = {
 - (void)setPrimitiveAdultValue:(BOOL)value_ {
 	[self setPrimitiveAdult:[NSNumber numberWithBool:value_]];
 }
-
-
-
-@dynamic personsQueried;
-
-- (BOOL)personsQueriedValue {
-	NSNumber *result = [self personsQueried];
-	return [result boolValue];
-}
-
-- (void)setPersonsQueriedValue:(BOOL)value_ {
-	[self setPersonsQueried:[NSNumber numberWithBool:value_]];
-}
-
-- (BOOL)primitivePersonsQueriedValue {
-	NSNumber *result = [self primitivePersonsQueried];
-	return [result boolValue];
-}
-
-- (void)setPrimitivePersonsQueriedValue:(BOOL)value_ {
-	[self setPrimitivePersonsQueried:[NSNumber numberWithBool:value_]];
-}
-
-
-
 
 
 
@@ -199,13 +157,6 @@ const struct MovieFetchedProperties MovieFetchedProperties = {
 - (void)setPrimitiveBudgetValue:(float)value_ {
 	[self setPrimitiveBudget:[NSNumber numberWithFloat:value_]];
 }
-
-
-
-
-
-@dynamic director;
-
 
 
 
@@ -417,6 +368,45 @@ const struct MovieFetchedProperties MovieFetchedProperties = {
 
 
 
+
+@dynamic casts;
+
+	
+- (NSMutableSet*)castsSet {
+	[self willAccessValueForKey:@"casts"];
+  
+	NSMutableSet *result = (NSMutableSet*)[self mutableSetValueForKey:@"casts"];
+  
+	[self didAccessValueForKey:@"casts"];
+	return result;
+}
+	
+
+@dynamic crews;
+
+	
+- (NSMutableSet*)crewsSet {
+	[self willAccessValueForKey:@"crews"];
+  
+	NSMutableSet *result = (NSMutableSet*)[self mutableSetValueForKey:@"crews"];
+  
+	[self didAccessValueForKey:@"crews"];
+	return result;
+}
+	
+
+@dynamic trailers;
+
+	
+- (NSMutableSet*)trailersSet {
+	[self willAccessValueForKey:@"trailers"];
+  
+	NSMutableSet *result = (NSMutableSet*)[self mutableSetValueForKey:@"trailers"];
+  
+	[self didAccessValueForKey:@"trailers"];
+	return result;
+}
+	
 
 
 

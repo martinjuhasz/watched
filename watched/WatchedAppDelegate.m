@@ -22,7 +22,6 @@
 #import "WatchedStyledViewController.h"
 #import "OnlineDatabaseBridge.h"
 #import "AFJSONRequestOperation.h"
-#import <HockeySDK/HockeySDK.h>
 #import "MJUWatchedStyle.h"
 
 @interface WatchedAppDelegate () {
@@ -38,13 +37,6 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     [MJUWatchedStyle setupDefaultStyle];
-    
-//    [[NSNotificationCenter defaultCenter] addObserverForName:AFNetworkingOperationDidStartNotification
-//                                                      object:nil
-//                             i                          queue:nil
-//                                                  usingBlock:^(NSNotification *note) {
-//                                                      NSLog(@"Operation Started: %@", [note object]);
-//                                                  }];
     
     [[BITHockeyManager sharedHockeyManager] configureWithIdentifier:@"a6619c8d0d092c150c4a5555ae7f14cb" delegate:self];
     [[BITHockeyManager sharedHockeyManager] startManager];
@@ -123,6 +115,7 @@
 //    [operation start];
 //    
 //    return YES;
+    return NO;
 }
 
 @end
