@@ -2,7 +2,7 @@
  * Author: Andreas Linde <mail@andreaslinde.de>
  *         Peter Steinberger
  *
- * Copyright (c) 2012-2013 HockeyApp, Bit Stadium GmbH.
+ * Copyright (c) 2012-2014 HockeyApp, Bit Stadium GmbH.
  * Copyright (c) 2011 Andreas Linde.
  * All rights reserved.
  *
@@ -52,6 +52,8 @@
 // get array of all available versions
 @property (nonatomic, copy) NSArray *appVersions;
 
+@property (nonatomic, strong) NSNumber *currentAppVersionUsageTime;
+
 @property (nonatomic, strong) NSURLConnection *urlConnection;
 
 @property (nonatomic, copy) NSDate *usageStartTimestamp;
@@ -64,7 +66,7 @@
 
 @property (nonatomic, strong) NSString *installationIdentificationType;
 
-@property (nonatomic) BOOL installationIdentificationValidated;
+@property (nonatomic) BOOL installationIdentified;
 
 // if YES, the API will return an existing JMC config
 // if NO, the API will return only version information

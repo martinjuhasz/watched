@@ -1,7 +1,7 @@
 /*
  * Author: Andreas Linde <mail@andreaslinde.de>
  *
- * Copyright (c) 2012-2013 HockeyApp, Bit Stadium GmbH.
+ * Copyright (c) 2012-2014 HockeyApp, Bit Stadium GmbH.
  * Copyright (c) 2011 Andreas Linde.
  * All rights reserved.
  *
@@ -50,8 +50,16 @@ NSBundle *BITHockeyBundle(void) {
 }
 
 NSString *BITHockeyLocalizedString(NSString *stringToken) {
-  if (BITHockeyBundle()) {
-    return NSLocalizedStringFromTableInBundle(stringToken, @"HockeySDK", BITHockeyBundle(), @"");
+  if (!stringToken) return @"";
+  
+  NSString *appSpecificLocalizationString = NSLocalizedString(stringToken, @"");
+  if (appSpecificLocalizationString && ![stringToken isEqualToString:appSpecificLocalizationString]) {
+    return appSpecificLocalizationString;
+  } else if (BITHockeyBundle()) {
+    NSString *bundleSpecificLocalizationString = NSLocalizedStringFromTableInBundle(stringToken, @"HockeySDK", BITHockeyBundle(), @"");
+    if (bundleSpecificLocalizationString)
+      return bundleSpecificLocalizationString;
+    return stringToken;
   } else {
     return stringToken;
   }
@@ -72,18 +80,4 @@ NSString *BITHockeyMD5(NSString *str) {
           result[12], result[13],
           result[14], result[15]
           ];
-}
-
-BOOL BITValidateEmail(NSString *email) {
-  NSString *emailRegex =
-  @"(?:[a-z0-9!#$%\\&'*+/=?\\^_`{|}~-]+(?:\\.[a-z0-9!#$%\\&'*+/=?\\^_`{|}"
-  @"~-]+)*|\"(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\"
-  @"x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")@(?:(?:[a-z0-9](?:[a-"
-  @"z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\\[(?:(?:25[0-5"
-  @"]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-"
-  @"9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21"
-  @"-\\x5a\\x53-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+)\\])";
-  NSPredicate *emailTest = [NSPredicate predicateWithFormat:@"SELF MATCHES[c] %@", emailRegex];
-  
-  return [emailTest evaluateWithObject:email];
 }

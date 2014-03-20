@@ -16,6 +16,7 @@
 #define MOCKITO_SHORTHAND
 #import <OCMockitoIOS/OCMockitoIOS.h>
 
+#import "HockeySDKFeatureConfig.h"
 #import "BITStoreUpdateManager.h"
 #import "BITStoreUpdateManagerPrivate.h"
 #import "BITHockeyBaseManager.h"
@@ -37,11 +38,16 @@
   [super setUp];
   
   // Set-up code here.
-  _storeUpdateManager = [[BITStoreUpdateManager alloc] initWithAppIdentifier:nil isAppStoreEnvironemt:YES];
+  _storeUpdateManager = [[BITStoreUpdateManager alloc] initWithAppIdentifier:nil isAppStoreEnvironment:YES];
 }
 
 - (void)tearDown {
   // Tear-down code here.
+# pragma clang diagnostic push
+# pragma clang diagnostic ignored "-Wimplicit"
+  __gcov_flush();
+# pragma clang diagnostic pop
+  
   _storeUpdateManager = nil;
   
   [super tearDown];
@@ -55,7 +61,7 @@
   
   NSData *data = [dataString dataUsingEncoding:NSUTF8StringEncoding];
   NSError *error = nil;
-  NSDictionary *json = (NSDictionary *)[NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
+  NSDictionary *json = (NSDictionary *)[NSJSONSerialization JSONObjectWithData:data options:0 error:&error];
   
   return json;
 }
@@ -84,6 +90,7 @@
   NSUserDefaults *mockUserDefaults = mock([NSUserDefaults class]);
   [given([mockUserDefaults objectForKey:@"BITStoreUpdateDateOfLastCheck"]) willReturn:[NSDate dateWithTimeIntervalSinceNow:-(60*60*24)]];
   _storeUpdateManager.userDefaults = mockUserDefaults;
+  _storeUpdateManager.updateSetting = BITStoreUpdateCheckDaily;
   
   [self startManager];
   

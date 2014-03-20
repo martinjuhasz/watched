@@ -61,7 +61,9 @@ static NSString *BITKeychainUtilsErrorDomain = @"BITKeychainUtilsErrorDomain";
 	[attributeQuery setObject: (id) kCFBooleanTrue forKey:(__bridge_transfer id) kSecReturnAttributes];
   CFTypeRef attrResult = NULL;
 	OSStatus status = SecItemCopyMatching((__bridge CFDictionaryRef) attributeQuery, &attrResult);
-	//NSDictionary *attributeResult = (__bridge_transfer NSDictionary *)attrResult;
+//  NSDictionary *attributeResult = (__bridge_transfer NSDictionary *)attrResult;
+  if (attrResult)
+    CFRelease(attrResult);
   
 	if (status != noErr) {
 		// No existing item found--simply return nil for the password
@@ -120,7 +122,11 @@ static NSString *BITKeychainUtilsErrorDomain = @"BITKeychainUtilsErrorDomain";
 	return password;
 }
 
-+ (BOOL) storeUsername: (NSString *) username andPassword: (NSString *) password forServiceName: (NSString *) serviceName updateExisting: (BOOL) updateExisting error: (NSError **) error
++ (BOOL) storeUsername: (NSString *) username andPassword: (NSString *) password forServiceName: (NSString *) serviceName updateExisting: (BOOL) updateExisting error: (NSError **) error {
+  return [self storeUsername:username andPassword:password forServiceName:serviceName updateExisting:updateExisting accessibility:kSecAttrAccessibleWhenUnlocked error:error];
+}
+
++ (BOOL) storeUsername: (NSString *) username andPassword: (NSString *) password forServiceName: (NSString *) serviceName updateExisting: (BOOL) updateExisting accessibility:(CFTypeRef) accessiblity error: (NSError **) error
 {
 	if (!username || !password || !serviceName)
   {
@@ -182,17 +188,19 @@ static NSString *BITKeychainUtilsErrorDomain = @"BITKeychainUtilsErrorDomain";
                        kSecAttrService,
                        kSecAttrLabel,
                        kSecAttrAccount,
+                       kSecAttrAccessible,
                        nil];
 			
 			NSArray *objects = [[NSArray alloc] initWithObjects: (__bridge_transfer NSString *) kSecClassGenericPassword,
                           serviceName,
                           serviceName,
                           username,
+                          accessiblity,
                           nil];
 			
 			NSDictionary *query = [[NSDictionary alloc] initWithObjects: objects forKeys: keys];
 			
-			status = SecItemUpdate((__bridge_retained CFDictionaryRef) query, (__bridge_retained CFDictionaryRef) [NSDictionary dictionaryWithObject: [password dataUsingEncoding: NSUTF8StringEncoding] forKey: (__bridge_transfer NSString *) kSecValueData]);
+			status = SecItemUpdate((__bridge CFDictionaryRef) query, (__bridge CFDictionaryRef) [NSDictionary dictionaryWithObject: [password dataUsingEncoding: NSUTF8StringEncoding] forKey: (__bridge_transfer NSString *) kSecValueData]);
 		}
 	}
 	else
@@ -205,6 +213,7 @@ static NSString *BITKeychainUtilsErrorDomain = @"BITKeychainUtilsErrorDomain";
                      kSecAttrLabel,
                      kSecAttrAccount,
                      kSecValueData,
+                     kSecAttrAccessible,
                      nil];
 		
 		NSArray *objects = [[NSArray alloc] initWithObjects: (__bridge_transfer NSString *) kSecClassGenericPassword,
@@ -212,11 +221,12 @@ static NSString *BITKeychainUtilsErrorDomain = @"BITKeychainUtilsErrorDomain";
                         serviceName,
                         username,
                         [password dataUsingEncoding: NSUTF8StringEncoding],
+                        accessiblity,
                         nil];
 		
 		NSDictionary *query = [[NSDictionary alloc] initWithObjects: objects forKeys: keys];
     
-		status = SecItemAdd((__bridge_retained CFDictionaryRef) query, NULL);
+		status = SecItemAdd((__bridge CFDictionaryRef) query, NULL);
 	}
 	
 	if (error != nil && status != noErr)

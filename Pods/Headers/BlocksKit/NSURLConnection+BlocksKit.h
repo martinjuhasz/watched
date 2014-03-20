@@ -1,1 +1,1 @@
-../../BlocksKit/BlocksKit/NSURLConnection+BlocksKit.h
+../../BlocksKit/BlocksKit/DynamicDelegate/Foundation/NSURLConnection+BlocksKit.h

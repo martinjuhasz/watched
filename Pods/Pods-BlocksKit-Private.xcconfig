@@ -1,5 +1,5 @@
 #include "Pods-BlocksKit.xcconfig"
 GCC_PREPROCESSOR_DEFINITIONS = COCOAPODS=1
-HEADER_SEARCH_PATHS = "${PODS_ROOT}/BuildHeaders" "${PODS_ROOT}/BuildHeaders/BlocksKit" "${PODS_ROOT}/Headers" "${PODS_ROOT}/Headers/AFNetworking" "${PODS_ROOT}/Headers/BlocksKit" "${PODS_ROOT}/Headers/GMGridView" "${PODS_ROOT}/Headers/HockeySDK" "${PODS_ROOT}/Headers/KSReachability" "${PODS_ROOT}/Headers/MJStarRating" "${PODS_ROOT}/Headers/Mantle" "${PODS_ROOT}/Headers/Reveal-iOS-SDK" "${PODS_ROOT}/Headers/UIResponder+KeyboardCache" "${PODS_ROOT}/Headers/iOS-blur" "${PODS_ROOT}/Headers/libffi"
+HEADER_SEARCH_PATHS = "${PODS_ROOT}/BuildHeaders" "${PODS_ROOT}/BuildHeaders/BlocksKit" "${PODS_ROOT}/Headers" "${PODS_ROOT}/Headers/AFNetworking" "${PODS_ROOT}/Headers/BlocksKit" "${PODS_ROOT}/Headers/GMGridView" "${PODS_ROOT}/Headers/HockeySDK" "${PODS_ROOT}/Headers/KSReachability" "${PODS_ROOT}/Headers/MJStarRating" "${PODS_ROOT}/Headers/Mantle" "${PODS_ROOT}/Headers/Reveal-iOS-SDK" "${PODS_ROOT}/Headers/UIResponder+KeyboardCache" "${PODS_ROOT}/Headers/iOS-blur"
 OTHER_LDFLAGS = -ObjC ${PODS_BLOCKSKIT_OTHER_LDFLAGS}
 PODS_ROOT = ${SRCROOT}

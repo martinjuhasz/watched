@@ -1,7 +1,7 @@
 /*
  * Author: Andreas Linde <mail@andreaslinde.de>
  *
- * Copyright (c) 2013 HockeyApp, Bit Stadium GmbH.
+ * Copyright (c) 2013-2014 HockeyApp, Bit Stadium GmbH.
  * All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person
@@ -58,10 +58,19 @@ typedef NS_ENUM(NSInteger, BITStoreUpdateSetting) {
  By default the module uses the current users locale to define the app store to check for updates. You
  can modify this using the `countryCode` property. See the property documentation for details on its usage.
  
- This module automatically disables itself when **NOT** running in an App Store build by default!
- 
- When an update is detected, it will open the apps page in the app store app.
+ When an update is detected, this module will show an alert asking the user if he/she wants to update or
+ ignore this version. If update was chosen, it will open the apps page in the app store app.
+
+ You need to enable this module using `[BITHockeyManager enableStoreUpdateManager]` if you want to use this
+ feature. By default this module is disabled!
   
+ When this module is enabled and **NOT** running in an App Store build/environment, it won't do any checks!
+ 
+ The `BITStoreUpdateManagerDelegate` protocol informs the app about new detected app versions.
+ 
+ @warning This module can **NOT** check if the current device and OS version match the minimum requirements of
+ the new app version!
+ 
  */
 
 @interface BITStoreUpdateManager : BITHockeyBaseManager
@@ -80,8 +89,6 @@ typedef NS_ENUM(NSInteger, BITStoreUpdateSetting) {
 /// @name Update Checking
 ///-----------------------------------------------------------------------------
 
-// see BITHockeyStoreUpdateSetting-enum. Will be saved in user defaults.
-// default value: BITStoreUpdateCheckDaily
 /**
  When to check for new updates.
  
@@ -92,12 +99,13 @@ typedef NS_ENUM(NSInteger, BITStoreUpdateSetting) {
  - `BITStoreUpdateCheckWeekly`: Once a week
  - `BITStoreUpdateCheckManually`: Manually
  
- **Default**: BITStoreUpdateCheckDaily
+ **Default**: BITStoreUpdateCheckWeekly
  
  @warning When setting this to `BITStoreUpdateCheckManually` you need to either
  invoke the update checking process yourself with `checkForUpdate` somehow, e.g. by
  proving an update check button for the user or integrating the Update View into your
  user interface.
+ @see BITStoreUpdateSetting
  @see countryCode
  @see checkForUpdateOnLaunch
  @see checkForUpdate

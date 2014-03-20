@@ -68,7 +68,7 @@ THE SOFTWARE.
 The Hockey SDK is provided under the following license:
 
     The MIT License
-    Copyright (c) 2012-2013 HockeyApp, Bit Stadium GmbH.
+    Copyright (c) 2012-2014 HockeyApp, Bit Stadium GmbH.
     All rights reserved.
 	
     Permission is hereby granted, free of charge, to any person
@@ -95,8 +95,8 @@ The Hockey SDK is provided under the following license:
 Except as noted below, PLCrashReporter 
 is provided under the following license:
 
-    Copyright (c) 2008 - 2013 Plausible Labs Cooperative, Inc.
-    Copyright (c) 2012 - 2013 HockeyApp, Bit Stadium GmbH.
+    Copyright (c) 2008 - 2014 Plausible Labs Cooperative, Inc.
+    Copyright (c) 2012 - 2014 HockeyApp, Bit Stadium GmbH.
     All rights reserved.
 
     Permission is hereby granted, free of charge, to any person
@@ -386,7 +386,7 @@ This Agreement is governed by the laws of the State of New York and the intellec
 
 ## Mantle
 
-**Copyright (c) 2012 - 2013, GitHub, Inc.**
+**Copyright (c) 2012 - 2014, GitHub, Inc.**
 **All rights reserved.**
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
@@ -416,7 +416,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <title>LICENSE</title>
+  <title>RevealEULA</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
 /* 
@@ -802,61 +802,140 @@ table tr:nth-child(even),table td:nth-child(even)
 </head>
 <body class="normal">
   <div id="wrapper">
-      <h1 id="revealbetatestagreement">REVEAL BETA TEST AGREEMENT</h1>
+      <h1 id="reveallicenseagreement">REVEAL LICENSE AGREEMENT</h1>
 
 <h2 id="noticetouser:">NOTICE TO USER:</h2>
 
-<p>This Software Beta Test Agreement is a CONTRACT between you (either an individual or a single entity)(<strong>&#8220;Licensee&#8221;</strong> or <strong>&#8220;you&#8221;</strong>) and Itty Bitty Apps Pty Ltd. (<strong>&#8220;the Company&#8221;</strong>), which covers your use of the Reveal beta software product that accompanies this Software Beta Test Agreement and related software components, which may include associated media, printed materials, and &#8220;online&#8221; or electronic documentation. All such software and materials are referred to herein as the <strong>&#8220;Beta Software&#8221;</strong>. If you do not agree to the terms of this Software Beta Test Agreement, then do not install or use the Beta Software. By explicitly accepting this Software Beta Test Agreement, however, or by installing, copying, downloading, accessing, or otherwise using the Beta Software, you are acknowledging and agreeing to be bound by the following terms.</p>
+<p>This is a legally enforceable agreement between you (<strong>&#8220;you&#8221;</strong> or <strong>&#8220;yours&#8221;</strong> and other grammatical equivalents) and Itty Bitty Apps Pty Ltd. (<strong>&#8220;the Company&#8221;</strong>), which covers your use of the Reveal software product that accompanies this Agreement and related software components, which may include associated media, printed materials, and &#8220;online&#8221; or electronic documentation. All such software and materials are referred to herein as the <strong>&#8220;Software&#8221;</strong> or <strong>&#8220;the Reveal Software&#8221;</strong>. If you do not agree to the terms of this License Agreement, then do not install or use the Software. By explicitly accepting this License Agreement, or by installing, copying, downloading, accessing, or otherwise using the Software, you are acknowledging and agreeing to be bound by the following terms:</p>
 
 <h2 id="definitions">1. DEFINITIONS</h2>
 
-<p><strong>(a) &#8220;Beta Software&#8221;</strong> shall mean the beta version of Reveal software including any Updates thereto, in object and source form, (excluding any Open Source Software provided with such software), and the media and Documentation provided by the Company to Licensee and for which Licensee is granted a use license pursuant to this Agreement.</p>
+<p><strong>(a) &#8220;Software&#8221;</strong> shall mean the Reveal software including any Updates thereto, in object and source form, and the media and Documentation provided by the Company to you and for which you are granted a license pursuant to this Agreement.</p>
 
-<p><strong>(b) &#8220;Documentation&#8221;</strong> shall mean the printed or online written reference material furnished to Licensee in conjunction with the Beta Software, including, without limitation, instructions, run rules, beta testing guidelines, and end user guides.</p>
+<p><strong>(b) &#8220;Documentation&#8221;</strong> shall mean the printed or online written reference material furnished to you in conjunction with the Software, including, without limitation, instructions, guidelines, and end user guides.</p>
 
 <p><strong>(c) &#8220;Intellectual Property Rights&#8221;</strong> shall mean all intellectual property rights, including, without limitation, patent, copyright, trademark, and trade secret.</p>
 
-<p><strong>(d) &#8220;Open Source Software&#8221;</strong> means various open source software components provided with the Beta Software that are licensed to you under the terms of the applicable license agreements included with such open source software components or other materials for the Beta Software.</p>
+<p><strong>(d) &#8220;Updates&#8221;</strong> shall mean a modification, error correction, bug fix, new release, or other update to or for the Software.</p>
 
-<p><strong>(e) &#8220;Updates&#8221;</strong> shall mean a modification, error correction, bug fix, new release, or other update to or for the Beta Software.</p>
+<h2 id="licensegrant">2. LICENSE GRANT</h2>
 
-<h2 id="licensegrantuseandownership">2. LICENSE GRANT, USE AND OWNERSHIP</h2>
+<p>The Company may, at its sole discretion, grant you a Trial License, a Personal License, an Educational License or a Commercial Seat License.</p>
 
-<p><strong>(a) Limited License.</strong> Subject to the terms and conditions of this Agreement, the Company grants to Licensee a non-exclusive, nontransferable license (without the right to sublicense) (i) to use the Beta Software in accordance with the Documentation solely for purposes of internal testing and evaluation, (ii) to use the Documentation provided with the Beta Software in support of Licensee’s authorized use of the Beta Software, and (iii) to copy Beta Software for archival or backup purposes, provided that all titles and trademarks, copyright, and restricted rights notices are reproduced on such copies. Nothing in this limited license permits Licensee to modify the Beta Software.</p>
+<p>If you have not purchased or otherwise rightfully obtained a Personal License, an Educational License or a Commercial Seat License for the Reveal Software, the Trial License Terms (2.1) are applicable to your use of the Reveal Software. The Trial License Terms are also applicable to any usage of the Reveal Software by you that is not covered under any other licenses you may have.</p>
 
-<p><strong>(b) Evaluation Feedback.</strong> The purpose of this limited license is the testing and evaluation of the Beta Software and Documentation. In furtherance of this purpose, Licensee shall provide feedback to the Company concerning the functionality and performance of the Beta Software from time to time as reasonably requested by the Company, including, without limitation, identifying potential errors, improvements, modifications, bug fixes, or enhancements (<strong>&#8220;Feedback&#8221;</strong>). Such Feedback will be in a manner convenient to Licensee and will be subject to reasonable availability of Licensee’s personnel. Notwithstanding the foregoing, prior to Licensee disclosing to the Company any information in connection with this Agreement which Licensee considers proprietary or confidential, Licensee shall obtain the Company’s prior written approval to disclose such information to the Company, and without such prior written approval from the Company, Licensee shall not disclose any such information to the Company. Feedback and other information which is provided by Licensee to the Company in connection with the Beta Software or this Agreement may be used by the Company to improve or enhance its products and, accordingly, Licensee grants the Company a non-exclusive, perpetual, irrevocable, royalty-free, worldwide right and license to use, reproduce, disclose, sublicense, distribute, modify, and otherwise exploit such Feedback and information without restriction.</p>
+<p>The Personal License Terms (2.2) apply if you have a Personal License. The Commercial Seat License Terms (2.3) apply if you have a Commercial Seat License. The Educational License Terms (2.4) apply if you have an Educational License.</p>
 
-<p><strong>(c) Restrictions.</strong> Licensee shall not copy or use the Beta Software (including the Documentation) or disseminate Confidential Information, as defined below, to any third party except as expressly permitted in this Agreement. Licensee will not, and will not permit any third party to, sublicense, rent, copy, modify, create derivative works of, translate, reverse engineer, decompile, disassemble, or otherwise reduce to human perceivable form any portion of the Beta Software or accompanying Documentation.</p>
+<p>The General Terms (3) apply in all cases.</p>
 
-<p><strong>(d) Ownership.</strong> The Company shall own and retain all right, title and interest in and to the Intellectual Property Rights in the Beta Software and any derivative works thereof, subject only to the limited license expressly set forth in Section 2(a) hereof. Licensee does not acquire any other rights, express or implied, in the Beta Software. ALL RIGHTS NOT EXPRESSLY GRANTED HEREUNDER ARE RESERVED TO THE COMPANY.</p>
+<h3 id="triallicenseterms">2.1 TRIAL LICENSE TERMS</h3>
 
-<p><strong>(e) No Support Services.</strong> The Company is under no obligation to support the Beta Software in any way or to provide any Updates to Licensee. In the event the Company, in its sole discretion, supplies any Update to Licensee, such Update shall be deemed Beta Software hereunder and shall be subject to the terms and conditions of this Agreement.</p>
+<p>The Company grants you a non-exclusive license to use the Software for time-limited evaluation purposes, only in accordance with the terms and conditions set forth herein. The Software may be used for a period of 30 calendar days from the first time you run the Software. Upon lapse of such trial period all of or part of the functionality of the Software will be disabled automatically.</p>
 
-<p><strong>(f) Open Source Software.</strong> The terms and conditions of this Agreement shall not apply to any Open Source Software accompanying the Beta Software. Any such Open Source Software is provided under the terms of the open source license agreement or copyright notice accompanying the Beta Software.</p>
+<p>If you wish to use the Software after the trial period, you must purchase a Personal License, a Commercial Seat License or an Educational License. The Company may extend to you an expiring license key, in which event such a license key will be considered a means to extend the trial period under the Trial License Terms.</p>
 
-<h2 id="termandtermination">3. TERM AND TERMINATION</h2>
+<h3 id="personallicenseterms">2.2 PERSONAL LICENSE TERMS</h3>
 
-<p>Unless otherwise terminated as specified under this Agreement, Licensee’s rights with respect to the Beta Software will terminate upon the earlier of (a) the initial release by the Company of a generally available version of the Beta Software or (b) one year after acceptance of this agreement. Both parties may terminate this Agreement at any time for any reason or no reason. The Company shall immediately terminate this Agreement and any Licensee rights with respect to the Beta Software without notice in the event of improper disclosure of the Company’s Beta Software as specified under Section 4 (Confidentiality) below. Upon any expiration or termination of this Agreement, the rights and licenses granted to Licensee under this Agreement shall immediately terminate, and Licensee shall immediately cease using, and will return to the Company (or, at the Company’s request, destroy), the Beta Software, Documentation, and all other tangible items in Licensee’s possession or control that are proprietary to or contain Confidential Information. The rights and obligations of the parties set forth in Sections 2(b) 2(c), 2(d), 2(e), 2(f), 3, 4, 5, and 6 shall survive termination or expiration of this Agreement for any reason.</p>
+<p>The Company grants you a non-exclusive license to use the Software, only in accordance with the terms and conditions set forth herein. This License grants you the right to activate and use the Software on no more than 2 computers primarily used by you. Use of the Software under this license may be for both commercial and non-commercial purposes. Personal licences are not available to companies, commercial institutions, government agencies or business entities.</p>
 
-<h2 id="limitationofliability">4. LIMITATION OF LIABILITY</h2>
+<h3 id="commercialseatlicenseterms">2.3 COMMERCIAL SEAT LICENSE TERMS</h3>
 
-<p>IT IS UNDERSTOOD THAT THE BETA SOFTWARE IS PROVIDED WITHOUT CHARGE FOR LIMITED EVALUATION PURPOSES. ACCORDINGLY, THE TOTAL LIABILITY OF THE COMPANY AND ITS SUPPLIERS ARISING OUT OF OR RELATED TO THIS AGREEMENT SHALL NOT EXCEED $1. IN NO EVENT SHALL THE COMPANY OR ITS SUPPLIERS HAVE LIABILITY FOR ANY INDIRECT, INCIDENTAL, SPECIAL, OR CONSEQUENTIAL DAMAGES (INCLUDING, WITHOUT LIMITATION, DAMAGES FOR LOSS OF BUSINESS PROFITS, BUSINESS INTERRUPTION, OR LOSS OF BUSINESS INFORMATION), HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, EVEN IF THE COMPANY AND ITS SUPPLIERS HAVE BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES. THESE LIMITATIONS SHALL APPLY NOTWITHSTANDING ANY FAILURE OF ESSENTIAL PURPOSE OF ANY LIMITED REMEDY.</p>
+<p>The Company grants you a non-exclusive license to use the Software, only in accordance with the terms and conditions set forth herein. This License is only available to companies, commercial institutions, government agencies and business entities.</p>
 
-<h2 id="warrantydisclaimer">5. WARRANTY DISCLAIMER</h2>
+<p>This License does not allow the Software to be activated and used on computers that are not either a) owned by you, b) owned by any fully owned subsidiary of yours, c) owned by or operated primarily by your employees or employees of any fully owned subsidiary of yours. A Commercial Seat License must be purchased for every person employed by you or employed by any fully owned subsidiary of yours wishing to use the Software.</p>
 
-<p>IT IS UNDERSTOOD THAT THE BETA SOFTWARE, DOCUMENTATION, AND ANY UPDATES MAY CONTAIN ERRORS AND ARE PROVIDED FOR LIMITED EVALUATION ONLY. THE BETA SOFTWARE, THE DOCUMENTATION, AND ANY UPDATES ARE PROVIDED &#8220;AS IS&#8221; WITHOUT WARRANTY OF ANY KIND, WHETHER EXPRESS, IMPLIED, STATUTORY, OR OTHERWISE. THE COMPANY AND ITS SUPPLIERS SPECIFICALLY DISCLAIM ALL IMPLIED WARRANTIES OF MERCHANTABILITY, NONINFRINGEMENT, AND FITNESS FOR A PARTICULAR PURPOSE. Licensee acknowledges that the Company has not promised or guaranteed to Licensee that such Beta Software will be announced or made available to anyone in the future, that the Company has no express or implied obligation to Licensee to announce or introduce the Beta Software, and that the Company may not introduce a product similar or compatible with the Beta Software. Accordingly, Licensee acknowledges that any research or development that it performs regarding the Beta Software or any product associated with the Beta Software is done entirely at Licensee’s own risk. Specifically, the Beta Software may contain features, functionality or modules that will not be included in the production version of the Beta Software, if released, or that will be marketed separately for additional fees.</p>
+<p>This license is granted exclusively on a per-employee basis within your organisation and is not transferable to another current employee without written permission.</p>
 
-<h2 id="otherprovisions">6. OTHER PROVISIONS</h2>
+<p>This License does not allow the use of the Software other than for business purposes of your company. If entering into a Commercial Seat License you personally warrant that you have full legal authority to enter into this agreement on behalf of your employer.</p>
 
-<p><strong>(a) Governing Law.</strong> This Agreement, and all disputes arising out of or related thereto, shall be governed by and construed under the laws of the State of Victoria, Australia, without reference to conflict of laws principles. All such disputes shall be subject to the exclusive jurisdiction of the state and federal courts located in Australia, and the parties agree and submit to the personal and exclusive jurisdiction and venue of these courts.</p>
+<h3 id="educationallicenseterms">2.4 EDUCATIONAL LICENSE TERMS</h3>
 
-<p><strong>(b) Assignment.</strong> Licensee shall not assign this Agreement or any rights or obligations hereunder, directly or indirectly, by operation of law, merger, acquisition of stock or assets, or otherwise, without the prior written consent of the Company. Subject to the foregoing, this Agreement shall inure to the benefit of and be binding upon the parties and their respective successors and permitted assigns.</p>
+<p>The Company grants you a non-exclusive license to use the Software, only in accordance with the terms and conditions set forth herein. This License grants you the right to activate and use the Software on no more than 2 computers primarily used by you.</p>
 
-<p><strong>(c) Modification.</strong> This is the entire agreement between the parties relating to the subject matter hereof and all other terms are rejected. No waiver or modification of this Agreement shall be valid unless in writing signed by each party. The waiver of a breach of any term hereof shall in no way be construed as a waiver of any term or other breach hereof. If any provision of this Agreement is held by a court of competent jurisdiction to be contrary to law the remaining provisions of this Agreement shall remain in full force and effect.</p>
+<p>Educational Licenses are available only to individual students and teaching staff. Use of the Software under this license must be for non-commercial purposes only, including education and research.</p>
 
-<h2 id="contactinformation">7. CONTACT INFORMATION</h2>
+<h2 id="generalterms">3. GENERAL TERMS</h2>
 
-<p>If you have any questions about this Software Beta Test Agreement, or if you want to contact the Company for any reason, please direct all mail correspondence to: Itty Bitty Apps Pty. Ltd. Unit 1, 663 Victoria St, Abbotsford, Victoria, Australia, 3067, or electronic correspondence to info@ittybittyapps.com.</p>
+<h3 id="title">3.1 TITLE</h3>
+
+<p>‘REVEAL’™ and ‘ITTY BITTY APPS’™ represent proprietary common law trademarks owned by the Company and must not be used without written permission.</p>
+
+<p>The Company shall own and retain all right, title and interest in and to all Intellectual Property Rights related to the Software, the Documentation and all improvements to any of them however so created. You do not acquire any other rights, express or implied, in the Software. ALL RIGHTS NOT EXPRESSLY GRANTED HEREUNDER ARE RESERVED TO THE COMPANY.</p>
+
+<h3 id="archivalorbackupcopies">3.2 ARCHIVAL OR BACKUP COPIES</h3>
+
+<p>You may copy the Software for backup and archival purposes only, provided that the original and each copy is kept in your possession and that your installation and use of the Software does not exceed that allowed in the &#8220;License Grant&#8221; section above.</p>
+
+<h3 id="thingsyoumustnotdo">3.3 THINGS YOU MUST NOT DO</h3>
+
+<p>The Software and Documentation are protected by Australian and international copyright law. You must treat the Software and Documentation like any other copyrighted material—for example, a book. You may not:</p>
+
+<ul>
+<li>copy the Documentation,</li>
+<li>copy the Software except to make archival or backup copies as provided above,</li>
+<li>modify or adapt the Software or merge it into another program,</li>
+<li>reverse engineer, disassemble, decompile or make any attempt to discover the source code of the Software,</li>
+<li>place the Software onto a server so that it is accessible via a public network such as the Internet, or</li>
+<li>sublicense, rent, lease, sublicense or lend any portion of the Software or Documentation.</li>
+</ul>
+
+<h3 id="limitationoflicensevalidity">3.4 LIMITATION OF LICENSE VALIDITY</h3>
+
+<p>Any License to use the Software granted to you under this License Agreement is limited to the current major release of the Software exclusively. The Company will at its sole discretion decide when a version of the Software will be considered a new major release. The Company reserves the right to change the terms of this agreement in any future major or minor release of the software.</p>
+
+<h3 id="additionalservices">3.5 ADDITIONAL SERVICES</h3>
+
+<p>Fees may apply for additional services and products offered by the company and others, such as services that integrate with the Software or extend the functionality of the Software.</p>
+
+<h3 id="technicalandrelatedinformation">3.6 TECHNICAL AND RELATED INFORMATION</h3>
+
+<p>The Company and its subsidiaries may collect and use technical and related information, such as technical information concerning your computer, system and application software. The Company does not collect (a) any information that identifies your work, (b) any file names or file contents of anything you work on using the Software. The Company and its subsidiaries are free to use the collected information in any form that does not personally identify you.</p>
+
+<h3 id="privacy">3.7 PRIVACY</h3>
+
+<p>The Company will not sell or in any way license usage of your personal information to third parties. The Company will make reasonable efforts to keep your personal information secure.</p>
+
+<h3 id="transfers">3.8 TRANSFERS</h3>
+
+<p>With prior notice to the Company, you may transfer all your rights to use the Software and Documentation only once and permanently to another person or legal entity provided you transfer this License Agreement, the Software and Documentation, including all copies, updates and prior versions to such person or entity and that you retain no copies, including copies stored on computer. The receiving person or legal entity must satisfy the conditions of the applicable license terms set out in section 2.</p>
+
+<h3 id="limitedwarranty">3.9 LIMITED WARRANTY</h3>
+
+<p>We warrant that for a period of 14 days after delivery of this copy of the Software to you the Software will perform in substantial accordance with the Documentation.</p>
+
+<p>To the extent permitted by applicable law, THE FOREGOING LIMITED WARRANTY IS IN LIEU OF ALL OTHER WARRANTIES OR CONDITIONS, EXPRESS OR IMPLIED, AND WE DISCLAIM ANY AND ALL IMPLIED WARRANTIES OR CONDITIONS, INCLUDING ANY IMPLIED WARRANTY OF TITLE, NONINFRINGEMENT, MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE, regardless of whether we know or had reason to know of your particular needs. No employee, agent, dealer or distributor of ours is authorized to modify this limited warranty, nor to make any additional warranties.
+SOME STATES DO NOT ALLOW THE LIMITATION OR EXCLUSION OF LIABILITY FOR INCIDENTAL OR CONSEQUENTIAL DAMAGES, SO THE ABOVE LIMITATION MAY NOT APPLY TO YOU.</p>
+
+<h3 id="limitedremedy">3.10 LIMITED REMEDY</h3>
+
+<p>Our entire liability and your exclusive remedy for breach of the foregoing warranty shall be, at our option, to return the price you paid minus fees incurred to transfer those funds to you.</p>
+
+<p>IN NO EVENT WILL WE BE LIABLE TO YOU FOR ANY DIRECT OR INDIRECT DAMAGES, INCLUDING ANY LOST PROFITS, LOST SAVINGS, OR OTHER INCIDENTAL OR CONSEQUENTIAL DAMAGES ARISING FROM THE USE OR THE INABILITY TO USE THE SOFTWARE (EVEN IF WE OR AN AUTHORIZED DEALER OR DISTRIBUTOR HAS BEEN ADVISED OF THE POSSIBILITY OF THESE DAMAGES), OR FOR ANY CLAIM BY ANY OTHER PARTY.
+SOME STATES DO NOT ALLOW THE LIMITATION OR EXCLUSION OF LIABILITY FOR INCIDENTAL OR CONSEQUENTIAL DAMAGES, SO THE ABOVE LIMITATION MAY NOT APPLY TO YOU.</p>
+
+<h3 id="termandtermination">3.11 TERM AND TERMINATION</h3>
+
+<p>This license agreement takes effect upon your use of the software and remains effective until terminated. You may terminate it at any time by destroying all copies of the Software and Documentation in your possession. It will also automatically terminate if you fail to comply with any term or condition of this license agreement. You hereby agree that on termination of this license to permanently destroy all copies of the Software and Documentation in your possession.</p>
+
+<h3 id="confidentiality">3.12 CONFIDENTIALITY</h3>
+
+<p>The Software contains trade secrets and proprietary know-how that belong to the Company and it is being made available to you in strict confidence. ANY USE OR DISCLOSURE OF THE SOFTWARE, OR OF ITS ALGORITHMS, PROTOCOLS OR INTERFACES, OTHER THAN IN STRICT ACCORDANCE WITH THIS LICENSE AGREEMENT, MAY BE ACTIONABLE AS A VIOLATION OF THE COMPANY&#8217;S TRADE SECRET RIGHTS.</p>
+
+<h3 id="generalprovisions">3.13 GENERAL PROVISIONS</h3>
+
+<p><strong>3.13.1</strong> This written license agreement is the exclusive agreement between you and the Company concerning the Software and Documentation and supersedes any prior purchase order, communication, advertising or representation concerning the Software.</p>
+
+<p><strong>3.13.2</strong> This is the entire agreement between the parties relating to the subject matter hereof and all other terms are rejected. No waiver or modification of this Agreement shall be valid unless in writing signed by each party. The waiver of a breach of any term hereof shall in no way be construed as a waiver of any term or other breach hereof. If any provision of this Agreement is held by a court of competent jurisdiction to be contrary to law the remaining provisions of this Agreement shall remain in full force and effect.</p>
+
+<p><strong>3.13.3</strong> In the event of litigation between you and the Company concerning the Software or Documentation, the prevailing party in the litigation will be entitled to recover attorney fees and expenses from the other party.</p>
+
+<p><strong>3.13.4</strong> This Agreement, and all disputes arising out of or related thereto, shall be governed by and construed under the laws of the State of Victoria, Australia, without reference to conflict of laws principles. All such disputes shall be subject to the exclusive jurisdiction of the state and federal courts located in Australia, and the parties agree and submit to the personal and exclusive jurisdiction and venue of these courts.</p>
+
+<h2 id="contactinformation">4. CONTACT INFORMATION</h2>
+
+<p>If you have any questions about this License Agreement, or if you want to contact the Company for any reason, please direct all mail correspondence to: Itty Bitty Apps Pty. Ltd. Level 2, 27 Hardware Lane, Melbourne, Victoria, Australia, 3000, or electronic correspondence to info@ittybittyapps.com.</p>
+
+<p>Do you agree to be bound by the terms of this agreement?</p>
     </div>
 </body>
 </html>
@@ -876,30 +955,5 @@ table tr:nth-child(even),table td:nth-child(even)
    TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
 
   0. You just DO WHAT THE FUCK YOU WANT TO.
-
-
-## libffi
-
-libffi - Copyright (c) 1996-2012  Anthony Green, Red Hat, Inc and others.
-See source files for details.
-
-Permission is hereby granted, free of charge, to any person obtaining
-a copy of this software and associated documentation files (the
-``Software''), to deal in the Software without restriction, including
-without limitation the rights to use, copy, modify, merge, publish,
-distribute, sublicense, and/or sell copies of the Software, and to
-permit persons to whom the Software is furnished to do so, subject to
-the following conditions:
-
-The above copyright notice and this permission notice shall be
-included in all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED ``AS IS'', WITHOUT WARRANTY OF ANY KIND,
-EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
-IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
-CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
-TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
-SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 Generated by CocoaPods - http://cocoapods.org

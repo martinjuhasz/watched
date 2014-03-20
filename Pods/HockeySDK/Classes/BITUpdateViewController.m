@@ -2,7 +2,7 @@
  * Author: Andreas Linde <mail@andreaslinde.de>
  *         Peter Steinberger
  *
- * Copyright (c) 2012-2013 HockeyApp, Bit Stadium GmbH.
+ * Copyright (c) 2012-2014 HockeyApp, Bit Stadium GmbH.
  * Copyright (c) 2011 Andreas Linde, Peter Steinberger.
  * All rights reserved.
  *
@@ -119,6 +119,10 @@
     tableViewContentHeight += [self tableView:self.tableView heightForRowAtIndexPath:[NSIndexPath indexPathForRow:i inSection:0]];
   }
   tableViewContentHeight += self.tableView.tableHeaderView.frame.size.height;
+  if (![self.updateManager isPreiOS7Environment]) {
+    tableViewContentHeight += self.navigationController.navigationBar.frame.size.height;
+    tableViewContentHeight += [UIApplication sharedApplication].statusBarFrame.size.height;
+  }
   
   NSUInteger footerViewSize = kMinPreviousVersionButtonHeight;
   NSUInteger frameHeight = self.view.frame.size.height;
@@ -206,7 +210,11 @@
     if ([appVersion.notes length] > 0) {
       cell.webViewContent = [NSString stringWithFormat:@"<p><b>%@</b>%@<br/><small>%@</small></p><p>%@</p>", [appVersion versionString], installed, dateAndSizeString, appVersion.notes];
     } else {
-      cell.webViewContent = [NSString stringWithFormat:@"<div style=\"min-height:200px;vertical-align:middle;text-align:center;\">%@</div>", BITHockeyLocalizedString(@"UpdateNoReleaseNotesAvailable")];
+      if ([self.updateManager isPreiOS7Environment]) {
+        cell.webViewContent = [NSString stringWithFormat:@"<div style=\"min-height:200px;vertical-align:middle;text-align:center;\">%@</div>", BITHockeyLocalizedString(@"UpdateNoReleaseNotesAvailable")];
+      } else {
+        cell.webViewContent = [NSString stringWithFormat:@"<div style=\"min-height:130px;vertical-align:middle;text-align:center;\">%@</div>", BITHockeyLocalizedString(@"UpdateNoReleaseNotesAvailable")];
+      }
     }
   } else {
     cell.webViewContent = [NSString stringWithFormat:@"<p><b>%@</b>%@<br/><small>%@</small></p><p>%@</p>", [appVersion versionString], installed, dateAndSizeString, [appVersion notesOrEmptyString]];
@@ -243,7 +251,7 @@
     [_updateManager removeObserver:self forKeyPath:@"checkInProgress"];
     [_updateManager removeObserver:self forKeyPath:@"isUpdateURLOffline"];
     [_updateManager removeObserver:self forKeyPath:@"updateAvailable"];
-    [_updateManager removeObserver:self forKeyPath:@"apps"];
+    [_updateManager removeObserver:self forKeyPath:@"appVersions"];
     _kvoRegistered = NO;
   }
   
@@ -267,7 +275,7 @@
   [_updateManager addObserver:self forKeyPath:@"checkInProgress" options:0 context:nil];
   [_updateManager addObserver:self forKeyPath:@"isUpdateURLOffline" options:0 context:nil];
   [_updateManager addObserver:self forKeyPath:@"updateAvailable" options:0 context:nil];
-  [_updateManager addObserver:self forKeyPath:@"apps" options:0 context:nil];
+  [_updateManager addObserver:self forKeyPath:@"appVersions" options:0 context:nil];
   _kvoRegistered = YES;
   
   self.tableView.backgroundColor = BIT_RGBCOLOR(245, 245, 245);
@@ -315,8 +323,11 @@
       if (
           (iconImage.size.height == 57 && !useHighResIcon && !useiPadIcon) ||
           (iconImage.size.height == 114 && useHighResIcon && !useiPadIcon) ||
+          (iconImage.size.height == 120 && useHighResIcon && !useiPadIcon) ||
           (iconImage.size.height == 72 && !useHighResIcon && useiPadIcon) ||
-          (iconImage.size.height == 144 && useHighResIcon && useiPadIcon)
+          (iconImage.size.height == 76 && !useHighResIcon && useiPadIcon) ||
+          (iconImage.size.height == 144 && !useHighResIcon && useiPadIcon) ||
+          (iconImage.size.height == 152 && useHighResIcon && useiPadIcon)
           ) {
         // found!
         break;
@@ -330,7 +341,7 @@
     addGloss = ![prerendered boolValue];
   }
   
-  if (addGloss) {
+  if (addGloss && [self.updateManager isPreiOS7Environment]) {
     _appStoreHeader.iconImage = [self addGlossToImage:[UIImage imageNamed:iconString]];
   } else {
     _appStoreHeader.iconImage = [UIImage imageNamed:iconString];
@@ -353,8 +364,11 @@
 }
 
 - (void)viewWillAppear:(BOOL)animated {
-  if (_isAppStoreEnvironment)
+  if (_isAppStoreEnvironment) {
     self.appStoreButtonState = AppStoreButtonStateOffline;
+  } else if (self.mandatoryUpdate) {
+    self.navigationItem.leftBarButtonItem = nil;
+  }
   _updateManager.currentHockeyViewController = self;
   [super viewWillAppear:animated];
   [self redrawTableView];
@@ -479,7 +493,7 @@
       [self restoreStoreButtonStateAnimated:YES];
     } else if ([keyPath isEqualToString:@"updateAvailable"]) {
       [self restoreStoreButtonStateAnimated:YES];
-    } else if ([keyPath isEqualToString:@"apps"]) {
+    } else if ([keyPath isEqualToString:@"appVersions"]) {
       [self redrawTableView];
     }
   }

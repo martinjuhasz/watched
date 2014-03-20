@@ -1,7 +1,7 @@
 /*
  * Author: Andreas Linde <mail@andreaslinde.de>
  *
- * Copyright (c) 2012-2013 HockeyApp, Bit Stadium GmbH.
+ * Copyright (c) 2012-2014 HockeyApp, Bit Stadium GmbH.
  * All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person
@@ -32,6 +32,7 @@
 #if HOCKEYSDK_FEATURE_FEEDBACK
 
 #import "HockeySDKPrivate.h"
+#import "BITHockeyHelper.h"
 
 #import "BITFeedbackUserDataViewController.h"
 #import "BITFeedbackManagerPrivate.h"
@@ -120,7 +121,7 @@
   if ([self.manager requireUserEmail] == BITFeedbackUserDataElementRequired && [self.email length] == 0)
     return NO;
 
-  if ([self.email length] > 0 && !BITValidateEmail(self.email))
+  if ([self.email length] > 0 && !bit_validateEmail(self.email))
     return NO;
   
   return YES;
@@ -192,9 +193,9 @@
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     cell.backgroundColor = [UIColor whiteColor];
     
-    UITextField *textField = [[UITextField alloc] initWithFrame:CGRectMake(110, 10, self.view.frame.size.width - 110 - 35, 30)];
+    UITextField *textField = [[UITextField alloc] initWithFrame:CGRectMake(110, 11, self.view.frame.size.width - 110 - 35, 24)];
     if (UI_USER_INTERFACE_IDIOM() != UIUserInterfaceIdiomPad) {
-      textField.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+      textField.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
     }
     textField.adjustsFontSizeToFitWidth = YES;
     textField.textColor = [UIColor blackColor];
@@ -209,6 +210,7 @@
         textField.returnKeyType = UIReturnKeyNext;
       else
         textField.returnKeyType = UIReturnKeyDone;
+      textField.autocapitalizationType = UITextAutocapitalizationTypeWords;
       [textField addTarget:self action:@selector(userNameEntered:) forControlEvents:UIControlEventEditingChanged];
       [textField becomeFirstResponder];
     } else {
@@ -217,6 +219,7 @@
       
       textField.keyboardType = UIKeyboardTypeEmailAddress;
       textField.returnKeyType = UIReturnKeyDone;
+      textField.autocapitalizationType = UITextAutocapitalizationTypeNone;
       [textField addTarget:self action:@selector(userEmailEntered:) forControlEvents:UIControlEventEditingChanged];
       if (![self.manager requireUserName])
         [textField becomeFirstResponder];
@@ -224,7 +227,6 @@
     
     textField.backgroundColor = [UIColor whiteColor];
     textField.autocorrectionType = UITextAutocorrectionTypeNo;
-    textField.autocapitalizationType = UITextAutocapitalizationTypeNone;
     textField.textAlignment = kBITTextLabelAlignmentLeft;
     textField.delegate = self;
     textField.tag = indexPath.row;

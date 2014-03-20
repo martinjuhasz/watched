@@ -1,7 +1,7 @@
 /*
  * Author: Stephan Diederich
  *
- * Copyright (c) 2013 HockeyApp, Bit Stadium GmbH.
+ * Copyright (c) 2013-2014 HockeyApp, Bit Stadium GmbH.
  * All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person
@@ -30,13 +30,14 @@
 #import "BITAuthenticator_Private.h"
 #import "HockeySDKPrivate.h"
 #import "HockeySDK.h"
+#import "BITHockeyHelper.h"
 #import "BITHockeyAppClient.h"
 
 @interface BITAuthenticationViewController ()<UITextFieldDelegate> {
   UIStatusBarStyle _statusBarStyle;
+  __weak UITextField *_emailField;
 }
 
-@property (nonatomic, copy) NSString *email;
 @property (nonatomic, copy) NSString *password;
 
 @end
@@ -48,7 +49,6 @@
   if (self) {
     self.title = BITHockeyLocalizedString(@"HockeyAuthenticatorViewControllerTitle");
     _delegate = delegate;
-    _showsSkipButton = YES;
   }
   return self;
 }
@@ -85,22 +85,8 @@
 }
 
 #pragma mark - Property overrides
-- (void)setShowsSkipButton:(BOOL)showsSkipButton {
-  if(_showsSkipButton != showsSkipButton) {
-    _showsSkipButton = showsSkipButton;
-    [self updateBarButtons];
-  }
-}
 
 - (void) updateBarButtons {
-  if(self.showsSkipButton) {
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:BITHockeyLocalizedString(@"Skip")
-                                                                             style:UIBarButtonItemStyleBordered
-                                                                            target:self
-                                                                            action:@selector(dismissAction:)];
-  } else {
-    self.navigationItem.leftBarButtonItem = nil;
-  }
   if(self.showsLoginViaWebButton) {
     self.navigationItem.rightBarButtonItem = nil;
   } else {
@@ -136,6 +122,9 @@
                               buttonSize.width,
                               buttonSize.height);
     button.autoresizingMask = UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
+    if ([UIButton instancesRespondToSelector:(NSSelectorFromString(@"setTintColor:"))]) {
+      [button setTitleColor:BIT_RGBCOLOR(0, 122, 255) forState:UIControlStateNormal];
+    }
     [containerView addSubview:button];
     [button addTarget:self
                action:@selector(handleWebLoginButton:)
@@ -149,6 +138,20 @@
 - (IBAction) handleWebLoginButton:(id)sender {
   [self.delegate authenticationViewControllerDidTapWebButton:self];
 }
+
+- (void)setEmail:(NSString *)email {
+  _email = email;
+  if(self.isViewLoaded) {
+    _emailField.text = email;
+  }
+}
+
+- (void)setTableViewTitle:(NSString *)viewDescription {
+  _tableViewTitle = [viewDescription copy];
+  if(self.isViewLoaded) {
+    [self.tableView reloadData];
+  }
+}
 #pragma mark - UIViewController Rotation
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)orientation {
@@ -160,7 +163,7 @@
   if (self.requirePassword && [self.password length] == 0)
     return NO;
   
-  if (![self.email length] || !BITValidateEmail(self.email))
+  if (![self.email length] || !bit_validateEmail(self.email))
     return NO;
   
   return YES;
@@ -188,13 +191,7 @@
 
 - (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section {
   if (section == 0) {
-    if(self.showsLoginViaWebButton) {
-      return BITHockeyLocalizedString(@"HockeyAuthenticationViewControllerWebLoginDescription");
-    } else if(self.requirePassword) {
-      return BITHockeyLocalizedString(@"HockeyAuthenticationViewControllerDataEmailAndPasswordDescription");
-    } else {
-      return BITHockeyLocalizedString(@"HockeyAuthenticationViewControllerDataEmailDescription");
-    }
+    return self.tableViewTitle;
   }
   
   return nil;
@@ -211,7 +208,7 @@
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     cell.backgroundColor = [UIColor whiteColor];
     
-    UITextField *textField = [[UITextField alloc] initWithFrame:CGRectMake(110, 10, self.view.frame.size.width - 110 - 35, 30)];
+    UITextField *textField = [[UITextField alloc] initWithFrame:CGRectMake(130, 11, self.view.frame.size.width - 130 - 25, 24)];
     if (UI_USER_INTERFACE_IDIOM() != UIUserInterfaceIdiomPad) {
       textField.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     }
@@ -222,6 +219,7 @@
     if (0 == [indexPath row]) {
       textField.placeholder = BITHockeyLocalizedString(@"HockeyAuthenticationViewControllerEmailPlaceholder");
       textField.text = self.email;
+      _emailField = textField;
       
       textField.keyboardType = UIKeyboardTypeEmailAddress;
       if ([self requirePassword])
@@ -296,10 +294,6 @@
 }
 
 #pragma mark - Actions
-- (void)dismissAction:(id)sender {
-  [self.delegate authenticationViewControllerDidSkip:self];
-}
-
 - (void)saveAction:(id)sender {
   [self setLoginUIEnabled:NO];
   

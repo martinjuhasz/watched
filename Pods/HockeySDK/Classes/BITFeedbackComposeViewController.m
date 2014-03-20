@@ -1,7 +1,7 @@
 /*
  * Author: Andreas Linde <mail@andreaslinde.de>
  *
- * Copyright (c) 2012-2013 HockeyApp, Bit Stadium GmbH.
+ * Copyright (c) 2012-2014 HockeyApp, Bit Stadium GmbH.
  * All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person
@@ -198,7 +198,8 @@
     if (!_blockUserDataScreen)
       [self setUserDataAction];
   } else {
-    [self.textView becomeFirstResponder];
+    // Invoke delayed to fix iOS 7 iPad landscape bug, where this view will be moved if not called delayed
+    [self.textView performSelector:@selector(becomeFirstResponder) withObject:nil afterDelay:0.0];
   }
 }
 

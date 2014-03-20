@@ -1,7 +1,7 @@
 /*
  * Author: Stephan Diederich
  *
- * Copyright (c) 2013 HockeyApp, Bit Stadium GmbH.
+ * Copyright (c) 2013-2014 HockeyApp, Bit Stadium GmbH.
  * All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person
@@ -35,29 +35,43 @@
 #import "BITHockeyAppClient.h"
 #import "BITHockeyHelper.h"
 
+#include <sys/stat.h>
+
+static NSString* const kBITAuthenticatorUUIDKey = @"BITAuthenticatorUUIDKey";
+static NSString* const kBITAuthenticatorIdentifierKey = @"BITAuthenticatorIdentifierKey";
+static NSString* const kBITAuthenticatorIdentifierTypeKey = @"BITAuthenticatorIdentifierTypeKey";
+static NSString* const kBITAuthenticatorLastAuthenticatedVersionKey = @"BITAuthenticatorLastAuthenticatedVersionKey";
+static NSString* const kBITAuthenticatorUserEmailKey = @"BITAuthenticatorUserEmailKey";
+
+//deprecated
 static NSString* const kBITAuthenticatorAuthTokenKey = @"BITAuthenticatorAuthTokenKey";
 static NSString* const kBITAuthenticatorAuthTokenTypeKey = @"BITAuthenticatorAuthTokenTypeKey";
-static NSString* const kBITAuthenticatorAuthTokenVendorIdentifierKey = @"BITAuthenticatorAuthTokenVendorIdentifierKey";
-static NSString* const kBITAuthenticatorLastAuthenticatedVersionKey = @"BITAuthenticatorLastAuthenticatedVersionKey";
-static NSString* const kBITAuthenticatorDidSkipOptionalLogin = @"BITAuthenticatorDidSkipOptionalLogin";
+
+typedef unsigned int bit_uint32;
+static unsigned char kBITPNGHeader[8] = {137, 80, 78, 71, 13, 10, 26, 10};
+static unsigned char kBITPNGEndChunk[4] = {0x49, 0x45, 0x4e, 0x44};
 
 @implementation BITAuthenticator {
   id _appDidBecomeActiveObserver;
-  id _appWillResignActiveObserver;
+  id _appDidEnterBackgroundOberser;
   UIViewController *_authenticationController;
+  
+  BOOL _isSetup;
 }
 
 - (void)dealloc {
   [self unregisterObservers];
 }
 
-- (instancetype) initWithAppIdentifier:(NSString *)appIdentifier isAppStoreEnvironemt:(BOOL)isAppStoreEnvironment {
-  self = [super initWithAppIdentifier:appIdentifier isAppStoreEnvironemt:isAppStoreEnvironment];
+- (instancetype) initWithAppIdentifier:(NSString *)appIdentifier isAppStoreEnvironment:(BOOL)isAppStoreEnvironment {
+  self = [super initWithAppIdentifier:appIdentifier isAppStoreEnvironment:isAppStoreEnvironment];
   if( self ) {
     _webpageURL = [NSURL URLWithString:@"https://rink.hockeyapp.net/"];
     
-    _authenticationType = BITAuthenticatorAuthTypeUDIDProvider;
-    _validationType = BITAuthenticatorValidationTypeNever;
+    _identificationType = BITAuthenticatorIdentificationTypeAnonymous;
+    _isSetup = NO;
+    _restrictApplicationUsage = NO;
+    _restrictionEnforcementFrequency = BITAuthenticatorAppRestrictionEnforcementOnFirstLaunch;
   }
   return self;
 }
@@ -67,115 +81,265 @@ static NSString* const kBITAuthenticatorDidSkipOptionalLogin = @"BITAuthenticato
   //disabled in the appStore
   if([self isAppStoreEnvironment]) return;
   
-  [self registerObservers];
+  _isSetup = YES;
+}
+
+#pragma mark -
+- (void)dismissAuthenticationControllerAnimated:(BOOL)animated completion:(void (^)(void))completion {
+  if (!_authenticationController) return;
+  
+  UIViewController *presentingViewController = [_authenticationController presentingViewController];
+  
+  // If there is no presenting view controller just remove view
+  if (presentingViewController) {
+    [_authenticationController dismissViewControllerAnimated:animated completion:completion];
+  } else {
+    [_authenticationController.navigationController.view removeFromSuperview];
+    if (completion) {
+      completion();
+    }
+  }
+  _authenticationController = nil;
+}
+
+- (void)authenticateInstallation {
+  //disabled in the appStore
+  if([self isAppStoreEnvironment]) return;
+  
+  // make sure this is called after startManager so all modules are fully setup
+  if (!_isSetup) {
+    [self performSelector:@selector(authenticateInstallation) withObject:nil afterDelay:0.1];
+  }
   
   switch ([[UIApplication sharedApplication] applicationState]) {
     case UIApplicationStateActive:
-      [self triggerAuthentication];
+      [self authenticate];
       break;
     case UIApplicationStateBackground:
     case UIApplicationStateInactive:
       // do nothing, wait for active state
       break;
   }
+  
+  [self registerObservers];
 }
 
-- (void) triggerAuthentication {
-  switch (self.validationType) {
-    case BITAuthenticatorValidationTypeOnAppActive:
-      [self validateInstallationWithCompletion:[self defaultValidationCompletionBlock]];
-      break;
-    case BITAuthenticatorValidationTypeOnFirstLaunch:
-      if(![self.lastAuthenticatedVersion isEqualToString:self.executableUUID]) {
-        self.installationIdentificationValidated = NO;
-        [self validateInstallationWithCompletion:[self defaultValidationCompletionBlock]];
+- (void) authenticate {
+  [self identifyWithCompletion:^(BOOL identified, NSError *error) {
+    if(identified) {
+      if([self needsValidation]) {
+        [self validate];
       } else {
-        self.installationIdentificationValidated = YES;
+        [self dismissAuthenticationControllerAnimated:YES completion:nil];
       }
-      break;
-    case BITAuthenticatorValidationTypeOptional:
-      if(NO == self.didSkipOptionalLogin) {
-        [self validateInstallationWithCompletion:[self defaultValidationCompletionBlock]];
-      } else {
-        self.installationIdentificationValidated = YES;
-      }
-      break;
-    case BITAuthenticatorValidationTypeNever:
-      self.installationIdentificationValidated = YES;
-      break;
-  }
+    } else {
+      BITHockeyLog(@"Failed to identify. Error: %@", error);
+    }
+  }];
 }
 
-#pragma mark -
-- (NSString *)installationIdentification {
-  NSString *authToken = self.authenticationToken;
-  if(authToken) {
-    return authToken;
+- (BOOL) needsValidation {
+  if(BITAuthenticatorIdentificationTypeAnonymous == self.identificationType) {
+    return NO;
   }
-  return bit_appAnonID();
+  if(NO == self.restrictApplicationUsage) {
+    return NO;
+  }
+  if(self.restrictionEnforcementFrequency == BITAuthenticatorAppRestrictionEnforcementOnFirstLaunch &&
+     ![self.executableUUID isEqualToString:self.lastAuthenticatedVersion]) {
+    return YES;
+  }
+  if(NO == self.isValidated && self.restrictionEnforcementFrequency == BITAuthenticatorAppRestrictionEnforcementOnAppActive) {
+    return YES;
+  }
+  return NO;
 }
 
-- (NSString*) installationIdentificationType {
-  NSString *authToken = self.authenticationToken;
-  if(nil == authToken) {
-    return @"udid";
-  } else {
-    return [self authenticationTokenType];
+- (void)alertOnFailureStoringTokenInKeychain {
+  UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
+                                                      message:BITHockeyLocalizedString(@"HockeyAuthenticationViewControllerStorageError")
+                                                     delegate:self
+                                            cancelButtonTitle:BITHockeyLocalizedString(@"HockeyOK")
+                                            otherButtonTitles:nil];
+  [alertView setTag:1];
+  [alertView show];
+}
+
+- (void) identifyWithCompletion:(void (^)(BOOL identified, NSError *))completion {
+  if(_authenticationController) {
+    BITHockeyLog(@"Authentication controller already visible. Ingoring identify request");
+    if(completion) completion(NO, nil);
+    return;
   }
+  //first check if the stored identification type matches the one currently configured
+  NSString *storedTypeString = [self stringValueFromKeychainForKey:kBITAuthenticatorIdentifierTypeKey];
+  NSString *configuredTypeString = [self.class stringForIdentificationType:self.identificationType];
+  if(storedTypeString && ![storedTypeString isEqualToString:configuredTypeString]) {
+    BITHockeyLog(@"Identification type mismatch for stored auth-token. Resetting.");
+    [self storeInstallationIdentifier:nil withType:BITAuthenticatorIdentificationTypeAnonymous];
+  }
+  
+  NSString *identification = [self installationIdentifier];
+  
+  if(identification) {
+    self.identified = YES;
+    if(completion) completion(YES, nil);
+    return;
+  }
+  
+  [self processFullSizeImage];
+  if (self.identified) {
+    if(completion) completion(YES, nil);
+    return;
+  }
+  
+  //it's not identified yet, do it now
+  BITAuthenticationViewController *viewController = nil;
+  switch (self.identificationType) {
+    case BITAuthenticatorIdentificationTypeAnonymous:
+      [self storeInstallationIdentifier:bit_UUID() withType:BITAuthenticatorIdentificationTypeAnonymous];
+      self.identified = YES;
+      if(completion) completion(YES, nil);
+      return;
+      break;
+    case BITAuthenticatorIdentificationTypeHockeyAppUser:
+      viewController = [[BITAuthenticationViewController alloc] initWithDelegate:self];
+      viewController.requirePassword = YES;
+      viewController.tableViewTitle = BITHockeyLocalizedString(@"HockeyAuthenticationViewControllerDataEmailAndPasswordDescription");
+      break;
+    case BITAuthenticatorIdentificationTypeDevice:
+      viewController = [[BITAuthenticationViewController alloc] initWithDelegate:self];
+      viewController.requirePassword = NO;
+      viewController.showsLoginViaWebButton = YES;
+      viewController.tableViewTitle = BITHockeyLocalizedString(@"HockeyAuthenticationViewControllerWebUDIDLoginDescription");
+      break;
+    case BITAuthenticatorIdentificationTypeWebAuth:
+      viewController = [[BITAuthenticationViewController alloc] initWithDelegate:self];
+      viewController.requirePassword = NO;
+      viewController.showsLoginViaWebButton = YES;
+      viewController.tableViewTitle = BITHockeyLocalizedString(@"HockeyAuthenticationViewControllerWebAuthLoginDescription");
+      break;
+    case BITAuthenticatorIdentificationTypeHockeyAppEmail:
+      if(nil == self.authenticationSecret) {
+        NSError *error = [NSError errorWithDomain:kBITAuthenticatorErrorDomain
+                                             code:BITAuthenticatorAuthorizationSecretMissing
+                                         userInfo:@{NSLocalizedDescriptionKey : @"For email identification, the authentication secret must be set"}];
+        if(completion) completion(NO, error);
+        return;
+      }
+      viewController = [[BITAuthenticationViewController alloc] initWithDelegate:self];
+      viewController.requirePassword = NO;
+      viewController.tableViewTitle = BITHockeyLocalizedString(@"HockeyAuthenticationViewControllerDataEmailDescription");
+      break;
+  }
+  
+  if([self.delegate respondsToSelector:@selector(authenticator:willShowAuthenticationController:)]) {
+    [self.delegate authenticator:self willShowAuthenticationController:viewController];
+  }
+  
+  NSAssert(viewController, @"ViewController should've been created");
+  
+  viewController.email = [self stringValueFromKeychainForKey:kBITAuthenticatorUserEmailKey];
+  _authenticationController = viewController;
+  _identificationCompletion = completion;
+  [self showView:viewController];
 }
 
 #pragma mark - Validation
-- (void) validateInstallationWithCompletion:(tValidationCompletion) completion {
-  if(nil == self.authenticationToken) {
-    [self authenticateWithCompletion:^(NSString *authenticationToken, NSError *error) {
-      if(nil == authenticationToken) {
-        //if authentication fails, there's nothing to validate
-        NSError *error = [NSError errorWithDomain:kBITAuthenticatorErrorDomain
-                                             code:BITAuthenticatorNotAuthorized
-                                         userInfo:nil];
-        if(completion) completion(NO, error);
-      } else {
-        if(completion) completion(YES, nil);
+
+- (void) validate {
+  [self validateWithCompletion:^(BOOL validated, NSError *error) {
+    if(validated) {
+      [self dismissAuthenticationControllerAnimated:YES completion:nil];
+    } else {
+      UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
+                                                          message:error.localizedDescription
+                                                         delegate:self
+                                                cancelButtonTitle:BITHockeyLocalizedString(@"HockeyOK")
+                                                otherButtonTitles:nil];
+      [alertView setTag:0];
+      [alertView show];
+    }
+  }];
+}
+
+- (void) validateWithCompletion:(void (^)(BOOL validated, NSError *))completion {
+  BOOL requirementsFulfilled = YES;
+  NSError *error = nil;
+  switch(self.identificationType) {
+    case BITAuthenticatorIdentificationTypeAnonymous: {
+      error = [NSError errorWithDomain:kBITAuthenticatorErrorDomain
+                                  code:BITAuthenticatorErrorUnknown
+                              userInfo:@{NSLocalizedDescriptionKey : @"Anonymous users can't be validated"}];
+      requirementsFulfilled = NO;
+      break;
+    }
+    case BITAuthenticatorIdentificationTypeHockeyAppEmail:
+      if(nil == self.authenticationSecret) {
+        error = [NSError errorWithDomain:kBITAuthenticatorErrorDomain
+                                    code:BITAuthenticatorAuthorizationSecretMissing
+                                userInfo:@{NSLocalizedDescriptionKey : @"For email validation, the authentication secret must be set"}];
+        requirementsFulfilled = NO;
+        break;
       }
-    }];
-  } else {
-    NSString *validationPath = [NSString stringWithFormat:@"api/3/apps/%@/identity/validate", self.encodedAppIdentifier];
-    __weak typeof (self) weakSelf = self;
-    [self.hockeyAppClient getPath:validationPath
-       parameters:[self validationParameters]
-       completion:^(BITHTTPOperation *operation, NSData* responseData, NSError *error) {
-         typeof (self) strongSelf = weakSelf;
-         if(nil == responseData) {
-           NSDictionary *userInfo = nil;
-           if(error) {
-             userInfo = @{NSUnderlyingErrorKey : error};
-           }
-           NSError *error = [NSError errorWithDomain:kBITAuthenticatorErrorDomain
-                                                code:BITAuthenticatorNetworkError
-                                            userInfo:userInfo];
-           [strongSelf validationFailedWithError:error completion:completion];
-         } else {
-           NSError *validationParseError = nil;
-           BOOL isValidated = [strongSelf.class isValidationResponseValid:responseData error:&validationParseError];
-           if(isValidated) {
-             [strongSelf validationSucceededWithCompletion:completion];
-           } else {
-             [strongSelf validationFailedWithError:validationParseError completion:completion];
-           }
-         }
-       }];
+      //no break
+    case BITAuthenticatorIdentificationTypeDevice:
+    case BITAuthenticatorIdentificationTypeHockeyAppUser:
+    case BITAuthenticatorIdentificationTypeWebAuth:
+      if(nil == self.installationIdentifier) {
+        error = [NSError errorWithDomain:kBITAuthenticatorErrorDomain
+                                    code:BITAuthenticatorNotIdentified
+                                userInfo:@{NSLocalizedDescriptionKey : @"Make sure to identify the installation first"}];
+        requirementsFulfilled = NO;
+      }
+      break;
   }
+  if(NO == requirementsFulfilled) {
+    if(completion) {
+      completion(NO, error);
+    }
+    return;
+  }
+  
+  NSString *validationPath = [NSString stringWithFormat:@"api/3/apps/%@/identity/validate", self.encodedAppIdentifier];
+  __weak typeof (self) weakSelf = self;
+  [self.hockeyAppClient getPath:validationPath
+                     parameters:[self validationParameters]
+                     completion:^(BITHTTPOperation *operation, NSData* responseData, NSError *error) {
+                       typeof (self) strongSelf = weakSelf;
+                       if(nil == responseData) {
+                         NSDictionary *userInfo = @{NSLocalizedDescriptionKey : BITHockeyLocalizedString(@"HockeyAuthenticationFailedAuthenticate")};
+                         if(error) {
+                           NSMutableDictionary *dict = [userInfo mutableCopy];
+                           dict[NSUnderlyingErrorKey] = error;
+                           userInfo = dict;
+                         }
+                         NSError *error = [NSError errorWithDomain:kBITAuthenticatorErrorDomain
+                                                              code:BITAuthenticatorNetworkError
+                                                          userInfo:userInfo];
+                         strongSelf.validated = NO;
+                         if(completion) completion(NO, error);
+                       } else {
+                         NSError *validationParseError = nil;
+                         BOOL valid = [strongSelf.class isValidationResponseValid:responseData error:&validationParseError];
+                         strongSelf.validated = valid;
+                         if(valid) {
+                           [self setLastAuthenticatedVersion:self.executableUUID];
+                         }
+                         if(completion) completion(valid, validationParseError);
+                       }
+                     }];
 }
 
 - (NSDictionary*) validationParameters {
-  NSParameterAssert(self.authenticationToken);
-  NSParameterAssert(self.installationIdentificationType);
-  return @{self.installationIdentificationType : self.authenticationToken};
+  NSParameterAssert(self.installationIdentifier);
+  NSParameterAssert(self.installationIdentifierParameterString);
+  return @{self.installationIdentifierParameterString : self.installationIdentifier};
 }
 
 + (BOOL) isValidationResponseValid:(id) response error:(NSError **) error {
   NSParameterAssert(response);
-
+  
   NSError *jsonParseError = nil;
   id jsonObject = [NSJSONSerialization JSONObjectWithData:response
                                                   options:0
@@ -224,110 +388,13 @@ static NSString* const kBITAuthenticatorDidSkipOptionalLogin = @"BITAuthenticato
   }
 }
 
-#pragma mark - Authentication
-
-- (void)authenticateWithCompletion:(tAuthenticationCompletion)completion {
-  if(_authenticationController) {
-    BITHockeyLog(@"Already authenticating. Ignoring request");
-    return;
-  }
-  if(_authenticationType == BITAuthenticatorAuthTypeEmail && (nil == _authenticationSecret || !_authenticationSecret.length)) {
-    if(completion) {
-      NSError *error = [NSError errorWithDomain:kBITAuthenticatorErrorDomain
-                                           code:BITAuthenticatorAuthorizationSecretMissing
-                                       userInfo:@{NSLocalizedDescriptionKey: @"HockeyAuthenticationAuthSecretMissing"}];
-      completion(nil, error);
-    }
-    return;
-  }
-
-  BITAuthenticationViewController *viewController = [[BITAuthenticationViewController alloc] initWithDelegate:self];
-  switch (self.authenticationType) {
-    case BITAuthenticatorAuthTypeEmailAndPassword:
-      viewController.requirePassword = YES;
-      break;
-    case BITAuthenticatorAuthTypeEmail:
-      viewController.requirePassword = NO;
-      break;
-    case BITAuthenticatorAuthTypeUDIDProvider:
-      viewController.requirePassword = NO;
-      viewController.showsLoginViaWebButton = YES;
-      break;
-  }
-  
-  switch (self.validationType) {
-    case BITAuthenticatorValidationTypeNever:
-    case BITAuthenticatorValidationTypeOptional:
-      viewController.showsSkipButton = YES;
-      break;
-    case BITAuthenticatorValidationTypeOnAppActive:
-    case BITAuthenticatorValidationTypeOnFirstLaunch:
-      viewController.showsSkipButton = NO;
-      break;
-  }
-  
-  if([self.delegate respondsToSelector:@selector(authenticator:willShowAuthenticationController:)]) {
-    [self.delegate authenticator:self willShowAuthenticationController:viewController];
-  }
-  
-  _authenticationController = viewController;
-  _authenticationCompletionBlock = completion;
-  UIViewController *rootViewController = [self.findVisibleWindow rootViewController];
-  UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:viewController];
-  rootViewController.modalPresentationStyle = UIModalPresentationFullScreen;
-  [rootViewController presentViewController:navController
-                                   animated:YES
-                                 completion:nil];
-}
-
-- (void) didAuthenticateWithToken:(NSString*) token {
-  [_authenticationController dismissViewControllerAnimated:YES completion:nil];
-  _authenticationController = nil;
-  [self setAuthenticationToken:token withType:[self.class stringForAuthenticationType:self.authenticationType]];
-  self.installationIdentificationValidated = YES;
-  self.lastAuthenticatedVersion = [self executableUUID];
-  if(self.authenticationCompletionBlock) {
-    self.authenticationCompletionBlock(self.authenticationToken, nil);
-    self.authenticationCompletionBlock = nil;
-  }
-}
-
-+ (NSString*) stringForAuthenticationType:(BITAuthenticatorAuthType) authType {
-  switch (authType) {
-    case BITAuthenticatorAuthTypeEmail: return @"iuid";
-    case BITAuthenticatorAuthTypeEmailAndPassword: return @"auid";
-    case BITAuthenticatorAuthTypeUDIDProvider:
-      //fallthrough
-    default:
-      return @"udid";
-      break;
-  }
-}
 #pragma mark - AuthenticationViewControllerDelegate
-- (void) authenticationViewControllerDidSkip:(UIViewController *)viewController {
-  [viewController dismissViewControllerAnimated:YES completion:nil];
-  
-  _authenticationController = nil;
-  [self setAuthenticationToken:nil withType:nil];
-  if(self.validationType == BITAuthenticatorValidationTypeOptional) {
-    self.didSkipOptionalLogin = YES;
-    self.installationIdentificationValidated = YES;
-  }
-  NSError *error = [NSError errorWithDomain:kBITAuthenticatorErrorDomain
-                                       code:BITAuthenticatorAuthenticationCancelled
-                                   userInfo:nil];
-  if(self.authenticationCompletionBlock) {
-    self.authenticationCompletionBlock(self.authenticationToken, error);
-    self.authenticationCompletionBlock = nil;
-  }
-}
-
 - (void)authenticationViewController:(UIViewController *)viewController
        handleAuthenticationWithEmail:(NSString *)email
                             password:(NSString *)password
                           completion:(void (^)(BOOL, NSError *))completion {
   NSParameterAssert(email && email.length);
-  NSParameterAssert(self.authenticationType == BITAuthenticatorAuthTypeEmail || (password && password.length));
+  NSParameterAssert(self.identificationType == BITAuthenticatorIdentificationTypeHockeyAppEmail || (password && password.length));
   NSURLRequest* request = [self requestForAuthenticationEmail:email password:password];
   __weak typeof (self) weakSelf = self;
   BITHTTPOperation *operation = [self.hockeyAppClient operationWithURLRequest:request
@@ -336,13 +403,26 @@ static NSString* const kBITAuthenticatorDidSkipOptionalLogin = @"BITAuthenticato
                                                                      NSError *authParseError = nil;
                                                                      NSString *authToken = [strongSelf.class authenticationTokenFromURLResponse:operation.response
                                                                                                                                            data:responseData
-                                                                                                                                      error:&authParseError];
-                                                                     if(nil == authToken) {
-                                                                       completion(NO, authParseError);
+                                                                                                                                          error:&authParseError];
+                                                                     BOOL identified;
+                                                                     if(authToken) {
+                                                                       identified = YES;
+                                                                       [strongSelf storeInstallationIdentifier:authToken withType:strongSelf.identificationType];
+                                                                       [strongSelf dismissAuthenticationControllerAnimated:YES completion:nil];
+                                                                       strongSelf->_authenticationController = nil;
+                                                                       BOOL success = [self addStringValueToKeychain:email forKey:kBITAuthenticatorUserEmailKey];
+                                                                       if (!success) {
+                                                                         [strongSelf alertOnFailureStoringTokenInKeychain];
+                                                                       }
                                                                      } else {
-                                                                       //no need to call completion, we're dismissing it anyways
-                                                                       [self didAuthenticateWithToken:authToken];
-                                                                     }}];
+                                                                       identified = NO;
+                                                                     }
+                                                                     strongSelf.identified = identified;
+                                                                     completion(identified, authParseError);
+                                                                     if(strongSelf.identificationCompletion) strongSelf.identificationCompletion(identified, authParseError);
+                                                                     strongSelf.identificationCompletion = nil;
+                                                                     
+                                                                   }];
   [self.hockeyAppClient enqeueHTTPOperation:operation];
 }
 
@@ -350,22 +430,22 @@ static NSString* const kBITAuthenticatorDidSkipOptionalLogin = @"BITAuthenticato
   NSString *authenticationPath = [self authenticationPath];
   NSDictionary *params = nil;
   
-  if(BITAuthenticatorAuthTypeEmail == self.authenticationType) {
+  if(BITAuthenticatorIdentificationTypeHockeyAppEmail == self.identificationType) {
     NSString *authCode = BITHockeyMD5([NSString stringWithFormat:@"%@%@",
                                        self.authenticationSecret ? : @"",
                                        email ? : @""]);
     params = @{
-             @"email" : email ? : @"",
-             @"authcode" : authCode.lowercaseString,
-             };
+               @"email" : email ? : @"",
+               @"authcode" : authCode.lowercaseString,
+               };
   }
-
+  
   NSMutableURLRequest *request = [self.hockeyAppClient requestWithMethod:@"POST"
                                                                     path:authenticationPath
                                                               parameters:params];
-  if(BITAuthenticatorAuthTypeEmailAndPassword == self.authenticationType) {
+  if(BITAuthenticatorIdentificationTypeHockeyAppUser == self.identificationType) {
     NSString *authStr = [NSString stringWithFormat:@"%@:%@", email, password];
-    NSData *authData = [authStr dataUsingEncoding:NSASCIIStringEncoding];
+    NSData *authData = [authStr dataUsingEncoding:NSUTF8StringEncoding];
     NSString *authValue = [NSString stringWithFormat:@"Basic %@", bit_base64String(authData, authData.length)];
     [request setValue:authValue forHTTPHeaderField:@"Authorization"];
   }
@@ -373,16 +453,14 @@ static NSString* const kBITAuthenticatorDidSkipOptionalLogin = @"BITAuthenticato
 }
 
 - (NSString *) authenticationPath {
-  if(BITAuthenticatorAuthTypeEmailAndPassword == self.authenticationType) {
+  if(BITAuthenticatorIdentificationTypeHockeyAppUser == self.identificationType) {
     return [NSString stringWithFormat:@"api/3/apps/%@/identity/authorize", self.encodedAppIdentifier];
   } else {
     return [NSString stringWithFormat:@"api/3/apps/%@/identity/check", self.encodedAppIdentifier];
   }
 }
 
-
 + (NSString *) authenticationTokenFromURLResponse:(NSHTTPURLResponse*) urlResponse data:(NSData*) data error:(NSError **) error {
-  NSParameterAssert(urlResponse);
   if(nil == urlResponse) {
     if(error) {
       *error = [NSError errorWithDomain:kBITAuthenticatorErrorDomain
@@ -393,15 +471,6 @@ static NSString* const kBITAuthenticatorDidSkipOptionalLogin = @"BITAuthenticato
   }
   
   switch (urlResponse.statusCode) {
-    case 404:
-      if(error) {
-        *error = [NSError errorWithDomain:kBITAuthenticatorErrorDomain
-                                     code:BITAuthenticatorUnknownApplicationID
-                                 userInfo:@{
-                                            NSLocalizedDescriptionKey : BITHockeyLocalizedString(@"HockeyAuthenticationAuthorizationError")
-                                            }];
-      }
-      break;
     case 401:
       if(error) {
         *error = [NSError errorWithDomain:kBITAuthenticatorErrorDomain
@@ -412,6 +481,7 @@ static NSString* const kBITAuthenticatorDidSkipOptionalLogin = @"BITAuthenticato
       }
       break;
     case 200:
+    case 404:
       //Do nothing, handled below
       break;
     default:
@@ -423,12 +493,11 @@ static NSString* const kBITAuthenticatorDidSkipOptionalLogin = @"BITAuthenticato
       }
       break;
   }
-  if(200 != urlResponse.statusCode) {
+  if(200 != urlResponse.statusCode && 404 != urlResponse.statusCode) {
     //make sure we have an error created if user wanted to have one
-    NSParameterAssert(0 == error || *error);
+    NSParameterAssert(nil == error || *error);
     return nil;
   }
-  NSAssert(urlResponse.statusCode == 200, @"Should be 200 now. Everything else should've been handled above");
   
   NSError *jsonParseError = nil;
   id jsonObject = [NSJSONSerialization JSONObjectWithData:data
@@ -456,8 +525,16 @@ static NSString* const kBITAuthenticatorDidSkipOptionalLogin = @"BITAuthenticato
     authToken = jsonObject[@"iuid"];
   } else if([status isEqualToString:@"authorized"]) {
     authToken = jsonObject[@"auid"];
+  } else if([status isEqualToString:@"not authorized"]) {
+    if(error) {
+      *error = [NSError errorWithDomain:kBITAuthenticatorErrorDomain
+                                   code:BITAuthenticatorNotAuthorized
+                               userInfo:@{NSLocalizedDescriptionKey: BITHockeyLocalizedString(@"HockeyAuthenticationNotMember")}];
+      
+    }
   }
-  if(nil == authToken && error) {
+  //if no error is set yet, but error parameter is given, return a generic error
+  if(nil == authToken && error && nil == *error) {
     *error = [NSError errorWithDomain:kBITAuthenticatorErrorDomain
                                  code:BITAuthenticatorAPIServerReturnedInvalidResponse
                              userInfo:@{NSLocalizedDescriptionKey: BITHockeyLocalizedString(@"HockeyAuthenticationFailedAuthenticate")}];
@@ -465,91 +542,232 @@ static NSString* const kBITAuthenticatorDidSkipOptionalLogin = @"BITAuthenticato
   return authToken;
 }
 
+- (NSURL *)deviceAuthenticationURL {
+  NSString *whatParameter = nil;
+  switch (self.identificationType) {
+    case BITAuthenticatorIdentificationTypeWebAuth:
+      whatParameter = @"email";
+      break;
+    case BITAuthenticatorIdentificationTypeDevice:
+      whatParameter = @"udid";
+      break;
+    case BITAuthenticatorIdentificationTypeAnonymous:
+    case BITAuthenticatorIdentificationTypeHockeyAppEmail:
+    case BITAuthenticatorIdentificationTypeHockeyAppUser:
+      return nil;
+      break;
+  }
+  NSURL *url = [self.webpageURL URLByAppendingPathComponent:[NSString stringWithFormat:@"apps/%@/authorize", self.encodedAppIdentifier]];
+  NSParameterAssert(whatParameter && url.absoluteString);
+  url = [NSURL URLWithString:[NSString stringWithFormat:@"%@?what=%@", url.absoluteString, whatParameter]];
+  return url;
+}
+
 - (void)authenticationViewControllerDidTapWebButton:(UIViewController *)viewController {
-  NSURL *hockeyWebbasedLoginURL = [self.webpageURL URLByAppendingPathComponent:[NSString stringWithFormat:@"apps/%@/authorize", self.encodedAppIdentifier]];
-  [[UIApplication sharedApplication] openURL:hockeyWebbasedLoginURL];
+  NSURL *url = [self deviceAuthenticationURL];
+  if(url) {
+    [[UIApplication sharedApplication] openURL:url];
+  }
 }
 
 - (BOOL) handleOpenURL:(NSURL *) url
      sourceApplication:(NSString *) sourceApplication
             annotation:(id) annotation {
-  BOOL isValidURL = NO;
-  NSString *udid = [self UDIDFromOpenURL:url annotation:annotation isValidURL:&isValidURL];
-  if(NO == isValidURL) {
-    //do nothing, was not for us
+  //check if this URL was meant for us, if not return NO so the user can
+  //handle it
+  NSString *const kAuthorizationHost = @"authorize";
+  NSString *urlScheme = _urlScheme ? : [NSString stringWithFormat:@"ha%@", self.appIdentifier];
+  if(!([[url scheme] isEqualToString:urlScheme] && [[url host] isEqualToString:kAuthorizationHost])) {
+    BITHockeyLog(@"URL scheme for authentication doesn't match!");
     return NO;
   }
   
-  if(udid){
-    [self didAuthenticateWithToken:udid];
+  NSString *installationIdentifier = nil;
+  NSString *localizedErrorDescription = nil;
+  switch (self.identificationType) {
+    case BITAuthenticatorIdentificationTypeWebAuth: {
+      NSString *email = nil;
+      [self.class email:&email andIUID:&installationIdentifier fromOpenURL:url];
+      if(email) {
+        BOOL success = [self addStringValueToKeychain:email forKey:kBITAuthenticatorUserEmailKey];
+        if (!success) {
+          [self alertOnFailureStoringTokenInKeychain];
+        }
+      } else {
+        BITHockeyLog(@"No email found in URL: %@", url);
+      }
+      localizedErrorDescription = @"Failed to retrieve parameters from URL.";
+      break;
+    }
+    case BITAuthenticatorIdentificationTypeDevice: {
+      installationIdentifier = [self.class UDIDFromOpenURL:url annotation:annotation];
+      localizedErrorDescription = @"Failed to retrieve UDID from URL.";
+      break;
+    }
+    case BITAuthenticatorIdentificationTypeHockeyAppEmail:
+    case BITAuthenticatorIdentificationTypeAnonymous:
+    case BITAuthenticatorIdentificationTypeHockeyAppUser:
+      NSAssert(NO, @"Should only be called for Device and WebAuth identificationType");
+      return NO;
+  }
+  
+  if(installationIdentifier){
+    BITHockeyLog(@"Authentication succeeded.");
+    if(NO == self.restrictApplicationUsage) {
+      [self dismissAuthenticationControllerAnimated:YES completion:nil];
+    }
+    [self storeInstallationIdentifier:installationIdentifier withType:self.identificationType];
+    self.identified = YES;
+    if(self.identificationCompletion) {
+      self.identificationCompletion(YES, nil);
+      self.identificationCompletion = nil;
+    }
   } else {
-    //reset auth-token
-    [self setAuthenticationToken:nil withType:nil];
-    
-    if(self.validationType == BITAuthenticatorValidationTypeOptional) {
-      //dismiss view-controller if login was optional
-      [_authenticationController dismissViewControllerAnimated:YES completion:nil];
-      _authenticationController = nil;
-    } else {
-      //keep the viewcontroller and thus block the app
+    //reset token
+    BITHockeyLog(@"Resetting authentication token");
+    [self storeInstallationIdentifier:nil withType:self.identificationType];
+    self.identified = NO;
+    if(self.identificationCompletion) {
+      NSError *error = [NSError errorWithDomain:kBITAuthenticatorErrorDomain
+                                           code:BITAuthenticatorErrorUnknown
+                                       userInfo:@{NSLocalizedDescriptionKey : localizedErrorDescription}];
+      self.identificationCompletion(NO, error);
+      self.identificationCompletion = nil;
     }
   }
   return YES;
 }
 
-- (NSString *) UDIDFromOpenURL:(NSURL *) url annotation:(id) annotation isValidURL:(BOOL*) isValid{
-  NSString *urlScheme = [NSString stringWithFormat:@"ha%@", self.appIdentifier];
-  if([[url scheme] isEqualToString:urlScheme]) {
-    if(isValid) {
-      *isValid = YES;
++ (NSString *) UDIDFromOpenURL:(NSURL *) url annotation:(id) annotation {
+  NSString *query = [url query];
+  NSString *udid = nil;
+  //there should actually only one
+  static NSString * const UDIDQuerySpecifier = @"udid";
+  for(NSString *queryComponents in [query componentsSeparatedByString:@"&"]) {
+    NSArray *parameterComponents = [queryComponents componentsSeparatedByString:@"="];
+    if(2 == parameterComponents.count && [parameterComponents[0] isEqualToString:UDIDQuerySpecifier]) {
+      udid = parameterComponents[1];
+      break;
     }
-    NSString *query = [url query];
-    NSString *udid = nil;
-    //there should actually only one
-    static NSString * const UDIDQuerySpecifier = @"udid";
-    for(NSString *queryComponents in [query componentsSeparatedByString:@"&"]) {
-      NSArray *parameterComponents = [queryComponents componentsSeparatedByString:@"="];
-      if(2 == parameterComponents.count && [parameterComponents[0] isEqualToString:UDIDQuerySpecifier]) {
-        udid = parameterComponents[1];
-        break;
-      }
-    }
-    return udid;
-  } else {
-    if(isValid) {
-      *isValid = NO;
-    }
-    return nil;
   }
+  return udid;
 }
 
-#pragma mark - Validation Pseudo-Delegate
-- (void)validationFailedWithError:(NSError *)validationError completion:(tValidationCompletion) completion{
-  if(completion) {
-    completion(NO, validationError);
-  }
-}
-
-- (void)validationSucceededWithCompletion:(tValidationCompletion) completion {
-  self.installationIdentificationValidated = YES;
-  if(completion) {
-    completion(YES, nil);
++ (void) email:(NSString**) email andIUID:(NSString**) iuid fromOpenURL:(NSURL *) url {
+  NSString *query = [url query];
+  //there should actually only one
+  static NSString * const EmailQuerySpecifier = @"email";
+  static NSString * const IUIDQuerySpecifier = @"iuid";
+  for(NSString *queryComponents in [query componentsSeparatedByString:@"&"]) {
+    NSArray *parameterComponents = [queryComponents componentsSeparatedByString:@"="];
+    if(email && 2 == parameterComponents.count && [parameterComponents[0] isEqualToString:EmailQuerySpecifier]) {
+      *email = parameterComponents[1];
+    } else if(iuid && 2 == parameterComponents.count && [parameterComponents[0] isEqualToString:IUIDQuerySpecifier]) {
+      *iuid = parameterComponents[1];
+    }
   }
 }
 
 #pragma mark - Private helpers
-- (UIDevice *)currentDevice {
-  return _currentDevice ? : [UIDevice currentDevice];;
-}
 
 - (void) cleanupInternalStorage {
+  [self removeKeyFromKeychain:kBITAuthenticatorIdentifierTypeKey];
+  [self removeKeyFromKeychain:kBITAuthenticatorIdentifierKey];
+  [self removeKeyFromKeychain:kBITAuthenticatorUUIDKey];
+  [self removeKeyFromKeychain:kBITAuthenticatorUserEmailKey];
+  [self setLastAuthenticatedVersion:nil];
+  
+  //cleanup values stored from 3.5 Beta1..Beta3
   [self removeKeyFromKeychain:kBITAuthenticatorAuthTokenKey];
   [self removeKeyFromKeychain:kBITAuthenticatorAuthTokenTypeKey];
-  [self removeKeyFromKeychain:kBITAuthenticatorAuthTokenVendorIdentifierKey];
-  [self removeKeyFromKeychain:kBITAuthenticatorDidSkipOptionalLogin];
-  [self setLastAuthenticatedVersion:nil];
 }
 
+- (void)processFullSizeImage {
+#ifdef BIT_INTERNAL_DEBUG
+  NSString* path = [[NSBundle mainBundle] pathForResource:@"iTunesArtwork" ofType:@"png"];
+#else
+  NSString* path = [[[NSBundle mainBundle] bundlePath] stringByAppendingString:@"/../iTunesArtwork"];
+#endif
+  
+  struct stat fs;
+  int fd = open([path UTF8String], O_RDONLY, 0);
+  if (fstat(fd, &fs) < 0) {
+    // File not found
+    return;
+  }
+  
+  BITHockeyLog(@"Processing full size image for possible authentication");
+  
+  unsigned char *buffer, *source;
+  source = (unsigned char *)malloc((unsigned long)fs.st_size);
+  if (read(fd, source, (unsigned long)fs.st_size) != fs.st_size) {
+    // Couldn't read file
+    free(source);
+    return;
+  }
+    
+  if ((fs.st_size < 20) || (memcmp(source, kBITPNGHeader, 8))) {
+    // Not a PNG
+    free(source);
+    return;
+  }
+  
+  buffer = source + 8;
+
+  NSString *result = nil;
+  bit_uint32 length;
+  unsigned char *name;
+  unsigned char *data;
+  int chunk_index = 0;
+  long long bytes_left = fs.st_size - 8;
+  do {
+    memcpy(&length, buffer, 4);
+    length = ntohl(length);
+    
+    buffer += 4;
+    name = (unsigned char *)malloc(5);
+    name[4] = 0;
+    memcpy(name, buffer, 4);
+    
+    buffer += 4;
+    data = (unsigned char *)malloc(length + 1);
+    
+    if (bytes_left >= length) {
+      memcpy(data, buffer, length);
+    
+      buffer += length;
+      buffer += 4;
+      if (!strcmp((const char *)name, "tEXt")) {
+        data[length] = 0;
+        NSString *key = [NSString stringWithCString:(char *)data encoding:NSUTF8StringEncoding];
+        
+        if ([key isEqualToString:@"Data"]) {
+          result = [NSString stringWithCString:(char *)(data + key.length + 1) encoding:NSUTF8StringEncoding];
+        }
+      }
+      
+      if (!memcmp(name, kBITPNGEndChunk, 4)){
+        chunk_index = 128;
+      }
+    }
+
+    free(data);
+    free(name);
+    
+    bytes_left -= (length + 3 * 4);
+  } while ((chunk_index++ < 128) && (bytes_left > 8));
+  
+  free(source);
+  
+  if (result) {
+    BITHockeyLog(@"Authenticating using full size image information: %@", result);
+    [self handleOpenURL:[NSURL URLWithString:result] sourceApplication:nil annotation:nil];
+  } else {
+    BITHockeyLog(@"No authentication information found");
+  }
+}
+
+#pragma mark - KVO
 - (void) registerObservers {
   __weak typeof(self) weakSelf = self;
   if(nil == _appDidBecomeActiveObserver) {
@@ -561,14 +779,14 @@ static NSString* const kBITAuthenticatorDidSkipOptionalLogin = @"BITAuthenticato
                                                                                   [strongSelf applicationDidBecomeActive:note];
                                                                                 }];
   }
-  if(nil == _appWillResignActiveObserver) {
-    _appWillResignActiveObserver = [[NSNotificationCenter defaultCenter] addObserverForName:UIApplicationWillResignActiveNotification
-                                                                                    object:nil
-                                                                                     queue:NSOperationQueue.mainQueue
-                                                                                usingBlock:^(NSNotification *note) {
-                                                                                  typeof(self) strongSelf = weakSelf;
-                                                                                  [strongSelf applicationWillResignActive:note];
-                                                                                }];
+  if(nil == _appDidEnterBackgroundOberser) {
+    _appDidEnterBackgroundOberser = [[NSNotificationCenter defaultCenter] addObserverForName:UIApplicationDidEnterBackgroundNotification
+                                                                                      object:nil
+                                                                                       queue:NSOperationQueue.mainQueue
+                                                                                  usingBlock:^(NSNotification *note) {
+                                                                                    typeof(self) strongSelf = weakSelf;
+                                                                                    [strongSelf applicationDidEnterBackground:note];
+                                                                                  }];
   }
 }
 
@@ -577,56 +795,33 @@ static NSString* const kBITAuthenticatorDidSkipOptionalLogin = @"BITAuthenticato
     [[NSNotificationCenter defaultCenter] removeObserver:_appDidBecomeActiveObserver];
     _appDidBecomeActiveObserver = nil;
   }
-  if(_appWillResignActiveObserver) {
-    [[NSNotificationCenter defaultCenter] removeObserver:_appWillResignActiveObserver];
-    _appWillResignActiveObserver = nil;
+  if(_appDidEnterBackgroundOberser) {
+    [[NSNotificationCenter defaultCenter] removeObserver:_appDidEnterBackgroundOberser];
+    _appDidEnterBackgroundOberser = nil;
   }
 }
 
 #pragma mark - Property overrides
-- (void)setAuthenticationToken:(NSString *)authenticationToken withType:(NSString*) authenticationTokenType {
-  NSParameterAssert(nil == authenticationToken || nil != authenticationTokenType);
-  if(![self.authenticationToken isEqualToString:authenticationToken] || ![self.authenticationTokenType isEqualToString:authenticationTokenType]) {
-    [self willChangeValueForKey:@"installationIdentification"];
-    if(nil == authenticationToken) {
-      [self removeKeyFromKeychain:kBITAuthenticatorAuthTokenKey];
-      [self removeKeyFromKeychain:kBITAuthenticatorAuthTokenTypeKey];
-    } else {
-      [self addStringValueToKeychain:authenticationToken forKey:kBITAuthenticatorAuthTokenKey];
-      [self addStringValueToKeychain:authenticationTokenType forKey:kBITAuthenticatorAuthTokenTypeKey];
-      NSString *identifierForVendor = self.currentDevice.identifierForVendor.UUIDString;
-      [self addStringValueToKeychain:identifierForVendor forKey:kBITAuthenticatorAuthTokenVendorIdentifierKey];
+- (void)storeInstallationIdentifier:(NSString *)installationIdentifier withType:(BITAuthenticatorIdentificationType) type {
+  if(nil == installationIdentifier) {
+    [self removeKeyFromKeychain:kBITAuthenticatorIdentifierKey];
+    [self removeKeyFromKeychain:kBITAuthenticatorIdentifierTypeKey];
+  } else {
+    BOOL success1 = [self addStringValueToKeychainForThisDeviceOnly:installationIdentifier
+                                                            forKey:kBITAuthenticatorIdentifierKey];
+    NSParameterAssert(success1);
+    BOOL success2 = [self addStringValueToKeychainForThisDeviceOnly:[self.class stringForIdentificationType:type]
+                                                       forKey:kBITAuthenticatorIdentifierTypeKey];
+    NSParameterAssert(success2);
+    if (!success1 || !success2) {
+      [self alertOnFailureStoringTokenInKeychain];
     }
-    [self didChangeValueForKey:@"installationIdentification"];
   }
 }
 
-- (NSString *)authenticationToken {
-  NSString *authToken = [self stringValueFromKeychainForKey:kBITAuthenticatorAuthTokenKey];
-  if(nil == authToken) return nil;
-  
-  //check if the auth token matches the current setting
-  if(![self.authenticationTokenType isEqualToString:[self.class stringForAuthenticationType:self.authenticationType]]) {
-    BITHockeyLog(@"Auth type mismatch for stored auth-token. Resetting.");
-    [self removeKeyFromKeychain:kBITAuthenticatorAuthTokenVendorIdentifierKey];
-    [self removeKeyFromKeychain:kBITAuthenticatorAuthTokenKey];
-    return nil;
-  }
-
-  //check if this was generated on the same device we're running now
-  NSString *currentVendorUUIDString = self.currentDevice.identifierForVendor.UUIDString;
-  if(![currentVendorUUIDString isEqualToString:[self stringValueFromKeychainForKey:kBITAuthenticatorAuthTokenVendorIdentifierKey]]) {
-    BITHockeyLog(@"Vendor identifier mismatch for stored auth-token. Resetting.");
-    [self removeKeyFromKeychain:kBITAuthenticatorAuthTokenVendorIdentifierKey];
-    [self removeKeyFromKeychain:kBITAuthenticatorAuthTokenKey];
-    return nil;
-  }
-  return authToken;
-}
-
-- (NSString *)authenticationTokenType {
-  NSString *authTokenType = [self stringValueFromKeychainForKey:kBITAuthenticatorAuthTokenTypeKey];
-  return authTokenType;
+- (NSString*) installationIdentifier {
+  NSString *identifier = [self stringValueFromKeychainForKey:kBITAuthenticatorIdentifierKey];
+  return identifier;
 }
 
 - (void)setLastAuthenticatedVersion:(NSString *)lastAuthenticatedVersion {
@@ -644,46 +839,62 @@ static NSString* const kBITAuthenticatorDidSkipOptionalLogin = @"BITAuthenticato
   return [[NSUserDefaults standardUserDefaults] objectForKey:kBITAuthenticatorLastAuthenticatedVersionKey];
 }
 
-- (void)setDidSkipOptionalLogin:(BOOL)didSkipOptionalLogin {
-  NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
-  if(NO == didSkipOptionalLogin){
-    [defaults removeObjectForKey:kBITAuthenticatorDidSkipOptionalLogin];
-  } else {
-    [defaults setObject:@(YES)
-                 forKey:kBITAuthenticatorDidSkipOptionalLogin];
-    [defaults synchronize];
+- (NSString *)installationIdentifierParameterString {
+  switch(self.identificationType) {
+    case BITAuthenticatorIdentificationTypeHockeyAppEmail:
+    case BITAuthenticatorIdentificationTypeWebAuth:
+      return @"iuid";
+    case BITAuthenticatorIdentificationTypeHockeyAppUser: return @"auid";
+    case BITAuthenticatorIdentificationTypeDevice: return @"udid";
+    case BITAuthenticatorIdentificationTypeAnonymous: return @"uuid";
   }
 }
 
-- (BOOL)didSkipOptionalLogin {
-  return [[NSUserDefaults standardUserDefaults] objectForKey:kBITAuthenticatorDidSkipOptionalLogin];
++ (NSString *)stringForIdentificationType:(BITAuthenticatorIdentificationType) identificationType {
+  switch(identificationType) {
+    case BITAuthenticatorIdentificationTypeHockeyAppEmail: return @"iuid";
+    case BITAuthenticatorIdentificationTypeWebAuth: return @"webAuth";
+    case BITAuthenticatorIdentificationTypeHockeyAppUser: return @"auid";
+    case BITAuthenticatorIdentificationTypeDevice: return @"udid";
+    case BITAuthenticatorIdentificationTypeAnonymous: return @"uuid";
+  }
+}
+
+- (void)setIdentificationType:(BITAuthenticatorIdentificationType)identificationType {
+  if(_identificationType != identificationType) {
+    _identificationType = identificationType;
+    self.identified = NO;
+    self.validated = NO;
+  }
+}
+
+- (NSString *)publicInstallationIdentifier {
+  switch (self.identificationType) {
+    case BITAuthenticatorIdentificationTypeHockeyAppEmail:
+    case BITAuthenticatorIdentificationTypeHockeyAppUser:
+    case BITAuthenticatorIdentificationTypeWebAuth:
+      return [self stringValueFromKeychainForKey:kBITAuthenticatorUserEmailKey];
+    case BITAuthenticatorIdentificationTypeAnonymous:
+    case BITAuthenticatorIdentificationTypeDevice:
+      return [self stringValueFromKeychainForKey:kBITAuthenticatorIdentifierKey];
+  }
 }
 
 #pragma mark - Application Lifecycle
 - (void)applicationDidBecomeActive:(NSNotification *)note {
-  [self triggerAuthentication];
+  [self authenticate];
 }
 
-- (void)applicationWillResignActive:(NSNotification *)note {
-  if(BITAuthenticatorValidationTypeOnAppActive == self.validationType) {
-    self.installationIdentificationValidated = NO;
+- (void)applicationDidEnterBackground:(NSNotification *)note {
+  if(BITAuthenticatorAppRestrictionEnforcementOnAppActive == self.restrictionEnforcementFrequency) {
+    self.validated = NO;
   }
 }
 
-#pragma mark - 
-- (tValidationCompletion) defaultValidationCompletionBlock {
-  return ^(BOOL validated, NSError *error) {
-    switch (self.validationType) {
-      case BITAuthenticatorValidationTypeNever:
-      case BITAuthenticatorValidationTypeOptional:
-        break;
-      case BITAuthenticatorValidationTypeOnAppActive:
-      case BITAuthenticatorValidationTypeOnFirstLaunch:
-        if(!validated) {
-          [self authenticateWithCompletion:nil];
-        }
-        break;
-    }
-  };
-};
+#pragma mark - UIAlertViewDelegate
+- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
+  if (alertView.tag == 0) {
+    [self validate];
+  }
+}
 @end

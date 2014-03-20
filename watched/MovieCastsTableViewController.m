@@ -17,7 +17,7 @@
 #import "MJUCrew.h"
 #import "MJUCast.h"
 #import "UIColor+Additions.h"
-#import "AMBlurView.h"
+#import "JCRBlurView.h"
 
 @interface MovieCastsTableViewController ()
 @end

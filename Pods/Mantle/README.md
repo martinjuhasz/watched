@@ -3,11 +3,6 @@
 Mantle makes it easy to write a simple model layer for your Cocoa or Cocoa Touch
 application.
 
-## Getting Started
-
-To start building the framework, clone this repository and then run `script/bootstrap`.
-This will automatically pull down any dependencies.
-
 ## The Typical Model Object
 
 What's wrong with the way model objects are usually written in Objective-C?
@@ -135,11 +130,14 @@ typedef enum : NSUInteger {
 Whew, that's a lot of boilerplate for something so simple! And, even then, there
 are some problems that this example doesn't address:
 
- * If the `url` or `html_url` field is missing, `+[NSURL URLWithString:]` will throw an exception.
+ * If the `url` or `html_url` field is missing, `+[NSURL URLWithString:]` will
+   throw an exception.
  * There's no way to update a `GHIssue` with new data from the server.
  * There's no way to turn a `GHIssue` _back_ into JSON.
- * `GHIssueState` shouldn't be encoded as-is. If the enum changes in the future, existing archives might break.
- * If the interface of `GHIssue` changes down the road, existing archives might break.
+ * `GHIssueState` shouldn't be encoded as-is. If the enum changes in the future,
+   existing archives might break.
+ * If the interface of `GHIssue` changes down the road, existing archives might
+   break.
 
 ## Why Not Use Core Data?
 
@@ -160,8 +158,8 @@ If you're just trying to access some JSON objects, Core Data can be a lot of
 work for little gain.
 
 Nonetheless, if you're using or want to use Core Data in your app already,
-Mantle can still be a convenient translation layer between the API and your managed
-model objects.
+Mantle can still be a convenient translation layer between the API and your
+managed model objects.
 
 ## MTLModel
 
@@ -220,15 +218,9 @@ typedef enum : NSUInteger {
 }
 
 + (NSValueTransformer *)stateJSONTransformer {
-    NSDictionary *states = @{
+    return [NSValueTransformer mtl_valueMappingTransformerWithDictionary:@{
         @"open": @(GHIssueStateOpen),
         @"closed": @(GHIssueStateClosed)
-    };
-
-    return [MTLValueTransformer reversibleTransformerWithForwardBlock:^(NSString *str) {
-        return states[str];
-    } reverseBlock:^(NSNumber *state) {
-        return [states allKeysForObject:state].lastObject;
     }];
 }
 
@@ -276,6 +268,171 @@ JSONDictionaryFromModel:]` can transform any model object conforming to
 archival. When unarchiving, `-decodeValueForKey:withCoder:modelVersion:` will
 be invoked if overridden, giving you a convenient hook to upgrade old data.
 
+## MTLJSONSerializing
+
+In order to serialize your model objects from or into JSON, you need to
+implement `<MTLJSONSerializing>` in your `MTLModel` subclass. This allows you to
+use `MTLJSONAdapter` to convert your model objects from JSON and back:
+
+```objc
+NSError *error = nil;
+XYUser *user = [MTLJSONAdapter modelOfClass:XYUser.class fromJSONDictionary:JSONDictionary error:&error];
+```
+
+```objc
+NSDictionary *JSONDictionary = [MTLJSONAdapter JSONDictionaryFromModel:user];
+```
+
+### `+JSONKeyPathsByPropertyKey`
+
+The dictionary returned by this method specifies how your model object's
+properties map to the keys in the JSON representation. Properties that map to
+`NSNull` will not be present in the JSON representation, for example:
+
+```objc
+
+@interface XYUser : MTLModel
+
+@property (readonly, nonatomic, copy) NSString *name;
+@property (readonly, nonatomic, strong) NSDate *createdAt;
+
+@property (readonly, nonatomic, assign, getter = isMeUser) BOOL meUser;
+
+@end
+
+@implementation XYUser
+
++ (NSDictionary *)JSONKeyPathsByPropertyKey {
+    return @{
+        @"createdAt": @"created_at",
+        @"meUser": NSNull.null
+    };
+}
+
+@end
+```
+
+In this example, the `XYUser` class declares three properties that Mantle
+handles in different ways:
+
+- `name` is implicitly mapped to a key of the same name in the JSON
+  representation.
+- `createdAt` is converted to its snake case equivalent.
+- `meUser` is not serialized into JSON.
+
+Use `-[NSDictionary mtl_dictionaryByAddingEntriesFromDictionary:]` if your
+model's superclass also implements `MTLJSONSerializing` to merge their mappings.
+
+When deserializing JSON using
+`+[MTLJSONAdapter modelOfClass:fromJSONDictionary:error:]`, JSON keys that don't
+correspond to a property name or have an explicit mapping are ignored:
+
+```objc
+NSDictionary *JSONDictionary = @{
+    @"name": @"john",
+    @"created_at": @"2013/07/02 16:40:00 +0000",
+    @"plan": @"lite"
+};
+
+XYUser *user = [MTLJSONAdapter modelOfClass:XYUser.class fromJSONDictionary:JSONDictionary error:&error];
+```
+
+Here, the `plan` would be ignored since it neither matches a property name of
+`XYUser` nor is it otherwise mapped in `+JSONKeyPathsByPropertyKey`.
+
+### `+JSONTransformerForKey:`
+
+Implement this optional method to convert a property from a different type when
+deserializing from JSON.
+
+```
++ (NSValueTransformer *)JSONTransformerForKey:(NSString *)key {
+    if ([key isEqualToString:@"createdAt"]) {
+        return [NSValueTransformer valueTransformerForName:XYDateValueTransformerName];
+    }
+
+    return nil;
+}
+```
+
+For added convenience, if you implement `+<key>JSONTransformer`,
+`MTLJSONAdapter` will use the result of that method instead. For example, dates
+that are commonly represented as strings in JSON can be transformed to `NSDate`s
+like so:
+
+```objc
++ (NSValueTransformer *)createdAtJSONTransformer {
+    return [MTLValueTransformer reversibleTransformerWithForwardBlock:^(NSString *str) {
+        return [self.dateFormatter dateFromString:str];
+    } reverseBlock:^(NSDate *date) {
+        return [self.dateFormatter stringFromDate:date];
+    }];
+}
+```
+
+If the transformer is reversible, it will also be used when serializing the
+object into JSON.
+
+### `+classForParsingJSONDictionary:`
+
+If you are implementing a class cluster, implement this optional method to
+determine which subclass of your base class should be used when deserializing an
+object from JSON.
+
+```objc
+@interface XYMessage : MTLModel
+
+@end
+
+@interface XYTextMessage: XYMessage
+
+@property (readonly, nonatomic, copy) NSString *body;
+
+@end
+
+@interface XYPictureMessage : XYMessage
+
+@property (readonly, nonatomic, strong) NSURL *imageURL;
+
+@end
+
+@implementation XYMessage
+
++ (Class)classForParsingJSONDictionary:(NSDictionary *)JSONDictionary {
+    if (JSONDictionary[@"image_url"] != nil) {
+        return XYPictureMessage.class;
+    }
+
+    if (JSONDictionary[@"body"] != nil) {
+        return XYTextMessage.class;
+    }
+
+    NSAssert(NO, @"No matching class for the JSON dictionary '%@'.", JSONDictionary);
+    return self;
+}
+
+@end
+```
+
+`MTLJSONAdapter` will then pick the class based on the JSON dictionary you pass
+in:
+
+```objc
+NSDictionary *textMessage = @{
+    @"id": @1,
+    @"body": @"Hello World!"
+};
+
+NSDictionary *pictureMessage = @{
+    @"id": @2,
+    @"image_url": @"http://example.com/lolcat.gif"
+};
+
+XYTextMessage *messageA = [MTLJSONAdapter modelOfClass:XYMessage.class fromJSONDictionary:textMessage error:NULL];
+
+XYPictureMessage *messageB = [MTLJSONAdapter modelOfClass:XYMessage.class fromJSONDictionary:pictureMessage error:NULL];
+```
+
 ## Persistence
 
 Mantle doesn't automatically persist your objects for you. However, `MTLModel`
@@ -284,6 +441,36 @@ does conform to `<NSCoding>`, so model objects can be archived to disk using
 
 If you need something more powerful, or want to avoid keeping your whole model
 in memory at once, Core Data may be a better choice.
+
+## System Requirements
+
+Mantle supports OS X 10.7+ and iOS 5.0+.
+
+## Importing Mantle
+
+To add Mantle to your application:
+
+ 1. Add the Mantle repository as a submodule of your application's repository.
+ 1. Run `script/bootstrap` from within the Mantle folder.
+ 1. Drag and drop `Mantle.xcodeproj` into your application's Xcode project or
+    workspace.
+ 1. On the "Build Phases" tab of your application target, add Mantle to the
+    "Link Binary With Libraries" phase.
+    * **On iOS**, add `libMantle.a`.
+    * **On OS X**, add `Mantle.framework`. Mantle must also be added to any
+      "Copy Frameworks" build phase. If you don't already have one, simply add a
+      "Copy Files" build phase and target the "Frameworks" destination.
+ 1. Add `"$(BUILD_ROOT)/../IntermediateBuildFilesPath/UninstalledProducts/include" $(inherited)`
+    to the "Header Search Paths" build setting (this is only
+    necessary for archive builds, but it has no negative effect otherwise).
+ 1. **For iOS targets**, add `-ObjC` to the "Other Linker Flags" build setting.
+ 1. **If you added Mantle to a project (not a workspace)**, you will also need
+    to add the appropriate Mantle target to the "Target Dependencies" of your
+    application.
+
+If you would prefer to use [CocoaPods](http://cocoapods.org), there are some
+[Mantle podspecs](https://github.com/CocoaPods/Specs/tree/master/Mantle) that
+have been generously contributed by third parties.
 
 ## License
 

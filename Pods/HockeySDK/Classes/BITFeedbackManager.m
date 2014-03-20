@@ -1,7 +1,7 @@
 /*
  * Author: Andreas Linde <mail@andreaslinde.de>
  *
- * Copyright (c) 2012-2013 HockeyApp, Bit Stadium GmbH.
+ * Copyright (c) 2012-2014 HockeyApp, Bit Stadium GmbH.
  * All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person
@@ -37,8 +37,6 @@
 #import "BITFeedbackManagerPrivate.h"
 #import "BITHockeyBaseManagerPrivate.h"
 
-#import "BITHockeyManagerPrivate.h"
-
 #import "BITHockeyHelper.h"
 #import "BITHockeyAppClient.h"
 
@@ -55,11 +53,14 @@
 
 @implementation BITFeedbackManager {
   NSFileManager  *_fileManager;
-  NSString       *_feedbackDir;
   NSString       *_settingsFile;
   
+  id _appDidBecomeActiveObserver;
+  id _appDidEnterBackgroundObserver;
+  id _networkDidBecomeReachableObserver;
+  
   BOOL _incomingMessagesAlertShowing;
-  BOOL _didSetupDidBecomeActiveNotifications;
+  BOOL _didEnterBackgroundState;
   BOOL _networkRequestInProgress;
 }
 
@@ -75,9 +76,8 @@
     _requireUserEmail = BITFeedbackUserDataElementOptional;
     _showAlertOnIncomingMessages = YES;
     _showFirstRequiredPresentationModal = YES;
-    
+
     _disableFeedbackManager = NO;
-    _didSetupDidBecomeActiveNotifications = NO;
     _networkRequestInProgress = NO;
     _incomingMessagesAlertShowing = NO;
     _lastCheck = nil;
@@ -88,18 +88,7 @@
 
     _fileManager = [[NSFileManager alloc] init];
 
-    // temporary directory for crashes grabbed from PLCrashReporter
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES);
-    _feedbackDir = [[paths objectAtIndex:0] stringByAppendingPathComponent:BITHOCKEY_IDENTIFIER];
-    
-    if (![_fileManager fileExistsAtPath:_feedbackDir]) {
-      NSDictionary *attributes = [NSDictionary dictionaryWithObject: [NSNumber numberWithUnsignedLong: 0755] forKey: NSFilePosixPermissions];
-      NSError *theError = NULL;
-      
-      [_fileManager createDirectoryAtPath:_feedbackDir withIntermediateDirectories: YES attributes: attributes error: &theError];
-    }
-    
-    _settingsFile = [_feedbackDir stringByAppendingPathComponent:BITHOCKEY_FEEDBACK_SETTINGS];
+    _settingsFile = [bit_settingsDir() stringByAppendingPathComponent:BITHOCKEY_FEEDBACK_SETTINGS];
     
     _userID = nil;
     _userName = nil;
@@ -109,15 +98,16 @@
 }
 
 - (void)dealloc {
-  [[NSNotificationCenter defaultCenter] removeObserver:self name:BITHockeyNetworkDidBecomeReachableNotification object:nil];
-  
-  [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidBecomeActiveNotification object:nil];
+  [self unregisterObservers];
 }
 
 
 - (void)didBecomeActiveActions {
   if ([self isFeedbackManagerDisabled]) return;
-
+  if (!_didEnterBackgroundState) return;
+  
+  _didEnterBackgroundState = NO;
+  
   if ([_feedbackList count] == 0) {
     [self loadMessages];
   } else {
@@ -126,18 +116,59 @@
   [self updateMessagesList];
 }
 
-- (void)setupDidBecomeActiveNotifications {
-  if (!_didSetupDidBecomeActiveNotifications) {
-    NSNotificationCenter *dnc = [NSNotificationCenter defaultCenter];
-    [dnc addObserver:self selector:@selector(didBecomeActiveActions) name:UIApplicationDidBecomeActiveNotification object:nil];
-    [dnc addObserver:self selector:@selector(didBecomeActiveActions) name:BITHockeyNetworkDidBecomeReachableNotification object:nil];
-    _didSetupDidBecomeActiveNotifications = YES;
+- (void)didEnterBackgroundActions {
+  _didEnterBackgroundState = NO;
+  
+  if ([[UIApplication sharedApplication] applicationState] == UIApplicationStateBackground) {
+    _didEnterBackgroundState = YES;
   }
 }
 
-- (void)cleanupDidBecomeActiveNotifications {
-  [[NSNotificationCenter defaultCenter] removeObserver:self name:BITHockeyNetworkDidBecomeReachableNotification object:nil];
-  [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidBecomeActiveNotification object:nil];
+#pragma mark - Observers
+- (void) registerObservers {
+  __weak typeof(self) weakSelf = self;
+  if(nil == _appDidEnterBackgroundObserver) {
+    _appDidEnterBackgroundObserver = [[NSNotificationCenter defaultCenter] addObserverForName:UIApplicationDidEnterBackgroundNotification
+                                                                                       object:nil
+                                                                                        queue:NSOperationQueue.mainQueue
+                                                                                   usingBlock:^(NSNotification *note) {
+                                                                                     typeof(self) strongSelf = weakSelf;
+                                                                                     [strongSelf didEnterBackgroundActions];
+                                                                                   }];
+  }
+  if(nil == _appDidBecomeActiveObserver) {
+    _appDidBecomeActiveObserver = [[NSNotificationCenter defaultCenter] addObserverForName:UIApplicationDidBecomeActiveNotification
+                                                                                    object:nil
+                                                                                     queue:NSOperationQueue.mainQueue
+                                                                                usingBlock:^(NSNotification *note) {
+                                                                                  typeof(self) strongSelf = weakSelf;
+                                                                                  [strongSelf didBecomeActiveActions];
+                                                                                }];
+  }
+  if(nil == _networkDidBecomeReachableObserver) {
+    _networkDidBecomeReachableObserver = [[NSNotificationCenter defaultCenter] addObserverForName:BITHockeyNetworkDidBecomeReachableNotification
+                                                                                       object:nil
+                                                                                        queue:NSOperationQueue.mainQueue
+                                                                                   usingBlock:^(NSNotification *note) {
+                                                                                     typeof(self) strongSelf = weakSelf;
+                                                                                     [strongSelf didBecomeActiveActions];
+                                                                                   }];
+  }
+}
+
+- (void) unregisterObservers {
+  if(_appDidEnterBackgroundObserver) {
+    [[NSNotificationCenter defaultCenter] removeObserver:_appDidEnterBackgroundObserver];
+    _appDidEnterBackgroundObserver = nil;
+  }
+  if(_appDidBecomeActiveObserver) {
+    [[NSNotificationCenter defaultCenter] removeObserver:_appDidBecomeActiveObserver];
+    _appDidBecomeActiveObserver = nil;
+  }
+  if(_networkDidBecomeReachableObserver) {
+    [[NSNotificationCenter defaultCenter] removeObserver:_networkDidBecomeReachableObserver];
+    _networkDidBecomeReachableObserver = nil;
+  }
 }
 
 #pragma mark - Private methods
@@ -175,7 +206,10 @@
 
 
 - (BITFeedbackComposeViewController *)feedbackComposeViewController {
-  return [[BITFeedbackComposeViewController alloc] init];
+  BITFeedbackComposeViewController *composeViewController = [[BITFeedbackComposeViewController alloc] init];
+  // by default set the delegate to be identical to the one of BITFeedbackManager
+  [composeViewController setDelegate:self.delegate];
+  return composeViewController;
 }
 
 - (void)showFeedbackComposeView {
@@ -193,11 +227,14 @@
 - (void)startManager {
   if ([self isFeedbackManagerDisabled]) return;
 
-  [self setupDidBecomeActiveNotifications];
+  [self registerObservers];
   
   // we are already delayed, so the notification already came in and this won't invoked twice
   switch ([[UIApplication sharedApplication] applicationState]) {
     case UIApplicationStateActive:
+      // we did startup, so yes we are coming from background
+      _didEnterBackgroundState = YES;
+      
       [self didBecomeActiveActions];
       break;
     case UIApplicationStateBackground:
@@ -225,63 +262,72 @@
   }
 }
 
-- (BOOL)updateUserIDUsingDelegate {
+- (BOOL)updateUserIDUsingKeychainAndDelegate {
   BOOL availableViaDelegate = NO;
+  
+  NSString *userID = [self stringValueFromKeychainForKey:kBITHockeyMetaUserID];
   
   if ([BITHockeyManager sharedHockeyManager].delegate &&
       [[BITHockeyManager sharedHockeyManager].delegate respondsToSelector:@selector(userIDForHockeyManager:componentManager:)]) {
-    NSString *userID = [[BITHockeyManager sharedHockeyManager].delegate
-                        userIDForHockeyManager:[BITHockeyManager sharedHockeyManager]
-                        componentManager:self];
-    if (userID) {
-      availableViaDelegate = YES;
-      self.userID = userID;
-    }
+    userID = [[BITHockeyManager sharedHockeyManager].delegate
+              userIDForHockeyManager:[BITHockeyManager sharedHockeyManager]
+              componentManager:self];
   }
-  
+
+  if (userID) {
+    availableViaDelegate = YES;
+    self.userID = userID;
+  }
+
   return availableViaDelegate;
 }
 
-- (BOOL)updateUserNameUsingDelegate {
+- (BOOL)updateUserNameUsingKeychainAndDelegate {
   BOOL availableViaDelegate = NO;
+  
+  NSString *userName = [self stringValueFromKeychainForKey:kBITHockeyMetaUserName];
   
   if ([BITHockeyManager sharedHockeyManager].delegate &&
       [[BITHockeyManager sharedHockeyManager].delegate respondsToSelector:@selector(userNameForHockeyManager:componentManager:)]) {
-    NSString *userName = [[BITHockeyManager sharedHockeyManager].delegate
+    userName = [[BITHockeyManager sharedHockeyManager].delegate
                           userNameForHockeyManager:[BITHockeyManager sharedHockeyManager]
                           componentManager:self];
-    if (userName) {
-      availableViaDelegate = YES;
-      self.userName = userName;
-      self.requireUserName = BITFeedbackUserDataElementDontShow;
-    }
   }
-  
+
+  if (userName) {
+    availableViaDelegate = YES;
+    self.userName = userName;
+    self.requireUserName = BITFeedbackUserDataElementDontShow;
+  }
+
   return availableViaDelegate;
 }
 
-- (BOOL)updateUserEmailUsingDelegate {
+- (BOOL)updateUserEmailUsingKeychainAndDelegate {
   BOOL availableViaDelegate = NO;
   
+  NSString *userEmail = [self stringValueFromKeychainForKey:kBITHockeyMetaUserEmail];
+
   if ([BITHockeyManager sharedHockeyManager].delegate &&
       [[BITHockeyManager sharedHockeyManager].delegate respondsToSelector:@selector(userEmailForHockeyManager:componentManager:)]) {
-    NSString *userEmail = [[BITHockeyManager sharedHockeyManager].delegate
-                           userEmailForHockeyManager:[BITHockeyManager sharedHockeyManager]
-                           componentManager:self];
-    if (userEmail) {
-      availableViaDelegate = YES;
-      self.userEmail = userEmail;
-      self.requireUserEmail = BITFeedbackUserDataElementDontShow;
-    }
+    userEmail = [[BITHockeyManager sharedHockeyManager].delegate
+                 userEmailForHockeyManager:[BITHockeyManager sharedHockeyManager]
+                 componentManager:self];
   }
-  
+
+  if (userEmail) {
+    availableViaDelegate = YES;
+    self.userEmail = userEmail;
+    self.requireUserEmail = BITFeedbackUserDataElementDontShow;
+  }
+
   return availableViaDelegate;
 }
 
 - (void)updateAppDefinedUserData {
-  [self updateUserIDUsingDelegate];
-  [self updateUserNameUsingDelegate];
-  [self updateUserEmailUsingDelegate];
+  [self updateUserIDUsingKeychainAndDelegate];
+  [self updateUserNameUsingKeychainAndDelegate];
+  [self updateUserEmailUsingKeychainAndDelegate];
 
   // if both values are shown via the delegates, we never ever did ask and will never ever ask for user data
   if (self.requireUserName == BITFeedbackUserDataElementDontShow &&
@@ -293,9 +339,9 @@
 #pragma mark - Local Storage
 
 - (void)loadMessages {
-  BOOL userIDViaDelegate = [self updateUserIDUsingDelegate];
-  BOOL userNameViaDelegate = [self updateUserNameUsingDelegate];
-  BOOL userEmailViaDelegate = [self updateUserEmailUsingDelegate];
+  BOOL userIDViaDelegate = [self updateUserIDUsingKeychainAndDelegate];
+  BOOL userNameViaDelegate = [self updateUserNameUsingKeychainAndDelegate];
+  BOOL userEmailViaDelegate = [self updateUserEmailUsingKeychainAndDelegate];
   
   if (![_fileManager fileExistsAtPath:_settingsFile])
     return;
@@ -835,7 +881,7 @@
         if (responseString && [responseString dataUsingEncoding:NSUTF8StringEncoding]) {
           NSError *error = NULL;
           
-          NSDictionary *feedDict = (NSDictionary *)[NSJSONSerialization JSONObjectWithData:[responseString dataUsingEncoding:NSUTF8StringEncoding] options:kNilOptions error:&error];
+          NSDictionary *feedDict = (NSDictionary *)[NSJSONSerialization JSONObjectWithData:[responseString dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
           
           // server returned empty response?
           if (error) {

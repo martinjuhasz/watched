@@ -44,6 +44,7 @@
 "CONTROL_SORTMOVIES_TITLE_UNRATED"      = "Unbewertet ";
 "HEADER_TITLE_ZERORATING"               = "Unbewertet";
 "OVERVIEW_TITLE"                        = "Meine Filme";
+"COLLECTION_TITLE"                      = "Sammlung";
 "SEARCHBAR_PLACEHOLDER"                 = "Suchen";
 "MOVIE_RESULT_ADDED"                    = "hinzugefügt";
 "MOVIE_RESULT_ADDING"                   = "laden...";

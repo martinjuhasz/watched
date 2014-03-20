@@ -1,7 +1,7 @@
 /*
  * Author: Andreas Linde <mail@andreaslinde.de>
  *
- * Copyright (c) 2012-2013 HockeyApp, Bit Stadium GmbH.
+ * Copyright (c) 2012-2014 HockeyApp, Bit Stadium GmbH.
  * Copyright (c) 2011 Andreas Linde.
  * All rights reserved.
  *
@@ -53,6 +53,7 @@
 
 #if HOCKEYSDK_FEATURE_FEEDBACK
 #import "BITFeedbackManager.h"
+#import "BITFeedbackManagerDelegate.h"
 #import "BITFeedbackActivity.h"
 #import "BITFeedbackComposeViewController.h"
 #import "BITFeedbackComposeViewControllerDelegate.h"
@@ -175,10 +176,6 @@ typedef NS_ENUM(NSInteger, BITAuthenticatorReason) {
    */
   BITAuthenticatorNotAuthorized,
   /**
-   *  Authorization canceleed
-   */
-  BITAuthenticatorAuthenticationCancelled,
-  /**
    *  Unknown Application ID (configuration error)
    */
   BITAuthenticatorUnknownApplicationID,
@@ -186,6 +183,10 @@ typedef NS_ENUM(NSInteger, BITAuthenticatorReason) {
    *  Authorization secret missing
    */
   BITAuthenticatorAuthorizationSecretMissing,
+  /**
+   *  Not yet identified
+   */
+  BITAuthenticatorNotIdentified,
 };
 extern NSString *const __attribute__((unused)) kBITAuthenticatorErrorDomain;
 

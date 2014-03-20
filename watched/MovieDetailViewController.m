@@ -456,75 +456,75 @@
 
 - (IBAction)shareButtonClicked:(id)sender
 {
-
-    UIActionSheet *actionSheet = [[UIActionSheet alloc] init];
-    
-    // E-Mail
-    if([MFMailComposeViewController canSendMail]) {
-        [actionSheet addButtonWithTitle:NSLocalizedString(@"SHARE_BUTTON_EMAIL",nil) handler:^{
-            [self shareWithEmail];
-        }];
-    }
-    
-    // iMessage
-    if([MFMessageComposeViewController canSendText]) {
-        [actionSheet addButtonWithTitle:NSLocalizedString(@"SHARE_BUTTON_TEXT",nil) handler:^{
-            [self shareWithMessage];
-        }];
-    }
-    
-    // Twitter
-    [actionSheet addButtonWithTitle:NSLocalizedString(@"SHARE_BUTTON_TWITTER",nil) handler:^{
-        [self shareWithService:SLServiceTypeTwitter];
-    }];
-    
-    // Facebook
-    [actionSheet addButtonWithTitle:NSLocalizedString(@"SHARE_BUTTON_FACEBOOK",nil) handler:^{
-        [self shareWithService:SLServiceTypeFacebook];
-    }];
-
-    // Cancel Button
-    [actionSheet addButtonWithTitle:NSLocalizedString(@"SHARE_BUTTON_CANCEL",nil)];
-    [actionSheet setCancelButtonIndex:actionSheet.numberOfButtons-1];
-
-    actionSheet.delegate = self;
-    [actionSheet showFromTabBar:self.tabBarController.tabBar];
+//
+//    UIActionSheet *actionSheet = [[UIActionSheet alloc] init];
+//    
+//    // E-Mail
+//    if([MFMailComposeViewController canSendMail]) {
+//        [actionSheet addButtonWithTitle:NSLocalizedString(@"SHARE_BUTTON_EMAIL",nil) handler:^{
+//            [self shareWithEmail];
+//        }];
+//    }
+//    
+//    // iMessage
+//    if([MFMessageComposeViewController canSendText]) {
+//        [actionSheet addButtonWithTitle:NSLocalizedString(@"SHARE_BUTTON_TEXT",nil) handler:^{
+//            [self shareWithMessage];
+//        }];
+//    }
+//    
+//    // Twitter
+//    [actionSheet addButtonWithTitle:NSLocalizedString(@"SHARE_BUTTON_TWITTER",nil) handler:^{
+//        [self shareWithService:SLServiceTypeTwitter];
+//    }];
+//    
+//    // Facebook
+//    [actionSheet addButtonWithTitle:NSLocalizedString(@"SHARE_BUTTON_FACEBOOK",nil) handler:^{
+//        [self shareWithService:SLServiceTypeFacebook];
+//    }];
+//
+//    // Cancel Button
+//    [actionSheet addButtonWithTitle:NSLocalizedString(@"SHARE_BUTTON_CANCEL",nil)];
+//    [actionSheet setCancelButtonIndex:actionSheet.numberOfButtons-1];
+//
+//    actionSheet.delegate = self;
+//    [actionSheet showFromTabBar:self.tabBarController.tabBar];
     
 }
 
 - (IBAction)moreButtonClicked:(id)sender
 {
     
-    UIActionSheet *actionSheet = [[UIActionSheet alloc] init];
-    
-    if(self.movie.watchedOn) {
-        [actionSheet addButtonWithTitle:NSLocalizedString(@"MORE_UNWATCHED",nil) handler:^{
-            [self setWatchedStateToSeen:NO];
-        }];
-    } else {
-        [actionSheet addButtonWithTitle:NSLocalizedString(@"MORE_WACHED",nil) handler:^{
-            [self setWatchedStateToSeen:YES];
-        }];
-    }
-    
-    [actionSheet addButtonWithTitle:NSLocalizedString(@"MORE_CHANGE_COVER",nil) handler:^{
-        [self posterButtonClicked:ImageTypePoster];
-    }];
-    
-    [actionSheet addButtonWithTitle:NSLocalizedString(@"MORE_CHANGE_BACKDROP",nil) handler:^{
-        [self posterButtonClicked:ImageTypeBackdrop];
-    }];
-    
-    [actionSheet addButtonWithTitle:NSLocalizedString(@"MORE_REMOVE",nil) handler:^{
-        [self deleteButtonClicked];
-    }];
-    
-    // Cancel Button
-    [actionSheet addButtonWithTitle:NSLocalizedString(@"SHARE_BUTTON_CANCEL",nil)];
-    [actionSheet setCancelButtonIndex:actionSheet.numberOfButtons-1];
-    
-    actionSheet.delegate = self;
-    [actionSheet showFromTabBar:self.tabBarController.tabBar];
+//    UIActionSheet *actionSheet = [[UIActionSheet alloc] init];
+//    
+//    if(self.movie.watchedOn) {
+//        [actionSheet addButtonWithTitle:NSLocalizedString(@"MORE_UNWATCHED",nil) handler:^{
+//            [self setWatchedStateToSeen:NO];
+//        }];
+//    } else {
+//        [actionSheet addButtonWithTitle:NSLocalizedString(@"MORE_WACHED",nil) handler:^{
+//            [self setWatchedStateToSeen:YES];
+//        }];
+//    }
+//    
+//    [actionSheet addButtonWithTitle:NSLocalizedString(@"MORE_CHANGE_COVER",nil) handler:^{
+//        [self posterButtonClicked:ImageTypePoster];
+//    }];
+//    
+//    [actionSheet addButtonWithTitle:NSLocalizedString(@"MORE_CHANGE_BACKDROP",nil) handler:^{
+//        [self posterButtonClicked:ImageTypeBackdrop];
+//    }];
+//    
+//    [actionSheet addButtonWithTitle:NSLocalizedString(@"MORE_REMOVE",nil) handler:^{
+//        [self deleteButtonClicked];
+//    }];
+//    
+//    // Cancel Button
+//    [actionSheet addButtonWithTitle:NSLocalizedString(@"SHARE_BUTTON_CANCEL",nil)];
+//    [actionSheet setCancelButtonIndex:actionSheet.numberOfButtons-1];
+//    
+//    actionSheet.delegate = self;
+//    [actionSheet showFromTabBar:self.tabBarController.tabBar];
     
 }
 
@@ -535,12 +535,12 @@
 
 - (void)deleteButtonClicked
 {
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"DETAIL_POP_DELETE_TITLE", nil) message:NSLocalizedString(@"DETAIL_POP_DELETE_CONTENT", nil)];
-    [alertView setCancelButtonWithTitle:NSLocalizedString(@"DETAIL_POP_DELETE_CANCEL", nil) handler:nil];
-    [alertView addButtonWithTitle:NSLocalizedString(@"DETAIL_POP_DELETE_OK", nil) handler:^{
-        [self deleteMovie];
-    }];
-    [alertView show];
+//    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"DETAIL_POP_DELETE_TITLE", nil) message:NSLocalizedString(@"DETAIL_POP_DELETE_CONTENT", nil)];
+//    [alertView setCancelButtonWithTitle:NSLocalizedString(@"DETAIL_POP_DELETE_CANCEL", nil) handler:nil];
+//    [alertView addButtonWithTitle:NSLocalizedString(@"DETAIL_POP_DELETE_OK", nil) handler:^{
+//        [self deleteMovie];
+//    }];
+//    [alertView show];
 //    BlockAlertView *alert = [BlockAlertView alertWithTitle:
 //                                                   message:NSLocalizedString(@"DETAIL_POP_DELETE_CONTENT", nil)];
 //    

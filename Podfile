@@ -1,6 +1,6 @@
 platform :ios, '7.0'
 
-pod 'AFNetworking', :podspec => 'https://raw.github.com/AFNetworking/AFNetworking/master/AFNetworking.podspec'
+pod 'AFNetworking', :podspec => 'https://raw.github.com/AFNetworking/AFNetworking/1.x/AFNetworking.podspec'
 pod 'MJStarRating', :podspec => 'MJStarRating.podspec'
 pod 'GMGridView'
 pod 'KSReachability', :podspec => 'KSReachability.podspec'

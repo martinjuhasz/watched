@@ -1,21 +1,35 @@
 PODS:
-  - AFNetworking (1.3.2)
-  - BlocksKit (1.8.2):
-    - libffi
+  - AFNetworking (1.3.3)
+  - BlocksKit (2.2.0):
+    - BlocksKit/All
+  - BlocksKit/All (2.2.0):
+    - BlocksKit/Core
+    - BlocksKit/DynamicDelegate
+    - BlocksKit/MessageUI
+    - BlocksKit/UIKit
+  - BlocksKit/Core (2.2.0)
+  - BlocksKit/DynamicDelegate (2.2.0):
+    - BlocksKit/MiniFFI
+  - BlocksKit/MessageUI (2.2.0):
+    - BlocksKit/Core
+    - BlocksKit/DynamicDelegate
+  - BlocksKit/MiniFFI (2.2.0)
+  - BlocksKit/UIKit (2.2.0):
+    - BlocksKit/Core
+    - BlocksKit/DynamicDelegate
   - GMGridView (1.1.1)
-  - HockeySDK (3.5.0b2)
-  - iOS-blur (0.0.2)
+  - HockeySDK (3.5.4)
+  - iOS-blur (0.0.5)
   - KSReachability (0.0.2)
-  - libffi (3.0.13)
-  - Mantle (1.2):
+  - Mantle (1.4.1):
     - Mantle/extobjc
-  - Mantle/extobjc (1.2)
+  - Mantle/extobjc (1.4.1)
   - MJStarRating (1.0)
-  - Reveal-iOS-SDK (0.8.3)
+  - Reveal-iOS-SDK (1.0.3)
   - UIResponder+KeyboardCache (0.1)
 
 DEPENDENCIES:
-  - AFNetworking (from `https://raw.github.com/AFNetworking/AFNetworking/master/AFNetworking.podspec`)
+  - AFNetworking (from `https://raw.github.com/AFNetworking/AFNetworking/1.x/AFNetworking.podspec`)
   - BlocksKit
   - GMGridView
   - HockeySDK (from `https://raw.github.com/bitstadium/HockeySDK-iOS/develop/HockeySDK.podspec`)
@@ -28,7 +42,7 @@ DEPENDENCIES:
 
 EXTERNAL SOURCES:
   AFNetworking:
-    :podspec: https://raw.github.com/AFNetworking/AFNetworking/master/AFNetworking.podspec
+    :podspec: https://raw.github.com/AFNetworking/AFNetworking/1.x/AFNetworking.podspec
   HockeySDK:
     :podspec: https://raw.github.com/bitstadium/HockeySDK-iOS/develop/HockeySDK.podspec
   KSReachability:
@@ -37,16 +51,15 @@ EXTERNAL SOURCES:
     :podspec: MJStarRating.podspec
 
 SPEC CHECKSUMS:
-  AFNetworking: 63ac7e0bd43eb68897322f906babd9236e789390
-  BlocksKit: 7396526b0816734103f6133fbb1a520c8b04e80c
+  AFNetworking: 61fdd49e2ffe6380378df37b3b6e70630bb9dd66
+  BlocksKit: 1b106f407a11997fd79e1da31453758e51277613
   GMGridView: a17a31f010990eb8f802abb4cab50e6e03e993ea
-  HockeySDK: e69df6b9ac6e5cca254caf869e61e680629e2955
-  iOS-blur: 1f211234742ce078bf2ab78f5237a63b18b5ed0f
-  KSReachability: 1571cf577fa73bd34ececf6383b617254eb9961c
-  libffi: 64ef39353e747bb2b25e1026afd96a157bf9231c
-  Mantle: f5b5cba1b112273fe3bb4433cdcf1da76203c2b4
+  HockeySDK: 5aebe4b019134cac7f3242d4cef9e6c806002a67
+  iOS-blur: 2610bc818831fa4eec051a7193e47639d480fb32
+  KSReachability: 7bb7f256d3f3923e231e012e848254dbc6e8c518
+  Mantle: 0714cdb2b8559d9e6c2410d6a8529e3307bff189
   MJStarRating: 4bb9664d7ad1497253c015e27068db51bd36cd45
-  Reveal-iOS-SDK: 0d58ea01260eb109b924a09631d9cc8dd96e12c4
+  Reveal-iOS-SDK: f2525cb560a564fdc086316e89ec45ced6977fd3
   UIResponder+KeyboardCache: 4e646d140212f8ee43f1560c11614634ad6dd063
 
-COCOAPODS: 0.25.0
+COCOAPODS: 0.29.0
