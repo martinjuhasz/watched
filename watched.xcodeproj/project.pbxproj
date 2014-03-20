@@ -2297,6 +2297,7 @@
 				7A00F9AD172529C0008A9E0F /* Copy Pods Resources */,
 				7A00F9AE172529C0008A9E0F /* Run Mogenerator */,
 				7A00F9B0172529C0008A9E0F /* Copy CocoaPods to AdHoc Build Config */,
+				7A7D600418DB4E3200684F82 /* Hockey SDK */,
 			);
 			buildRules = (
 			);
@@ -3164,6 +3165,20 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "";
+		};
+		7A7D600418DB4E3200684F82 /* Hockey SDK */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Hockey SDK";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "FILE=\"${SRCROOT}/other/HockeySDK-iOS/BuildAgent\"\nif [ -f \"$FILE\" ]; then\n\"$FILE\"\nfi";
 		};
 		7A8ADAC2171188FF00234914 /* Copy CocoaPods to AdHoc Build Config */ = {
 			isa = PBXShellScriptBuildPhase;

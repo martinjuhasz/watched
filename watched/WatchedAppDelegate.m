@@ -23,6 +23,7 @@
 #import "OnlineDatabaseBridge.h"
 #import "AFJSONRequestOperation.h"
 #import "MJUWatchedStyle.h"
+#import <HockeySDK/HockeySDK.h>
 
 @interface WatchedAppDelegate () {
 }
@@ -38,8 +39,9 @@
 {
     [MJUWatchedStyle setupDefaultStyle];
     
-    [[BITHockeyManager sharedHockeyManager] configureWithIdentifier:@"a6619c8d0d092c150c4a5555ae7f14cb" delegate:self];
+    [[BITHockeyManager sharedHockeyManager] configureWithIdentifier:@"a6619c8d0d092c150c4a5555ae7f14cb"];
     [[BITHockeyManager sharedHockeyManager] startManager];
+    [[BITHockeyManager sharedHockeyManager].authenticator authenticateInstallation];
     
     [MJInternetConnection sharedInternetConnection];
     [UIResponder cacheKeyboard:YES];
