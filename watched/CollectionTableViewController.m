@@ -56,6 +56,9 @@
     [headerView addSubview:_searchBar];
     self.tableView.tableHeaderView = headerView;
     
+    // fixes searchbar not to jump around when focused
+    // see: http://stackoverflow.com/questions/20565980/uisearchbar-in-uitableviewheader-strange-animation-on-ios-7
+    [self setExtendedLayoutIncludesOpaqueBars:YES];
     
     _searchController = [[UISearchDisplayController alloc] initWithSearchBar:_searchBar contentsController:self];
     _searchController.delegate = self;

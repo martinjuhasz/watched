@@ -2357,6 +2357,11 @@
 			isa = PBXProject;
 			attributes = {
 				LastUpgradeCheck = 0510;
+				TargetAttributes = {
+					7A00F843172529C0008A9E0F = {
+						DevelopmentTeam = T84PM38UF2;
+					};
+				};
 			};
 			buildConfigurationList = 7A584CED154877A600A548EE /* Build configuration list for PBXProject "watched" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -3428,8 +3433,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_MODULES = NO;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Martin Juhasz (6UXQ7ZK229)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Martin Juhasz (6UXQ7ZK229)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DSTROOT = /tmp/xcodeproj.dst;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -3456,8 +3461,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_MODULES = NO;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Martin Juhasz";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Martin Juhasz";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DSTROOT = /tmp/xcodeproj.dst;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -3469,7 +3474,7 @@
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				INFOPLIST_FILE = "watched beta-Info.plist";
 				PRODUCT_NAME = "watched Beta";
-				PROVISIONING_PROFILE = "15333100-2A9A-4374-8BE8-761BB1590EFA";
+				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "15333100-2A9A-4374-8BE8-761BB1590EFA";
 				SKIP_INSTALL = NO;
 				VALID_ARCHS = "armv7 armv7s arm64";
