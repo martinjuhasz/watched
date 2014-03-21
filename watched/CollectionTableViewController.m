@@ -172,7 +172,7 @@
 
 - (CGFloat)tableView:(UITableView *)aTableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 95.0f;
+    return 92.5f;
 }
 
 

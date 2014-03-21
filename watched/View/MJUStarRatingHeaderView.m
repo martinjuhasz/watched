@@ -9,7 +9,7 @@
 #import "MJUStarRatingHeaderView.h"
 #import "UIColor+Additions.h"
 
-static CGFloat HEADER_HEIGHT = 22.0f;
+static CGFloat HEADER_HEIGHT = 22.5f;
 
 @implementation MJUStarRatingHeaderView
 
@@ -46,7 +46,7 @@ static CGFloat HEADER_HEIGHT = 22.0f;
     UIView *backgroundView = [[UIView alloc] initWithFrame:CGRectMake(0, -1, 320, HEADER_HEIGHT)];
     backgroundView.backgroundColor = [UIColor colorWithHexString:@"F3F3F3"];
     
-    self.starView = [[UIView alloc] initWithFrame:CGRectMake(15.0f, 4.0f, 20.0f, 15.0f)];
+    self.starView = [[UIView alloc] initWithFrame:CGRectMake(15.5f, 4.0f, 20.0f, 15.0f)];
     [self.starView setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"divider-star"]]];
     self.starView.hidden = YES;
     [backgroundView addSubview:self.starView];

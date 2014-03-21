@@ -14,6 +14,7 @@
 {
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
     [[UINavigationBar appearance] setBackgroundImage:[UIImage imageNamed:@"navigationbar_bg"] forBarMetrics:UIBarMetricsDefault];
+    [[UITabBar appearance] setSelectedImageTintColor:[UIColor colorWithRed:240.0f green:0.0f blue:0.0f alpha:1.0f]];
 }
 
 @end
