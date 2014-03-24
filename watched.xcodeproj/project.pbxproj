@@ -157,6 +157,12 @@
 		7A00F890172529C0008A9E0F /* MainStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7A584D09154877A700A548EE /* MainStoryboard.storyboard */; };
 		7A00F891172529C0008A9E0F /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 7A8DC67D157D109A00F6EACA /* Localizable.strings */; };
 		7A05FA7715F2106E00DB7C26 /* MJSegmentedControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A05FA7615F2106E00DB7C26 /* MJSegmentedControl.m */; };
+		7A08F49A18E07E330057B1F2 /* MJUDiscoverSearchDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A08F49918E07E330057B1F2 /* MJUDiscoverSearchDataSource.m */; };
+		7A08F49B18E07E330057B1F2 /* MJUDiscoverSearchDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A08F49918E07E330057B1F2 /* MJUDiscoverSearchDataSource.m */; };
+		7A08F49E18E08E3D0057B1F2 /* NSString+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A08F49D18E08E3D0057B1F2 /* NSString+Additions.m */; };
+		7A08F49F18E08E3D0057B1F2 /* NSString+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A08F49D18E08E3D0057B1F2 /* NSString+Additions.m */; };
+		7A08F4A618E0C1990057B1F2 /* MJUDiscoverSearchDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A08F4A518E0C1990057B1F2 /* MJUDiscoverSearchDelegate.m */; };
+		7A08F4A718E0C1990057B1F2 /* MJUDiscoverSearchDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A08F4A518E0C1990057B1F2 /* MJUDiscoverSearchDelegate.m */; };
 		7A09A42C1616127D00F3E696 /* LoadingPopupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A09A42B1616127C00F3E696 /* LoadingPopupViewController.m */; };
 		7A0A426B1574DDD00019DD5E /* MovieDetailView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A0A426A1574DDD00019DD5E /* MovieDetailView.m */; };
 		7A0A426F1574E4F50019DD5E /* UILabel+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A0A426E1574E4F50019DD5E /* UILabel+Additions.m */; };
@@ -959,6 +965,13 @@
 		7A00F9B5172529C0008A9E0F /* watched beta-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "watched beta-Info.plist"; path = "/Users/martinjuhasz/Arbeit/iOS/watched/watched beta-Info.plist"; sourceTree = "<absolute>"; };
 		7A05FA7515F2106E00DB7C26 /* MJSegmentedControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MJSegmentedControl.h; sourceTree = "<group>"; };
 		7A05FA7615F2106E00DB7C26 /* MJSegmentedControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MJSegmentedControl.m; sourceTree = "<group>"; };
+		7A08F49818E07E330057B1F2 /* MJUDiscoverSearchDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MJUDiscoverSearchDataSource.h; path = Controller/MJUDiscoverSearchDataSource.h; sourceTree = "<group>"; };
+		7A08F49918E07E330057B1F2 /* MJUDiscoverSearchDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MJUDiscoverSearchDataSource.m; path = Controller/MJUDiscoverSearchDataSource.m; sourceTree = "<group>"; };
+		7A08F49C18E08E3D0057B1F2 /* NSString+Additions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+Additions.h"; sourceTree = "<group>"; };
+		7A08F49D18E08E3D0057B1F2 /* NSString+Additions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Additions.m"; sourceTree = "<group>"; };
+		7A08F4A018E0AE5E0057B1F2 /* MJUDiscoverSearchDataSourceDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MJUDiscoverSearchDataSourceDelegate.h; path = Controller/MJUDiscoverSearchDataSourceDelegate.h; sourceTree = "<group>"; };
+		7A08F4A418E0C1990057B1F2 /* MJUDiscoverSearchDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MJUDiscoverSearchDelegate.h; path = Controller/MJUDiscoverSearchDelegate.h; sourceTree = "<group>"; };
+		7A08F4A518E0C1990057B1F2 /* MJUDiscoverSearchDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MJUDiscoverSearchDelegate.m; path = Controller/MJUDiscoverSearchDelegate.m; sourceTree = "<group>"; };
 		7A09A42A1616127C00F3E696 /* LoadingPopupViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoadingPopupViewController.h; sourceTree = "<group>"; };
 		7A09A42B1616127C00F3E696 /* LoadingPopupViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoadingPopupViewController.m; sourceTree = "<group>"; };
 		7A0A42691574DDD00019DD5E /* MovieDetailView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MovieDetailView.h; sourceTree = "<group>"; };
@@ -1395,8 +1408,8 @@
 		7AEF90F61584F37D00C70DD2 /* UIView+FindUIViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+FindUIViewController.m"; sourceTree = "<group>"; };
 		7AF2724917BB9C3D005AD0F9 /* MJUListsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MJUListsTableViewController.h; sourceTree = "<group>"; };
 		7AF2724A17BB9C3D005AD0F9 /* MJUListsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MJUListsTableViewController.m; sourceTree = "<group>"; };
-		7AF2724E17BBAECD005AD0F9 /* MJUDiscoverTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MJUDiscoverTableViewController.h; sourceTree = "<group>"; };
-		7AF2724F17BBAECD005AD0F9 /* MJUDiscoverTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MJUDiscoverTableViewController.m; sourceTree = "<group>"; };
+		7AF2724E17BBAECD005AD0F9 /* MJUDiscoverTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MJUDiscoverTableViewController.h; path = Controller/MJUDiscoverTableViewController.h; sourceTree = "<group>"; };
+		7AF2724F17BBAECD005AD0F9 /* MJUDiscoverTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MJUDiscoverTableViewController.m; path = Controller/MJUDiscoverTableViewController.m; sourceTree = "<group>"; };
 		7AF3AE141559C113001B36E1 /* MoviesDataModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MoviesDataModel.h; sourceTree = "<group>"; };
 		7AF3AE151559C113001B36E1 /* MoviesDataModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MoviesDataModel.m; sourceTree = "<group>"; };
 		7AF540EF1577781F0018530A /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
@@ -2019,6 +2032,7 @@
 			children = (
 				7A7D5FFD18DB398E00684F82 /* Collection */,
 				7A7D5FFC18DB394600684F82 /* Lists */,
+				7AF2724D17BBAEBB005AD0F9 /* Discover */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -2030,6 +2044,8 @@
 				7A7D5FF918DB38DE00684F82 /* UITableView+Additions.m */,
 				7AD390E718DC4014000AB28F /* UIImageView+Additions.h */,
 				7AD390E818DC4014000AB28F /* UIImageView+Additions.m */,
+				7A08F49C18E08E3D0057B1F2 /* NSString+Additions.h */,
+				7A08F49D18E08E3D0057B1F2 /* NSString+Additions.m */,
 			);
 			path = Helper;
 			sourceTree = "<group>";
@@ -2142,7 +2158,6 @@
 		7AD390EB18DC52DD000AB28F /* not refactored */ = {
 			isa = PBXGroup;
 			children = (
-				7AF2724D17BBAEBB005AD0F9 /* Discover */,
 				7A4AE8AB16EB439E000EB69A /* General */,
 				7A2CBBA21559A0D6009ADFFB /* CoreData */,
 				7A641C0517B4E33F009FB75D /* WebModels */,
@@ -2213,8 +2228,14 @@
 			children = (
 				7AF2724E17BBAECD005AD0F9 /* MJUDiscoverTableViewController.h */,
 				7AF2724F17BBAECD005AD0F9 /* MJUDiscoverTableViewController.m */,
+				7A08F49818E07E330057B1F2 /* MJUDiscoverSearchDataSource.h */,
+				7A08F49918E07E330057B1F2 /* MJUDiscoverSearchDataSource.m */,
+				7A08F4A018E0AE5E0057B1F2 /* MJUDiscoverSearchDataSourceDelegate.h */,
+				7A08F4A418E0C1990057B1F2 /* MJUDiscoverSearchDelegate.h */,
+				7A08F4A518E0C1990057B1F2 /* MJUDiscoverSearchDelegate.m */,
 			);
 			name = Discover;
+			path = ..;
 			sourceTree = "<group>";
 		};
 		7AF5ADBE17BB665D00C2472A /* Images-ios7 */ = {
@@ -3260,7 +3281,9 @@
 				7A00F854172529C0008A9E0F /* MovieDetailView.m in Sources */,
 				7A34B02C17BCD9B500DB30DB /* MJUBaseMovie.m in Sources */,
 				7ACE445717B906C8007AA6E4 /* MJUCrew.m in Sources */,
+				7A08F4A718E0C1990057B1F2 /* MJUDiscoverSearchDelegate.m in Sources */,
 				7A00F855172529C0008A9E0F /* UILabel+Additions.m in Sources */,
+				7A08F49F18E08E3D0057B1F2 /* NSString+Additions.m in Sources */,
 				7A8E2D07181E99CC00E664B3 /* _Trailer.m in Sources */,
 				7A00F856172529C0008A9E0F /* UIView+Additions.m in Sources */,
 				7A00F857172529C0008A9E0F /* UIButton+Additions.m in Sources */,
@@ -3302,6 +3325,7 @@
 				7A00F875172529C0008A9E0F /* LoadingPopupViewController.m in Sources */,
 				7A00F878172529C0008A9E0F /* PopupLoadingView.m in Sources */,
 				7AD390EA18DC4014000AB28F /* UIImageView+Additions.m in Sources */,
+				7A08F49B18E07E330057B1F2 /* MJUDiscoverSearchDataSource.m in Sources */,
 				7A00F879172529C0008A9E0F /* WatchedStyledViewController.m in Sources */,
 				7A00F87A172529C0008A9E0F /* MoviesTableViewCell.m in Sources */,
 				7A00F87B172529C0008A9E0F /* MoviesTableViewLoadingCell.m in Sources */,
@@ -3338,7 +3362,9 @@
 				7A0A426F1574E4F50019DD5E /* UILabel+Additions.m in Sources */,
 				7A34B02B17BCD9B500DB30DB /* MJUBaseMovie.m in Sources */,
 				7ACE445617B906C8007AA6E4 /* MJUCrew.m in Sources */,
+				7A08F4A618E0C1990057B1F2 /* MJUDiscoverSearchDelegate.m in Sources */,
 				7A0A42731574F7690019DD5E /* UIView+Additions.m in Sources */,
+				7A08F49E18E08E3D0057B1F2 /* NSString+Additions.m in Sources */,
 				7A8E2D06181E99CC00E664B3 /* _Trailer.m in Sources */,
 				7A0A42761574FA390019DD5E /* UIButton+Additions.m in Sources */,
 				7AF540F8157783C10018530A /* MovieCastsTableViewController.m in Sources */,
@@ -3380,6 +3406,7 @@
 				7A09A42C1616127D00F3E696 /* LoadingPopupViewController.m in Sources */,
 				7A3F80D01635F5F700FF8349 /* PopupLoadingView.m in Sources */,
 				7AD390E918DC4014000AB28F /* UIImageView+Additions.m in Sources */,
+				7A08F49A18E07E330057B1F2 /* MJUDiscoverSearchDataSource.m in Sources */,
 				7A7D4EF91655249D00CD3F86 /* WatchedStyledViewController.m in Sources */,
 				7AA53EAE16C7D2D300D25917 /* MoviesTableViewCell.m in Sources */,
 				7A6A6CE316C95F7C0039088D /* MoviesTableViewLoadingCell.m in Sources */,
