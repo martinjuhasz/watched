@@ -46,7 +46,6 @@
 
 @implementation MovieDetailViewController
 
-@synthesize movie;
 @synthesize detailView;
 
 
@@ -104,8 +103,6 @@
     // Do something in response to this
 }
 
-
-
 - (void)viewDidUnload
 {
     [super viewDidUnload];
@@ -132,8 +129,9 @@
 - (void)setMovie:(Movie*)aMovie
 {
     if(aMovie) {
-        movie = aMovie;
+        _movie = aMovie;
         self.currentContext = [aMovie managedObjectContext];
+        [self setContent];
     }
 }
 
@@ -562,7 +560,7 @@
         
         NSError *error;
         
-        [context deleteObject:[context objectWithID:movie.objectID]];
+        [context deleteObject:[context objectWithID:self.movie.objectID]];
         [context save:&error];
         if(error) {
             ErrorLog("%@", [error localizedDescription]);

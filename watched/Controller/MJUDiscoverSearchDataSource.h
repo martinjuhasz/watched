@@ -7,21 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "MJUDiscoverSearchDataSourceDelegate.h"
+#import "MJUOnlineMoviesDataSource.h"
 
 
-@interface MJUDiscoverSearchDataSource : NSObject<UITableViewDataSource, UITableViewDelegate, UISearchDisplayDelegate>
+@interface MJUDiscoverSearchDataSource : MJUOnlineMoviesDataSource
 
-@property (strong, nonatomic) NSOperationQueue *searchOperations;
 @property (strong, nonatomic) NSString *searchText;
-@property (strong, nonatomic) NSMutableArray *searchResults;
-@property (assign, nonatomic) NSUInteger currentPage;
-@property (assign, nonatomic) NSUInteger totalPages;
-@property (assign, nonatomic) BOOL isLoading;
-@property (assign, nonatomic) BOOL isError;
-@property (weak, nonatomic) id <MJUDiscoverSearchDataSourceDelegate> delegate;
-
-- (BOOL)isSearchIndexPathAtRow:(NSUInteger)row;
-- (void)loadNextResults;
 
 @end

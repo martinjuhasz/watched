@@ -7,21 +7,18 @@
 //
 
 #import "MJUDiscoverTableViewController.h"
-#import "MoviesTableViewCell.h"
-#import "AFJSONRequestOperation.h"
 #import "OnlineMovieDatabase.h"
-#import "SearchResult.h"
 #import "MoviesDataModel.h"
 #import "Movie.h"
-#import "MoviesTableViewLoadingCell.h"
-#import "UIImageView+AFNetworking.h"
-#import "UILabel+Additions.h"
-#import "MoviesTableViewLoadingCell.h"
-#import "OnlineDatabaseBridge.h"
 #import "MovieDetailViewController.h"
 #import "UITableView+Additions.h"
 #import "MJUDiscoverSearchDataSource.h"
 #import "MJUDiscoverSearchDelegate.h"
+#import "SearchResult.h"
+#import "OnlineDatabaseBridge.h"
+#import "MJUDiscoverTableViewCell.h"
+#import "MJUOnlineMoviesTableViewController.h"
+#import "MJUCuratedDataSource.h"
 
 @interface MJUDiscoverTableViewController ()
 
@@ -41,6 +38,9 @@
     
     // make sure the tableview is empty
     [self.tableView hideEmptyCells];
+    
+    // Discover Items
+    self.discoverItems = [NSArray arrayWithObjects:@"DISCOVER_POPULAR", @"DISCOVER_UPCOMING", @"DISCOVER_INTHEATERS", nil];
     
     // Search View
     self.searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, 44.0f)];
@@ -62,7 +62,6 @@
     self.searchDelegate.searchDataSource = self.searchDataSource;
     
     self.searchController = [[UISearchDisplayController alloc] initWithSearchBar:_searchBar contentsController:self];
-    self.searchController.delegate = self.searchDataSource;
     self.searchController.searchResultsDelegate = self.searchDelegate;
     self.searchController.searchResultsDataSource = self.searchDataSource;
 }
@@ -70,12 +69,75 @@
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-    if([segue.identifier isEqualToString:@"MovieDiscoverDetailSegue"] && [sender isKindOfClass:[Movie class]]) {
-        Movie *currentMovie = (Movie*)sender;
-        MovieDetailViewController *detailViewController = (MovieDetailViewController*)segue.destinationViewController;
-        detailViewController.movie = currentMovie;
+    if([segue.identifier isEqualToString:@"MovieDiscoverDetailSegue"] && [sender isKindOfClass:[NSIndexPath class]]) {
+        
+        NSIndexPath *indexPath = (NSIndexPath*)sender;
+        
+        // TODO: get Movie inside DetailViewController, not inside DiscoverVC
+        SearchResult *result = [self.searchDataSource.results objectAtIndex:indexPath.row];
+        OnlineDatabaseBridge *bridge = [[OnlineDatabaseBridge alloc] init];
+        [bridge getMovieFromMovieID:result.searchResultId completion:^(Movie *aMovie) {
+            MovieDetailViewController *detailViewController = (MovieDetailViewController*)segue.destinationViewController;
+            detailViewController.movie = aMovie;
+        } failure:^(NSError *error) {
+            ErrorLog(@"%@", [error localizedDescription]);
+        }];
+    } else if([segue.identifier isEqualToString:@"CuratedMoviesSegue"] && [sender isKindOfClass:[NSIndexPath class]]) {
+        
+        NSIndexPath *indexPath = (NSIndexPath*)sender;
+        MJUOnlineMoviesTableViewController *destinationViewController = (MJUOnlineMoviesTableViewController*)segue.destinationViewController;
+        
+        if(indexPath.row == 0) {
+            [destinationViewController setDataSourceType:MJUCuratedDataSourceTypePopular];
+        } else if(indexPath.row == 1) {
+            [destinationViewController setDataSourceType:MJUCuratedDataSourceTypeUpcoming];
+        } else if(indexPath.row == 2) {
+            [destinationViewController setDataSourceType:MJUCuratedDataSourceTypeInTheathers];
+        }
     }
 }
+
+
+
+////////////////////////////////////////////////////////////////////////////
+#pragma mark -
+#pragma mark UITableViewDataSource
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    return 1;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return [self.discoverItems count];
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    static NSString *cellIdentifier = @"MJUDiscoverCell";
+    MJUDiscoverTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+    if (!cell) {
+        cell = [[MJUDiscoverTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
+    }
+    
+    cell.textLabel.text = [self.discoverItems objectAtIndex:indexPath.row];
+    
+    return cell;
+}
+
+
+
+
+////////////////////////////////////////////////////////////////////////////
+#pragma mark -
+#pragma mark UITableViewDelegate
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [self performSegueWithIdentifier:@"CuratedMoviesSegue" sender:indexPath];
+}
+
 
 
 ////////////////////////////////////////////////////////////////////////////

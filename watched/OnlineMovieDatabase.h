@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "MJUCuratedDataSource.h"
 
 @class Movie;
 @class AFJSONRequestOperation;
@@ -47,6 +48,7 @@ typedef enum {
 - (AFJSONRequestOperation*)getPersonsForMovieID:(NSNumber *)movieID completion:(PersonsCompletionBlock)callback failure:(OnlineMovieDatabaseErrorBlock)failure;
 - (AFJSONRequestOperation*)getMovieTrailersForMovieID:(NSNumber *)movieID completion:(MovieTrailersCompletionBlock)callback failure:(OnlineMovieDatabaseErrorBlock)failure;
 - (AFJSONRequestOperation*)getCastDetailsWithPersonID:(NSNumber*)value completion:(MovieCastDetailCompletionBlock)callback failure:(OnlineMovieDatabaseErrorBlock)failure;
+- (AFJSONRequestOperation*)getMoviesWithCuratedType:(MJUCuratedDataSourceType)type atPage:(NSInteger)page completion:(MovieSearchCompletionBlock)callback failure:(OnlineMovieDatabaseErrorBlock)failure;
 
 
 @end

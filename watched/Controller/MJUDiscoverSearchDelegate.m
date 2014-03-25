@@ -11,6 +11,7 @@
 #import "SearchResult.h"
 #import "OnlineDatabaseBridge.h"
 #import "MoviesTableViewLoadingCell.h"
+#import "MJUOnlineMoviesDataSource.h"
 
 @implementation MJUDiscoverSearchDelegate
 
@@ -45,15 +46,9 @@
 {
     if([self.searchDataSource isSearchIndexPathAtRow:indexPath.row]) return;
     
-    SearchResult *result = [self.searchDataSource.searchResults objectAtIndex:indexPath.row];
-    OnlineDatabaseBridge *bridge = [[OnlineDatabaseBridge alloc] init];
-    [bridge getMovieFromMovieID:result.searchResultId completion:^(Movie *aMovie) {
-        if(self.viewController) {
-            [self.viewController performSegueWithIdentifier:@"MovieDiscoverDetailSegue" sender:aMovie];
-        }
-    } failure:^(NSError *error) {
-        
-    }];
+    if(self.viewController) {
+        [self.viewController performSegueWithIdentifier:@"MovieDetailSegue" sender:indexPath];
+    }
 }
 
 - (void)tableView:(UITableView *)aTableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {

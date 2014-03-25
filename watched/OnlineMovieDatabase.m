@@ -14,6 +14,7 @@
 #import "MJUCrew.h"
 #import "MTLJSONAdapter.h"
 
+
 @interface OnlineMovieDatabase () {
     NSString *configurationPath;
 }
@@ -145,6 +146,30 @@ static NSString *databaseURL = @"http://api.themoviedb.org/3";
 ////////////////////////////////////////////////////////////////////////////
 #pragma mark -
 #pragma mark Searching
+
+- (AFJSONRequestOperation*)getMoviesWithCuratedType:(MJUCuratedDataSourceType)type atPage:(NSInteger)page completion:(MovieSearchCompletionBlock)callback failure:(OnlineMovieDatabaseErrorBlock)failure
+{
+    NSString *typeString = @"now_playing";
+    if(type == MJUCuratedDataSourceTypePopular) {
+        typeString = @"popular";
+    } else if(type == MJUCuratedDataSourceTypeUpcoming) {
+        typeString = @"upcoming";
+    }
+    
+    
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/movie/%@?%@&page=%d",databaseURL, typeString,[self additionalURLParams], page]];
+    DebugLog(@"Searching at URL: %@", url);
+    NSURLRequest *request = [NSURLRequest requestWithURL:url];
+    
+    AFJSONRequestOperation *operation;
+    operation = [AFJSONRequestOperation JSONRequestOperationWithRequest:request success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
+        callback(JSON);
+    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
+        failure(error);
+    }];
+    
+    return operation;
+}
 
 - (AFJSONRequestOperation*)getMoviesWithSearchString:(NSString*)value atPage:(NSInteger)page completion:(MovieSearchCompletionBlock)callback failure:(OnlineMovieDatabaseErrorBlock)failure
 {

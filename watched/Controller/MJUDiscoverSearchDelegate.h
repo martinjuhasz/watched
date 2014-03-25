@@ -8,11 +8,11 @@
 
 #import <Foundation/Foundation.h>
 
-@class MJUDiscoverSearchDataSource;
+@class MJUOnlineMoviesDataSource;
 
 @interface MJUDiscoverSearchDelegate : NSObject<UITableViewDelegate>
 
-@property (strong, nonatomic) MJUDiscoverSearchDataSource *searchDataSource;
+@property (strong, nonatomic) MJUOnlineMoviesDataSource *searchDataSource;
 @property (weak, nonatomic) UITableViewController *viewController;
 
 - (instancetype)initWithViewController:(UITableViewController*)viewController;

@@ -18,5 +18,6 @@
 @property (strong, nonatomic) UISearchDisplayController *searchController;
 @property (strong, nonatomic) MJUDiscoverSearchDataSource *searchDataSource;
 @property (strong, nonatomic) MJUDiscoverSearchDelegate *searchDelegate;
+@property (strong, nonatomic) NSArray *discoverItems;
 
 @end
