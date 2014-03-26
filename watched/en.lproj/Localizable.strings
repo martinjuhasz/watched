@@ -20,6 +20,14 @@
 "COLLECTIONS_TITE_UNRATED"      = "Unrated";
 
 /*================================================
+ Collections
+ ================================================*/
+
+"DISCOVER_POPULAR"      = "Popular";
+"DISCOVER_UPCOMING"     = "Upcoming";
+"DISCOVER_INTHEATERS"   = "In Theaters";
+
+/*================================================
  Search
  ================================================*/
 

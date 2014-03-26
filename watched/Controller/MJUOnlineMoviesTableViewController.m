@@ -32,7 +32,7 @@
     if(!_dataSource) {
         _dataSource = [[MJUCuratedDataSource alloc] init];
         _dataSource.delegate = self;
-        _dataSource.dataSourceType = MJUCuratedDataSourceTypeInTheathers;
+        [self setDataSourceType:MJUCuratedDataSourceTypeInTheathers];
     }
     return _dataSource;
 }
@@ -40,7 +40,16 @@
 - (void)setDataSourceType:(MJUCuratedDataSourceType)type
 {
     self.dataSource.dataSourceType = type;
+    
+    if(type == MJUCuratedDataSourceTypeInTheathers) {
+        self.title = NSLocalizedString(@"DISCOVER_INTHEATERS", nil);
+    } else if(type == MJUCuratedDataSourceTypePopular) {
+        self.title = NSLocalizedString(@"DISCOVER_POPULAR", nil);
+    } else if(type == MJUCuratedDataSourceTypeUpcoming) {
+        self.title = NSLocalizedString(@"DISCOVER_UPCOMING", nil);
+    }
 }
+
 
 
 ////////////////////////////////////////////////////////////////////////////

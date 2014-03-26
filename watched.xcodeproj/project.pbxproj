@@ -1888,6 +1888,19 @@
 			name = CoreData;
 			sourceTree = "<group>";
 		};
+		7A2E986118E3384E00FF9A26 /* Categories */ = {
+			isa = PBXGroup;
+			children = (
+				7A7D5FF818DB38DE00684F82 /* UITableView+Additions.h */,
+				7A7D5FF918DB38DE00684F82 /* UITableView+Additions.m */,
+				7AD390E718DC4014000AB28F /* UIImageView+Additions.h */,
+				7AD390E818DC4014000AB28F /* UIImageView+Additions.m */,
+				7A08F49C18E08E3D0057B1F2 /* NSString+Additions.h */,
+				7A08F49D18E08E3D0057B1F2 /* NSString+Additions.m */,
+			);
+			name = Categories;
+			sourceTree = "<group>";
+		};
 		7A2F43D9158420D100667E76 /* WebBrowser */ = {
 			isa = PBXGroup;
 			children = (
@@ -1909,8 +1922,6 @@
 				7A4AE8AD16EB43BE000EB69A /* Helper */,
 				7A4AE8AC16EB43A5000EB69A /* Views */,
 				7A2B9A66155B06E400442D54 /* Categories */,
-				7AF5ADC517BB673600C2472A /* MJUWatchedStyle.h */,
-				7AF5ADC617BB673600C2472A /* MJUWatchedStyle.m */,
 			);
 			name = General;
 			sourceTree = "<group>";
@@ -2058,12 +2069,9 @@
 		7A7D5FF718DB38A500684F82 /* Helper */ = {
 			isa = PBXGroup;
 			children = (
-				7A7D5FF818DB38DE00684F82 /* UITableView+Additions.h */,
-				7A7D5FF918DB38DE00684F82 /* UITableView+Additions.m */,
-				7AD390E718DC4014000AB28F /* UIImageView+Additions.h */,
-				7AD390E818DC4014000AB28F /* UIImageView+Additions.m */,
-				7A08F49C18E08E3D0057B1F2 /* NSString+Additions.h */,
-				7A08F49D18E08E3D0057B1F2 /* NSString+Additions.m */,
+				7AF5ADC517BB673600C2472A /* MJUWatchedStyle.h */,
+				7AF5ADC617BB673600C2472A /* MJUWatchedStyle.m */,
+				7A2E986118E3384E00FF9A26 /* Categories */,
 			);
 			path = Helper;
 			sourceTree = "<group>";

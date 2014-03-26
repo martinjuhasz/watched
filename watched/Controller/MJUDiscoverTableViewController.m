@@ -40,7 +40,20 @@
     [self.tableView hideEmptyCells];
     
     // Discover Items
-    self.discoverItems = [NSArray arrayWithObjects:@"DISCOVER_POPULAR", @"DISCOVER_UPCOMING", @"DISCOVER_INTHEATERS", nil];
+    self.discoverItems = [NSArray arrayWithObjects:
+                          @{
+                            @"title": NSLocalizedString(@"DISCOVER_POPULAR", nil),
+                            @"icon": [UIImage imageNamed:@"IconDiscoverPopular"]
+                            },
+                          @{
+                            @"title": NSLocalizedString(@"DISCOVER_UPCOMING", nil),
+                            @"icon": [UIImage imageNamed:@"IconDiscoverUpcoming"]
+                            },
+                          @{
+                            @"title": NSLocalizedString(@"DISCOVER_INTHEATERS", nil),
+                            @"icon": [UIImage imageNamed:@"IconDiscoverTheaters"]
+                            }
+                          , nil];
     
     // Search View
     self.searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, 44.0f)];
@@ -64,6 +77,7 @@
     self.searchController = [[UISearchDisplayController alloc] initWithSearchBar:_searchBar contentsController:self];
     self.searchController.searchResultsDelegate = self.searchDelegate;
     self.searchController.searchResultsDataSource = self.searchDataSource;
+
 }
 
 
@@ -82,6 +96,8 @@
         } failure:^(NSError *error) {
             ErrorLog(@"%@", [error localizedDescription]);
         }];
+        
+        
     } else if([segue.identifier isEqualToString:@"CuratedMoviesSegue"] && [sender isKindOfClass:[NSIndexPath class]]) {
         
         NSIndexPath *indexPath = (NSIndexPath*)sender;
@@ -121,7 +137,14 @@
         cell = [[MJUDiscoverTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
     }
     
-    cell.textLabel.text = [self.discoverItems objectAtIndex:indexPath.row];
+    NSDictionary *item = [self.discoverItems objectAtIndex:indexPath.row];
+    
+    cell.textLabel.text = [item objectForKey:@"title"];
+    cell.imageView.image = [item objectForKey:@"icon"];
+    
+    if(indexPath.row >= (self.discoverItems.count - 1)) {
+        cell.separatorInset = UIEdgeInsetsMake(0.0f, 0.0f, 0.0f, 0.0f);
+    }
     
     return cell;
 }
