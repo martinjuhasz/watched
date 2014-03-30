@@ -3,12 +3,12 @@
     {
       "idiom" : "universal",
       "scale" : "1x",
-      "filename" : "In Theaters.png"
+      "filename" : "icon-intheaters.png"
     },
     {
       "idiom" : "universal",
       "scale" : "2x",
-      "filename" : "In Theaters@2x.png"
+      "filename" : "icon-intheaters@2x.png"
     }
   ],
   "info" : {
