@@ -865,10 +865,6 @@
 		7AF3AE161559C113001B36E1 /* MoviesDataModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AF3AE151559C113001B36E1 /* MoviesDataModel.m */; };
 		7AF540F01577781F0018530A /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7AF540EF1577781F0018530A /* MediaPlayer.framework */; };
 		7AF540F8157783C10018530A /* MovieCastsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AF540F7157783C10018530A /* MovieCastsTableViewController.m */; };
-		7AF5ADC117BB667600C2472A /* navigationbar_bg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7AF5ADBF17BB667600C2472A /* navigationbar_bg@2x.png */; };
-		7AF5ADC217BB667600C2472A /* navigationbar_bg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7AF5ADBF17BB667600C2472A /* navigationbar_bg@2x.png */; };
-		7AF5ADC317BB667600C2472A /* navigationbar_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 7AF5ADC017BB667600C2472A /* navigationbar_bg.png */; };
-		7AF5ADC417BB667600C2472A /* navigationbar_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 7AF5ADC017BB667600C2472A /* navigationbar_bg.png */; };
 		7AF5ADC717BB673600C2472A /* MJUWatchedStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AF5ADC617BB673600C2472A /* MJUWatchedStyle.m */; };
 		7AF5ADC817BB673600C2472A /* MJUWatchedStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AF5ADC617BB673600C2472A /* MJUWatchedStyle.m */; };
 		7AF5ADCD17BB68ED00C2472A /* cover-overlay.png in Resources */ = {isa = PBXBuildFile; fileRef = 7AF5ADC917BB68ED00C2472A /* cover-overlay.png */; };
@@ -1431,8 +1427,6 @@
 		7AF540EF1577781F0018530A /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
 		7AF540F6157783C10018530A /* MovieCastsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MovieCastsTableViewController.h; sourceTree = "<group>"; };
 		7AF540F7157783C10018530A /* MovieCastsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MovieCastsTableViewController.m; sourceTree = "<group>"; };
-		7AF5ADBF17BB667600C2472A /* navigationbar_bg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "navigationbar_bg@2x.png"; sourceTree = "<group>"; };
-		7AF5ADC017BB667600C2472A /* navigationbar_bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = navigationbar_bg.png; sourceTree = "<group>"; };
 		7AF5ADC517BB673600C2472A /* MJUWatchedStyle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MJUWatchedStyle.h; sourceTree = "<group>"; };
 		7AF5ADC617BB673600C2472A /* MJUWatchedStyle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MJUWatchedStyle.m; sourceTree = "<group>"; };
 		7AF5ADC917BB68ED00C2472A /* cover-overlay.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "cover-overlay.png"; sourceTree = "<group>"; };
@@ -2315,8 +2309,6 @@
 				1406D99017C921D300D082BA /* icon-trailer@2x.png */,
 				1406D99117C921D300D082BA /* icon-upcoming-highlighted@2x.png */,
 				1406D99217C921D300D082BA /* icon-upcoming@2x.png */,
-				7AF5ADBF17BB667600C2472A /* navigationbar_bg@2x.png */,
-				7AF5ADC017BB667600C2472A /* navigationbar_bg.png */,
 				7AF5ADC917BB68ED00C2472A /* cover-overlay.png */,
 				7AF5ADCA17BB68ED00C2472A /* cover-overlay@2x.png */,
 				7A34B02D17BCEC9A00DB30DB /* cover-overlay-detailview@2x.png */,
@@ -2463,7 +2455,6 @@
 				7A13C3FB17C8B5ED007ACD89 /* sv_error@2x.png in Resources */,
 				1406D9C817C921D300D082BA /* icon-upcoming-highlighted@2x.png in Resources */,
 				7A13C2AB17C8B5ED007ACD89 /* g_backbutton.png in Resources */,
-				7AF5ADC417BB667600C2472A /* navigationbar_bg.png in Resources */,
 				7A13C34317C8B5ED007ACD89 /* g_placeholder-cover.png in Resources */,
 				7A13C22F17C8B5ED007ACD89 /* dv_button-more.png in Resources */,
 				7A13C3A117C8B5ED007ACD89 /* nv_bg_text@2x.png in Resources */,
@@ -2580,7 +2571,6 @@
 				7A13C1E917C8B5ED007ACD89 /* btn-filmography_active@2x.png in Resources */,
 				7A13C35117C8B5ED007ACD89 /* g_searchbutton@2x.png in Resources */,
 				7A13C3C317C8B5ED007ACD89 /* pv_bg_content_top.png in Resources */,
-				7AF5ADC217BB667600C2472A /* navigationbar_bg@2x.png in Resources */,
 				7A13C30F17C8B5ED007ACD89 /* g_browser_forward_disabled.png in Resources */,
 				7A13C40317C8B5ED007ACD89 /* sv_spinner2@2x.png in Resources */,
 				7A13C3ED17C8B5ED007ACD89 /* sv_bg_meta.png in Resources */,
@@ -2852,7 +2842,6 @@
 				7A13C36217C8B5ED007ACD89 /* g_table-accessory.png in Resources */,
 				7A13C30017C8B5ED007ACD89 /* g_browser_action_disabled@2x.png in Resources */,
 				7A13C22017C8B5ED007ACD89 /* dv_bg-meta@2x.png in Resources */,
-				7AF5ADC317BB667600C2472A /* navigationbar_bg.png in Resources */,
 				7A13C22C17C8B5ED007ACD89 /* dv_button-more_highlighted@2x.png in Resources */,
 				7AFE9C7C17C8C9CC00E9D16B /* settings_testflight.html in Resources */,
 				7A13C3E217C8B5ED007ACD89 /* sv_already-added@2x.png in Resources */,
@@ -2964,7 +2953,6 @@
 				7AFE9C7817C8C9CC00E9D16B /* settings_reachability.html in Resources */,
 				7A13C2A217C8B5ED007ACD89 /* g_backbutton_landscape_active.png in Resources */,
 				7A13C2E017C8B5ED007ACD89 /* g_bg-grp_table_top@2x.png in Resources */,
-				7AF5ADC117BB667600C2472A /* navigationbar_bg@2x.png in Resources */,
 				7A13C27017C8B5ED007ACD89 /* dv_star-highlighted@2x.png in Resources */,
 				7AFE9C7A17C8C9CC00E9D16B /* settings_releasenotes.html in Resources */,
 				7A13C37A17C8B5ED007ACD89 /* mv_bg_add.png in Resources */,

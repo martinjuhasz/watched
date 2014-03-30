@@ -13,14 +13,14 @@
 + (void)setupDefaultStyle
 {
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
-    [[UINavigationBar appearance] setBackgroundImage:[UIImage imageNamed:@"navigationbar_bg"] forBarMetrics:UIBarMetricsDefault];
+    [[UINavigationBar appearance] setBackgroundImage:[UIImage imageNamed:@"BgNavigationBar"] forBarMetrics:UIBarMetricsDefault];
     [[UITabBar appearance] setSelectedImageTintColor:[UIColor colorWithRed:240.0f green:0.0f blue:0.0f alpha:1.0f]];
     
     [[UINavigationBar appearance] setTitleTextAttributes:
      [NSDictionary dictionaryWithObjectsAndKeys:
       [UIColor whiteColor],
       NSForegroundColorAttributeName,
-      [UIFont fontWithName:@"AvenirNext-Medium" size:17.0f],
+      [UIFont fontWithName:@"AvenirNext-DemiBold" size:17.0f],
       NSFontAttributeName,
       nil]];
     

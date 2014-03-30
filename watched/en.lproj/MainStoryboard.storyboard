@@ -9,7 +9,7 @@
         <scene sceneID="MJt-dT-9Fw">
             <objects>
                 <navigationController definesPresentationContext="YES" id="Xfi-OZ-djB" customClass="MJWatchedNavigationController" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Lists" image="icon-collection-highlighted.png" id="29x-TV-idx"/>
+                    <tabBarItem key="tabBarItem" title="Lists" image="IconTabbarLists" id="29x-TV-idx"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" translucent="NO" id="HBi-4I-X75" customClass="MJWatchedNavigationBar">
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -172,7 +172,7 @@
         <scene sceneID="gaP-52-im9">
             <objects>
                 <navigationController definesPresentationContext="YES" id="iSK-MC-BYY" customClass="MJWatchedNavigationController" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Settings" image="icon-settings-highlighted.png" id="ePY-9a-39Z"/>
+                    <tabBarItem key="tabBarItem" title="Settings" image="IconTabbarSettings" id="ePY-9a-39Z"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" translucent="NO" id="5wJ-Qm-lzH" customClass="MJWatchedNavigationBar">
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -358,7 +358,7 @@
         <scene sceneID="s90-ye-eeK">
             <objects>
                 <navigationController definesPresentationContext="YES" id="yH6-u0-VCy" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Discover" image="icon-discover-highlighted.png" id="Bxg-Vh-fOc"/>
+                    <tabBarItem key="tabBarItem" title="Discover" image="IconTabbarDiscover" id="Bxg-Vh-fOc"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" translucent="NO" id="wdv-wb-qdr">
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -867,7 +867,7 @@
         <scene sceneID="x8S-Zk-bTg">
             <objects>
                 <navigationController definesPresentationContext="YES" id="xvB-A4-PIz" customClass="MJWatchedNavigationController" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Collection" image="icon-collection-highlighted.png" id="CFD-g7-xfo"/>
+                    <tabBarItem key="tabBarItem" title="Collection" image="IconTabbarCollection" id="CFD-g7-xfo"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" translucent="NO" id="gnB-Xo-fCb" customClass="MJWatchedNavigationBar">
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -886,14 +886,15 @@
         </scene>
     </scenes>
     <resources>
+        <image name="IconTabbarCollection" width="30" height="30"/>
+        <image name="IconTabbarDiscover" width="30" height="30"/>
+        <image name="IconTabbarLists" width="30" height="30"/>
+        <image name="IconTabbarSettings" width="30" height="30"/>
         <image name="cv_actor-placeholder.png" width="33" height="37"/>
         <image name="cv_thumbnail-overlay.png" width="35" height="40"/>
         <image name="dv_cover-overlay.png" width="75" height="103"/>
         <image name="dv_icon_share.png" width="23" height="23"/>
         <image name="g_button_popover_add.png" width="16" height="35"/>
-        <image name="icon-collection-highlighted.png" width="30" height="30"/>
-        <image name="icon-discover-highlighted.png" width="30" height="30"/>
-        <image name="icon-settings-highlighted.png" width="30" height="30"/>
         <image name="pv_error.png" width="52" height="46"/>
         <image name="pv_mask-bottom.png" width="20" height="10"/>
         <image name="pv_mask-top.png" width="20" height="10"/>
@@ -907,8 +908,8 @@
         <simulatedScreenMetrics key="destination"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="4Yb-SD-iw9"/>
-        <segue reference="m7b-Mt-b3V"/>
+        <segue reference="yIO-nj-I7i"/>
+        <segue reference="QTD-zJ-yeP"/>
         <segue reference="dp1-K0-eya"/>
     </inferredMetricsTieBreakers>
 </document>
